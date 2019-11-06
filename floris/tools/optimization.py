@@ -808,7 +808,6 @@ class YawOptimizationWindRose(Optimization):
                 else:
                     self.fi.reinitialize_flow_field(
                         wind_direction=self.wd[i], wind_speed=self.ws[i], turbulence_intensity=self.ti[i])
-
                 # calculate baseline power
                 self.fi.calculate_wake(yaw_angles=0.0)
                 power_base = self.fi.get_turbine_power(include_unc=self.include_unc, \
