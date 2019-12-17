@@ -30,7 +30,6 @@ class Optimization():
         """
         Instantiate Optimization object and its parameters.
         """
-
         self.model = model
         self.solver_choices = ['SNOPT', 'IPOPT', 'SLSQP', 'NLPQLP',
                              'FSQP', 'NSGA2', 'PSQP', 'ParOpt',
