@@ -12,7 +12,7 @@
 from ..utilities import Vec3
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
-import numpy as np
+import autograd.numpy as np
 
 
 def plot_turbines(ax, layout_x, layout_y, yaw_angles, D, color=None):

@@ -4,7 +4,7 @@ import floris.tools as wfct
 import matplotlib.pyplot as plt
 import os
 from os import path
-import numpy as np
+import autograd.numpy as np
 import pickle
 import copy
 

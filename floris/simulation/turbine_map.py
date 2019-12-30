@@ -11,7 +11,7 @@
 
 from ..utilities import Vec3
 from .turbine import Turbine
-import numpy as np
+import autograd.numpy as np
 
 
 class TurbineMap():

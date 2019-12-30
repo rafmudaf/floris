@@ -15,7 +15,7 @@ from .flow_field import FlowField
 from .wind_map import WindMap
 from .turbine_map import TurbineMap
 import copy
-import numpy as np
+import autograd.numpy as np
 
 
 class Farm():

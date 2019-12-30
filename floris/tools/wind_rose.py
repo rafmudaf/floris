@@ -20,7 +20,7 @@ import dateutil
 import h5pyd
 import matplotlib.pyplot as plt
 import matplotlib.cm as cm
-import numpy as np
+import autograd.numpy as np
 import pandas as pd
 import pickle
 from pyproj import Proj

@@ -13,7 +13,7 @@ from .turbine import Turbine
 from .wake import Wake
 from .farm import Farm
 import json
-import numpy as np
+import autograd.numpy as np
 
 
 class InputReader():
