@@ -85,7 +85,12 @@ class Wake():
 
     @velocity_model.setter
     def velocity_model(self, value):
-        self._velocity_model = self.velocity_models[value]
+        if type(value) is str:
+            self._velocity_model = self.velocity_models[value]
+        elif isinstance(value, wake_velocity.WakeVelocity):
+            self._velocity_model = value
+        else:
+            raise ValueError("Invalid value given for WakeVelocity: {}".format(value))
 
     @property
     def deflection_model(self):
@@ -101,7 +106,12 @@ class Wake():
 
     @deflection_model.setter
     def deflection_model(self, value):
-        self._deflection_model = self.deflection_models[value]
+        if type(value) is str:
+            self._deflection_model = self.deflection_models[value]
+        elif isinstance(value, wake_deflection.WakeDeflection):
+            self._deflection_model = value
+        else:
+            raise ValueError("Invalid value given for WakeDeflection: {}".format(value))
 
     @property
     def combination_model(self):
@@ -115,7 +125,12 @@ class Wake():
 
     @combination_model.setter
     def combination_model(self, value):
-        self._combination_model = self.combination_models[value]
+        if type(value) is str:
+            self._combination_model = self.combination_models[value]
+        elif isinstance(value, wake_combination.WakeCombination):
+            self._combination_model = value
+        else:
+            raise ValueError("Invalid value given for WakeCombination: {}".format(value))
 
     @property
     def deflection_function(self):
