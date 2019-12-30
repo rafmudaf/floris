@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-import numpy as np
+import autograd.numpy as np
 from scipy.ndimage.filters import gaussian_filter
 from ..utilities import Vec3
 from ..utilities import cosd, sind, tand
@@ -496,6 +496,7 @@ class Gauss(WakeVelocity):
         delta = deflection_field
 
         # initial velocity deficits
+        print('wv Vt: ', Ct)
         uR = U_local * Ct / (2.0 * (1 - np.sqrt(1 - (Ct))))
         u0 = U_local * np.sqrt(1 - Ct)
 
@@ -522,8 +523,11 @@ class Gauss(WakeVelocity):
         sigma_z = (((x0 - xR) - (x_locations - xR)) / (x0 - xR)) * 0.501 * \
             D * np.sqrt(Ct / 2.) + ((x_locations - xR) / (x0 - xR)) * sigma_z0
 
-        sigma_y[x_locations < xR] = 0.5 * D
-        sigma_z[x_locations < xR] = 0.5 * D
+        # autograd change
+        sigma_y = np.where(x_locations < xR, sigma_y, 0.5 * D)
+        sigma_z = np.where(x_locations < xR, sigma_z, 0.5 * D)
+        # sigma_y[x_locations < xR] = 0.5 * D
+        # sigma_z[x_locations < xR] = 0.5 * D
 
         a = (cosd(veer)**2) / (2 * sigma_y**2) + \
             (sind(veer)**2) / (2 * sigma_z**2)
@@ -537,15 +541,21 @@ class Gauss(WakeVelocity):
 
         velDef = (U_local * (1 - np.sqrt(1 - ((Ct * cosd(yaw)) \
                 / (8.0 * sigma_y * sigma_z / D**2)))) * totGauss)
-        velDef[x_locations < xR] = 0
-        velDef[x_locations > x0] = 0
+        # autograd change
+        velDef = np.where(x_locations < xR, velDef, 0)
+        velDef = np.where(x_locations > x0, velDef, 0)
+        # velDef[x_locations < xR] = 0
+        # velDef[x_locations > x0] = 0
 
         # wake expansion in the lateral (y) and the vertical (z)
         sigma_y = ky * (x_locations - x0) + sigma_y0
         sigma_z = kz * (x_locations - x0) + sigma_z0
 
-        sigma_y[x_locations < x0] = sigma_y0[x_locations < x0]
-        sigma_z[x_locations < x0] = sigma_z0[x_locations < x0]
+        # autograd change
+        sigma_y = np.where(x_locations < x0, sigma_y, sigma_y0[0][0][0])
+        sigma_z = np.where(x_locations < x0, sigma_z, sigma_z0[0][0][0])
+        # sigma_y[x_locations < x0] = sigma_y0[x_locations < x0]
+        # sigma_z[x_locations < x0] = sigma_z0[x_locations < x0]
 
         # velocity deficit outside the near wake
         a = (cosd(veer)**2) / (2 * sigma_y**2) + \
@@ -561,7 +571,9 @@ class Gauss(WakeVelocity):
         # compute velocities in the far wake
         velDef1 = (U_local * (1 - np.sqrt(1 - ((Ct * cosd(yaw)) \
                 / (8.0 * sigma_y * sigma_z / D**2)))) * totGauss)
-        velDef1[x_locations < x0] = 0
+        # autograd change
+        velDef1 = np.where(x_locations < x0, velDef1, 0)
+        # velDef1[x_locations < x0] = 0
 
         return np.sqrt(velDef**2 + velDef1**2), np.zeros(np.shape(velDef)), np.zeros(np.shape(velDef))
 
