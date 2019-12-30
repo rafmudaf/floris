@@ -10,7 +10,7 @@
 # specific language governing permissions and limitations under the License.
 
 from ..utilities import Vec3
-import numpy as np
+import autograd.numpy as np
 import scipy as sp
 
 

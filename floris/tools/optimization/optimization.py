@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import numpy as np
+import autograd.numpy as np
 import pyoptsparse
 
 class Optimization():
