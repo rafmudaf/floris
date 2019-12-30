@@ -9,7 +9,7 @@
 # CONDITIONS OF ANY KIND, either express or implied. See the License for the
 # specific language governing permissions and limitations under the License.
 
-import numpy as np
+import autograd.numpy as np
 from scipy.interpolate import interp1d
 from scipy.spatial import distance_matrix
 import math
@@ -149,22 +149,85 @@ class Turbine():
         if at_wind_speed < min(wind_speed):
             return 0.0
         else:
-            _cp = self.fCpInterp(at_wind_speed)
+            # autograd change
+            _cp = self._fCp_manual_interp(at_wind_speed)
+            # _cp = self.fCpInterp(at_wind_speed)
             if _cp.size > 1:
                 _cp = _cp[0]
-            return float(_cp)
+            # autograd change
+            print('cp: ', _cp)
+            return _cp
+            # return float(_cp)
+
+    # autograd change
+    def _fCp_manual_interp(self, at_wind_speed):
+        dist = np.nan_to_num(abs(self.power_thrust_table["wind_speed"] \
+               - at_wind_speed))
+        idx1 = np.where(dist == np.min(dist))[0][0]
+        if np.min(dist) == 0:
+            return self.power_thrust_table["power"][idx1]
+        elif idx1 == len(dist):
+            idx2 = idx1 - 1
+            m = (self.power_thrust_table["power"][idx1] \
+                 - self.power_thrust_table["power"][idx2]) \
+                 / (self.power_thrust_table["wind_speed"][idx1] \
+                 - self.power_thrust_table["wind_speed"][idx1])
+        else:
+            idx2 = idx1 + 1
+            m = (self.power_thrust_table["power"][idx2] \
+                 - self.power_thrust_table["power"][idx1]) \
+                 / (self.power_thrust_table["wind_speed"][idx2] \
+                 - self.power_thrust_table["wind_speed"][idx1])
+
+        b = self.power_thrust_table["power"][idx1] \
+            - m*self.power_thrust_table["wind_speed"][idx1]
+
+        return m * at_wind_speed + b
 
     def _fCt(self, at_wind_speed):
         wind_speed = self.power_thrust_table["wind_speed"]
         if at_wind_speed < min(wind_speed):
             return 0.99
         else:
-            _ct = self.fCtInterp(at_wind_speed)
+            # autograd change
+            _ct = self._fCt_manual_interp(at_wind_speed)
+            # print('man interp: ', _ct)
+            # _ct = self.fCtInterp(at_wind_speed)
+            # print('scipy interp: ', _ct)
             if _ct.size > 1:
                 _ct = _ct[0]
             if _ct > 1.0:
                 _ct = 0.99
-            return float(_ct)
+            #autograd change
+            print('_ct: ', _ct)
+            return _ct
+            # return float(_ct)
+
+    # autograd change
+    def _fCt_manual_interp(self, at_wind_speed):
+        dist = np.nan_to_num(abs(self.power_thrust_table["wind_speed"] \
+               - at_wind_speed))
+        idx1 = np.where(dist == np.min(dist))[0][0]
+        if np.min(dist) == 0:
+            return self.power_thrust_table["thrust"][idx1]
+        elif idx1 == len(dist):
+            idx2 = idx1 - 1
+            m = (self.power_thrust_table["thrust"][idx1] \
+                 - self.power_thrust_table["thrust"][idx2]) \
+                 / (self.power_thrust_table["wind_speed"][idx1] \
+                 - self.power_thrust_table["wind_speed"][idx1])
+        else:
+            idx2 = idx1 + 1
+            m = (self.power_thrust_table["thrust"][idx2] \
+                 - self.power_thrust_table["thrust"][idx1]) \
+                 / (self.power_thrust_table["wind_speed"][idx2] \
+                 - self.power_thrust_table["wind_speed"][idx1])
+
+        b = self.power_thrust_table["thrust"][idx1] \
+            - m*self.power_thrust_table["wind_speed"][idx1]
+
+        return m * at_wind_speed + b
+        
 
     # Public methods
 
@@ -511,7 +574,9 @@ class Turbine():
         """
         # remove all invalid numbers from interpolation
         data = self.velocities[np.where(np.isnan(self.velocities) == False)]
-        avg_vel = np.cbrt(np.mean(data**3))
+        # autograd change
+        avg_vel = (np.mean(data**3))**(1./3)
+        # avg_vel = np.cbrt(np.mean(data**3))
         if np.isnan(avg_vel) == True: avg_vel = 0
         elif np.isinf(avg_vel) == True: avg_vel = 0
         
