@@ -19,6 +19,7 @@ import copy
 from scipy.stats import norm
 from floris.simulation import WindMap
 from .cut_plane import CutPlane, get_plane_from_flow_data
+from .interface_utilities import show_params
 
 
 class FlorisInterface():
@@ -842,3 +843,9 @@ class FlorisInterface():
             else: pVel.append(np.mean(velocity[loc]))
 
         return pVel
+
+    def show_model_parameters(self, params=None, verbose=False,
+                            wake_model=False, turbulence_model=False):
+        show_params(self, params, verbose, wake_model,
+                             turbulence_model)
+        
