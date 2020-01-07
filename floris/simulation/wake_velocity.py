@@ -121,7 +121,7 @@ class Jensen(WakeVelocity):
         super().__init__(parameter_dictionary)
         self.model_string = "jensen"
         model_dictionary = self._get_model_dict()
-        self.we = float(model_dictionary["we"])
+        self._we = float(model_dictionary["we"])
 
     def function(self, x_locations, y_locations, z_locations, turbine, turbine_coord, deflection_field, flow_field):
         """
@@ -186,6 +186,32 @@ class Jensen(WakeVelocity):
         c[z_locations < z_lower] = 0
 
         return 2 * turbine.aI * c * flow_field.u_initial, np.zeros(np.shape(flow_field.u_initial)), np.zeros(np.shape(flow_field.u_initial))
+
+    @property
+    def we(self):
+        """
+        A float that is the linear wake decay constant that defines the cone
+            boundary for the wake as well as the velocity deficit. D/2 +/- we*x
+            is the cone boundary for the wake.
+
+        Args:
+            we (float, int): The linear wake decay constant that defines the
+                cone boundary for the wake as well as the velocity deficit.
+
+        Returns:
+            float: The linear wake decay constant that defines the cone
+                boundary for the wake as well as the velocity deficit.
+        """
+        return self._we
+
+    @we.setter
+    def we(self, value):
+        if type(value) is float:
+            self._we = value
+        elif type(value) is int:
+            self._we = float(value)
+        else:
+            raise ValueError("Invalid value given for we: {}".format(value))
 
 
 class MultiZone(WakeVelocity):
@@ -259,11 +285,11 @@ class MultiZone(WakeVelocity):
         super().__init__(parameter_dictionary)
         self.model_string = "multizone"
         model_dictionary = self._get_model_dict()
-        self.me = [float(n) for n in model_dictionary["me"]]
-        self.we = float(model_dictionary["we"])
-        self.aU = float(model_dictionary["aU"])
-        self.bU = float(model_dictionary["bU"])
-        self.mU = [float(n) for n in model_dictionary["mU"]]
+        self._me = [float(n) for n in model_dictionary["me"]]
+        self._we = float(model_dictionary["we"])
+        self._aU = float(model_dictionary["aU"])
+        self._bU = float(model_dictionary["bU"])
+        self._mU = [float(n) for n in model_dictionary["mU"]]
 
     def function(self, x_locations, y_locations, z_locations, turbine, turbine_coord, deflection_field, flow_field):
         """
@@ -355,6 +381,139 @@ class MultiZone(WakeVelocity):
 
         return 2 * turbine.aI * c * flow_field.wind_map.grid_wind_speed, np.zeros(np.shape(c)), np.zeros(np.shape(c))
 
+    @property
+    def me(self):
+        """
+        A list of three floats that help determine the slope of the diameters
+            of the three wake zones (near wake, far wake, mixing zone) as a
+            function of downstream distance.
+
+        Args:
+            me (list): Three floats that help determine the slope of the
+                diameters of the three wake zones.
+
+        Returns:
+            float: Three floats that help determine the slope of the diameters
+                of the three wake zones.
+        """
+        return self._me
+
+    @me.setter
+    def me(self, value):
+        if type(value) is list and len(me) == 3 and \
+                            all(type(val) is float for val in value) is True:
+            self._me = value
+        elif type(value) is list and len(me) == 3 and \
+                            all(type(val) is float for val in value) is False:
+            self._me = [float(val) for val in value]
+        else:
+            raise ValueError("Invalid value given for me: {}".format(value))
+
+    @property
+    def we(self):
+        """
+        A float that is the scaling parameter used to adjust the wake expansion,
+            helping to determine the slope of the diameters of the three wake
+            zones as a function of downstream distance, as well as the recovery
+            of the velocity deficits in the wake as a function of downstream
+            distance.
+
+        Args:
+            we (float, int): Scaling parameter used to adjust the wake
+                expansion.
+
+        Returns:
+            float: Scaling parameter used to adjust the wake expansion.
+        """
+        return self._we
+
+    @we.setter
+    def we(self, value):
+        if type(value) is float:
+            self._we = value
+        elif type(value) is int:
+            self._we = float(value)
+        else:
+            raise ValueError("Invalid value given for we: {}".format(value))
+
+    @property
+    def aU(self):
+        """
+        A float that is a parameter used to determine the dependence of the
+            wake velocity deficit decay rate on the rotor yaw angle.
+
+        Args:
+            aU (float, int): Parameter used to determine the dependence of the
+                wake velocity deficit decay rate on the rotor yaw angle.
+
+        Returns:
+            float: Parameter used to determine the dependence of the wake
+                velocity deficit decay rate on the rotor yaw angle.
+        """
+        return self._aU
+
+    @aU.setter
+    def aU(self, value):
+        if type(value) is float:
+            self._aU = value
+        elif type(value) is int:
+            self._aU = float(value)
+        else:
+            raise ValueError("Invalid value given for aU: {}".format(value))
+
+    @property
+    def bU(self):
+        """
+        A float that is a parameter used to determine the dependence of the
+            wake velocity deficit decay rate on the rotor yaw angle.
+
+        Args:
+            bU (float, int): Parameter used to determine the dependence of the
+                wake velocity deficit decay rate on the rotor yaw angle.
+
+        Returns:
+            float: Parameter used to determine the dependence of the wake
+                velocity deficit decay rate on the rotor yaw angle.
+        """
+        return self._bU
+
+    @bU.setter
+    def bU(self, value):
+        if type(value) is float:
+            self._bU = value
+        elif type(value) is int:
+            self._bU = float(value)
+        else:
+            raise ValueError("Invalid value given for bU: {}".format(value))
+
+    @property
+    def mU(self):
+        """
+        A list of three floats that are parameters used to determine the
+            dependence of the wake velocity deficit decay rate for each of the
+            three wake zones on the rotor yaw angle.
+
+        Args:
+            me (list): Three floats that are parameters used to determine the
+                dependence of the wake velocity deficit decay rate.
+
+        Returns:
+            float: Three floats that are parameters used to determine the
+                dependence of the wake velocity deficit decay rate.
+        """
+        return self._mU
+
+    @mU.setter
+    def mU(self, value):
+        if type(value) is list and len(mU) == 3 and \
+                            all(type(val) is float for val in value) is True:
+            self._mU = value
+        elif type(value) is list and len(mU) == 3 and \
+                            all(type(val) is float for val in value) is False:
+            self._mU = [float(val) for val in value]
+        else:
+            raise ValueError("Invalid value given for mU: {}".format(value))
+
 
 class Gauss(WakeVelocity):
     """
@@ -441,12 +600,12 @@ class Gauss(WakeVelocity):
         model_dictionary = self._get_model_dict()
 
         # wake expansion parameters
-        self.ka = float(model_dictionary["ka"])
-        self.kb = float(model_dictionary["kb"])
+        self._ka = float(model_dictionary["ka"])
+        self._kb = float(model_dictionary["kb"])
 
         # near wake parameters
-        self.alpha = float(model_dictionary["alpha"])
-        self.beta = float(model_dictionary["beta"])
+        self._alpha = float(model_dictionary["alpha"])
+        self._beta = float(model_dictionary["beta"])
 
     def function(self, x_locations, y_locations, z_locations, turbine, turbine_coord, deflection_field, flow_field):
         """
@@ -573,6 +732,99 @@ class Gauss(WakeVelocity):
 
         return np.sqrt(velDef**2 + velDef1**2), np.zeros(np.shape(velDef)), np.zeros(np.shape(velDef))
 
+    @property
+    def ka(self):
+        """
+        Parameter used to determine the linear relationship between the 
+            turbulence intensity and the width of the Gaussian wake shape.
+
+        Args:
+            ka (float, int): Gaussian wake model coefficient.
+
+        Returns:
+            float: Gaussian wake model coefficient.
+        """
+        return self._ka
+
+    @ka.setter
+    def ka(self, value):
+        if type(value) is float:
+            self._ka = value
+        elif type(value) is int:
+            self._ka = float(value)
+        else:
+            raise ValueError("Invalid value given for ka: {}".format(value))
+
+    @property
+    def kb(self):
+        """
+        Parameter used to determine the linear relationship between the 
+            turbulence intensity and the width of the Gaussian wake shape.
+
+        Args:
+            kb (float, int): Gaussian wake model coefficient.
+
+        Returns:
+            float: Gaussian wake model coefficient.
+        """
+        return self._kb
+
+    @kb.setter
+    def kb(self, value):
+        if type(value) is float:
+            self._kb = value
+        elif type(value) is int:
+            self._kb = float(value)
+        else:
+            raise ValueError("Invalid value given for kb: {}".format(value))
+
+    @property
+    def alpha(self):
+        """
+        Parameter that determines the dependence of the downstream boundary
+            between the near wake and far wake region on the turbulence
+            intensity.
+
+        Args:
+            alpha (float, int): Gaussian wake model coefficient.
+
+        Returns:
+            float: Gaussian wake model coefficient.
+        """
+        return self._alpha
+
+    @alpha.setter
+    def alpha(self, value):
+        if type(value) is float:
+            self._alpha = value
+        elif type(value) is int:
+            self._alpha = float(value)
+        else:
+            raise ValueError("Invalid value given for alpha: {}".format(value))
+
+    @property
+    def beta(self):
+        """
+        Parameter that determines the dependence of the downstream boundary
+            between the near wake and far wake region on the turbine's
+            induction factor.
+
+        Args:
+            beta (float, int): Gaussian wake model coefficient.
+
+        Returns:
+            float: Gaussian wake model coefficient.
+        """
+        return self._beta
+
+    @beta.setter
+    def beta(self, value):
+        if type(value) is float:
+            self._beta = value
+        elif type(value) is int:
+            self._beta = float(value)
+        else:
+            raise ValueError("Invalid value given for beta: {}".format(value))
 
 class Curl(WakeVelocity):
     """
@@ -652,11 +904,11 @@ class Curl(WakeVelocity):
         super().__init__(parameter_dictionary)
         self.model_string = "curl"
         model_dictionary = self._get_model_dict()
-        self.model_grid_resolution = Vec3(
+        self._model_grid_resolution = Vec3(
             model_dictionary["model_grid_resolution"])
-        self.initial_deficit = float(model_dictionary["initial_deficit"])
-        self.dissipation = float(model_dictionary["dissipation"])
-        self.veer_linear = float(model_dictionary["veer_linear"])
+        self._initial_deficit = float(model_dictionary["initial_deficit"])
+        self._dissipation = float(model_dictionary["dissipation"])
+        self._veer_linear = float(model_dictionary["veer_linear"])
         self.requires_resolution = True
 
     def function(self, x_locations, y_locations, z_locations, turbine, turbine_coord, deflection_field, flow_field):
@@ -932,6 +1184,108 @@ class Curl(WakeVelocity):
 
         return v, w
 
+    @property
+    def model_grid_resolution(self):
+        """
+        A list of three floats that define the flow field grid resolution in the x, y, and z directions used for the curl wake model calculations. The grid resolution is specified as the number of grid points in the flow field domain in the x, y, and z directions.
+
+        Args:
+            model_grid_resolution (list): Flow field grid resolution in
+                [x, y, z] directions.
+
+        Returns:
+            float: Flow field grid resolution in [x, y, z] directions.
+        """
+        return self._model_grid_resolution
+
+    @model_grid_resolution.setter
+    def model_grid_resolution(self, value):
+        #TODO: add checker to make sure resolution is high enough
+        if type(value) is list and len(list) == 3 and \
+                            all(type(val) is float for val in value) is True:
+            self._model_grid_resolution = value
+        elif type(value) is list and len(me) == 3 and \
+                            all(type(val) is float for val in value) is False:
+            self._me = [float(val) for val in value]
+        else:
+            raise ValueError('Invalid value given for \
+                              model_grid_resolution: {}'.format(value))
+
+    @property
+    def initial_deficit(self):
+        """
+        Parameter that, along with the freestream velocity and the turbine's
+            induction factor, is used to determine the initial wake velocity
+            deficit immediately downstream of the rotor.
+
+        Args:
+            initial_deficit (float, int): Curled wake model coefficient.
+
+        Returns:
+            float: Curled wake model coefficient.
+        """
+        return self._initial_deficit
+
+    @initial_deficit.setter
+    def initial_deficit(self, value):
+        if type(value) is float:
+            self._initial_deficit = value
+        elif type(value) is int:
+            self._initial_deficit = float(value)
+        else:
+            raise ValueError('Invalid value given for \
+                              initial_deficit: {}'.format(value))
+
+    @property
+    def dissipation(self):
+        """
+        A scaling parameter that determines the amount of dissipation of
+            the vortices with downstream distance.
+
+        Args:
+            dissipation (float, int): Scaling parameter for vortex dissipation.
+
+        Returns:
+            float: Scaling parameter for vortex dissipation.
+        """
+        return self._dissipation
+
+    @dissipation.setter
+    def dissipation(self, value):
+        if type(value) is float:
+            self._dissipation = value
+        elif type(value) is int:
+            self._dissipation = float(value)
+        else:
+            raise ValueError('Invalid value given for \
+                              dissipation: {}'.format(value))
+
+    @property
+    def veer_linear(self):
+        """
+        This parameter defines the linear change in the V velocity between the
+            ground and hub height, and therefore determines the slope of the
+            change in the V velocity with height.
+
+        Args:
+            veer_linear (float, int): The linear change in the V velocity
+                between the ground and hub height.
+
+        Returns:
+            float: The linear change in the V velocity between the ground and
+                hub height.
+        """
+        return self._veer_linear
+
+    @veer_linear.setter
+    def veer_linear(self, value):
+        if type(value) is float:
+            self._veer_linear = value
+        elif type(value) is int:
+            self._veer_linear = float(value)
+        else:
+            raise ValueError('Invalid value given for \
+                              veer_linear: {}'.format(value))
 
 class GaussCurlHybrid(WakeVelocity):
 
@@ -943,11 +1297,11 @@ class GaussCurlHybrid(WakeVelocity):
         model_dictionary = self._get_model_dict()
 
         # wake expansion parameter
-        self.ka = float(model_dictionary["ka"])
-        self.kb = float(model_dictionary["kb"])
+        self._ka = float(model_dictionary["ka"])
+        self._kb = float(model_dictionary["kb"])
 
         # near wake parameter
-        self.alpha = float(model_dictionary["alpha"])
+        self._alpha = float(model_dictionary["alpha"])
         self.beta = float(model_dictionary["beta"])
 
         if 'use_yar' in model_dictionary:
@@ -958,14 +1312,14 @@ class GaussCurlHybrid(WakeVelocity):
             self.use_yar = False
 
         if 'yaw_rec_alpha' in model_dictionary:
-            self.yaw_rec_alpha = bool(model_dictionary["yaw_rec_alpha"])
+            self.yaw_rec_alpha = float(model_dictionary["yaw_rec_alpha"])
         else:
             self.yaw_rec_alpha = 0.03
             # TODO: introduce logging
             print('Using default option yaw_rec_alpha: %.2f' % self.yaw_rec_alpha)
 
         if 'eps_gain' in model_dictionary:
-            self.eps_gain = bool(model_dictionary["eps_gain"])
+            self.eps_gain = float(model_dictionary["eps_gain"])
         else:
             self.eps_gain = 0.3 # SOWFA SETTING (note this will be multiplied by D in function)
             # TODO: introduce logging
@@ -1242,3 +1596,163 @@ class GaussCurlHybrid(WakeVelocity):
         W[np.abs(y_locations-coord.x2) > D] = 0.0
 
         return V, W
+
+    @property
+    def ka(self):
+        """
+        Parameter used to determine the linear relationship between the 
+            turbulence intensity and the width of the Gaussian wake shape.
+
+        Args:
+            ka (float, int): Gauss Curl Hybrid wake model coefficient.
+
+        Returns:
+            float: Gauss Curl Hybrid wake model coefficient.
+        """
+        return self._ka
+
+    @ka.setter
+    def ka(self, value):
+        if type(value) is float:
+            self._ka = value
+        elif type(value) is int:
+            self._ka = float(value)
+        else:
+            raise ValueError("Invalid value given for ka: {}".format(value))
+
+    @property
+    def kb(self):
+        """
+        Parameter used to determine the linear relationship between the 
+            turbulence intensity and the width of the Gaussian wake shape.
+
+        Args:
+            kb (float, int): Gauss Curl Hybrid wake model coefficient.
+
+        Returns:
+            float: Gauss Curl Hybrid wake model coefficient.
+        """
+        return self._kb
+
+    @kb.setter
+    def kb(self, value):
+        if type(value) is float:
+            self._kb = value
+        elif type(value) is int:
+            self._kb = float(value)
+        else:
+            raise ValueError("Invalid value given for kb: {}".format(value))
+
+    @property
+    def alpha(self):
+        """
+        Parameter that determines the dependence of the downstream boundary
+            between the near wake and far wake region on the turbulence
+            intensity.
+
+        Args:
+            alpha (float, int): Gauss Curl Hybrid wake model coefficient.
+
+        Returns:
+            float: Gauss Curl Hybrid wake model coefficient.
+        """
+        return self._alpha
+
+    @alpha.setter
+    def alpha(self, value):
+        if type(value) is float:
+            self._alpha = value
+        elif type(value) is int:
+            self._alpha = float(value)
+        else:
+            raise ValueError("Invalid value given for alpha: {}".format(value))
+
+    @property
+    def beta(self):
+        """
+        Parameter that determines the dependence of the downstream boundary
+            between the near wake and far wake region on the turbine's
+            induction factor.
+
+        Args:
+            beta (float, int): Gauss Curl Hybrid wake model coefficient.
+
+        Returns:
+            float: Gauss Curl Hybrid wake model coefficient.
+        """
+        return self._beta
+
+    @beta.setter
+    def beta(self, value):
+        if type(value) is float:
+            self._beta = value
+        elif type(value) is int:
+            self._beta = float(value)
+        else:
+            raise ValueError("Invalid value given for beta: {}".format(value))
+
+    @property
+    def use_yar(self):
+        """
+        Flag to use yaw-added wake recovery.
+
+        Args:
+            use_yar (bool): Flag to use yaw-added wake recovery.
+
+        Returns:
+            float: Flag to use yaw-added wake recovery.
+        """
+        return self._use_yar
+
+    @use_yar.setter
+    def use_yar(self, value):
+        if type(value) is bool:
+            self._use_yar = value
+        else:
+            raise ValueError("Invalid value given for \
+                             use_yar: {}".format(value))
+    
+    @property
+    def yaw_rec_alpha(self):
+        """
+        A tuning parameter that dictates how much the large-sacle entrainment of flow affects the wake recovery.
+
+        Args:
+            yaw_rec_alpha (float): Tuning parameter that dictates how much the
+                large-sacle entrainment of flow affects the wake recovery.
+
+        Returns:
+            float: Tuning parameter that dictates how much the large-sacle
+                entrainment of flow affects the wake recovery.
+        """
+        return self._yaw_rec_alpha
+
+    @yaw_rec_alpha.setter
+    def yaw_rec_alpha(self, value):
+        if type(value) is bool:
+            self._yaw_rec_alpha = value
+        else:
+            raise ValueError("Invalid value given for \
+                             yaw_rec_alpha: {}".format(value))
+
+    @property
+    def eps_gain(self):
+        #TODO: Complete docstring.
+        """
+        A tuning parameter...
+
+        Args:
+            eps_gain (float): Tuning parameter...
+
+        Returns:
+            float: Tuning parameter...
+        """
+        return self._eps_gain
+
+    @eps_gain.setter
+    def eps_gain(self, value):
+        if type(value) is bool:
+            self._eps_gain = value
+        else:
+            raise ValueError("Invalid value given for \
+                             eps_gain: {}".format(value))
