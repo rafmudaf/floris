@@ -54,7 +54,6 @@ class WakeVelocity():
     def __init__(self, parameter_dictionary):
         self.requires_resolution = False
         self.model_string = None
-        self.model_grid_resolution = None
         self.parameter_dictionary = parameter_dictionary
 
         # turbulence parameters
@@ -122,6 +121,7 @@ class Jensen(WakeVelocity):
         self.model_string = "jensen"
         model_dictionary = self._get_model_dict()
         self._we = float(model_dictionary["we"])
+        self.model_grid_resolution = None
 
     def function(self, x_locations, y_locations, z_locations, turbine, turbine_coord, deflection_field, flow_field):
         """
@@ -290,6 +290,7 @@ class MultiZone(WakeVelocity):
         self._aU = float(model_dictionary["aU"])
         self._bU = float(model_dictionary["bU"])
         self._mU = [float(n) for n in model_dictionary["mU"]]
+        self.model_grid_resolution = None
 
     def function(self, x_locations, y_locations, z_locations, turbine, turbine_coord, deflection_field, flow_field):
         """
@@ -606,6 +607,8 @@ class Gauss(WakeVelocity):
         # near wake parameters
         self._alpha = float(model_dictionary["alpha"])
         self._beta = float(model_dictionary["beta"])
+        
+        self.model_grid_resolution = None
 
     def function(self, x_locations, y_locations, z_locations, turbine, turbine_coord, deflection_field, flow_field):
         """
@@ -1187,7 +1190,10 @@ class Curl(WakeVelocity):
     @property
     def model_grid_resolution(self):
         """
-        A list of three floats that define the flow field grid resolution in the x, y, and z directions used for the curl wake model calculations. The grid resolution is specified as the number of grid points in the flow field domain in the x, y, and z directions.
+        A list of three floats that define the flow field grid resolution in
+            the x, y, and z directions used for the curl wake model
+            calculations. The grid resolution is specified as the number of
+            grid points in the flow field domain in the x, y, and z directions.
 
         Args:
             model_grid_resolution (list): Flow field grid resolution in
@@ -1305,6 +1311,8 @@ class GaussCurlHybrid(WakeVelocity):
         # near wake parameter
         self._alpha = float(model_dictionary["alpha"])
         self._beta = float(model_dictionary["beta"])
+        
+        self.model_grid_resolution = None
 
         if 'use_yar' in model_dictionary:
             self._use_yar = bool(model_dictionary["use_yar"])
