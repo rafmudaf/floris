@@ -1206,7 +1206,9 @@ class Curl(WakeVelocity):
             self._model_grid_resolution = value
         elif type(value) is list and len(me) == 3 and \
                             all(type(val) is float for val in value) is False:
-            self._me = [float(val) for val in value]
+            self._model_grid_resolution = [float(val) for val in value]
+        elif value is None:
+            self._model_grid_resolution = None
         else:
             raise ValueError('Invalid value given for \
                               model_grid_resolution: {}'.format(value))
@@ -1302,26 +1304,26 @@ class GaussCurlHybrid(WakeVelocity):
 
         # near wake parameter
         self._alpha = float(model_dictionary["alpha"])
-        self.beta = float(model_dictionary["beta"])
+        self._beta = float(model_dictionary["beta"])
 
         if 'use_yar' in model_dictionary:
-            self.use_yar = bool(model_dictionary["use_yar"])
+            self._use_yar = bool(model_dictionary["use_yar"])
         else:
             # TODO: introduce logging
             print('Using default option of not applying added yaw-added recovery (use_yar=False)')
-            self.use_yar = False
+            self._use_yar = False
 
         if 'yaw_rec_alpha' in model_dictionary:
-            self.yaw_rec_alpha = float(model_dictionary["yaw_rec_alpha"])
+            self._yaw_rec_alpha = float(model_dictionary["yaw_rec_alpha"])
         else:
-            self.yaw_rec_alpha = 0.03
+            self._yaw_rec_alpha = 0.03
             # TODO: introduce logging
-            print('Using default option yaw_rec_alpha: %.2f' % self.yaw_rec_alpha)
+            print('Using default option yaw_rec_alpha: %.2f' % self._yaw_rec_alpha)
 
         if 'eps_gain' in model_dictionary:
-            self.eps_gain = float(model_dictionary["eps_gain"])
+            self._eps_gain = float(model_dictionary["eps_gain"])
         else:
-            self.eps_gain = 0.3 # SOWFA SETTING (note this will be multiplied by D in function)
+            self._eps_gain = 0.3 # SOWFA SETTING (note this will be multiplied by D in function)
             # TODO: introduce logging
             print('Using default option eps_gain: %.1f' % self.eps_gain)
 
