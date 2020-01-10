@@ -496,7 +496,6 @@ class Gauss(WakeVelocity):
         delta = deflection_field
 
         # initial velocity deficits
-        print('wv Vt: ', Ct)
         uR = U_local * Ct / (2.0 * (1 - np.sqrt(1 - (Ct))))
         u0 = U_local * np.sqrt(1 - Ct)
 
@@ -524,8 +523,8 @@ class Gauss(WakeVelocity):
             D * np.sqrt(Ct / 2.) + ((x_locations - xR) / (x0 - xR)) * sigma_z0
 
         # autograd change
-        sigma_y = np.where(x_locations < xR, sigma_y, 0.5 * D)
-        sigma_z = np.where(x_locations < xR, sigma_z, 0.5 * D)
+        sigma_y = np.where(x_locations > xR, sigma_y, 0.5 * D)
+        sigma_z = np.where(x_locations > xR, sigma_z, 0.5 * D)
         # sigma_y[x_locations < xR] = 0.5 * D
         # sigma_z[x_locations < xR] = 0.5 * D
 
@@ -542,8 +541,8 @@ class Gauss(WakeVelocity):
         velDef = (U_local * (1 - np.sqrt(1 - ((Ct * cosd(yaw)) \
                 / (8.0 * sigma_y * sigma_z / D**2)))) * totGauss)
         # autograd change
-        velDef = np.where(x_locations < xR, velDef, 0)
-        velDef = np.where(x_locations > x0, velDef, 0)
+        velDef = np.where(x_locations > xR, velDef, 0)
+        velDef = np.where(x_locations < x0, velDef, 0)
         # velDef[x_locations < xR] = 0
         # velDef[x_locations > x0] = 0
 
@@ -552,8 +551,8 @@ class Gauss(WakeVelocity):
         sigma_z = kz * (x_locations - x0) + sigma_z0
 
         # autograd change
-        sigma_y = np.where(x_locations < x0, sigma_y, sigma_y0[0][0][0])
-        sigma_z = np.where(x_locations < x0, sigma_z, sigma_z0[0][0][0])
+        sigma_y = np.where(x_locations > x0, sigma_y, sigma_y0[0][0][0])
+        sigma_z = np.where(x_locations > x0, sigma_z, sigma_z0[0][0][0])      
         # sigma_y[x_locations < x0] = sigma_y0[x_locations < x0]
         # sigma_z[x_locations < x0] = sigma_z0[x_locations < x0]
 
@@ -572,7 +571,7 @@ class Gauss(WakeVelocity):
         velDef1 = (U_local * (1 - np.sqrt(1 - ((Ct * cosd(yaw)) \
                 / (8.0 * sigma_y * sigma_z / D**2)))) * totGauss)
         # autograd change
-        velDef1 = np.where(x_locations < x0, velDef1, 0)
+        velDef1 = np.where(x_locations > x0, velDef1, 0)
         # velDef1[x_locations < x0] = 0
 
         return np.sqrt(velDef**2 + velDef1**2), np.zeros(np.shape(velDef)), np.zeros(np.shape(velDef))
