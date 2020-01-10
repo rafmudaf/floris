@@ -12,7 +12,7 @@ def grad_func(yaw_angles, fi):
 
 fi = wfct.floris_interface.FlorisInterface("example_input.json")
 
-yaw_angles = [0.1, 0.1, 0.1]
+yaw_angles = [0.1, 0.1, 0.1, 0.1]
 
 # power = fi.get_farm_power_for_yaw_angle(yaw_angles=yaw_angles)
 
