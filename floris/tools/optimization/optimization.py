@@ -11,7 +11,7 @@
 # the License.
 
 import sys
-import numpy as np
+import autograd.numpy as np
 
 
 class Optimization():

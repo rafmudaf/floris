@@ -11,7 +11,7 @@
 
 # VERSION BASED ON KNN
 
-import numpy as np
+import autograd.numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
 from sklearn import neighbors

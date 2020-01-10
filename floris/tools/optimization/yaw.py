@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-import numpy as np
+import autograd.numpy as np
 import matplotlib.pyplot as plt
 from floris.utilities import calc_unc_pmfs
 from ..visualization import visualize_cut_plane
