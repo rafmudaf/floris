@@ -94,7 +94,8 @@ class FlorisInterface(LoggerBase):
         if yaw_angles is not None:
             self.floris.farm.set_yaw_angles(yaw_angles)
 
-        self.floris.farm.flow_field.calculate_wake(
+        # TODO: Are these even valid considerations under v3?
+        self.floris.flow_field.calculate_wake(
             no_wake=no_wake,
             points=points,
             track_n_upstream_wakes=track_n_upstream_wakes,
@@ -149,7 +150,7 @@ class FlorisInterface(LoggerBase):
                 flow_field. Defaults to None.
         """
         wind_map = self.floris.farm.wind_map
-        turbine_map = self.floris.farm.flow_field.turbine_map
+        turbine_map = self.floris.flow_field.turbine_map
         if turbulence_kinetic_energy is not None:
             if wind_speed is None:
                 wind_map.input_speed
@@ -218,13 +219,13 @@ class FlorisInterface(LoggerBase):
                 wind_direction = wind_direction if isinstance(wind_direction, list) else [wind_direction]
                 wind_map.input_direction = wind_direction
                 wind_map.calculate_wind_direction()
-                if self.floris.farm.flow_field.wake.velocity_model.model_grid_resolution is not None:
+                if self.floris.flow_field.wake.velocity_model.model_grid_resolution is not None:
                     self.floris.farm.turbine_map.reinitialize_turbines()
 
             # redefine wind_map in Farm object
             self.floris.farm.wind_map = wind_map
 
-        self.floris.farm.flow_field.reinitialize_flow_field(
+        self.floris.flow_field.reinitialize_flow_field(
             wind_shear=wind_shear,
             wind_veer=wind_veer,
             specified_wind_height=specified_wind_height,
@@ -267,14 +268,14 @@ class FlorisInterface(LoggerBase):
             :py:class:`pandas.DataFrame`: containing values of x1, x2, u, v, w
         """
         # Get a copy for the flow field so don't change underlying grid points
-        flow_field = copy.deepcopy(self.floris.farm.flow_field)
+        flow_field = copy.deepcopy(self.floris.flow_field)
 
-        if self.floris.farm.flow_field.wake.velocity_model.requires_resolution:
+        if self.floris.flow_field.wake.velocity_model.requires_resolution:
 
             # If this is a gridded model, must extract from full flow field
             self.logger.info(
                 "Model identified as %s requires use of underlying grid points"
-                % self.floris.farm.flow_field.wake.velocity_model.model_string
+                % self.floris.flow_field.wake.velocity_model.model_string
             )
 
             # Get the flow data and extract the plane using it
@@ -284,32 +285,32 @@ class FlorisInterface(LoggerBase):
         # If x1 and x2 bounds are not provided, use rules of thumb
         if normal_vector == "z":  # Rules of thumb for horizontal plane
             if x1_bounds is None:
-                coords = self.floris.farm.flow_field.turbine_map.coords
-                max_diameter = self.floris.farm.flow_field.max_diameter
+                coords = self.floris.flow_field.turbine_map.coords
+                max_diameter = self.floris.flow_field.max_diameter
                 x = [coord.x1 for coord in coords]
                 x1_bounds = (min(x) - 2 * max_diameter, max(x) + 10 * max_diameter)
             if x2_bounds is None:
-                coords = self.floris.farm.flow_field.turbine_map.coords
-                max_diameter = self.floris.farm.flow_field.max_diameter
+                coords = self.floris.flow_field.turbine_map.coords
+                max_diameter = self.floris.flow_field.max_diameter
                 y = [coord.x2 for coord in coords]
                 x2_bounds = (min(y) - 2 * max_diameter, max(y) + 2 * max_diameter)
         if normal_vector == "x":  # Rules of thumb for cut plane plane
             if x1_bounds is None:
-                coords = self.floris.farm.flow_field.turbine_map.coords
-                max_diameter = self.floris.farm.flow_field.max_diameter
+                coords = self.floris.flow_field.turbine_map.coords
+                max_diameter = self.floris.flow_field.max_diameter
                 y = [coord.x2 for coord in coords]
                 x1_bounds = (min(y) - 2 * max_diameter, max(y) + 2 * max_diameter)
             if x2_bounds is None:
-                hub_height = self.floris.farm.flow_field.turbine_map.turbines[0].hub_height
+                hub_height = self.floris.flow_field.turbine_map.turbines[0].hub_height
                 x2_bounds = (10, hub_height * 2)
         if normal_vector == "y":  # Rules of thumb for cut plane plane
             if x1_bounds is None:
-                coords = self.floris.farm.flow_field.turbine_map.coords
-                max_diameter = self.floris.farm.flow_field.max_diameter
+                coords = self.floris.flow_field.turbine_map.coords
+                max_diameter = self.floris.flow_field.max_diameter
                 x = [coord.x1 for coord in coords]
                 x1_bounds = (min(x) - 2 * max_diameter, max(x) + 10 * max_diameter)
             if x2_bounds is None:
-                hub_height = self.floris.farm.flow_field.turbine_map.turbines[0].hub_height
+                hub_height = self.floris.flow_field.turbine_map.turbines[0].hub_height
                 x2_bounds = (10, hub_height * 2)
 
         # Set up the points to test
@@ -407,14 +408,14 @@ class FlorisInterface(LoggerBase):
             :py:class:`pandas.DataFrame`: containing values of x, y, z, u, v, w
         """
         # Get a copy for the flow field so don't change underlying grid points
-        flow_field = copy.deepcopy(self.floris.farm.flow_field)
+        flow_field = copy.deepcopy(self.floris.flow_field)
 
-        if self.floris.farm.flow_field.wake.velocity_model.requires_resolution:
+        if self.floris.flow_field.wake.velocity_model.requires_resolution:
 
             # If this is a gridded model, must extract from full flow field
             self.logger.info(
                 "Model identified as %s requires use of underlying grid print"
-                % self.floris.farm.flow_field.wake.velocity_model.model_string
+                % self.floris.flow_field.wake.velocity_model.model_string
             )
             self.logger.warning("FUNCTION NOT AVAILABLE CURRENTLY")
 
@@ -484,7 +485,7 @@ class FlorisInterface(LoggerBase):
         """
         # If height not provided, use the hub height
         if height is None:
-            height = self.floris.farm.flow_field.turbine_map.turbines[0].hub_height
+            height = self.floris.flow_field.turbine_map.turbines[0].hub_height
             self.logger.info("Default to hub height = %.1f for horizontal plane." % height)
 
         # Get the points of data in a dataframe
@@ -604,7 +605,7 @@ class FlorisInterface(LoggerBase):
         """
 
         if resolution is None:
-            if not self.floris.farm.flow_field.wake.velocity_model.requires_resolution:
+            if not self.floris.flow_field.wake.velocity_model.requires_resolution:
                 self.logger.info("Assuming grid with spacing %d" % grid_spacing)
                 (
                     xmin,
@@ -613,7 +614,7 @@ class FlorisInterface(LoggerBase):
                     ymax,
                     zmin,
                     zmax,
-                ) = self.floris.farm.flow_field.domain_bounds
+                ) = self.floris.flow_field.domain_bounds
                 resolution = Vec3(
                     1 + (xmax - xmin) / grid_spacing,
                     1 + (ymax - ymin) / grid_spacing,
@@ -621,10 +622,10 @@ class FlorisInterface(LoggerBase):
                 )
             else:
                 self.logger.info("Assuming model resolution")
-                resolution = self.floris.farm.flow_field.wake.velocity_model.model_grid_resolution
+                resolution = self.floris.flow_field.wake.velocity_model.model_grid_resolution
 
         # Get a copy for the flow field so don't change underlying grid points
-        flow_field = copy.deepcopy(self.floris.farm.flow_field)
+        flow_field = copy.deepcopy(self.floris.flow_field)
 
         if (
             flow_field.wake.velocity_model.requires_resolution
@@ -1016,7 +1017,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             list: Thrust coefficient for each wind turbine.
         """
-        turb_ct_array = [turbine.Ct for turbine in self.floris.farm.flow_field.turbine_map.turbines]
+        turb_ct_array = [turbine.Ct for turbine in self.floris.flow_field.turbine_map.turbines]
         return turb_ct_array
 
     def get_turbine_ti(self):
@@ -1027,7 +1028,7 @@ class FlorisInterface(LoggerBase):
             list: Thrust ti for each wind turbine.
         """
         turb_ti_array = [
-            turbine.current_turbulence_intensity for turbine in self.floris.farm.flow_field.turbine_map.turbines
+            turbine.current_turbulence_intensity for turbine in self.floris.flow_field.turbine_map.turbines
         ]
         return turb_ti_array
 
@@ -1276,10 +1277,10 @@ class FlorisInterface(LoggerBase):
             self.floris.farm.turbines[t_idx].change_turbine_parameters(turbine_change_dict)
 
         # Make sure to update turbine map in case hub-height has changed
-        self.floris.farm.flow_field.turbine_map.update_hub_heights()
+        self.floris.flow_field.turbine_map.update_hub_heights()
 
         # Rediscritize the flow field grid
-        self.floris.farm.flow_field._discretize_turbine_domain()
+        self.floris.flow_field._discretize_turbine_domain()
 
         # Finish by re-initalizing the flow field
         self.reinitialize_flow_field()
@@ -1379,7 +1380,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             np.array: Wind turbine x-coordinate.
         """
-        coords = self.floris.farm.flow_field.turbine_map.coords
+        coords = self.floris.flow_field.turbine_map.coords
         layout_x = np.zeros(len(coords))
         for i, coord in enumerate(coords):
             layout_x[i] = coord.x1
@@ -1393,7 +1394,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             np.array: Wind turbine y-coordinate.
         """
-        coords = self.floris.farm.flow_field.turbine_map.coords
+        coords = self.floris.flow_field.turbine_map.coords
         layout_y = np.zeros(len(coords))
         for i, coord in enumerate(coords):
             layout_y[i] = coord.x2
@@ -1595,8 +1596,8 @@ class FlorisInterface(LoggerBase):
     #         velocity (list): flow field velocity at specified grid point(s), in m/s.
     #     """
     #     xp, yp, zp = points[0], points[1], points[2]
-    #     x, y, z = self.floris.farm.flow_field.x, self.floris.farm.flow_field.y, self.floris.farm.flow_field.z
-    #     velocity = self.floris.farm.flow_field.u
+    #     x, y, z = self.floris.flow_field.x, self.floris.flow_field.y, self.floris.flow_field.z
+    #     velocity = self.floris.flow_field.u
     #     initial_velocity = self.floris.farm.wind_map.grid_wind_speed
     #     pVel = []
     #     for i in range(len(xp)):
