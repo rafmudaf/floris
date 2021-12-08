@@ -69,13 +69,18 @@ class FlowField(FromDictMixin):
         if nothing is passed, then a probability of 1 for all values is set.
         """
         valid_shape = (self.n_wind_directions, self.n_wind_speeds)
+        size = np.product(valid_shape)
         if value.size == 0:
-            value = np.ones(valid_shape, dtype=float)
+            value = np.ones(valid_shape, dtype=float) / size
 
         if value.shape != valid_shape:
             raise ValueError(
                 f"`probability` must have the shape {valid_shape} to match the wind " "directions and wind speeds!"
             )
+
+        if value.sum() != 1.0:
+            raise ValueError("The sum of the wind rose `probability` should sum to 1!")
+
         self.probability = value
 
     def initialize_velocity_field(self, grid: Grid) -> None:

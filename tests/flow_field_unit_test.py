@@ -15,6 +15,7 @@
 
 import numpy as np
 import pytest
+from numpy.core.numeric import array_equal
 
 from tests.conftest import N_TURBINES
 from floris.simulation import FlowField
@@ -27,12 +28,31 @@ def flow_field_fixture(sample_inputs_fixture):
     return FlowField.from_dict(flow_field_dict)
 
 
-def test_n_wind_speeds(flow_field_fixture):
-    assert flow_field_fixture.n_wind_speeds > 0
+def test_flow_field_init(sample_inputs_fixture):
+    flow_field_dict = sample_inputs_fixture.flow_field
+    ff = FlowField.from_dict(flow_field_dict)
 
+    array_shape = (ff.n_wind_directions, ff.n_wind_speeds)
+    size = ff.n_wind_directions * ff.n_wind_speeds
 
-def test_n_wind_directions(flow_field_fixture):
-    assert flow_field_fixture.n_wind_directions > 0
+    assert ff.n_wind_speeds == len(flow_field_dict["wind_speeds"])
+    assert ff.n_wind_directions == len(flow_field_dict["wind_directions"])
+    assert np.array_equal(ff.probability, np.ones(array_shape) / size)
+
+    flow_field_dict["probability"] = np.array(
+        [
+            [0.03125, 0.03125, 0.03125, 0.03125],
+            [0.0625, 0.0625, 0.0625, 0.0625],
+            [0.03125, 0.03125, 0.03125, 0.03125],
+            [0.125, 0.125, 0.125, 0.125],
+        ]
+    )
+    ff = FlowField.from_dict(flow_field_dict)
+    assert np.array_equal(ff.probability, flow_field_dict["probability"])
+
+    flow_field_dict["probability"] = np.ones(array_shape)
+    with pytest.raises(ValueError):
+        ff = FlowField.from_dict(flow_field_dict)
 
 
 def test_initialize_velocity_field(flow_field_fixture, turbine_grid_fixture):
