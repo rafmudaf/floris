@@ -40,6 +40,7 @@ class FlowField(FromDictMixin):
     reference_wind_height: int = int_attrib()
     wind_speeds: NDArrayFloat = attr.ib(converter=attrs_array_converter)
     wind_directions: NDArrayFloat = attr.ib(converter=attrs_array_converter)
+    probability: NDArrayFloat = attr.ib(default=np.array([], dtype=float), converter=attrs_array_converter)
 
     n_wind_speeds: int = attr.ib(init=False)
     n_wind_directions: int = attr.ib(init=False)
@@ -62,6 +63,21 @@ class FlowField(FromDictMixin):
         """Using the validator method to keep the `n_wind_directions` attribute up to date."""
         self.n_wind_directions = value.size
 
+    @probability.validator
+    def probability_validator_setter(self, instance: attr.Attribute, value: NDArrayFloat) -> None:
+        """Checks that the size and dimensions of the wind rose probabilities make sense, and that
+        if nothing is passed, then a probability of 1 for all values is set.
+        """
+        valid_shape = (self.n_wind_directions, self.n_wind_speeds)
+        if value.size == 0:
+            value = np.ones(valid_shape, dtype=float)
+
+        if value.shape != valid_shape:
+            raise ValueError(
+                f"`probability` must have the shape {valid_shape} to match the wind " "directions and wind speeds!"
+            )
+        self.probability = value
+
     def initialize_velocity_field(self, grid: Grid) -> None:
 
         # Create an initial wind profile as a function of height. The values here will
@@ -69,7 +85,7 @@ class FlowField(FromDictMixin):
         # Since we use grid.z, this is a vertical plane for each turbine
         # Here, the profile is of shape (# turbines, N grid points, M grid points)
         # This velocity profile is 1.0 at the reference wind height and then follows wind shear as an exponent.
-        # NOTE: the convention of which dimension on the TurbineGrid is vertical and horizontal is 
+        # NOTE: the convention of which dimension on the TurbineGrid is vertical and horizontal is
         # determined by this line. Since the right-most dimension on grid.z is storing the values
         # for height, using it here to apply the shear law makes that dimension store the vertical
         # wind profile.
