@@ -969,14 +969,16 @@ class FlorisInterface(LoggerBase):
                     )
                     mean_farm_power = mean_farm_power + unc_pmfs["wd_unc_pmf"][i_wd] * unc_pmfs["yaw_unc_pmf"][
                         i_yaw
-                    ] * np.array([turbine.power for turbine in self.floris.farm.turbines])
+                    ] * np.array(
+                        [turbine.power for turbine in self.floris.farm.turbines]
+                    )  # Not implemented
 
             # reinitialize with original values
             self.reinitialize_flow_field(wind_direction=wd_orig)
             self.calculate_wake(yaw_angles=yaw_angles, no_wake=no_wake)
             return list(mean_farm_power)
         else:
-            return [turbine.power for turbine in self.floris.farm.turbines]
+            return [turbine.power for turbine in self.floris.farm.turbines]  # Not implemented
 
     def get_power_curve(self, wind_speeds):
         """
@@ -1009,6 +1011,7 @@ class FlorisInterface(LoggerBase):
             list: Thrust coefficient for each wind turbine.
         """
         turb_ct_array = [turbine.Ct for turbine in self.floris.flow_field.turbine_map.turbines]
+        # TODO: Where are the velocities coming from at this point?
         return turb_ct_array
 
     def get_turbine_ti(self):
@@ -1018,6 +1021,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             list: Thrust ti for each wind turbine.
         """
+        # TODO: Are we modeling this piece anymore?
         turb_ti_array = [
             turbine.current_turbulence_intensity for turbine in self.floris.flow_field.turbine_map.turbines
         ]
@@ -1121,6 +1125,7 @@ class FlorisInterface(LoggerBase):
         AEP_sum = 0
 
         # sort wd and ws by wind speed
+        # TODO: Should this just be flow_field wind_directions, wind_speeds, probability?
         inds = np.argsort(ws)
         ws = ws[inds]
         wd = wd[inds]
@@ -1141,7 +1146,7 @@ class FlorisInterface(LoggerBase):
                 else:
                     self.calculate_wake(yaw[i])
 
-                farm_power = self.get_farm_power()
+                farm_power = self.get_farm_power()  # TODO: vectorize
 
                 # check if power has stopped increasing
                 if limit_ws & (farm_power > 0) & (np.abs(farm_power / prev_pow[wd[i]] - 1) < ws_limit_tol):
@@ -1154,7 +1159,7 @@ class FlorisInterface(LoggerBase):
             else:
                 farm_power = prev_pow[wd[i]]
 
-            AEP_sum = AEP_sum + farm_power * freq[i] * 8760
+            AEP_sum += farm_power * freq[i] * 8760
 
         return AEP_sum
 
@@ -1371,11 +1376,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             np.array: Wind turbine x-coordinate.
         """
-        coords = self.floris.farm.coordinates
-        layout_x = np.zeros(len(coords))
-        for i, coord in enumerate(coords):
-            layout_x[i] = coord.x1
-        return layout_x
+        return [c.x1 for c in self.farm.coordinates]
 
     @property
     def layout_y(self):
@@ -1385,11 +1386,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             np.array: Wind turbine y-coordinate.
         """
-        coords = self.floris.farm.coordinates
-        layout_y = np.zeros(len(coords))
-        for i, coord in enumerate(coords):
-            layout_y[i] = coord.x2
-        return layout_y
+        return [c.x2 for c in self.farm.coordinates]
 
     def TKE_to_TI(self, turbulence_kinetic_energy, wind_speed):
         """
