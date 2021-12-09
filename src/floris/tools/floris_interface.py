@@ -597,7 +597,7 @@ class FlorisInterface(LoggerBase):
         """
 
         if resolution is None:
-            if not self.floris.flow_field.wake.velocity_model.requires_resolution:
+            if not self.floris.wake.velocity_model.requires_resolution:
                 self.logger.info("Assuming grid with spacing %d" % grid_spacing)
                 (
                     xmin,
@@ -606,7 +606,7 @@ class FlorisInterface(LoggerBase):
                     ymax,
                     zmin,
                     zmax,
-                ) = self.floris.flow_field.domain_bounds
+                ) = self.floris.flow_field.domain_bounds  # TODO: No grid attribute within FlowField
                 resolution = Vec3(
                     1 + (xmax - xmin) / grid_spacing,
                     1 + (ymax - ymin) / grid_spacing,
@@ -614,7 +614,7 @@ class FlorisInterface(LoggerBase):
                 )
             else:
                 self.logger.info("Assuming model resolution")
-                resolution = self.floris.flow_field.wake.velocity_model.model_grid_resolution
+                resolution = self.floris.wake.velocity_model.model_grid_resolution
 
         # Get a copy for the flow field so don't change underlying grid points
         flow_field = copy.deepcopy(self.floris.flow_field)
@@ -629,10 +629,10 @@ class FlorisInterface(LoggerBase):
                 + "FlorisInterface.get_flow_field is ignored."
             )
             resolution = flow_field.wake.velocity_model.model_grid_resolution
-        flow_field.reinitialize_flow_field(with_resolution=resolution)
+        flow_field.reinitialize_flow_field(with_resolution=resolution)  # TODO: Not implemented
         self.logger.info(resolution)
         # print(resolution)
-        flow_field.calculate_wake()
+        flow_field.steady_state_atmospheric_condition()
 
         order = "f"
         x = flow_field.x.flatten(order=order)
@@ -671,8 +671,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             np.array: Wind turbine yaw angles.
         """
-        yaw_angles = [turbine.yaw_angle for turbine in self.floris.farm.turbine_map.turbines]
-        return yaw_angles
+        return self.floris.farm.farm_controller.yaw_angles
 
     def get_farm_power(
         self,
@@ -741,6 +740,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             float: Sum of wind turbine powers.
         """
+        # TODO: No turbulence correction in the turbines
         for turbine in self.floris.farm.turbines:
             turbine.use_turbulence_correction = use_turbulence_correction
         if include_unc:
@@ -798,7 +798,7 @@ class FlorisInterface(LoggerBase):
                 }
 
             mean_farm_power = 0.0
-            wd_orig = self.floris.farm.wind_map.input_direction[0]
+            wd_orig = self.floris.farm.wind_map.input_direction[0]  # TODO: No wind_map implemented
 
             yaw_angles = self.get_yaw_angles()
 
@@ -830,10 +830,8 @@ class FlorisInterface(LoggerBase):
             np.array: lists of x, y, and (optionally) z coordinates of
                       each turbine
         """
-        xcoords = np.array([turbine.x1 for turbine in self.floris.farm.turbine_map.coords])
-        ycoords = np.array([turbine.x2 for turbine in self.floris.farm.turbine_map.coords])
+        xcoords, ycoords, zcoords = np.array([c.elements for c in self.floris.farm.coordinates]).T
         if z:
-            zcoords = np.array([turbine.x3 for turbine in self.floris.farm.turbine_map.coords])
             return xcoords, ycoords, zcoords
         else:
             return xcoords, ycoords
@@ -901,6 +899,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             np.array: Power produced by each wind turbine.
         """
+        # TODO: No turbulence correction implemented
         for turbine in self.floris.farm.turbines:
             turbine.use_turbulence_correction = use_turbulence_correction
         if include_unc:
@@ -955,8 +954,8 @@ class FlorisInterface(LoggerBase):
                     "yaw_unc_pmf": yaw_unc_pmf,
                 }
 
-            mean_farm_power = np.zeros(len(self.floris.farm.turbines))
-            wd_orig = self.floris.farm.wind_map.input_direction[0]
+            mean_farm_power = np.zeros(len(self.floris.farm.turbines))  # TODO: Update
+            wd_orig = self.floris.farm.wind_map.input_direction[0]  # TODO: Not implemented
 
             yaw_angles = self.get_yaw_angles()
 
