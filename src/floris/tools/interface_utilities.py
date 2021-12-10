@@ -95,49 +95,36 @@ def show_params(
 
 
 def get_params(
-    fi,
+    wake: WakeModelManager,
     params: list[str] | None = None,
     wake_velocity_model: bool = True,
     wake_deflection_model: bool = True,
     turbulence_model: bool = True,
 ):
-    model_params = {}
+    model_params = wake._asdict()
+    model_params.pop("model_strings")
+    model_params.pop("wake_combination_parameters")
 
     if wake_velocity_model:
-        wake_vel_vals = {}
-        obj = "fi.floris.farm.wake.velocity_model"
-        props = get_props(obj, fi)
-        if params is not None:
-            props_subset = get_props_subset(params, props)
-            wake_vel_vals = get_prop_values(obj, fi, props_subset)
-        else:
-            wake_vel_vals = get_prop_values(obj, fi, props)
-        model_params["Wake Velocity Parameters"] = wake_vel_vals
-        del model_params["Wake Velocity Parameters"]["logger"]
+        _parameters = model_params["wake_velocity_parameters"]
+        subset = get_paramater_subset([*_parameters], params)
+        model_params["wake_velocity_parameters"] = drop_parameters(_parameters, subset)
+    else:
+        model_params.pop("wake_velocity_parameters")
 
     if wake_deflection_model:
-        wake_defl_vals = {}
-        obj = "fi.floris.farm.wake.deflection_model"
-        props = get_props(obj, fi)
-        if params is not None:
-            props_subset = get_props_subset(params, props)
-            wake_defl_vals = get_prop_values(obj, fi, props_subset)
-        else:
-            wake_defl_vals = get_prop_values(obj, fi, props)
-        model_params["Wake Deflection Parameters"] = wake_defl_vals
-        del model_params["Wake Deflection Parameters"]["logger"]
+        _parameters = model_params["wake_deflection_parameters"]
+        subset = get_paramater_subset([*_parameters], params)
+        model_params["wake_deflection_parameters"] = drop_parameters(_parameters, subset)
+    else:
+        model_params.pop("wake_deflection_parameters")
 
     if turbulence_model:
-        wake_turb_vals = {}
-        obj = "fi.floris.farm.wake.turbulence_model"
-        props = get_props(obj, fi)
-        if params is not None:
-            props_subset = get_props_subset(params, props)
-            wake_turb_vals = get_prop_values(obj, fi, props_subset)
-        else:
-            wake_turb_vals = get_prop_values(obj, fi, props)
-        model_params["Wake Turbulence Parameters"] = wake_turb_vals
-        del model_params["Wake Turbulence Parameters"]["logger"]
+        _parameters = model_params["wake_turbulence_parameters"]
+        subset = get_paramater_subset([*_parameters], params)
+        model_params["wake_turbulence_parameters"] = drop_parameters(_parameters, subset)
+    else:
+        model_params.pop("wake_turbulence_parameters")
 
     return model_params
 
@@ -237,3 +224,19 @@ def print_model_docs(model: BaseModel, parameters_dict: dict[str, Any], paramete
     print(model.__doc__)
     print_parameters(parameters_dict, parameters_subset)
     print(VERBOSE_SEPARATOR)
+
+
+def drop_parameters(model_dictionary: dict[str, Any], parameter_subset: list[str]) -> dict[str, Any]:
+    """Drops any unwanted parameters from the model parameter dictionary.
+
+    Args:
+        model_dictionary (dict[str, Any]): The model parameters dictionary, as defined by the input arguments.
+        parameter_subset (list[str]): The subset of desired parameters.
+
+    Returns:
+        dict[str, Any]: The filtered model parameters dictionary.
+    """
+    for parameter in model_dictionary:
+        if parameter not in parameter_subset:
+            model_dictionary.pop(parameter)
+    return model_dictionary
