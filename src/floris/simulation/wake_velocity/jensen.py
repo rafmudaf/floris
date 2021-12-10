@@ -17,7 +17,7 @@ import attr
 import numpy as np
 
 from floris.utilities import float_attrib, model_attrib
-from floris.simulation import BaseModel, Farm, FlowField, Grid, Turbine
+from floris.simulation import Farm, Grid, Turbine, BaseModel, FlowField
 
 
 @attr.s(auto_attribs=True)
@@ -26,10 +26,10 @@ class JensenVelocityDeficit(BaseModel):
     The Jensen model computes the wake velocity deficit based on the classic
     Jensen/Park model :cite:`jvm-jensen1983note`.
 
-    -   **we** (*float*): The linear wake decay constant that
-        defines the cone boundary for the wake as well as the
-        velocity deficit. D/2 +/- we*x is the cone boundary for the
-        wake.
+    Args:
+        we (float): The linear wake decay constant that defines the cone boundary for
+            the wake as well as the velocity deficit. D/2 +/- we*x is the cone boundary
+            for the wake.
 
     References:
         .. bibliography:: /source/zrefs.bib
@@ -40,12 +40,7 @@ class JensenVelocityDeficit(BaseModel):
 
     we: float = float_attrib(default=0.05)
 
-    def prepare_function(
-        self,
-        grid: Grid,
-        farm: Farm,
-        flow_field: FlowField
-    ) -> Dict[str, Any]:
+    def prepare_function(self, grid: Grid, farm: Farm, flow_field: FlowField) -> Dict[str, Any]:
         """
         This function prepares the inputs from the various FLORIS data structures
         for use in the Jensen model. This should only be used to 'initialize'
@@ -54,18 +49,9 @@ class JensenVelocityDeficit(BaseModel):
         the model function.
         """
         reference_rotor_diameter = farm.reference_turbine_diameter * np.ones(
-            (
-                flow_field.n_wind_directions,
-                flow_field.n_wind_speeds,
-                *grid.template_grid.shape
-            )
+            (flow_field.n_wind_directions, flow_field.n_wind_speeds, *grid.template_grid.shape)
         )
-        kwargs = dict(
-            x=grid.x,
-            y=grid.y,
-            z=grid.z,
-            reference_rotor_diameter=reference_rotor_diameter
-        )
+        kwargs = dict(x=grid.x, y=grid.y, z=grid.z, reference_rotor_diameter=reference_rotor_diameter)
         return kwargs
 
     def function(
@@ -110,7 +96,7 @@ class JensenVelocityDeficit(BaseModel):
         dx = x - x_i
         dy = y - y_i
         dz = z - z_i
-        c = ( reference_rotor_radius / ( reference_rotor_radius + self.we * dx ) ) ** 2
+        c = (reference_rotor_radius / (reference_rotor_radius + self.we * dx)) ** 2
         # c *= ~(np.array(x - x[:, :, i:i+1] <= 0.0))  # using this causes nan's in the upstream turbine because it negates the mask rather than setting it to 0. When self.we * (x - x[:, :, i:i+1]) ) == the radius, c goes to infinity and then this line flips it to Nans rather than setting to 0.
         # c *= ~(((y - y_center) ** 2 + (z - z_center) ** 2) > (boundary_line ** 2))
         # np.nan_to_num

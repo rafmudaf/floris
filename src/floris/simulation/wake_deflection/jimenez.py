@@ -16,14 +16,20 @@ import attr
 import numpy as np
 
 from floris.utilities import cosd, sind, float_attrib, model_attrib
-from floris.simulation import BaseModel, Farm, FlowField, Grid
+from floris.simulation import Farm, Grid, BaseModel, FlowField
 
 
 @attr.s(auto_attribs=True)
 class JimenezVelocityDeflection(BaseModel):
-    """
-    Jiménez wake deflection model, dervied from
-    :cite:`jdm-jimenez2010application`.
+    """Jiménez wake deflection model, dervied from :cite:`jdm-jimenez2010application`.
+
+    Args:
+        kd (float): Parameter used to determine the skew angle of the wake. Defaults
+            to 0.05.
+        ad (float): Additional tuning parameter to modify the wake deflection with a
+            lateral offset. Defaults to 0.
+        bd (float): Additional tuning parameter to modify the wake deflection with a
+            lateral offset. Defaults to 0.
 
     References:
         .. bibliography:: /source/zrefs.bib
@@ -36,18 +42,9 @@ class JimenezVelocityDeflection(BaseModel):
     ad: float = float_attrib(default=0.0)
     bd: float = float_attrib(default=0.0)
 
-    def prepare_function(
-        self,
-        grid: Grid,
-        farm: Farm,
-        flow_field: FlowField
-    ) -> Dict[str, Any]:
+    def prepare_function(self, grid: Grid, farm: Farm, flow_field: FlowField) -> Dict[str, Any]:
         reference_rotor_diameter = farm.reference_turbine_diameter * np.ones(
-            (
-                flow_field.n_wind_directions,
-                flow_field.n_wind_speeds,
-                *grid.template_grid.shape
-            )
+            (flow_field.n_wind_directions, flow_field.n_wind_speeds, *grid.template_grid.shape)
         )
         kwargs = dict(
             x=grid.x,
