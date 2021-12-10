@@ -1449,7 +1449,7 @@ class FlorisInterface(LoggerBase):
                 Defaults to *True*.
         """
         show_params(
-            self,
+            self.floris.wake,
             params,
             verbose,
             wake_velocity_model,
