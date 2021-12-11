@@ -30,12 +30,11 @@ from floris.utilities import Vec3
 from floris.logging_manager import LoggerBase
 from floris.simulation.floris import Floris
 
-
 # from .cut_plane import CutPlane, change_resolution, get_plane_from_flow_data
 # from .flow_data import FlowData
 # from .visualization import visualize_cut_plane
 # from .layout_functions import visualize_layout, build_turbine_loc
-# from .interface_utilities import get_params, set_params, show_params
+from .interface_utilities import get_params, set_params, show_params
 
 
 def global_calc_one_AEP_case(FlorisInterface, wd, ws, freq, yaw=None):
@@ -1488,7 +1487,9 @@ class FlorisInterface(LoggerBase):
         Returns:
             dict: Dictionary containing model parameters and their values.
         """
-        model_params = get_params(self, params, wake_velocity_model, wake_deflection_model, turbulence_model)
+        model_params = get_params(
+            self.floris.wake, params, wake_velocity_model, wake_deflection_model, turbulence_model
+        )
 
         return model_params
 
@@ -1503,7 +1504,7 @@ class FlorisInterface(LoggerBase):
             verbose (bool, optional): If set to *True*, will print information
                 about each model parameter that is changed. Defaults to *True*.
         """
-        set_params(self, params, verbose)
+        self.floris.wake = set_params(self.floris.wake, params, verbose)
 
     def vis_layout(
         self,

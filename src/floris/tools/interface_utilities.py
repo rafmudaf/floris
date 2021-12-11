@@ -12,7 +12,7 @@
 
 from __future__ import annotations
 
-import inspect
+from copy import deepcopy
 from typing import Any
 
 from floris.simulation import WakeModelManager
@@ -55,43 +55,46 @@ def show_params(
         header = VERBOSE_HEADER
 
     if wake_velocity_model:
-        title = f"Wake Velocity Model Parameters: {wake.velocity_model.model_string} model"
+        model = wake.model_strings["velocity_model"]
+        title = f"Wake Velocity Model Parameters: {model} model"
         print(f"{header}\n{title}")
 
-        parameters = [*wake_parameters["wake_velocity_parameters"]]
+        parameters = [*wake_parameters["wake_velocity_parameters"][model]]
         if params is not None:
             parameters = get_paramater_subset(params, parameters)
 
         if verbose:
-            print_model_docs(wake.velocity_model, wake_parameters["wake_velocity_parameters"], parameters)
+            print_model_docs(wake.velocity_model, wake_parameters["wake_velocity_parameters"][model], parameters)
         else:
-            print_parameters(wake_parameters["wake_velocity_parameters"], parameters)
+            print_parameters(wake_parameters["wake_velocity_parameters"][model], parameters)
 
     if wake_deflection_model:
-        title = f"Wake Deflection Model Parameters: {wake.deflection_model.model_string} model"
+        model = wake.model_strings["deflection_model"]
+        title = f"Wake Deflection Model Parameters: {model} model"
         print(f"{header}\n{title}")
 
-        parameters = [*wake_parameters["wake_deflection_parameters"]]
+        parameters = [*wake_parameters["wake_deflection_parameters"][model]]
         if params is not None:
             parameters = get_paramater_subset(params, parameters)
 
         if verbose:
-            print_model_docs(wake.deflection_model, wake_parameters["wake_deflection_parameters"], parameters)
+            print_model_docs(wake.deflection_model, wake_parameters["wake_deflection_parameters"][model], parameters)
         else:
-            print_parameters(wake_parameters["wake_deflection_parameters"], parameters)
+            print_parameters(wake_parameters["wake_deflection_parameters"][model], parameters)
 
     if turbulence_model:
-        title = f"Wake Turbulence Model Parameters: {wake.turbulence_model.model_string} model"
+        model = wake.model_strings["turbulence_model"]
+        title = f"Wake Turbulence Model Parameters: {model} model"
         print(f"{header}\n{title}")
 
-        parameters = [*wake_parameters["wake_turbulence_parameters"]]
+        parameters = [*wake_parameters["wake_turbulence_parameters"][model]]
         if params is not None:
             parameters = get_paramater_subset(params, parameters)
 
         if verbose:
-            print_model_docs(wake.turbulence_model, wake_parameters["wake_turbulence_parameters"], parameters)
+            print_model_docs(wake.turbulence_model, wake_parameters["wake_turbulence_parameters"][model], parameters)
         else:
-            print_parameters(wake_parameters["wake_turbulence_parameters"], parameters)
+            print_parameters(wake_parameters["wake_turbulence_parameters"][model], parameters)
 
 
 def get_params(
@@ -103,84 +106,85 @@ def get_params(
 ):
     model_params = wake._asdict()
     model_params.pop("model_strings")
-    model_params.pop("wake_combination_parameters")
+    # TODO: Uncomment!
+    # model_params.pop("wake_combination_parameters")
 
     if wake_velocity_model:
-        _parameters = model_params["wake_velocity_parameters"]
-        subset = get_paramater_subset([*_parameters], params)
+        model = wake.model_strings["velocity_model"]
+        _parameters = model_params["wake_velocity_parameters"][model]
+        subset = get_paramater_subset(params, [*_parameters])
         model_params["wake_velocity_parameters"] = drop_parameters(_parameters, subset)
     else:
         model_params.pop("wake_velocity_parameters")
 
     if wake_deflection_model:
-        _parameters = model_params["wake_deflection_parameters"]
-        subset = get_paramater_subset([*_parameters], params)
+        model = wake.model_strings["deflection_model"]
+        _parameters = model_params["wake_deflection_parameters"][model]
+        subset = get_paramater_subset(params, [*_parameters])
         model_params["wake_deflection_parameters"] = drop_parameters(_parameters, subset)
     else:
         model_params.pop("wake_deflection_parameters")
 
     if turbulence_model:
-        _parameters = model_params["wake_turbulence_parameters"]
-        subset = get_paramater_subset([*_parameters], params)
+        model = wake.model_strings["turbulence_model"]
+        _parameters = model_params["wake_turbulence_parameters"][model]
+        subset = get_paramater_subset(params, [*_parameters])
         model_params["wake_turbulence_parameters"] = drop_parameters(_parameters, subset)
-    else:
-        model_params.pop("wake_turbulence_parameters")
+    # TODO: Uncomment!
+    # else:
+    #     model_params.pop("wake_turbulence_parameters")
 
     return model_params
 
 
-def set_params(fi, params, verbose=True):
-    for param_dict in params:
-        if param_dict == "Wake Velocity Parameters":
-            obj = "fi.floris.farm.wake.velocity_model"
-            props = get_props(obj, fi)
-            for prop in params[param_dict]:
-                if prop in [val[0] for val in props]:
-                    exec(obj + "." + prop + " = " + str(params[param_dict][prop]))
-                    if verbose:
-                        print("Wake velocity parameter " + prop + " set to " + str(params[param_dict][prop]))
-                else:
-                    raise Exception(
-                        (
-                            "Wake deflection parameter '{}' "
-                            + "not part of current model. Value '{}' was not "
-                            + "used."
-                        ).format(prop, params[param_dict][prop])
-                    )
+def set_params(
+    wake: WakeModelManager, model_parameter_dictionary: dict[str, dict[str, Any]], verbose: bool = True
+) -> WakeModelManager:
+    """Creates a new instance of the wake object with the provided modifications in the
+    `model_parameter_dictionary`.
 
-        if param_dict == "Wake Deflection Parameters":
-            obj = "fi.floris.farm.wake.deflection_model"
-            props = get_props(obj, fi)
-            for prop in params[param_dict]:
-                if prop in [val[0] for val in props]:
-                    exec(obj + "." + prop + " = " + str(params[param_dict][prop]))
-                    if verbose:
-                        print("Wake deflection parameter " + prop + " set to " + str(params[param_dict][prop]))
-                else:
-                    raise Exception(
-                        (
-                            "Wake deflection parameter '{}' "
-                            + "not part of current model. Value '{}' was not "
-                            + "used."
-                        ).format(prop, params[param_dict][prop])
-                    )
+    Args:
+        wake (WakeModelManager): The wake model manager, should be floris.wake.
+        model_parameter_dictionary (dict[str, dict[str, Any]]): The dictionary of models
+            and model parameters.
+        verbose (bool, optional): Calls `show_params` with `verbose`=True. Defaults to True.
 
-        if param_dict == "Wake Turbulence Parameters":
-            obj = "fi.floris.farm.wake.turbulence_model"
-            props = get_props(obj, fi)
-            for prop in params[param_dict]:
-                if prop in [val[0] for val in props]:
-                    exec(obj + "." + prop + " = " + str(params[param_dict][prop]))
-                    if verbose:
-                        print("Wake turbulence parameter " + prop + " set to " + str(params[param_dict][prop]))
-                else:
-                    raise Exception(
-                        (
-                            "Wake turbulence parameter '{}' "
-                            + "not part of current model. Value '{}' was not "
-                            + "used."
-                        ).format(prop, params[param_dict][prop])
-                    )
+    Returns:
+        WakeModelManager: The new wake model manager object.
+    """
+
+    # Make a new copy of the wake model manager
+    wake = deepcopy(wake)
+
+    # Update the key names from title case to the expected format
+    for key in model_parameter_dictionary:
+        new_key = key.lower().replace(" ", "_")
+        model_parameter_dictionary[new_key] = model_parameter_dictionary.pop(key)
+
+    # Update each of the model parameters dictionary within the wake model manager
+    if "wake_velocity_parameters" in model_parameter_dictionary:
+        model = wake.model_strings["velocity_model"]
+        model_parameters = model_parameter_dictionary["wake_velocity_parameters"]
+        wake.wake_velocity_parameters[model].update(model_parameters)
+
+    if "wake_deflection_parameters" in model_parameter_dictionary:
+        model = wake.model_strings["deflection_model"]
+        model_parameters = model_parameter_dictionary["wake_deflection_parameters"]
+        wake.wake_deflection_parameters[model].update(model_parameters)
+
+    if "wake_turbulence_parameters" in model_parameter_dictionary:
+        model = wake.model_strings["turbulence_model"]
+        model_parameters = model_parameter_dictionary["wake_turbulence_parameters"]
+        wake.wake_turbulence_parameters[model].update(model_parameters)
+
+    # Recreate the wake models
+    wake.model_generator()
+
+    if verbose:
+        # TODO: remove turbulence model filter!
+        show_params(wake, verbose=verbose, turbulence_model=False)
+
+    return wake
 
 
 def get_paramater_subset(subset: list[str], parameters: list[str]) -> list[str]:
@@ -193,6 +197,8 @@ def get_paramater_subset(subset: list[str], parameters: list[str]) -> list[str]:
     Returns:
         list[str]: The valid subset of model parameters
     """
+    if subset is None:
+        return parameters
     return [p for p in subset if p in parameters]
 
 
