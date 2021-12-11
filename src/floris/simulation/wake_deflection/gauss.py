@@ -15,11 +15,8 @@ from typing import Any, Dict
 import attr
 import numpy as np
 
-from floris.simulation import BaseModel
-from floris.simulation import Grid
-from floris.simulation import Farm
-from floris.simulation import FlowField
-from floris.utilities import cosd, sind, tand, float_attrib, model_attrib, bool_attrib
+from floris.utilities import cosd, sind, bool_attrib, float_attrib, model_attrib
+from floris.simulation import Farm, Grid, BaseModel, FlowField
 
 
 @attr.s(auto_attribs=True)
@@ -29,39 +26,31 @@ class GaussVelocityDeflection(BaseModel):
     :cite:`gdm-bastankhah2016experimental` and :cite:`gdm-King2019Controls` for
     calculating the deflection field in turbine wakes.
 
-    parameter_dictionary (dict): Model-specific parameters.
-        Default values are used when a parameter is not included
-        in `parameter_dictionary`. Possible key-value pairs include:
-
-            -   **ka** (*float*): Parameter used to determine the linear
-                relationship between the turbulence intensity and the
-                width of the Gaussian wake shape.
-            -   **kb** (*float*): Parameter used to determine the linear
-                relationship between the turbulence intensity and the
-                width of the Gaussian wake shape.
-            -   **alpha** (*float*): Parameter that determines the
-                dependence of the downstream boundary between the near
-                wake and far wake region on the turbulence intensity.
-            -   **beta** (*float*): Parameter that determines the
-                dependence of the downstream boundary between the near
-                wake and far wake region on the turbine's induction
-                factor.
-            -   **ad** (*float*): Additional tuning parameter to modify
-                the wake deflection with a lateral offset.
-                Defaults to 0.
-            -   **bd** (*float*): Additional tuning parameter to modify
-                the wake deflection with a lateral offset.
-                Defaults to 0.
-            -   **dm** (*float*): Additional tuning parameter to scale
-                the amount of wake deflection. Defaults to 1.0
-            -   **use_secondary_steering** (*bool*): Flag to use
-                secondary steering on the wake velocity using methods
-                developed in [2].
-            -   **eps_gain** (*float*): Tuning value for calculating
-                the V- and W-component velocities using methods
-                developed in [7].
-                TODO: Believe this should be removed, need to verify.
-                See property on super-class for more details.
+    Args:
+        ka (*float*): Parameter used to determine the linear relationship between the
+            turbulence intensity and the width of the Gaussian wake shape. Defaults to
+            0.38.
+        kb (*float*): Parameter used to determine the linear relationship between the
+            turbulence intensity and the width of the Gaussian wake shape. Defaults to
+            0.004.
+        alpha (*float*): Parameter that determines the dependence of the downstream
+            boundary between the near wake and far wake region on the turbulence
+            intensity. Defaults to 0.58.
+        beta (*float*): Parameter that determines the dependence of the downstream
+            boundary between the near wake and far wake region on the turbine's
+            induction factor. Defaults to 0.077.
+        ad (*float*): Additional tuning parameter to modify the wake deflection with a
+            lateral offset. Defaults to 0.
+        bd (*float*): Additional tuning parameter to modify the wake deflection with a
+            lateral offset. Defaults to 0.
+        dm (*float*): Additional tuning parameter to scale the amount of wake
+            deflection. Defaults to 1.0
+        use_secondary_steering (*bool*): Flag to use secondary steering on the wake
+            velocity using methods developed in [2]. Defaults to True.
+        eps_gain (*float*): Tuning value for calculating the V- and W-component
+            velocities using methods developed in [7]. Defaults to 0.2.
+            TODO: Believe this should be removed, need to verify.
+            See property on super-class for more details.
 
     References:
         .. bibliography:: /source/zrefs.bib
@@ -69,6 +58,7 @@ class GaussVelocityDeflection(BaseModel):
             :filter: docname in docnames
             :keyprefix: gdm-
     """
+
     ad: float = float_attrib(default=0.0)
     bd: float = float_attrib(default=0.0)
     alpha: float = float_attrib(default=0.58)
@@ -87,11 +77,7 @@ class GaussVelocityDeflection(BaseModel):
     ) -> Dict[str, Any]:
 
         reference_rotor_diameter = farm.reference_turbine_diameter * np.ones(
-            (
-                flow_field.n_wind_directions,
-                flow_field.n_wind_speeds,
-                *grid.template_grid.shape
-            )
+            (flow_field.n_wind_directions, flow_field.n_wind_speeds, *grid.template_grid.shape)
         )
 
         kwargs = dict(
@@ -147,15 +133,15 @@ class GaussVelocityDeflection(BaseModel):
         # ==============================================================
 
         # opposite sign convention in this model
-        tilt = 0.0 #turbine.tilt_angle
+        tilt = 0.0  # turbine.tilt_angle
 
         # initial velocity deficits
         uR = (
             freestream_velocity
-          * ct_i
-          * cosd(tilt)
-          * cosd(yaw_i)
-          / (2.0 * (1 - np.sqrt(1 - (ct_i * cosd(tilt) * cosd(yaw_i)))))
+            * ct_i
+            * cosd(tilt)
+            * cosd(yaw_i)
+            / (2.0 * (1 - np.sqrt(1 - (ct_i * cosd(tilt) * cosd(yaw_i)))))
         )
         u0 = freestream_velocity * np.sqrt(1 - ct_i)
 
@@ -180,7 +166,7 @@ class GaussVelocityDeflection(BaseModel):
         sigma_y0 = sigma_z0 * cosd(yaw_i) * cosd(wind_veer)
 
         yR = y - y_i
-        xR = x_i # yR * tand(yaw) + x_i
+        xR = x_i  # yR * tand(yaw) + x_i
 
         # yaw parameters (skew angle and distance from centerline)
         # skew angle in radians
@@ -199,19 +185,13 @@ class GaussVelocityDeflection(BaseModel):
         sigma_y = sigma_y * np.array(x >= x0) + sigma_y0 * np.array(x < x0)
         sigma_z = sigma_z * np.array(x >= x0) + sigma_z0 * np.array(x < x0)
 
-        ln_deltaNum = (1.6 + np.sqrt(M0)) * (
-            1.6 * np.sqrt(sigma_y * sigma_z / (sigma_y0 * sigma_z0)) - np.sqrt(M0)
-        )
-        ln_deltaDen = (1.6 - np.sqrt(M0)) * (
-            1.6 * np.sqrt(sigma_y * sigma_z / (sigma_y0 * sigma_z0)) + np.sqrt(M0)
-        )
+        ln_deltaNum = (1.6 + np.sqrt(M0)) * (1.6 * np.sqrt(sigma_y * sigma_z / (sigma_y0 * sigma_z0)) - np.sqrt(M0))
+        ln_deltaDen = (1.6 - np.sqrt(M0)) * (1.6 * np.sqrt(sigma_y * sigma_z / (sigma_y0 * sigma_z0)) + np.sqrt(M0))
 
         delta_far_wake = (
             delta0
-          + theta_c0 * E0 / 5.2
-          * np.sqrt(sigma_y0 * sigma_z0 / (ky * kz * M0))
-          * np.log(ln_deltaNum / ln_deltaDen)
-          + (self.ad + self.bd * (x - x_i))
+            + theta_c0 * E0 / 5.2 * np.sqrt(sigma_y0 * sigma_z0 / (ky * kz * M0)) * np.log(ln_deltaNum / ln_deltaDen)
+            + (self.ad + self.bd * (x - x_i))
         )
 
         delta_far_wake = delta_far_wake * np.array(x > x0)
@@ -270,10 +250,7 @@ class GaussVelocityDeflection(BaseModel):
             Uinf = np.mean(flow_field.wind_map.grid_wind_speed)
 
             eps = self.eps_gain * D  # Use set value
-            idx = np.where(
-                (np.abs(x_locations - coord.x1) < D / 4)
-                & (np.abs(y_locations - coord.x2) < D / 2)
-            )
+            idx = np.where((np.abs(x_locations - coord.x1) < D / 4) & (np.abs(y_locations - coord.x2) < D / 2))
 
             yLocs = y_locations[idx] + 0.01 - coord.x2
 
@@ -296,37 +273,16 @@ class GaussVelocityDeflection(BaseModel):
             avg_V = np.mean(V[idx])
 
             # what yaw angle would have produced that same average spanwise velocity
-            vel_top = (
-                (HH + D / 2) / flow_field.reference_wind_height
-            ) ** flow_field.wind_shear
-            vel_bottom = (
-                (HH - D / 2) / flow_field.reference_wind_height
-            ) ** flow_field.wind_shear
-            Gamma_top = (
-                (np.pi / 8) * D * vel_top * Uinf * Ct * sind(test_yaw) * cosd(test_yaw)
-            )
-            Gamma_bottom = (
-                -(np.pi / 8)
-                * D
-                * vel_bottom
-                * Uinf
-                * Ct
-                * sind(test_yaw)
-                * cosd(test_yaw)
-            )
-            Gamma_wake_rotation = (
-                0.25 * 2 * np.pi * D * (aI - aI ** 2) * turbine.average_velocity / TSR
-            )
+            vel_top = ((HH + D / 2) / flow_field.reference_wind_height) ** flow_field.wind_shear
+            vel_bottom = ((HH - D / 2) / flow_field.reference_wind_height) ** flow_field.wind_shear
+            Gamma_top = (np.pi / 8) * D * vel_top * Uinf * Ct * sind(test_yaw) * cosd(test_yaw)
+            Gamma_bottom = -(np.pi / 8) * D * vel_bottom * Uinf * Ct * sind(test_yaw) * cosd(test_yaw)
+            Gamma_wake_rotation = 0.25 * 2 * np.pi * D * (aI - aI ** 2) * turbine.average_velocity / TSR
 
             Veff = (
-                np.divide(np.einsum("i,j", Gamma_top, zT), (2 * np.pi * rT))
-                * (1 - np.exp(-rT / (eps ** 2)))
-                + np.einsum("i,j", Gamma_bottom, zB)
-                / (2 * np.pi * rB)
-                * (1 - np.exp(-rB / (eps ** 2)))
-                + (zC * Gamma_wake_rotation)
-                / (2 * np.pi * rC)
-                * (1 - np.exp(-rC / (eps ** 2)))
+                np.divide(np.einsum("i,j", Gamma_top, zT), (2 * np.pi * rT)) * (1 - np.exp(-rT / (eps ** 2)))
+                + np.einsum("i,j", Gamma_bottom, zB) / (2 * np.pi * rB) * (1 - np.exp(-rB / (eps ** 2)))
+                + (zC * Gamma_wake_rotation) / (2 * np.pi * rC) * (1 - np.exp(-rC / (eps ** 2)))
             )
 
             tmp = avg_V - np.mean(Veff, axis=1)
@@ -370,4 +326,3 @@ class GaussVelocityDeflection(BaseModel):
             return yaw_effective + turbine.yaw_angle
         else:
             return turbine.yaw_angle
-
