@@ -23,21 +23,21 @@ fi = wfct.floris_interface.FlorisInterface("../example_input.json")
 
 # Show the current model parameters
 print("All the model parameters and their current values:\n")
-fi.show_model_parameters()
+fi.show_model_parameters(turbulence_model=False)
 print("\n")
 
 # Show the current model parameters with docstring info
 print("All the model parameters, their current values, and docstrings:\n")
-fi.show_model_parameters(verbose=True)
+fi.show_model_parameters(verbose=True, turbulence_model=False)
 print("\n")
 
 # Show a specific model parameter with its docstring
 print("A specific model parameter, its current value, and its docstring:\n")
-fi.show_model_parameters(params=["ka"], verbose=False)
+fi.show_model_parameters(params=["ka"], verbose=False, turbulence_model=False)
 print("\n")
 
 # Get the current model parameters
-model_params = fi.get_model_parameters()
+model_params = fi.get_model_parameters(turbulence_model=False)
 print("The current model parameters:\n")
 print(model_params)
 print("\n")
@@ -47,13 +47,13 @@ print("Set specific model parameters on the current wake model:\n")
 params = {
     "Wake Velocity Parameters": {"alpha": 0.2},
     "Wake Deflection Parameters": {"alpha": 0.2},
-    "Wake Turbulence Parameters": {"ti_constant": 1.0},
+    # "Wake Turbulence Parameters": {"ti_constant": 1.0},
 }
 fi.set_model_parameters(params)
 print("\n")
 
 # Check that the parameters were changed
 print("Observe that the requested paremeters changes have been made:\n")
-model_params = fi.get_model_parameters()
+model_params = fi.get_model_parameters(turbulence_model=False)
 print(model_params)
 print("\n")
