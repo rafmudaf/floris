@@ -242,7 +242,7 @@ def drop_parameters(model_dictionary: dict[str, Any], parameter_subset: list[str
     Returns:
         dict[str, Any]: The filtered model parameters dictionary.
     """
-    for parameter in model_dictionary:
-        if parameter not in parameter_subset:
-            model_dictionary.pop(parameter)
+    to_drop = [parameter for parameter in model_dictionary if parameter not in parameter_subset]
+    for parameter in to_drop:
+        model_dictionary.pop(parameter)
     return model_dictionary
