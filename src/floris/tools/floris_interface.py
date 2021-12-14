@@ -27,7 +27,7 @@ import numpy.typing as npt
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
-from floris.utilities import Vec3
+from floris.utilities import Vec3, attrs_array_converter
 from floris.simulation import Farm, Floris, FlowField, WakeModelManager, turbine
 from floris.logging_manager import LoggerBase
 
@@ -35,6 +35,7 @@ from floris.logging_manager import LoggerBase
 # from .flow_data import FlowData
 # from .visualization import visualize_cut_plane
 # from .layout_functions import visualize_layout, build_turbine_loc
+from .cut_plane import get_plane_from_flow_data
 from .interface_utilities import get_params, set_params, show_params
 
 
@@ -1097,17 +1098,27 @@ class FlorisInterface(LoggerBase):
 
         return self.get_farm_power(include_unc=include_unc, unc_pmfs=unc_pmfs, unc_options=unc_options)
 
-    def get_farm_AEP(self, wd, ws, freq, yaw=None, limit_ws=False, ws_limit_tol=0.001, ws_cutout=30.0):
+    def get_farm_AEP(
+        self,
+        wd: NDArrayFloat | list[float],
+        ws: NDArrayFloat | list[float],
+        freq: NDArrayFloat | list[list[float]],
+        yaw: NDArrayFloat | list[float] | None = None,
+        limit_ws: bool = False,
+        ws_limit_tol: float = 0.001,
+        ws_cutout: float = 30.0,
+    ) -> float:
         """
-        Estimate annual energy production (AEP) for distributions of wind
-        speed, wind direction and yaw offset.
+        Estimate annual energy production (AEP) for distributions of wind speed, wind
+        direction, wind rose probability, and yaw offset.
 
         Args:
-            wd (iterable): List or array of wind direction values.
-            ws (iterable): List or array of wind speed values.
-            freq (iterable): Frequencies corresponding to wind speeds and
-                directions in wind rose.
-            yaw (iterable, optional): List or array of yaw values if wake is
+            wd (NDArrayFloat | list[float]): List or array of wind direction values.
+            ws (NDArrayFloat | list[float]): List or array of wind speed values.
+            freq (NDArrayFloat | list[list[float]]): Frequencies corresponding to wind
+                speeds and directions in wind rose with dimensions
+                (N wind directions x N wind speeds).
+            yaw (NDArrayFloat | list[float] | None, optional): List or array of yaw values if wake is
                 steering implemented. Defaults to None.
             limit_ws (bool, optional): When *True*, detect wind speed when power
                 reaches it's maximum value for a given wind direction. For all
@@ -1120,49 +1131,59 @@ class FlorisInterface(LoggerBase):
                 the previous power. Defaults to 0.001.
             ws_cutout (float, optional): Cut out wind speed (m/s). If limit_ws
                 is *True*, assume power is zero for wind speeds greater than or
-                equal to ws_cutout.
+                equal to ws_cutout. Defaults to 30.0
 
         Returns:
             float: AEP for wind farm.
         """
         AEP_sum = 0
 
-        # sort wd and ws by wind speed
         # TODO: Should this just be flow_field wind_directions, wind_speeds, probability?
-        inds = np.argsort(ws)
-        ws = ws[inds]
-        wd = wd[inds]
-        freq = freq[inds]
 
-        # keep track of wind speeds where power stops increasing for each wind
-        # direction
+        # sort wd and ws by wind speed
+        ix_ws_sort = np.argsort(ws)
+        ws = np.array(ws)[ix_ws_sort]
+        freq = np.array(freq)[:, ix_ws_sort]
+
+        ix_wd_sort = wd.argsort()
+        wd = wd[ix_wd_sort]
+        freq = freq[ix_wd_sort, :]
+
+        # filter out wind speeds beyond the cutoff, if necessary
+        if limit_ws:
+            ix_ws_filter = ws >= ws_cutout
+            ws = ws[ix_ws_filter]
+            freq = freq[:, ix_ws_filter]
+
+        if yaw is None:
+            yaw = np.array([None] * wd.size)
+        else:
+            yaw = np.array(yaw)
+
+        # keep track of wind speeds where power stops increasing for each wind direction
+        # TODO: Find a better method because hashing floats is not ideal
         prev_pow = {wdir: 0.0 for wdir in np.unique(wd)}
         use_prev_pow = {wdir: False for wdir in np.unique(wd)}
 
-        for i in range(len(wd)):
+        for i, wdir in enumerate(wd):
             # If not using wind speed limit or still below maximum power, then
             # calculate farm power
-            if not (limit_ws & use_prev_pow[wd[i]]):
-                self.reinitialize_flow_field(wind_direction=[wd[i]], wind_speed=[ws[i]])
-                if yaw is None:
-                    self.calculate_wake()
-                else:
-                    self.calculate_wake(yaw[i])
-
+            if not (limit_ws & use_prev_pow[wdir]):
+                # TODO: I've removed the indexing on wind speed by wind direction,s
+                # let me know if that is wrong!
+                self.reinitialize_flow_field(wind_direction=[wdir], wind_speed=ws)
+                self.calculate_wake(yaw_angles=yaw[i])
                 farm_power = self.get_farm_power()  # TODO: vectorize
 
                 # check if power has stopped increasing
-                if limit_ws & (farm_power > 0) & (np.abs(farm_power / prev_pow[wd[i]] - 1) < ws_limit_tol):
-                    use_prev_pow[wd[i]] = True
+                if limit_ws & (farm_power > 0) & (np.abs(farm_power / prev_pow[wdir] - 1) < ws_limit_tol):
+                    use_prev_pow[wdir] = True
 
-                prev_pow[wd[i]] = farm_power
-
-            elif limit_ws & (ws[i] >= ws_cutout):
-                farm_power = 0.0
+                prev_pow[wdir] = farm_power
             else:
-                farm_power = prev_pow[wd[i]]
+                farm_power = prev_pow[wdir]
 
-            AEP_sum += farm_power * freq[i] * 8760
+            AEP_sum += np.sum(farm_power * freq[i] * 8760)
 
         return AEP_sum
 
