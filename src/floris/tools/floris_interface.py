@@ -157,6 +157,9 @@ class FlorisInterface(LoggerBase):
                 turbines on the wind farm. This **must** be used if `layout_array` uses a
                 different number of turbines than the original model and this is a
                 multi turbine type farm.
+            wtg_id (list[str]| None, optional): The description for each of the
+                turbines on the wind farm. This should be used if there is a new number
+                of turbines in `layout_array`.
             with_resolution (float, optional): Resolution of output flow_field. Defaults
                 to None.
         """
@@ -225,7 +228,8 @@ class FlorisInterface(LoggerBase):
             reinitialize_farm = True
 
         if wtg_id is None and reinitialize_farm:
-            farm.pop("wtg_id")
+            if len(self.floris.farm.wtg_id) != len(farm["layout_x"]):
+                farm.pop("wtg_id")
         if wtg_id is not None:
             if not farm:
                 farm = self.floris.farm._asdict()
