@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 import copy
+from typing import Any
 from pathlib import Path
 from itertools import repeat
 from multiprocessing import cpu_count
@@ -184,19 +185,21 @@ class FlorisInterface(LoggerBase):
         if wake is not None:
             self.floris.wake = wake
         if wind_layout:
-            pass  # TODO: has this been converted?
+            pass  # TODO: will need for heterogeneous flow
         if turbulence_intensity is not None:
-            pass  # TODO: where is this used?
+            pass  # TODO: this should be in the code, but maybe got skipped?
         if turbulence_kinetic_energy is not None:
-            pass  # TODO: where is this used?
+            pass  # TODO: not needed until GCH
         if with_resolution is not None:
             # TODO: Update  whereever this goes
             # TODO: This is the grid_resolution, so the xxGrid will have to be updated, except that grid_resolution is is Vec3, or int
+            # NOTE: probably not needed because this was for v2 Curl functionality, and we're adding a Curl solver
             pass
 
         self.floris.flow_field = FlowField.from_dict(flow_field_dict)
 
         reinitialize_farm = False
+        x = self.floris.farm.layout_x
         if layout_array is not None:
             x, y = layout_array
             # Recreating a Farm object to avoid errors if new and original layouts are different sizes
@@ -744,7 +747,7 @@ class FlorisInterface(LoggerBase):
         Returns:
             float: Sum of wind turbine powers.
         """
-        # TODO: No turbulence correction in the turbines
+        # TODO: Turbulence correction used in the power calculation, but may not be in the model yet
         for turbine in self.floris.farm.turbines:
             turbine.use_turbulence_correction = use_turbulence_correction
         if include_unc:
@@ -1139,6 +1142,7 @@ class FlorisInterface(LoggerBase):
         AEP_sum = 0
 
         # TODO: Should this just be flow_field wind_directions, wind_speeds, probability?
+        # NOTE: won't actually need the sorting for v3, and can just compute all of it at once
 
         # sort wd and ws by wind speed
         ix_ws_sort = np.argsort(ws)
@@ -1204,6 +1208,9 @@ class FlorisInterface(LoggerBase):
         Estimate annual energy production (AEP) for distributions of wind
         speed, wind direction and yaw offset with parallel computations on
         a single comptuer.
+
+        # TODO: Update the docstrings and allow for the use of precomputed combinations
+        as well as unique inputs that need to be computed. Same for the other AEPs
 
         Args:
             wd (iterable): List or array of wind direction values.
@@ -1282,40 +1289,50 @@ class FlorisInterface(LoggerBase):
         self.max_power = self.get_farm_power()
         self.ws_limit = ws
 
-    def change_turbine(self, turb_num_array, turbine_change_dict, update_specified_wind_height=False):
+    def change_turbine(
+        self,
+        turbine_indices: list[int],
+        new_turbine_map: dict[str, dict[str, Any]],
+        update_specified_wind_height: bool = False,
+    ):
         """
         Change turbine properties for specified turbines.
 
         Args:
-            turb_num_array (list): List of turbine indices to change.
-            turbine_change_dict (dict): Dictionary of changes to make. All
-                key/value pairs should correspond to the JSON turbine/
-                properties set. Any key values not specified as changes will be
-                copied from the original JSON values.
-            update_specified_wind_height (bool): When *True*, update specified
+            turbine_indices (list[int]): List of turbine indices to change.
+            new_turbine_map (dict[str, dict[str, Any]]): New dictionary of turbine
+                parameters to create the new turbines for each of `turbine_indices`.
+            update_specified_wind_height (bool, optional): When *True*, update specified
                 wind height to match new hub_height. Defaults to *False*.
         """
+        new_turbine_id = [*new_turbine_map][0]
+        if new_turbine_id in self.floris.farm.turbine_map:
+            raise ValueError(
+                "The new turbine ID in `new_turbine_map` already exists in "
+                "`floris.farm`, please use a unique turbine identifier!"
+            )
+
+        self.floris.farm.turbine_id = [
+            new_turbine_id if i in turbine_indices else t_id for i, t_id in enumerate(self.floris.farm.turbine_id)
+        ]
+        self.logger.info(f"Turbines {turbine_indices} have been mapped to the new definition for: {new_turbine_id}")
+
+        # Update the turbine mapping and regenerate the farm arrays
+        turbine_map = self.floris.farm._asdict()["turbine_map"]
+        turbine_map.update(new_turbine_map)
+        self.floris.farm.turbine_map = turbine_map
+        self.floris.farm.generate_farm_points()
+
+        new_hub_height = new_turbine_map[new_turbine_id]["hub_height"]
+        changed_hub_height = new_hub_height != self.floris.flow_field.reference_wind_height
 
         # Alert user if changing hub-height and not specified wind height
-        if ("hub_height" in turbine_change_dict) and (not update_specified_wind_height):
+        if changed_hub_height and not update_specified_wind_height:
             self.logger.info("Note, updating hub height but not updating " + "the specfied_wind_height")
 
-        if ("hub_height" in turbine_change_dict) and update_specified_wind_height:
-            self.logger.info(
-                "Note, specfied_wind_height changed to hub-height: %.1f" % turbine_change_dict["hub_height"]
-            )
-            self.reinitialize_flow_field(specified_wind_height=turbine_change_dict["hub_height"])
-
-        # Now go through turbine list and re-init any in turb_num_array
-        for t_idx in turb_num_array:
-            self.logger.info("Updating turbine: %00d" % t_idx)
-            self.floris.farm.turbines[t_idx].change_turbine_parameters(turbine_change_dict)
-
-        # Make sure to update turbine map in case hub-height has changed
-        self.floris.flow_field.turbine_map.update_hub_heights()
-
-        # Rediscritize the flow field grid
-        self.floris.flow_field._discretize_turbine_domain()
+        if changed_hub_height and update_specified_wind_height:
+            self.logger.info(f"Note, specfied_wind_height changed to hub-height: {new_hub_height}")
+            self.reinitialize_flow_field(specified_wind_height=new_hub_height)
 
         # Finish by re-initalizing the flow field
         self.reinitialize_flow_field()

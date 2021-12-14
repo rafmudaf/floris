@@ -174,7 +174,48 @@ def test_calc_AEP_wind_limit():
 
 
 def test_calc_change_turbine():
-    pass
+    # Update single attribute: rotor diameter and not the reference wind height
+    fi = FlorisInterface(configuration=YAML_INPUT)
+    correct_rotor_diameter = 110.0
+    turbine_ix = [0]
+    turbine_map = fi.floris.farm._asdict()["turbine_map"]
+    turbine_map["nrel_5mw_110m"] = turbine_map.pop("nrel_5mw")  # rename key to be unique
+    turbine_map["nrel_5mw_110m"]["rotor_diameter"] = correct_rotor_diameter
+
+    fi.change_turbine(turbine_indices=turbine_ix, new_turbine_map=turbine_map)
+    turbine_to_check = fi.floris.farm.turbine_map[fi.floris.farm.turbine_id[0]]
+    assert round(turbine_to_check.rotor_diameter, 10) == correct_rotor_diameter
+    np.testing.assert_almost_equal(fi.floris.farm.rotor_diameter[:, :, turbine_ix].flatten(), [correct_rotor_diameter])
+
+    # Update single attribute: hub height and the reference wind height
+    fi = FlorisInterface(configuration=YAML_INPUT)
+    correct_hub_height = 100.0
+    turbine_ix = [0]
+    turbine_map = fi.floris.farm._asdict()["turbine_map"]
+    turbine_map["nrel_5mw_100m"] = turbine_map.pop("nrel_5mw")  # rename key to be unique
+    turbine_map["nrel_5mw_100m"]["hub_height"] = correct_hub_height
+
+    fi.change_turbine(turbine_indices=turbine_ix, new_turbine_map=turbine_map, update_specified_wind_height=True)
+    turbine_to_check = fi.floris.farm.turbine_map[fi.floris.farm.turbine_id[0]]
+    assert round(turbine_to_check.hub_height, 10) == correct_hub_height
+    np.testing.assert_almost_equal(fi.floris.farm.hub_height[:, :, turbine_ix].flatten(), [correct_hub_height])
+    assert fi.floris.flow_field.reference_wind_height == correct_hub_height
+
+    # Update single attribute: hub height but not the reference wind height
+    fi = FlorisInterface(configuration=YAML_INPUT)
+    correct_hub_height = 100.0
+    correct_reference_hub_height = 90.0
+
+    turbine_ix = [0]
+    turbine_map = fi.floris.farm._asdict()["turbine_map"]
+    turbine_map["nrel_5mw_100m"] = turbine_map.pop("nrel_5mw")  # rename key to be unique
+    turbine_map["nrel_5mw_100m"]["hub_height"] = correct_hub_height
+
+    fi.change_turbine(turbine_indices=turbine_ix, new_turbine_map=turbine_map, update_specified_wind_height=False)
+    turbine_to_check = fi.floris.farm.turbine_map[fi.floris.farm.turbine_id[0]]
+    assert round(turbine_to_check.hub_height, 10) == correct_hub_height
+    np.testing.assert_almost_equal(fi.floris.farm.hub_height[:, :, turbine_ix].flatten(), [correct_hub_height])
+    assert fi.floris.flow_field.reference_wind_height == correct_reference_hub_height
 
 
 def test_set_use_points_on_perimeter():
