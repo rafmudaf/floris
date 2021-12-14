@@ -1192,7 +1192,14 @@ class FlorisInterface(LoggerBase):
         self.calculate_wake(yaw_angles=yaw)
         return self.get_farm_power() * freq * 8760
 
-    def get_farm_AEP_parallel(self, wd, ws, freq, yaw=None, jobs=-1):
+    def get_farm_AEP_parallel(
+        self,
+        wd: NDArrayFloat | list[float],
+        ws: NDArrayFloat | list[float],
+        freq: NDArrayFloat | list[list[float]],
+        yaw: NDArrayFloat | list[float] | None = None,
+        jobs=-1,
+    ):
         """
         Estimate annual energy production (AEP) for distributions of wind
         speed, wind direction and yaw offset with parallel computations on
@@ -1201,10 +1208,10 @@ class FlorisInterface(LoggerBase):
         Args:
             wd (iterable): List or array of wind direction values.
             ws (iterable): List or array of wind speed values.
-            freq (iterable): Frequencies corresponding to wind speeds and
-                directions in wind rose.
-            yaw (iterable, optional): List or array of yaw values if wake is
-                steering implemented. Defaults to None.
+            freq (iterable): Frequencies corresponding to wind direction and wind speed
+                combinations in the wind rose with, shape (N wind directions x N wind speeds).
+            yaw (iterable, optional): List or array of yaw values if wake is steering
+                implemented, with shape (N wind directions). Defaults to None.
             jobs (int, optional): The number of jobs (cores) to use in the parallel
                 computations.
 
@@ -1220,21 +1227,29 @@ class FlorisInterface(LoggerBase):
         if jobs > len(wd):
             jobs = len(wd)
 
-        opt_AEP = 0.0
+        if yaw is None:
+            yaw = [None] * len(wd)
 
-        if yaw is not None:
-            global_arguments = list(zip(repeat(self), wd, ws, freq, yaw))
-        else:
-            global_arguments = list(zip(repeat(self), wd, ws, freq))
-        num_cases = len(wd)
+        wd = np.array(wd)
+        ws = np.array(ws)
+        freq = np.array(freq)
+
+        # Make one large list of arguments, then flatten and resort the nested tuples
+        # to the correct ordering of self, wd, ws, freq, yaw
+        global_arguments = list(zip(repeat(self), zip(wd, yaw), ws, freq.flatten()))
+        # OR is this supposed to be all wind speeds for each wind direction?:
+        # global_arguments = list(zip(repeat(self), zip(wd, yaw), repeat(ws), freq))
+        # global_arguments = [(s, n[0], wspd, f, n[1]) for s, n, wspd, f in global_arguments]
+        global_arguments = [(s, n[0][0], n[1], f, n[0][1]) for s, n, f in global_arguments]
+
+        num_cases = wd.size * ws.size
         chunksize = int(np.ceil(num_cases / jobs))
 
         with Pool(jobs) as pool:
             opt = pool.starmap(global_calc_one_AEP_case, global_arguments, chunksize=chunksize)
             # add AEP to overall AEP
-            opt_AEP = opt_AEP + np.sum(opt)
 
-        return opt_AEP
+        return 0.0 + np.sum(opt)
 
     def calculate_AEP_wind_limit(self, num_turbines, x_spacing, start_ws, threshold):
         orig_layout_x = self.layout_x
