@@ -14,6 +14,8 @@
 
 from __future__ import annotations
 
+from math import fsum
+
 import attr
 import numpy as np
 import numpy.typing as npt
@@ -78,7 +80,9 @@ class FlowField(FromDictMixin):
                 f"`probability` must have the shape {valid_shape} to match the wind " "directions and wind speeds!"
             )
 
-        if value.sum() != 1.0:
+        # Using fsum to avoid cases where the decimal place is off due to floating point errors
+        # For instance, np.full((5, 4), 0.05).sum() is 1.0000000000000002
+        if fsum(value.flatten()) != 1.0:
             raise ValueError("The sum of the wind rose `probability` should sum to 1!")
 
         self.probability = value

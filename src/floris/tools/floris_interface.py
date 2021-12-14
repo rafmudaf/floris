@@ -23,18 +23,22 @@ from multiprocessing.pool import Pool
 import attr
 import numpy as np
 import pandas as pd
+import numpy.typing as npt
 import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 from floris.utilities import Vec3
+from floris.simulation import Farm, Floris, FlowField, WakeModelManager, turbine
 from floris.logging_manager import LoggerBase
-from floris.simulation.floris import Floris
 
 # from .cut_plane import CutPlane, change_resolution, get_plane_from_flow_data
 # from .flow_data import FlowData
 # from .visualization import visualize_cut_plane
 # from .layout_functions import visualize_layout, build_turbine_loc
 from .interface_utilities import get_params, set_params, show_params
+
+
+NDArrayFloat = npt.NDArray[np.float64]
 
 
 def global_calc_one_AEP_case(FlorisInterface, wd, ws, freq, yaw=None):
@@ -102,17 +106,20 @@ class FlorisInterface(LoggerBase):
 
     def reinitialize_flow_field(
         self,
-        wind_speed=None,
-        wind_layout=None,
-        wind_direction=None,
-        wind_shear=None,
-        wind_veer=None,
-        specified_wind_height=None,
+        wind_speed: list[float] | NDArrayFloat | None = None,
+        wind_direction: list[float] | NDArrayFloat | None = None,
+        wind_rose_probability: list[float] | NDArrayFloat | None = None,
+        wind_layout: list[float] | NDArrayFloat | None = None,
+        wind_shear: float | None = None,
+        wind_veer: float | None = None,
+        specified_wind_height: float | None = None,
         turbulence_intensity=None,
         turbulence_kinetic_energy=None,
-        air_density=None,
-        wake=None,
-        layout_array=None,
+        air_density: float | None = None,
+        wake: WakeModelManager = None,
+        layout_array: list[float] | NDArrayFloat | None = None,
+        turbine_id: list[str] | None = None,
+        wtg_id: list[str] | None = None,
         with_resolution=None,
     ):
         """
@@ -121,119 +128,112 @@ class FlorisInterface(LoggerBase):
         instance.
 
         Args:
-            wind_speed (list, optional): Background wind speed.
-                Defaults to None.
-            wind_layout (tuple, optional): Tuple of x- and
-                y-locations of wind speed measurements.
-                Defaults to None.
-            wind_direction (list, optional): Background wind direction.
-                Defaults to None.
-            wind_shear (float, optional): Shear exponent.
-                Defaults to None.
-            wind_veer (float, optional): Direction change over rotor.
-                Defaults to None.
-            specified_wind_height (float, optional): Specified wind height for
+            wind_speed (list[float] | NDArrayFloat | None, optional): Background wind
+                speed. Defaults to None.
+            wind_direction (list[float] | NDArrayFloat | None, optional): Background
+                wind direction. Defaults to None.
+            wind_rose_probability (list[float] | NDArrayFloat | None, optional): The
+                probability for each wind direction and wind speed combination, with
+                shape (N wind directions, N wind_speeds)
+            wind_layout (tuple, optional): Tuple of x- and y-locations of wind speed
+                measurements. Defaults to None.
+            wind_shear (float | None, optional): Shear exponent. Defaults to None.
+            wind_veer (float | None, optional): Direction change over rotor. Defaults
+                to None.
+            specified_wind_height (float | None, optional): Specified wind height for
                 shear. Defaults to None.
             turbulence_intensity (list, optional): Background turbulence
                 intensity. Defaults to None.
             turbulence_kinetic_energy (list, optional): Background turbulence
                 kinetic energy. Defaults to None.
-            air_density (float, optional): Ambient air density.
+            air_density (float | None, optional): Ambient air density. Defaults to None.
+            wake (:py:class:`~.wake.WakeModelManager` | None, optional): A container
+                class :py:class:`~.wake.WakeModelManager` with wake model information
+                used to calculate the flow field. Defaults to None.
+            layout_array (tuple[list[float]] | NDArrayFloat | None, optional): Array of
+                x- and y-locations of wind turbines, with shape (2 x N turbines).
                 Defaults to None.
-            wake (:py:class:`~.wake.Wake`, optional): A container
-                class :py:class:`~.wake.Wake` with wake model
-                information used to calculate the flow field. Defaults to None.
-            layout_array (np.array, optional): Array of x- and
-                y-locations of wind turbines. Defaults to None.
-            with_resolution (float, optional): Resolution of output
-                flow_field. Defaults to None.
+            turbine_id (list[str]| None, optional): The turbine mapping for each of the
+                turbines on the wind farm. This **must** be used if `layout_array` uses a
+                different number of turbines than the original model and this is a
+                multi turbine type farm.
+            with_resolution (float, optional): Resolution of output flow_field. Defaults
+                to None.
         """
-        wind_map = self.floris.farm.wind_map
-        turbine_map = self.floris.flow_field.turbine_map
-        if turbulence_kinetic_energy is not None:
-            if wind_speed is None:
-                wind_map.input_speed
-            turbulence_intensity = self.TKE_to_TI(turbulence_kinetic_energy, wind_speed)
-
-        if wind_layout or layout_array is not None:
-            # Build turbine map and wind map (convenience layer for user)
-            if layout_array is None:
-                layout_array = self.get_turbine_layout()
-            else:
-                turbine_map = TurbineMap(
-                    layout_array[0],
-                    layout_array[1],
-                    [copy.deepcopy(self.floris.farm.turbines[0]) for ii in range(len(layout_array[0]))],
-                )
-            if wind_layout is None:
-                wind_layout = wind_map.wind_layout
-            if wind_speed is None:
-                wind_speed = wind_map.input_speed
-            else:
-                wind_speed = wind_speed if isinstance(wind_speed, list) else [wind_speed]
-            if wind_direction is None:
-                wind_direction = wind_map.input_direction
-            else:
-                wind_direction = wind_direction if isinstance(wind_direction, list) else [wind_direction]
-            if turbulence_intensity is None:
-                turbulence_intensity = wind_map.input_ti
-            else:
-                turbulence_intensity = (
-                    turbulence_intensity if isinstance(turbulence_intensity, list) else [turbulence_intensity]
-                )
-
-            wind_map = WindMap(
-                wind_speed=wind_speed,
-                layout_array=layout_array,
-                wind_layout=wind_layout,
-                turbulence_intensity=turbulence_intensity,
-                wind_direction=wind_direction,
-            )
-            self.floris.farm.wind_map = wind_map
-
+        flow_field_dict = self.floris.flow_field._asdict()
+        if wind_speed is not None:
+            flow_field_dict["wind_speeds"] = wind_speed
+        if wind_direction is not None:
+            flow_field_dict["wind_directions"] = wind_direction
+        if wind_rose_probability is not None:
+            flow_field_dict["probability"] = wind_rose_probability
         else:
-            turbine_map = None
+            flow_field_dict.pop("probability")
+        if wind_shear is not None:
+            flow_field_dict["wind_shear"] = wind_shear
+        if wind_veer is not None:
+            flow_field_dict["wind_veer"] = wind_veer
+        if specified_wind_height is not None:
+            flow_field_dict["reference_wind_height"] = specified_wind_height
+        if air_density is not None:
+            flow_field_dict["air_density"] = air_density
+        if wake is not None:
+            self.floris.wake = wake
+        if wind_layout:
+            pass  # TODO: has this been converted?
+        if turbulence_intensity is not None:
+            pass  # TODO: where is this used?
+        if turbulence_kinetic_energy is not None:
+            pass  # TODO: where is this used?
+        if with_resolution is not None:
+            # TODO: Update  whereever this goes
+            # TODO: This is the grid_resolution, so the xxGrid will have to be updated, except that grid_resolution is is Vec3, or int
+            pass
 
-            if wind_speed is not None:
+        self.floris.flow_field = FlowField.from_dict(flow_field_dict)
 
-                # If not a list, convert to list
-                # TODO: What if tuple? Or
-                wind_speed = wind_speed if isinstance(wind_speed, list) else [wind_speed]
+        reinitialize_farm = False
+        if layout_array is not None:
+            x, y = layout_array
+            # Recreating a Farm object to avoid errors if new and original layouts are different sizes
+            farm = self.floris.farm._asdict()
+            farm["layout_x"] = x
+            farm["layout_y"] = y
+            farm["wind_directions"] = self.floris.flow_field.wind_directions
+            farm["wind_speeds"] = self.floris.flow_field.wind_speeds
+            reinitialize_farm = True
 
-                wind_map.input_speed = wind_speed
-                wind_map.calculate_wind_speed()
+        turbine_id_check = len(x) != self.floris.farm.n_turbines
+        turbine_id_check &= len(self.floris.farm.turbine_map) > 1
 
-            if turbulence_intensity is not None:
-                # If not a list, convert to list
-                # TODO: What if tuple? Or
-                turbulence_intensity = (
-                    turbulence_intensity if isinstance(turbulence_intensity, list) else [turbulence_intensity]
-                )
-                wind_map.input_ti = turbulence_intensity
-                wind_map.calculate_turbulence_intensity()
+        # Check that turbine_id has bee provided if required
+        if turbine_id is None and turbine_id_check:
+            raise ValueError(
+                "`turbine_id` must be provided if the layout is changing and there are " "multiple turbine types!"
+            )
 
-            if wind_direction is not None:
-                # If not a list, convert to list
-                # TODO: What if tuple? Or
-                wind_direction = wind_direction if isinstance(wind_direction, list) else [wind_direction]
-                wind_map.input_direction = wind_direction
-                wind_map.calculate_wind_direction()
-                if self.floris.flow_field.wake.velocity_model.model_grid_resolution is not None:
-                    self.floris.farm.turbine_map.reinitialize_turbines()
+        # If no value is assigned, then create turbine_id
+        if turbine_id is None and reinitialize_farm:
+            farm["turbine_id"] = [[*self.floris.farm.turbine_map][0]] * len(farm["layout_x"])
+            reinitialize_farm = True
 
-            # redefine wind_map in Farm object
-            self.floris.farm.wind_map = wind_map
+        # Assign the new turbine_id if one is input
+        if turbine_id is not None:
+            if not farm:
+                farm = self.floris.farm._asdict()
+            farm["turbine_id"] = turbine_id
+            reinitialize_farm = True
 
-        self.floris.flow_field.reinitialize_flow_field(
-            wind_shear=wind_shear,
-            wind_veer=wind_veer,
-            specified_wind_height=specified_wind_height,
-            air_density=air_density,
-            wake=wake,
-            turbine_map=turbine_map,
-            with_resolution=with_resolution,
-            wind_map=self.floris.farm.wind_map,
-        )
+        if wtg_id is None and reinitialize_farm:
+            farm.pop("wtg_id")
+        if wtg_id is not None:
+            if not farm:
+                farm = self.floris.farm._asdict()
+            farm["wtg_id"] = wtg_id
+            reinitialize_farm = True
+
+        if reinitialize_farm:
+            self.floris.farm = Farm.from_dict(farm)
 
     def get_plane_of_points(
         self,
