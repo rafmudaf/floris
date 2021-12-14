@@ -28,8 +28,7 @@ from floris.utilities import (
     attr_floris_filter,
     attrs_array_converter,
 )
-from floris.simulation import Turbine
-from floris.simulation import BaseClass
+from floris.simulation import Turbine, BaseClass
 
 
 NDArrayFloat = npt.NDArray[np.float64]
@@ -71,16 +70,16 @@ def create_turbines(mapping: Dict[str, dict]) -> Dict[str, Turbine]:
             pass
         else:
             raise TypeError("The Turbine mapping must either be a dictionary of `Turbine` object!")
-        return mapping
+    return mapping
 
 
 def generate_turbine_tuple(turbine: Turbine) -> tuple:
-    exclusions = ("power_thrust_table")
+    exclusions = "power_thrust_table"
     return attr.astuple(turbine, filter=lambda attribute, value: attribute.name not in exclusions)
 
 
 def generate_turbine_attribute_order(turbine: Turbine) -> List[str]:
-    exclusions = ("power_thrust_table")
+    exclusions = "power_thrust_table"
     mapping = attr.asdict(turbine, filter=lambda attribute, value: attribute.name not in exclusions)
     return list(mapping.keys())
 
@@ -121,8 +120,8 @@ class Farm(BaseClass):
         [type]: [description]
     """
 
-    turbine_id: list[str] = attr.ib(validator=iter_validator(list, str))
-    turbine_map: dict[str, Turbine] = attr.ib(converter=create_turbines)
+    turbine_id: list[str] = attr.ib(validator=iter_validator(list, str), on_setattr=attr.setters.validate)
+    turbine_map: dict[str, Turbine] = attr.ib(converter=create_turbines, on_setattr=attr.setters.convert)
     wind_directions: NDArrayFloat = attr.ib(converter=attrs_array_converter)
     wind_speeds: NDArrayFloat = attr.ib(converter=attrs_array_converter)
     layout_x: NDArrayFloat = attr.ib(converter=attrs_array_converter)
