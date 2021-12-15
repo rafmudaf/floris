@@ -106,11 +106,15 @@ def test_reinitialize_flow_field():
 
 
 def test_get_plane_of_points():
-    pass
+    fi = FlorisInterface(configuration=JSON_INPUT)
+    with pytest.raises(NotImplementedError):
+        fi.get_plane_of_points()
 
 
 def test_get_set_of_points():
-    pass
+    fi = FlorisInterface(configuration=JSON_INPUT)
+    with pytest.raises(NotImplementedError):
+        fi.get_set_of_points([0, 1], [0, 1], [0, 1])
 
 
 def test_get_hor_plane():
