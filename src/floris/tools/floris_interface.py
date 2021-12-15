@@ -99,12 +99,13 @@ class FlorisInterface(LoggerBase):
         if yaw_angles is not None:
             self.floris.farm.set_yaw_angles(yaw_angles)
 
-        # TODO: Are these even valid considerations under v3?
-        self.floris.flow_field.calculate_wake(
-            no_wake=no_wake,
-            points=points,
-            track_n_upstream_wakes=track_n_upstream_wakes,
-        )
+        # TODO: These inputs need to be mapped
+        # self.floris.flow_field.calculate_wake(
+        #     no_wake=no_wake,
+        #     points=points,
+        #     track_n_upstream_wakes=track_n_upstream_wakes,
+        # )
+        self.floris.flow_field.calculate_wake()
 
     def reinitialize_flow_field(
         self,
@@ -277,17 +278,18 @@ class FlorisInterface(LoggerBase):
         # Get a copy for the flow field so don't change underlying grid points
         flow_field = copy.deepcopy(self.floris.flow_field)
 
-        if self.floris.flow_field.wake.velocity_model.requires_resolution:
+        if hasattr(self.floris.wake.velocity_model, "requires_resolution"):
+            if self.floris.wake.velocity_model.requires_resolution:
 
-            # If this is a gridded model, must extract from full flow field
-            self.logger.info(
-                "Model identified as %s requires use of underlying grid points"
-                % self.floris.flow_field.wake.velocity_model.model_string
-            )
+                # If this is a gridded model, must extract from full flow field
+                self.logger.info(
+                    "Model identified as %s requires use of underlying grid points"
+                    % self.floris.flow_field.wake.velocity_model.model_string
+                )
 
-            # Get the flow data and extract the plane using it
-            flow_data = self.get_flow_data()
-            return get_plane_from_flow_data(flow_data, normal_vector=normal_vector, x3_value=x3_value)
+                # Get the flow data and extract the plane using it
+                flow_data = self.get_flow_data()
+                return get_plane_from_flow_data(flow_data, normal_vector=normal_vector, x3_value=x3_value)
 
         coords = np.array([c.elements for c in self.floris.farm.coordinates])
         x, y, _ = coords.T
@@ -330,7 +332,10 @@ class FlorisInterface(LoggerBase):
             points = np.row_stack((x1_array, x3_array, x2_array))
 
         # Recalculate wake with these points
-        # TODO: Can current FLORIS even do this? Should we support this?
+        # TODO: Calculate wake inputs need to be mapped
+        raise_error = True
+        if raise_error:
+            raise NotImplementedError("The specific points functionality is still undefined")
         flow_field.calculate_wake(points=points)
 
         # Get results vectors
@@ -409,20 +414,25 @@ class FlorisInterface(LoggerBase):
         # Get a copy for the flow field so don't change underlying grid points
         flow_field = copy.deepcopy(self.floris.flow_field)
 
-        if self.floris.wake.velocity_model.requires_resolution:
+        if hasattr(self.floris.wake.velocity_model, "requires_resolution"):
+            if self.floris.velocity_model.requires_resolution:
 
-            # If this is a gridded model, must extract from full flow field
-            self.logger.info(
-                "Model identified as %s requires use of underlying grid print"
-                % self.floris.flow_field.wake.velocity_model.model_string
-            )
-            self.logger.warning("FUNCTION NOT AVAILABLE CURRENTLY")
+                # If this is a gridded model, must extract from full flow field
+                self.logger.info(
+                    "Model identified as %s requires use of underlying grid print"
+                    % self.floris.wake.velocity_model.model_string
+                )
+                self.logger.warning("FUNCTION NOT AVAILABLE CURRENTLY")
 
         # Set up points matrix
         points = np.row_stack((x_points, y_points, z_points))
 
+        # TODO: Calculate wake inputs need to be mapped
+        raise_error = True
+        if raise_error:
+            raise NotImplementedError("Additional point calculation is not yet supported!")
         # Recalculate wake with these points
-        flow_field.calculate_wake(points=points)  # TODO: Can we even support this now?
+        flow_field.calculate_wake(points=points)
 
         # Get results vectors
         x_flat = flow_field.x.flatten()
