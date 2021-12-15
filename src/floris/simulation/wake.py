@@ -19,29 +19,25 @@ import attr
 
 from floris.utilities import model_attrib, attr_serializer, attr_floris_filter
 from floris.simulation import BaseClass, BaseModel
+from floris.simulation.wake_velocity import (  # CurlVelocityDeficit,
+    GaussVelocityDeficit,
+    JensenVelocityDeficit,
+)
 from floris.simulation.wake_deflection import (
     GaussVelocityDeflection,
     JimenezVelocityDeflection,
-)
-from floris.simulation.wake_velocity import (
-    # CurlVelocityDeficit,
-    GaussVelocityDeficit,
-    JensenVelocityDeficit
 )
 
 
 MODEL_MAP = {
     # TODO: Need to uncomment these two model types once we have implementations
     # "combination_model": {},
-    "deflection_model": {
-        "jimenez": JimenezVelocityDeflection,
-        "gauss": GaussVelocityDeflection
-    },
+    "deflection_model": {"jimenez": JimenezVelocityDeflection, "gauss": GaussVelocityDeflection},
     # "turbulence_model": {},
     "velocity_model": {
         # "curl": CurlVelocityDeficit,
         "gauss": GaussVelocityDeficit,
-        "jensen": JensenVelocityDeficit
+        "jensen": JensenVelocityDeficit,
     },
 }
 
@@ -53,11 +49,26 @@ class WakeModelManager(BaseClass):
     turbulence, and combination models.
 
     Args:
-        wake (:obj:`dict`): The wake's properties input dictionary
-            - velocity_model (str): The name of the velocity model to be instantiated.
-            - turbulence_model (str): The name of the turbulence model to be instantiated.
-            - deflection_model (str): The name of the deflection model to be instantiated.
-            - combination_model (str): The name of the combination model to be instantiated.
+        model_strings (:py:obj:`dict[str, str]`): The dictionary mapping of model type
+            to model string, with keys: "combination_model", "deflection_model",
+            "turbulence_model", "velocity_model, with values of a model string, such
+            as "guass", "jensen", etc.
+        wake_combination_parameters (:py:obj:`dict[str, dict[str, dict]]): The
+            dictionary of wake combination model parameters. This can be a dictionary
+            of many models and their parameters, but must contain a matching parameter
+            dictionary for the model defined in `model_strings["combination_model"]`.
+        wake_deflection_parameters (:py:obj:`dict[str, dict[str, dict]]): The
+            dictionary of wake deflection model parameters. This can be a dictionary
+            of many models and their parameters, but must contain a matching parameter
+            dictionary for the model defined in `model_strings["deflection_model"]`.
+        wake_turbulence_parameters (:py:obj:`dict[str, dict[str, dict]]): The
+            dictionary of wake turbulence model parameters. This can be a dictionary
+            of many models and their parameters, but must contain a matching parameter
+            dictionary for the model defined in `model_strings["turbulence_model"]`.
+        wake_velocity_parameters (:py:obj:`dict[str, dict[str, dict]]): The
+            dictionary of wake velocity model parameters. This can be a dictionary
+            of many models and their parameters, but must contain a matching parameter
+            dictionary for the model defined in `model_strings["velocity_model"]`.
     """
 
     model_strings: dict = attr.ib(factory=dict)
@@ -76,12 +87,7 @@ class WakeModelManager(BaseClass):
 
     @model_strings.validator
     def validate_model_strings(self, instance: attr.Attribute, value: dict) -> None:
-        required_strings = [
-            "velocity_model",
-            "deflection_model",
-            "combination_model",
-            "turbulence_model"
-        ]
+        required_strings = ["velocity_model", "deflection_model", "combination_model", "turbulence_model"]
         # Check that all required strings are given
         for s in required_strings:
             if s not in value.keys():
@@ -90,11 +96,13 @@ class WakeModelManager(BaseClass):
         # Check that no other strings are given
         for k in value.keys():
             if k not in required_strings:
-                raise KeyError(f"Wake: '{k}' was given as input but it is not a valid option. Required inputs are: {', '.join(required_strings)}")
+                raise KeyError(
+                    f"Wake: '{k}' was given as input but it is not a valid option. Required inputs are: {', '.join(required_strings)}"
+                )
 
     def model_generator(self) -> Any:
         wake_models = {}
-        for model_type in ("deflection", "velocity"): #, "combination", "turbulence")
+        for model_type in ("deflection", "velocity"):  # , "combination", "turbulence")
             model_string = self.model_strings[f"{model_type}_model"]
             model = MODEL_MAP[f"{model_type}_model"][model_string]
 
