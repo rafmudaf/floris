@@ -839,6 +839,8 @@ class FlorisInterface(LoggerBase):
             # TODO: The original form of this is:
             # self.floris.farm.wind_map.input_direction[0], but it's unclear why we're
             # capping at just the first wind direction. Should this behavior be kept?
+            # I'm unsure as to how the first wind direction is the original, so it could
+            # just be a naming thing that's throwing me off....
             wd_orig = self.floris.flow_field.wind_directions
 
             yaw_angles = self.get_yaw_angles()
@@ -944,15 +946,21 @@ class FlorisInterface(LoggerBase):
         # for turbine in self.floris.farm.turbines:
         #     turbine.use_turbulence_correction = use_turbulence_correction
 
+        """
+        # TODO: DELETE
+        # NOTE: FROM get_farm_power() for easy in-place reference
+
         if include_unc:
             unc_pmfs = _generate_uncertainty_parameters(unc_options, unc_pmfs)
 
             # TODO: The original form of this is:
             # self.floris.farm.wind_map.input_direction[0], but it's unclear why we're
             # capping at just the first wind direction. Should this behavior be kept?
+            mean_farm_power = np.zeros(len(self.floris.farm.turbines))
             wd_orig = self.floris.flow_field.wind_directions
 
             yaw_angles = self.get_yaw_angles()
+            self.reinitialize_flow_field(wind_direction=wd_orig + unc_pmfs["wd_unc"])
             power_at_yaw = [
                 self.get_farm_power_for_yaw_angle(yaw_angles + delta_yaw, no_wake=no_wake)
                 for delta_yaw in unc_pmfs["yaw_unc"]
@@ -964,7 +972,8 @@ class FlorisInterface(LoggerBase):
             self.calculate_wake(yaw_angles=yaw_angles, no_wake=no_wake)
             return mean_farm_power
 
-        # return self._get_farm_power_from_turbines()
+        return self._get_farm_power_from_turbines()
+        """
 
         if include_unc:
             unc_pmfs = _generate_uncertainty_parameters(unc_options, unc_pmfs)
@@ -975,19 +984,18 @@ class FlorisInterface(LoggerBase):
             yaw_angles = self.get_yaw_angles()
             self.reinitialize_flow_field(wind_direction=wd_orig + unc_pmfs["wd_unc"])  # LEFT OFF HERE!!!!!! @ ME
 
-            for i_wd, delta_wd in enumerate(unc_pmfs["wd_unc"]):
-                self.reinitialize_flow_field(wind_direction=wd_orig + delta_wd)
+            # REMOVED OUTER FOR LOOP IN PLACE THE ABOVE LINE
 
-                for i_yaw, delta_yaw in enumerate(unc_pmfs["yaw_unc"]):
-                    self.calculate_wake(
-                        yaw_angles=list(np.array(yaw_angles) + delta_yaw),
-                        no_wake=no_wake,
-                    )
-                    mean_farm_power = mean_farm_power + unc_pmfs["wd_unc_pmf"][i_wd] * unc_pmfs["yaw_unc_pmf"][
-                        i_yaw
-                    ] * np.array(
-                        [turbine.power for turbine in self.floris.farm.turbines]
-                    )  # Not implemented
+            for i_yaw, delta_yaw in enumerate(unc_pmfs["yaw_unc"]):
+                self.calculate_wake(
+                    yaw_angles=list(np.array(yaw_angles) + delta_yaw),
+                    no_wake=no_wake,
+                )
+                mean_farm_power = mean_farm_power + unc_pmfs["wd_unc_pmf"][i_wd] * unc_pmfs["yaw_unc_pmf"][
+                    i_yaw
+                ] * np.array(
+                    [turbine.power for turbine in self.floris.farm.turbines]
+                )  # Not implemented
 
             # reinitialize with original values
             self.reinitialize_flow_field(wind_direction=wd_orig)
