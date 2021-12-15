@@ -29,7 +29,7 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 from floris.utilities import Vec3, attrs_array_converter
-from floris.simulation import Farm, Floris, FlowField, WakeModelManager, turbine
+from floris.simulation import Farm, Floris, FlowField, WakeModelManager, power
 from floris.logging_manager import LoggerBase
 
 # from .cut_plane import CutPlane, change_resolution, get_plane_from_flow_data
@@ -43,8 +43,59 @@ from .interface_utilities import get_params, set_params, show_params
 NDArrayFloat = npt.NDArray[np.float64]
 
 
+DEFAULT_UNCERTAINTY = {"std_wd": 4.95, "std_yaw": 1.75, "pmf_res": 1.0, "pdf_cutoff": 0.995}
+
+
 def global_calc_one_AEP_case(FlorisInterface, wd, ws, freq, yaw=None):
     return FlorisInterface._calc_one_AEP_case(wd, ws, freq, yaw)
+
+
+def _generate_uncertainty_parameters(unc_options: dict, unc_pmfs: dict) -> dict:
+    """Generates the uncertainty parameters for `FlorisInterface.get_farm_power` and
+    `FlorisInterface.get_turbine_power` for more details.
+
+    Args:
+        unc_options (dict): See `FlorisInterface.get_farm_power` or `FlorisInterface.get_turbine_power`.
+        unc_pmfs (dict): See `FlorisInterface.get_farm_power` or `FlorisInterface.get_turbine_power`.
+
+    Returns:
+        dict: [description]
+    """
+    if (unc_options is None) & (unc_pmfs is None):
+        unc_options = DEFAULT_UNCERTAINTY
+
+    if unc_pmfs is not None:
+        return unc_pmfs
+
+    wd_unc = np.zeros(1)
+    wd_unc_pmf = np.ones(1)
+    yaw_unc = np.zeros(1)
+    yaw_unc_pmf = np.ones(1)
+
+    # create normally distributed wd and yaw uncertaitny pmfs if appropriate
+    if unc_options["std_wd"] > 0:
+        wd_bnd = int(np.ceil(norm.ppf(unc_options["pdf_cutoff"], scale=unc_options["std_wd"]) / unc_options["pmf_res"]))
+        bound = wd_bnd * unc_options["pmf_res"]
+        wd_unc = np.linspace(-1 * bound, bound, 2 * wd_bnd + 1)
+        wd_unc_pmf = norm.pdf(wd_unc, scale=unc_options["std_wd"])
+        wd_unc_pmf /= np.sum(wd_unc_pmf)  # normalize so sum = 1.0
+
+    if unc_options["std_yaw"] > 0:
+        yaw_bnd = int(
+            np.ceil(norm.ppf(unc_options["pdf_cutoff"], scale=unc_options["std_yaw"]) / unc_options["pmf_res"])
+        )
+        bound = yaw_bnd * unc_options["pmf_res"]
+        yaw_unc = np.linspace(-1 * bound, bound, 2 * yaw_bnd + 1)
+        yaw_unc_pmf = norm.pdf(yaw_unc, scale=unc_options["std_yaw"])
+        yaw_unc_pmf /= np.sum(yaw_unc_pmf)  # normalize so sum = 1.0
+
+    unc_pmfs = {
+        "wd_unc": wd_unc,
+        "wd_unc_pmf": wd_unc_pmf,
+        "yaw_unc": yaw_unc,
+        "yaw_unc_pmf": yaw_unc_pmf,
+    }
+    return unc_pmfs
 
 
 @attr.s(auto_attribs=True)
@@ -690,6 +741,24 @@ class FlorisInterface(LoggerBase):
         """
         return self.floris.farm.farm_controller.yaw_angles
 
+    def _get_farm_power_from_turbines(self) -> float:
+        air_density = np.full(
+            (
+                self.floris.flow_field.n_wind_directions,
+                self.floris.flow_field.n_wind_speeds,
+                self.floris.farm.n_turbines,
+            ),
+            self.floris.flow_field.air_density,
+        )
+        farm_power = power(
+            air_density=air_density,
+            velocities=self.floris.flow_field.u,
+            yaw_angle=self.floris.farm.farm_controller.yaw_angles,
+            pP=self.floris.farm.pP,
+            power_interp=self.floris.farm.power_interp,
+        )
+        return farm_power.sum()
+
     def get_farm_power(
         self,
         include_unc=False,
@@ -757,83 +826,35 @@ class FlorisInterface(LoggerBase):
         Returns:
             float: Sum of wind turbine powers.
         """
-        # TODO: Turbulence correction used in the power calculation, but may not be in the model yet
-        for turbine in self.floris.farm.turbines:
-            turbine.use_turbulence_correction = use_turbulence_correction
+        # TODO: Turbulence correction used in the power calculation, but may not be in
+        # the model yet
+        # TODO: Turbines need a switch for using turbulence correction
+        # TODO: Uncomment out the following two lines once the above are resolved
+        # for turbine in self.floris.farm.turbines:
+        #     turbine.use_turbulence_correction = use_turbulence_correction
+
         if include_unc:
-            if (unc_options is None) & (unc_pmfs is None):
-                unc_options = {
-                    "std_wd": 4.95,
-                    "std_yaw": 1.75,
-                    "pmf_res": 1.0,
-                    "pdf_cutoff": 0.995,
-                }
+            unc_pmfs = _generate_uncertainty_parameters(unc_options, unc_pmfs)
 
-            if unc_pmfs is None:
-                # create normally distributed wd and yaw uncertaitny pmfs
-                if unc_options["std_wd"] > 0:
-                    wd_bnd = int(
-                        np.ceil(
-                            norm.ppf(unc_options["pdf_cutoff"], scale=unc_options["std_wd"]) / unc_options["pmf_res"]
-                        )
-                    )
-                    wd_unc = np.linspace(
-                        -1 * wd_bnd * unc_options["pmf_res"],
-                        wd_bnd * unc_options["pmf_res"],
-                        2 * wd_bnd + 1,
-                    )
-                    wd_unc_pmf = norm.pdf(wd_unc, scale=unc_options["std_wd"])
-                    # normalize so sum = 1.0
-                    wd_unc_pmf = wd_unc_pmf / np.sum(wd_unc_pmf)
-                else:
-                    wd_unc = np.zeros(1)
-                    wd_unc_pmf = np.ones(1)
-
-                if unc_options["std_yaw"] > 0:
-                    yaw_bnd = int(
-                        np.ceil(
-                            norm.ppf(unc_options["pdf_cutoff"], scale=unc_options["std_yaw"]) / unc_options["pmf_res"]
-                        )
-                    )
-                    yaw_unc = np.linspace(
-                        -1 * yaw_bnd * unc_options["pmf_res"],
-                        yaw_bnd * unc_options["pmf_res"],
-                        2 * yaw_bnd + 1,
-                    )
-                    yaw_unc_pmf = norm.pdf(yaw_unc, scale=unc_options["std_yaw"])
-                    # normalize so sum = 1.0
-                    yaw_unc_pmf = yaw_unc_pmf / np.sum(yaw_unc_pmf)
-                else:
-                    yaw_unc = np.zeros(1)
-                    yaw_unc_pmf = np.ones(1)
-
-                unc_pmfs = {
-                    "wd_unc": wd_unc,
-                    "wd_unc_pmf": wd_unc_pmf,
-                    "yaw_unc": yaw_unc,
-                    "yaw_unc_pmf": yaw_unc_pmf,
-                }
-
-            mean_farm_power = 0.0
-            wd_orig = self.floris.farm.wind_map.input_direction[0]  # TODO: No wind_map implemented
+            # TODO: The original form of this is:
+            # self.floris.farm.wind_map.input_direction[0], but it's unclear why we're
+            # capping at just the first wind direction. Should this behavior be kept?
+            wd_orig = self.floris.flow_field.wind_directions
 
             yaw_angles = self.get_yaw_angles()
-
-            for i_wd, delta_wd in enumerate(unc_pmfs["wd_unc"]):
-                self.reinitialize_flow_field(wind_direction=wd_orig + delta_wd)
-
-                for i_yaw, delta_yaw in enumerate(unc_pmfs["yaw_unc"]):
-                    mean_farm_power = mean_farm_power + unc_pmfs["wd_unc_pmf"][i_wd] * unc_pmfs["yaw_unc_pmf"][
-                        i_yaw
-                    ] * self.get_farm_power_for_yaw_angle(list(np.array(yaw_angles) + delta_yaw), no_wake=no_wake)
+            self.reinitialize_flow_field(wind_direction=wd_orig + unc_pmfs["wd_unc"])
+            power_at_yaw = [
+                self.get_farm_power_for_yaw_angle(yaw_angles + delta_yaw, no_wake=no_wake)
+                for delta_yaw in unc_pmfs["yaw_unc"]
+            ]
+            mean_farm_power = unc_pmfs["wd_unc_pmf"] * unc_pmfs["yaw_unc_pmf"] * np.array(power_at_yaw)
 
             # reinitialize with original values
             self.reinitialize_flow_field(wind_direction=wd_orig)
             self.calculate_wake(yaw_angles=yaw_angles, no_wake=no_wake)
             return mean_farm_power
-        else:
-            turb_powers = [turbine.power for turbine in self.floris.farm.turbines]
-            return np.sum(turb_powers)
+
+        return self._get_farm_power_from_turbines()
 
     def get_turbine_layout(self, z=False):
         """
@@ -916,65 +937,43 @@ class FlorisInterface(LoggerBase):
         Returns:
             np.array: Power produced by each wind turbine.
         """
-        # TODO: No turbulence correction implemented
-        for turbine in self.floris.farm.turbines:
-            turbine.use_turbulence_correction = use_turbulence_correction
+        # TODO: Turbulence correction used in the power calculation, but may not be in
+        # the model yet
+        # TODO: Turbines need a switch for using turbulence correction
+        # TODO: Uncomment out the following two lines once the above are resolved
+        # for turbine in self.floris.farm.turbines:
+        #     turbine.use_turbulence_correction = use_turbulence_correction
+
         if include_unc:
-            if (unc_options is None) & (unc_pmfs is None):
-                unc_options = {
-                    "std_wd": 4.95,
-                    "std_yaw": 1.75,
-                    "pmf_res": 1.0,
-                    "pdf_cutoff": 0.995,
-                }
+            unc_pmfs = _generate_uncertainty_parameters(unc_options, unc_pmfs)
 
-            if unc_pmfs is None:
-                # create normally distributed wd and yaw uncertaitny pmfs
-                if unc_options["std_wd"] > 0:
-                    wd_bnd = int(
-                        np.ceil(
-                            norm.ppf(unc_options["pdf_cutoff"], scale=unc_options["std_wd"]) / unc_options["pmf_res"]
-                        )
-                    )
-                    wd_unc = np.linspace(
-                        -1 * wd_bnd * unc_options["pmf_res"],
-                        wd_bnd * unc_options["pmf_res"],
-                        2 * wd_bnd + 1,
-                    )
-                    wd_unc_pmf = norm.pdf(wd_unc, scale=unc_options["std_wd"])
-                    wd_unc_pmf = wd_unc_pmf / np.sum(wd_unc_pmf)  # normalize so sum = 1.0
-                else:
-                    wd_unc = np.zeros(1)
-                    wd_unc_pmf = np.ones(1)
-
-                if unc_options["std_yaw"] > 0:
-                    yaw_bnd = int(
-                        np.ceil(
-                            norm.ppf(unc_options["pdf_cutoff"], scale=unc_options["std_yaw"]) / unc_options["pmf_res"]
-                        )
-                    )
-                    yaw_unc = np.linspace(
-                        -1 * yaw_bnd * unc_options["pmf_res"],
-                        yaw_bnd * unc_options["pmf_res"],
-                        2 * yaw_bnd + 1,
-                    )
-                    yaw_unc_pmf = norm.pdf(yaw_unc, scale=unc_options["std_yaw"])
-                    yaw_unc_pmf = yaw_unc_pmf / np.sum(yaw_unc_pmf)  # normalize so sum = 1.0
-                else:
-                    yaw_unc = np.zeros(1)
-                    yaw_unc_pmf = np.ones(1)
-
-                unc_pmfs = {
-                    "wd_unc": wd_unc,
-                    "wd_unc_pmf": wd_unc_pmf,
-                    "yaw_unc": yaw_unc,
-                    "yaw_unc_pmf": yaw_unc_pmf,
-                }
-
-            mean_farm_power = np.zeros(len(self.floris.farm.turbines))  # TODO: Update
-            wd_orig = self.floris.farm.wind_map.input_direction[0]  # TODO: Not implemented
+            # TODO: The original form of this is:
+            # self.floris.farm.wind_map.input_direction[0], but it's unclear why we're
+            # capping at just the first wind direction. Should this behavior be kept?
+            wd_orig = self.floris.flow_field.wind_directions
 
             yaw_angles = self.get_yaw_angles()
+            power_at_yaw = [
+                self.get_farm_power_for_yaw_angle(yaw_angles + delta_yaw, no_wake=no_wake)
+                for delta_yaw in unc_pmfs["yaw_unc"]
+            ]
+            mean_farm_power = unc_pmfs["wd_unc_pmf"] * unc_pmfs["yaw_unc_pmf"] * np.array(power_at_yaw)
+
+            # reinitialize with original values
+            self.reinitialize_flow_field(wind_direction=wd_orig)
+            self.calculate_wake(yaw_angles=yaw_angles, no_wake=no_wake)
+            return mean_farm_power
+
+        # return self._get_farm_power_from_turbines()
+
+        if include_unc:
+            unc_pmfs = _generate_uncertainty_parameters(unc_options, unc_pmfs)
+
+            mean_farm_power = np.zeros(len(self.floris.farm.turbines))  # TODO: Update
+            wd_orig = self.floris.flow_field.wind_directions  # TODO: same comment as in get_farm_power
+
+            yaw_angles = self.get_yaw_angles()
+            self.reinitialize_flow_field(wind_direction=wd_orig + unc_pmfs["wd_unc"])  # LEFT OFF HERE!!!!!! @ ME
 
             for i_wd, delta_wd in enumerate(unc_pmfs["wd_unc"]):
                 self.reinitialize_flow_field(wind_direction=wd_orig + delta_wd)
