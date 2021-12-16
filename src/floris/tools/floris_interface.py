@@ -29,8 +29,9 @@ import matplotlib.pyplot as plt
 from scipy.stats import norm
 
 from floris.utilities import Vec3, attrs_array_converter
-from floris.simulation import Farm, Floris, FlowField, WakeModelManager, power
+from floris.simulation import Farm, Floris, FlowField, WakeModelManager
 from floris.logging_manager import LoggerBase
+from floris.simulation.turbine import Ct, power, axial_induction, average_velocity
 
 # from .cut_plane import CutPlane, change_resolution, get_plane_from_flow_data
 # from .flow_data import FlowData
@@ -981,20 +982,20 @@ class FlorisInterface(LoggerBase):
             wind_speeds (np.array): array of wind speeds to get power curve
         """
 
+        # TODO: Why is this done? Should we expand for evenutal multiple turbines types
+        # or just allow a filter on the turbine index?
         # Temporarily set the farm to a single turbine
         saved_layout_x = self.layout_x
         saved_layout_y = self.layout_y
-        self.reinitialize_flow_field(layout_array=([0], [0]))
-        power_return_array = []
-        for ws in wind_speeds:
-            self.reinitialize_flow_field(wind_speed=ws)
-            self.calculate_wake()
-            power_return_array.append(self.get_turbine_power()[0])
+
+        self.reinitialize_flow_field(wind_speed=wind_speeds, layout_array=([0], [0]))
+        self.calculate_wake()
+        turbine_power = self._get_turbine_powers()
 
         # Set it back
         self.reinitialize_flow_field(layout_array=(saved_layout_x, saved_layout_y))
 
-        return np.array(power_return_array)
+        return turbine_power
 
     def get_turbine_ct(self):
         """
@@ -1003,8 +1004,11 @@ class FlorisInterface(LoggerBase):
         Returns:
             list: Thrust coefficient for each wind turbine.
         """
-        turb_ct_array = [turbine.Ct for turbine in self.floris.flow_field.turbine_map.turbines]
-        # TODO: Where are the velocities coming from at this point?
+        turb_ct_array = Ct(
+            velocities=self.floris.flow_field.u,
+            yaw_angle=self.floris.farm.farm_controller.yaw_angles,
+            fCt=self.floris.farm.fCt_interp,
+        )
         return turb_ct_array
 
     def get_turbine_ti(self):
@@ -1128,7 +1132,14 @@ class FlorisInterface(LoggerBase):
         AEP_sum = 0
 
         # TODO: Should this just be flow_field wind_directions, wind_speeds, probability?
+
         # NOTE: won't actually need the sorting for v3, and can just compute all of it at once
+
+        # TODO: Add the functionality to pass in unique wd/ws combinations
+
+        # TODO: Add the functionality to to pass in the whole pre-computed combos, then
+        # translate it to the unique input, but fill the corresponding `freq` for new
+        # combos as 0.0
 
         # sort wd and ws by wind speed
         ix_ws_sort = np.argsort(ws)
