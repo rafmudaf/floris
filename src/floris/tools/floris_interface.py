@@ -17,7 +17,7 @@ from __future__ import annotations
 import copy
 from typing import Any
 from pathlib import Path
-from itertools import repeat
+from itertools import repeat, product
 from multiprocessing import cpu_count
 from multiprocessing.pool import Pool
 
@@ -27,6 +27,7 @@ import pandas as pd
 import numpy.typing as npt
 import matplotlib.pyplot as plt
 from scipy.stats import norm
+from numpy.lib.arraysetops import unique
 
 from floris.utilities import Vec3, attrs_array_converter
 from floris.simulation import Farm, Floris, FlowField, WakeModelManager
@@ -97,6 +98,47 @@ def _generate_uncertainty_parameters(unc_options: dict, unc_pmfs: dict) -> dict:
         "yaw_unc_pmf": yaw_unc_pmf,
     }
     return unc_pmfs
+
+
+def correct_for_all_combinations(
+    wd: NDArrayFloat,
+    ws: NDArrayFloat,
+    freq: NDArrayFloat,
+    yaw: NDArrayFloat | None = None,
+) -> tuple[NDArrayFloat]:
+    """Computes the probabilities for the complete windrose from the desired wind
+    direction and wind speed combinations and their associated probabilities so that
+    any undesired combinations are filled with a 0.0 probability.
+
+    Args:
+        wd (NDArrayFloat): List or array of wind direction values.
+        ws (NDArrayFloat): List or array of wind speed values.
+        freq (NDArrayFloat): Frequencies corresponding to wind
+            speeds and directions in wind rose with dimensions
+            (N wind directions x N wind speeds).
+        yaw (NDArrayFloat | None): The corresponding yaw angles for each of the wind
+            direction and wind speed combinations, or None. Defaults to None.
+
+    Returns:
+        NDArrayFloat, NDArrayFloat, NDArrayFloat: The unique wind directions, wind
+            speeds, and the associated probability of their combination combinations in
+            an array of shape (N wind directions x N wind speeds).
+    """
+
+    combos_to_compute = np.array(list(zip(wd, ws, freq)))
+
+    unique_wd = wd.unique()
+    unique_ws = ws.unique()
+    all_combos = np.array(list(product(unique_wd, unique_ws)), dtype=float)
+    all_combos = np.hstack((all_combos, np.zeros((all_combos.shape[0], 1), dtype=float)))
+    expanded_yaw = np.array([None] * all_combos.shape[0]).reshape(unique_wd.size, unique_ws.size)
+
+    ix_match = [np.where((all_combos[:, :2] == combo[:2]).all(1))[0][0] for combo in combos_to_compute]
+    all_combos[ix_match, 2] = combos_to_compute[:, 2]
+    if yaw is not None:
+        expanded_yaw[ix_match] = yaw
+    freq = all_combos.T[2].reshape((unique_wd.size, unique_ws.size))
+    return unique_wd, unique_ws, freq
 
 
 @attr.s(auto_attribs=True)
@@ -1103,16 +1145,25 @@ class FlorisInterface(LoggerBase):
     ) -> float:
         """
         Estimate annual energy production (AEP) for distributions of wind speed, wind
-        direction, wind rose probability, and yaw offset.
+        direction, wind rose probability, and yaw offset. This can be computed for
+        pre-determined wind direction and wind speed combinations, as was the case in
+        FLORIS v2, or additionally, the unique wind directions, wind speeds, and their
+        probabilities can be input.
 
         Args:
             wd (NDArrayFloat | list[float]): List or array of wind direction values.
+                Either a unique list of wind directions can be used or the wind
+                directions corresponding to a pre-computed set of combinations
+                should be used.
             ws (NDArrayFloat | list[float]): List or array of wind speed values.
-            freq (NDArrayFloat | list[list[float]]): Frequencies corresponding to wind
-                speeds and directions in wind rose with dimensions
-                (N wind directions x N wind speeds).
-            yaw (NDArrayFloat | list[float] | None, optional): List or array of yaw values if wake is
-                steering implemented. Defaults to None.
+                Either a unique list of wind speeds can be used or the wind speeds
+                corresponding to a pre-computed set of combinations should be used.
+            freq (NDArrayFloat | list[list[float]]): Frequencies corresponding to either
+                the pre-computed combinations of wind directions and wind speeds or the
+                full wind rose with dimensions (N wind directions x N wind speeds).
+            yaw (NDArrayFloat | list[float] | None, optional): List or array of yaw
+                values if wake is steering implemented that correspond with the number
+                of wind directions. Defaults to None.
             limit_ws (bool, optional): When *True*, detect wind speed when power
                 reaches it's maximum value for a given wind direction. For all
                 higher wind speeds, use last calculated value when below cut
@@ -1129,64 +1180,45 @@ class FlorisInterface(LoggerBase):
         Returns:
             float: AEP for wind farm.
         """
-        AEP_sum = 0
 
-        # TODO: Should this just be flow_field wind_directions, wind_speeds, probability?
+        # Convert the required inputs to arrays
+        wd = np.array(wd)
+        ws = np.array(ws)
+        freq = np.array(freq)
 
-        # NOTE: won't actually need the sorting for v3, and can just compute all of it at once
+        # Determine if the direction and speed inputs provided are a set of pre-determined
+        # combinations, and compute the full combination set if so, where the value
+        # in freq will be set to 0 if a combination was not in the original set to ensure
+        # it's not counted.
+        wd_unique = wd.unique()
+        ws_unique = ws.unique()
+        if np.array_equal(wd_unique, sorted(wd)) and np.array_equal(ws_unique, sorted(ws)):
+            # Reshape the frequency input if required, and leave the unique inputs as-is
+            if freq.shape != (wd_unique.size, ws_unique.size):
+                freq = freq.reshape((wd_unique.size, ws_unique.size))
+        else:
+            # Compute all the combinations
+            wd_unique, ws_unique, freq, yaw = correct_for_all_combinations(wd, ws, freq, yaw)
 
-        # TODO: Add the functionality to pass in unique wd/ws combinations
-
-        # TODO: Add the functionality to to pass in the whole pre-computed combos, then
-        # translate it to the unique input, but fill the corresponding `freq` for new
-        # combos as 0.0
-
-        # sort wd and ws by wind speed
-        ix_ws_sort = np.argsort(ws)
-        ws = np.array(ws)[ix_ws_sort]
-        freq = np.array(freq)[:, ix_ws_sort]
-
-        ix_wd_sort = wd.argsort()
-        wd = wd[ix_wd_sort]
-        freq = freq[ix_wd_sort, :]
-
-        # filter out wind speeds beyond the cutoff, if necessary
-        if limit_ws:
-            ix_ws_filter = ws >= ws_cutout
-            ws = ws[ix_ws_filter]
-            freq = freq[:, ix_ws_filter]
-
+        # If the yaw input is still None, then create a None array as inputs
         if yaw is None:
-            yaw = np.array([None] * wd.size)
+            N = wd_unique.size * ws_unique.size
+            yaw = np.array([None] * N).reshape(wd_unique.size, ws_unique.size)
         else:
             yaw = np.array(yaw)
 
-        # keep track of wind speeds where power stops increasing for each wind direction
-        # TODO: Find a better method because hashing floats is not ideal
-        prev_pow = {wdir: 0.0 for wdir in np.unique(wd)}
-        use_prev_pow = {wdir: False for wdir in np.unique(wd)}
+        # filter out wind speeds beyond the cutoff, if necessary
+        if limit_ws:
+            ix_ws_filter = ws_unique >= ws_cutout
+            ws_unique = ws_unique[ix_ws_filter]
+            freq = freq[:, ix_ws_filter]
+            yaw = yaw[:, ix_ws_filter]
 
-        for i, wdir in enumerate(wd):
-            # If not using wind speed limit or still below maximum power, then
-            # calculate farm power
-            if not (limit_ws & use_prev_pow[wdir]):
-                # TODO: I've removed the indexing on wind speed by wind direction,s
-                # let me know if that is wrong!
-                self.reinitialize_flow_field(wind_direction=[wdir], wind_speed=ws)
-                self.calculate_wake(yaw_angles=yaw[i])
-                farm_power = self.get_farm_power()  # TODO: vectorize
-
-                # check if power has stopped increasing
-                if limit_ws & (farm_power > 0) & (np.abs(farm_power / prev_pow[wdir] - 1) < ws_limit_tol):
-                    use_prev_pow[wdir] = True
-
-                prev_pow[wdir] = farm_power
-            else:
-                farm_power = prev_pow[wdir]
-
-            AEP_sum += np.sum(farm_power * freq[i] * 8760)
-
-        return AEP_sum
+        self.reinitialize_flow_field(wind_direction=wd_unique, wind_speed=ws_unique, wind_rose_probability=freq)
+        self.calculate_wake(yaw_angles=yaw)
+        farm_power = self.get_farm_power()  # TODO: Do we need to specify an axis since this is a sum?
+        AEP = farm_power * freq * 8760
+        return AEP.sum()
 
     def _calc_one_AEP_case(self, wd, ws, freq, yaw=None):
         self.reinitialize_flow_field(wind_direction=[wd], wind_speed=[ws])
