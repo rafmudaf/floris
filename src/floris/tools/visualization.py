@@ -11,19 +11,19 @@
 # the License.
 
 # See https://floris.readthedocs.io for documentation
-
+from __future__ import annotations
 
 import math
+from typing import Union
 from itertools import product
+
+import numpy as np
 import matplotlib as mpl
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
-import numpy as np
-from typing import Union
 
-def plot_turbines(
-    ax, layout_x, layout_y, yaw_angles, D, color=None, wind_direction=270.0
-):
+
+def plot_turbines(ax, layout_x, layout_y, yaw_angles, D, color=None, wind_direction=270.0):
     """
     Plot wind plant layout from turbine locations.
 
@@ -99,15 +99,9 @@ def line_contour_cut_plane(cut_plane, ax=None, levels=None, colors=None, **kwarg
         fig, ax = plt.subplots()
 
     # Reshape UMesh internally
-    x1_mesh = cut_plane.df.x1.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
-    x2_mesh = cut_plane.df.x2.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
-    u_mesh = cut_plane.df.u.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
+    x1_mesh = cut_plane.df.x1.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
+    x2_mesh = cut_plane.df.x2.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
+    u_mesh = cut_plane.df.u.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
     Zm = np.ma.masked_where(np.isnan(u_mesh), u_mesh)
     rcParams["contour.negative_linestyle"] = "solid"
 
@@ -118,9 +112,7 @@ def line_contour_cut_plane(cut_plane, ax=None, levels=None, colors=None, **kwarg
     ax.set_aspect("equal")
 
 
-def visualize_cut_plane(
-    cut_plane, ax=None, minSpeed=None, maxSpeed=None, cmap="coolwarm", levels=None
-):
+def visualize_cut_plane(cut_plane, ax=None, minSpeed=None, maxSpeed=None, cmap="coolwarm", levels=None):
     """
     Generate pseudocolor mesh plot of the cut_plane.
 
@@ -148,26 +140,16 @@ def visualize_cut_plane(
         maxSpeed = cut_plane.df.u.max()
 
     # Reshape to 2d for plotting
-    x1_mesh = cut_plane.df.x1.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
-    x2_mesh = cut_plane.df.x2.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
-    u_mesh = cut_plane.df.u.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
+    x1_mesh = cut_plane.df.x1.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
+    x2_mesh = cut_plane.df.x2.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
+    u_mesh = cut_plane.df.u.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
     Zm = np.ma.masked_where(np.isnan(u_mesh), u_mesh)
 
     # Plot the cut-through
-    im = ax.pcolormesh(
-        x1_mesh, x2_mesh, Zm, cmap=cmap, vmin=minSpeed, vmax=maxSpeed, shading="nearest"
-    )
+    im = ax.pcolormesh(x1_mesh, x2_mesh, Zm, cmap=cmap, vmin=minSpeed, vmax=maxSpeed, shading="nearest")
 
     # Add line contour
-    line_contour_cut_plane(
-        cut_plane, ax=ax, levels=levels, colors="w", linewidths=0.8, alpha=0.3
-    )
+    line_contour_cut_plane(cut_plane, ax=ax, levels=levels, colors="w", linewidths=0.8, alpha=0.3)
 
     # Make equal axis
     ax.set_aspect("equal")
@@ -176,44 +158,34 @@ def visualize_cut_plane(
     return im
 
 
-def visualize_quiver(
-    cut_plane, ax=None, minSpeed=None, maxSpeed=None, downSamp=1, **kwargs
-):
+def visualize_quiver(cut_plane, ax=None, minSpeed=None, maxSpeed=None, downSamp=1, **kwargs):
     """
-        Visualize the in-plane flows in a cut_plane using quiver.
+    Visualize the in-plane flows in a cut_plane using quiver.
 
-        Args:
-            cut_plane (:py:class:`~.tools.cut_plane.CutPlane`): 2D
-                plane through wind plant.
-            ax (:py:class:`matplotlib.pyplot.axes`): Figure axes. Defaults
-                to None.
-            minSpeed (float, optional): Minimum value of wind speed for
-                contours. Defaults to None.
-            maxSpeed (float, optional): Maximum value of wind speed for
-                contours. Defaults to None.
-            downSamp (int, optional): Down sample the number of quiver arrows
-                from underlying grid.
-            **kwargs: Additional parameters to pass to `ax.streamplot`.
+    Args:
+        cut_plane (:py:class:`~.tools.cut_plane.CutPlane`): 2D
+            plane through wind plant.
+        ax (:py:class:`matplotlib.pyplot.axes`): Figure axes. Defaults
+            to None.
+        minSpeed (float, optional): Minimum value of wind speed for
+            contours. Defaults to None.
+        maxSpeed (float, optional): Maximum value of wind speed for
+            contours. Defaults to None.
+        downSamp (int, optional): Down sample the number of quiver arrows
+            from underlying grid.
+        **kwargs: Additional parameters to pass to `ax.streamplot`.
 
-        Returns:
-            im (:py:class:`matplotlib.plt.pcolormesh`): Image handle.
-        """
+    Returns:
+        im (:py:class:`matplotlib.plt.pcolormesh`): Image handle.
+    """
     if not ax:
         fig, ax = plt.subplots()
 
     # Reshape UMesh internally
-    x1_mesh = cut_plane.df.x1.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
-    x2_mesh = cut_plane.df.x2.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
-    v_mesh = cut_plane.df.v.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
-    w_mesh = cut_plane.df.w.values.reshape(
-        cut_plane.resolution[1], cut_plane.resolution[0]
-    )
+    x1_mesh = cut_plane.df.x1.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
+    x2_mesh = cut_plane.df.x2.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
+    v_mesh = cut_plane.df.v.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
+    w_mesh = cut_plane.df.w.values.reshape(cut_plane.resolution[1], cut_plane.resolution[0])
 
     # plot the stream plot
     ax.streamplot(

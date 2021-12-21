@@ -42,3 +42,4 @@ from floris.tools import (  # energy_ratio,; energy_ratio_single,; layout_functi
     floris_interface,
     interface_utilities,
 )
+from floris.tools.floris_interface import FlorisInterface

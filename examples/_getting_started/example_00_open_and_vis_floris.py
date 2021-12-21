@@ -13,8 +13,8 @@
 # See https://floris.readthedocs.io for documentation
 
 
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
 
 from floris.tools import FlorisInterface
 from floris.tools.visualization import visualize_cut_plane
@@ -23,8 +23,8 @@ from floris.tools.visualization import visualize_cut_plane
 # Initialize the FLORIS interface fi
 # For basic usage, the florice interface provides a simplified interface to
 # the underlying classes
-fi = FlorisInterface("/Users/rmudafor/Development/floris/examples/example_input.json")
-fi.floris.farm.farm_controller.set_yaw_angles(np.array([25.0, 0.0, 0.0]))
+fi = FlorisInterface("example_input.json")
+fi.floris.farm.farm_controller.set_yaw_angles(np.array([25.0]))
 
 # Calculate wake
 fi.floris.solve_for_viz()
