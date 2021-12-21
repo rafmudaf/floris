@@ -217,9 +217,7 @@ class FromDictMixin:
     @classmethod
     def from_dict(cls, data: dict):
         """Maps a data dictionary to an `attr`-defined class.
-
         TODO: Add an error to ensure that either none or all the parameters are passed in
-
         Args:
             data : dict
                 The data dictionary to be mapped.
@@ -227,7 +225,15 @@ class FromDictMixin:
             cls
                 The `attr`-defined class.
         """
-        return cls(**{a.name: data[a.name] for a in cls.__attrs_attrs__ if a.name in data and a.init is not False})  # type: ignore
+        # Get all parameters from the input dictionary that map to the class initialization
+        kwargs = {a.name: data[a.name] for a in cls.__attrs_attrs__ if a.name in data and a.init}
+
+        # Map the inputs must be provided: 1) must be initialized, 2) no default value defined
+        required_inputs = [a.name for a in cls.__attrs_attrs__ if a.init and not a.default]
+        undefined = sorted(set(required_inputs) - set(kwargs))
+        if undefined:
+            raise AttributeError(f"The class defintion for {cls.__name__} is missing the following inputs: {undefined}")
+        return cls(**kwargs)  # type: ignore
 
 
 def is_default(instance, attribute, value):
