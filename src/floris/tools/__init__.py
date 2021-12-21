@@ -36,19 +36,9 @@ Examples:
     'rews', 'sowfa_utilities', 'visualization', 'wind_rose']
 """
 
-from floris.tools import (
-    # cut_plane,
-    # energy_ratio,
-    # energy_ratio_single,
+from floris.tools import (  # energy_ratio,; energy_ratio_single,; layout_functions,; optimization,; plotting,; power_rose,; rews,; sowfa_utilities,; visualization,; wind_rose,
+    cut_plane,
+    flow_data,
     floris_interface,
-    # flow_data,
-    # interface_utilities,
-    # layout_functions,
-    # optimization,
-    # plotting,
-    # power_rose,
-    # rews,
-    # sowfa_utilities,
-    # visualization,
-    # wind_rose,
+    interface_utilities,
 )

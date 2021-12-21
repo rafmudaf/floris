@@ -32,14 +32,15 @@ from numpy.lib.arraysetops import unique
 from floris.utilities import Vec3, attrs_array_converter
 from floris.simulation import Farm, Floris, FlowField, WakeModelManager
 from floris.logging_manager import LoggerBase
+from floris.tools.cut_plane import get_plane_from_flow_data
+from floris.tools.flow_data import FlowData
 from floris.simulation.turbine import Ct, power, axial_induction, average_velocity
+from floris.tools.interface_utilities import get_params, set_params, show_params
+
 
 # from .cut_plane import CutPlane, change_resolution, get_plane_from_flow_data
-# from .flow_data import FlowData
 # from .visualization import visualize_cut_plane
 # from .layout_functions import visualize_layout, build_turbine_loc
-from .cut_plane import get_plane_from_flow_data
-from .interface_utilities import get_params, set_params, show_params
 
 
 NDArrayFloat = npt.NDArray[np.float64]
