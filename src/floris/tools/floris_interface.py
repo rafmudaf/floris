@@ -149,13 +149,24 @@ class FlorisInterface(LoggerBase):
     underlying methods within the FLORIS framework. It is meant to act as a
     single entry-point for the majority of users, simplifying the calls to
     methods on objects within FLORIS.
+
+    Args:
+        configuration (:py:obj:`dict`): The Floris configuration dictarionary, JSON file,
+            or YAML file. The configuration should have the following inputs specified.
+                - **flow_field**: See `floris.simulation.flow_field.FlowField` for more details.
+                - **farm**: See `floris.simulation.farm.Farm` for more details.
+                - **turbine**: See `floris.simulation.turbine.Turbine` for more details.
+                - **wake**: See `floris.simulation.wake.WakeManager` for more details.
+                - **logging**: See `floris.simulation.floris.Floris` for more details.
     """
 
     configuration: dict | str | Path
     floris: Floris = attr.ib(init=False)
+    unique_copy_id: int = attr.ib(init=False)
 
     def __attrs_post_init__(self) -> None:
         self.create_floris()
+        self.unique_copy_id = 1
 
     def create_floris(self) -> None:
         if isinstance(self.configuration, (str, Path)):
@@ -812,7 +823,7 @@ class FlorisInterface(LoggerBase):
             pP=self.floris.farm.pP,
             power_interp=self.floris.farm.power_interp,
         )
-        return farm_power.sum()
+        return farm_power
 
     def get_farm_power(
         self,
@@ -1325,6 +1336,30 @@ class FlorisInterface(LoggerBase):
         self.max_power = self.get_farm_power()
         self.ws_limit = ws
 
+    def copy_and_update_turbine_map(
+        self, base_turbine_id: str, update_parameters: dict, new_id: str | None = None
+    ) -> dict:
+        """Creates a new copy of an existing turbine and updates the parameters based on
+        user input. This function is a helper to make the v2 -> v3 transition easier.
+
+        Args:
+            base_turbine_id (str): The base turbine's ID in `floris.farm.turbine_id`.
+            update_parameters (dict): A dictionary of the turbine parameters to update
+                and their new valies.
+            new_id (str, optional): The new `turbine_id`, if `None` a unique
+                identifier will be appended to the end. Defaults to None.
+
+        Returns:
+            dict: A turbine mapping that can be passed directly to `change_turbine`.
+        """
+        if new_id is None:
+            new_id = f"{base_turbine_id}_copy{self.unique_copy_id}"
+            self.unique_copy_id += 1
+
+        turbine = {new_id: self.floris.turbine[base_turbine_id]._asdict()}
+        turbine[new_id].update(update_parameters)
+        return turbine
+
     def change_turbine(
         self,
         turbine_indices: list[int],
@@ -1341,22 +1376,24 @@ class FlorisInterface(LoggerBase):
             update_specified_wind_height (bool, optional): When *True*, update specified
                 wind height to match new hub_height. Defaults to *False*.
         """
+        new_turbine = True
         new_turbine_id = [*new_turbine_map][0]
         if new_turbine_id in self.floris.farm.turbine_map:
-            raise ValueError(
-                "The new turbine ID in `new_turbine_map` already exists in "
-                "`floris.farm`, please use a unique turbine identifier!"
-            )
+            new_turbine = False
+            self.logger.info(f"Turbines {turbine_indices} will be re-mapped to the definition for: {new_turbine_id}")
 
         self.floris.farm.turbine_id = [
             new_turbine_id if i in turbine_indices else t_id for i, t_id in enumerate(self.floris.farm.turbine_id)
         ]
-        self.logger.info(f"Turbines {turbine_indices} have been mapped to the new definition for: {new_turbine_id}")
+        if new_turbine:
+            self.logger.info(f"Turbines {turbine_indices} have been mapped to the new definition for: {new_turbine_id}")
 
-        # Update the turbine mapping and regenerate the farm arrays
-        turbine_map = self.floris.farm._asdict()["turbine_map"]
-        turbine_map.update(new_turbine_map)
-        self.floris.farm.turbine_map = turbine_map
+        # Update the turbine mapping if a new turbine was provided, then regenerate the
+        # farm arrays for the turbine farm
+        if new_turbine:
+            turbine_map = self.floris.farm._asdict()["turbine_map"]
+            turbine_map.update(new_turbine_map)
+            self.floris.farm.turbine_map = turbine_map
         self.floris.farm.generate_farm_points()
 
         new_hub_height = new_turbine_map[new_turbine_id]["hub_height"]

@@ -177,7 +177,29 @@ def test_calc_AEP_wind_limit():
     pass
 
 
-def test_calc_change_turbine():
+def test_copy_and_update_turbine():
+    fi = FlorisInterface(configuration=YAML_INPUT)
+
+    assert fi.unique_copy_id == 1
+
+    # Update a parameter without a new ID
+    new_params = {"rotor_diameter": 120.0, "hub_height": 99}
+    new_turbine = fi.copy_and_update_turbine_map("nrel_5mw", new_params)
+    assert fi.unique_copy_id == 2
+    assert [*new_turbine] == ["nrel_5mw_copy1"]
+    for parameter, value in new_params.items():
+        assert new_turbine["nrel_5mw_copy1"][parameter] == value
+
+    # Update a parameter with a new ID
+    new_params = {"rotor_diameter": 120.0, "hub_height": 99}
+    new_turbine = fi.copy_and_update_turbine_map("nrel_5mw", new_params, new_id="nrel_custom")
+    assert fi.unique_copy_id == 2
+    assert [*new_turbine] == ["nrel_custom"]
+    for parameter, value in new_params.items():
+        assert new_turbine["nrel_custom"][parameter] == value
+
+
+def test_change_turbine():
     # Update single attribute: rotor diameter and not the reference wind height
     fi = FlorisInterface(configuration=YAML_INPUT)
     correct_rotor_diameter = 110.0
