@@ -105,7 +105,7 @@ class YawOptimizationWindRose(Optimization):
                 turbine's lower bound equal to its upper bound (i.e., an
                 equality constraint), as: bnds[ti] = (x, x), where x is the
                 fixed yaw angle assigned to the turbine. This works for both
-                zero and nonzero yaw angles. Moreover, if 
+                zero and nonzero yaw angles. Moreover, if
                 exclude_downstream_turbines=True, the yaw angles for all
                 downstream turbines will be 0.0 or a feasible value closest to
                 0.0. If none are specified, the bounds are set to
@@ -236,9 +236,7 @@ class YawOptimizationWindRose(Optimization):
         for i in range(len(self.wd)):
             if (self.ws[i] >= self.minimum_ws) & (self.ws[i] <= self.maximum_ws):
                 if self.ti is None:
-                    self.fi.reinitialize_flow_field(
-                        wind_direction=[self.wd[i]], wind_speed=[self.ws[i]]
-                    )
+                    self.fi.reinitialize_flow_field(wind_direction=[self.wd[i]], wind_speed=[self.ws[i]])
                 else:
                     self.fi.reinitialize_flow_field(
                         wind_direction=[self.wd[i]],
@@ -255,9 +253,7 @@ class YawOptimizationWindRose(Optimization):
                 )
             elif self.ws[i] >= self.maximum_ws:
                 if self.ti is None:
-                    self.fi.reinitialize_flow_field(
-                        wind_direction=[self.wd[i]], wind_speed=[self.ws[i]]
-                    )
+                    self.fi.reinitialize_flow_field(wind_direction=[self.wd[i]], wind_speed=[self.ws[i]])
                 else:
                     self.fi.reinitialize_flow_field(
                         wind_direction=[self.wd[i]],
@@ -303,11 +299,7 @@ class YawOptimizationWindRose(Optimization):
             unc_options=self.unc_options,
         )
 
-        return (
-            -1.0
-            * np.dot(self.turbine_weights, turbine_powers)
-            / self.initial_farm_power
-        )
+        return -1.0 * np.dot(self.turbine_weights, turbine_powers) / self.initial_farm_power
 
     def _set_opt_bounds(self, minimum_yaw_angle, maximum_yaw_angle):
         """
@@ -336,9 +328,7 @@ class YawOptimizationWindRose(Optimization):
                 bounds=self.bnds_norm,
                 options=self.opt_options,
             )
-            opt_yaw_angles_subset = self._unnorm(
-                self.residual_plant.x, self.minimum_yaw_angle, self.maximum_yaw_angle
-            )
+            opt_yaw_angles_subset = self._unnorm(self.residual_plant.x, self.minimum_yaw_angle, self.maximum_yaw_angle)
             opt_yaw_angles[self.turbs_to_opt] = opt_yaw_angles_subset
 
         self.fi.reinitialize_flow_field(
@@ -369,9 +359,7 @@ class YawOptimizationWindRose(Optimization):
                 fi=self.fi, wind_direction=self.fi.floris.farm.wind_direction[0]
             )
             downstream_turbines = np.array(downstream_turbines, dtype=int)
-            self.turbs_to_opt = [
-                i for i in self.turbs_to_opt if i not in downstream_turbines
-            ]
+            self.turbs_to_opt = [i for i in self.turbs_to_opt if i not in downstream_turbines]
 
         # Set up a template yaw angles array with default solutions. The default
         # solutions are either 0.0 or the allowable yaw angle closest to 0.0 deg.
@@ -381,24 +369,16 @@ class YawOptimizationWindRose(Optimization):
         yaw_angles_template = np.zeros(self.nturbs, dtype=float)
         for ti in range(self.nturbs):
             if (self.bnds[ti][0] > 0.0) | (self.bnds[ti][1] < 0.0):
-                yaw_angles_template[ti] = self.bnds[ti][
-                    np.argmin(np.abs(self.bnds[ti]))
-                ]
+                yaw_angles_template[ti] = self.bnds[ti][np.argmin(np.abs(self.bnds[ti]))]
         self.yaw_angles_template = yaw_angles_template
 
         # Derive normalized initial condition and bounds
         x0_subset = [self.x0[i] for i in self.turbs_to_opt]
-        self.x0_norm = self._norm(
-            np.array(x0_subset), self.minimum_yaw_angle, self.maximum_yaw_angle
-        )
+        self.x0_norm = self._norm(np.array(x0_subset), self.minimum_yaw_angle, self.maximum_yaw_angle)
         self.bnds_norm = [
             (
-                self._norm(
-                    self.bnds[i][0], self.minimum_yaw_angle, self.maximum_yaw_angle
-                ),
-                self._norm(
-                    self.bnds[i][1], self.minimum_yaw_angle, self.maximum_yaw_angle
-                ),
+                self._norm(self.bnds[i][0], self.minimum_yaw_angle, self.maximum_yaw_angle),
+                self._norm(self.bnds[i][1], self.minimum_yaw_angle, self.maximum_yaw_angle),
             )
             for i in self.turbs_to_opt
         ]
@@ -474,7 +454,7 @@ class YawOptimizationWindRose(Optimization):
                 turbine's lower bound equal to its upper bound (i.e., an
                 equality constraint), as: bnds[ti] = (x, x), where x is the
                 fixed yaw angle assigned to the turbine. This works for both
-                zero and nonzero yaw angles. Moreover, if 
+                zero and nonzero yaw angles. Moreover, if
                 exclude_downstream_turbines=True, the yaw angles for all
                 downstream turbines will be 0.0 or a feasible value closest to
                 0.0. If none are specified, the bounds are set to
@@ -571,17 +551,10 @@ class YawOptimizationWindRose(Optimization):
         if yaw_angles_baseline is not None:
             self.yaw_angles_baseline = yaw_angles_baseline
         else:
-            self.yaw_angles_baseline = [
-                turbine.yaw_angle
-                for turbine in self.fi.floris.farm.turbine_map.turbines
-            ]
-            if any(np.abs(self.yaw_angles_baseline) > 0.0):
-                print(
-                    "INFO: Baseline yaw angles were not specified and were derived from the floris object."
-                )
-                print(
-                    "INFO: The inherent yaw angles in the floris object are not all 0.0 degrees."
-                )
+            self.yaw_angles_baseline = [yaw_angle for yaw_angle in self.fi.floris.farm.farm_controller.yaw_angles]
+            if np.any(np.abs(self.yaw_angles_baseline) > 0.0):
+                print("INFO: Baseline yaw angles were not specified and were derived from the floris object.")
+                print("INFO: The inherent yaw angles in the floris object are not all 0.0 degrees.")
 
         self.bnds = bnds
         if bnds is not None:
@@ -598,17 +571,13 @@ class YawOptimizationWindRose(Optimization):
                 if (self.bnds[ti][0] > 0.0) | (self.bnds[ti][1] < 0.0):
                     self.x0[ti] = np.mean(self.bnds[ti])
 
-        if any(
-            np.array(self.yaw_angles_baseline) < np.array([b[0] for b in self.bnds])
-        ):
+        if np.any(np.array(self.yaw_angles_baseline) < np.array([b[0] for b in self.bnds])):
             print("INFO: yaw_angles_baseline exceed lower bound constraints.")
-        if any(
-            np.array(self.yaw_angles_baseline) > np.array([b[1] for b in self.bnds])
-        ):
+        if np.any(np.array(self.yaw_angles_baseline) > np.array([b[1] for b in self.bnds])):
             print("INFO: yaw_angles_baseline in FLORIS exceed upper bound constraints.")
-        if any(np.array(self.x0) < np.array([b[0] for b in self.bnds])):
+        if np.any(np.array(self.x0) < np.array([b[0] for b in self.bnds])):
             raise ValueError("Initial guess x0 exceeds lower bound constraints.")
-        if any(np.array(self.x0) > np.array([b[1] for b in self.bnds])):
+        if np.any(np.array(self.x0) > np.array([b[1] for b in self.bnds])):
             raise ValueError("Initial guess x0 exceeds upper bound constraints.")
 
         if include_unc is not None:
@@ -762,9 +731,7 @@ class YawOptimizationWindRose(Optimization):
 
             if self.ws[i] >= self.minimum_ws:
                 if self.ti is None:
-                    self.fi.reinitialize_flow_field(
-                        wind_direction=[self.wd[i]], wind_speed=[self.ws[i]]
-                    )
+                    self.fi.reinitialize_flow_field(wind_direction=[self.wd[i]], wind_speed=[self.ws[i]])
                 else:
                     self.fi.reinitialize_flow_field(
                         wind_direction=[self.wd[i]],
@@ -773,9 +740,7 @@ class YawOptimizationWindRose(Optimization):
                     )
 
                 # calculate baseline power
-                self.fi.calculate_wake(
-                    yaw_angles=self.yaw_angles_baseline, no_wake=False
-                )
+                self.fi.calculate_wake(yaw_angles=self.yaw_angles_baseline, no_wake=False)
                 power_base = self.fi.get_turbine_power(
                     include_unc=self.include_unc,
                     unc_pmfs=self.unc_pmfs,
@@ -783,9 +748,7 @@ class YawOptimizationWindRose(Optimization):
                 )
 
                 # calculate power for no wake case
-                self.fi.calculate_wake(
-                    yaw_angles=self.yaw_angles_baseline, no_wake=True
-                )
+                self.fi.calculate_wake(yaw_angles=self.yaw_angles_baseline, no_wake=True)
                 power_no_wake = self.fi.get_turbine_power(
                     include_unc=self.include_unc,
                     unc_pmfs=self.unc_pmfs,
@@ -905,9 +868,7 @@ class YawOptimizationWindRose(Optimization):
             # Optimizing wake redirection control
             if (self.ws[i] >= self.minimum_ws) & (self.ws[i] <= self.maximum_ws):
                 if self.ti is None:
-                    self.fi.reinitialize_flow_field(
-                        wind_direction=[self.wd[i]], wind_speed=[self.ws[i]]
-                    )
+                    self.fi.reinitialize_flow_field(wind_direction=[self.wd[i]], wind_speed=[self.ws[i]])
                 else:
                     self.fi.reinitialize_flow_field(
                         wind_direction=[self.wd[i]],
@@ -937,9 +898,7 @@ class YawOptimizationWindRose(Optimization):
                         condition..."
                 )
                 if self.ti is None:
-                    self.fi.reinitialize_flow_field(
-                        wind_direction=[self.wd[i]], wind_speed=[self.ws[i]]
-                    )
+                    self.fi.reinitialize_flow_field(wind_direction=[self.wd[i]], wind_speed=[self.ws[i]])
                 else:
                     self.fi.reinitialize_flow_field(
                         wind_direction=[self.wd[i]],

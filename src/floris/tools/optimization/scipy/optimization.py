@@ -62,5 +62,5 @@ class Optimization:
         Returns:
             int
         """
-        self._nturbs = len(self.fi.floris.farm.turbine_map.turbines)
+        self._nturbs = self.fi.floris.farm.n_turbines
         return self._nturbs
