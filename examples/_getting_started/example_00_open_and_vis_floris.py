@@ -42,16 +42,16 @@ else:
 # For basic usage, the florice interface provides a simplified interface to
 # the underlying classes
 fi = FlorisInterface(INPUT_JSON)
-fi.floris.farm.farm_controller.set_yaw_angles(np.array([25.0]))
+
+yaw_angles = np.zeros((1,1,3))
+yaw_angles[:,:,0] = 25.0
+fi.floris.farm.yaw_angles = yaw_angles
 
 # Calculate wake
 fi.floris.solve_for_viz()
 
 # Get horizontal plane at default height (hub-height)
-hor_plane = fi.get_hor_plane(
-    x_resolution=100,
-    y_resolution=100,
-)
+hor_plane = fi.get_hor_plane()
 
 # Plot and show
 fig, ax = plt.subplots()

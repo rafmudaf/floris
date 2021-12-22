@@ -1,4 +1,19 @@
 {
+  "name": "full_input_file",
+  "description": "Single turbine with Jensen / Jimenez wake models specifying all available parameters",
+  "floris_version": "v3.0.0",
+
+  "logging": {
+    "console": {
+      "enable": false,
+      "level": "WARNING"
+    },
+    "file": {
+      "enable": false,
+      "level": "WARNING"
+    }
+  },
+
   "farm": {
     "layout_x": [
       0.0
@@ -10,40 +25,28 @@
       "nrel_5mw"
     ]
   },
+
   "flow_field": {
     "air_density": 1.225,
-    "specified_wind_height": -1,
+    "reference_turbine_diameter": 126.0,
+    "reference_wind_height": 90.0,
     "turbulence_intensity": [
       0.06
     ],
-    "wind_direction": [
+    "wind_directions": [
       270.0
     ],
     "wind_shear": 0.12,
-    "wind_speed": [
+    "wind_speeds": [
       8.0
     ],
     "wind_veer": 0.0
   },
-  "logging": {
-    "console": {
-      "enable": true,
-      "level": "INFO"
-    },
-    "file": {
-      "enable": false,
-      "level": "INFO"
-    }
-  },
+
   "turbine": {
     "nrel_5mw": {
-      "TSR": 8.0,
-      "blade_count": 3,
-      "blade_pitch": 0.0,
       "generator_efficiency": 1.0,
       "hub_height": 90.0,
-      "pP": 1.88,
-      "pT": 1.88,
       "power_thrust_table": {
         "power": [
           0.0,
@@ -196,39 +199,29 @@
           25.5
         ]
       },
-      "rotor_diameter": 126.0,
-      "tilt_angle": 0.0,
-      "use_points_on_perimeter": false,
-      "yaw_angle": 0.0
+      "pP": 1.88,
+      "pT": 1.88,
+      "rotor_diameter": 126.0
     }
   },
+
   "wake": {
     "model_strings": {
-      "combination_model": "sosfs",
-      "deflection_model": "gauss",
-      "turbulence_model": "crespo_hernandez",
-      "velocity_model": "gauss_legacy"
+      "combination_model": null,
+      "deflection_model": "jimenez",
+      "turbulence_model": null,
+      "velocity_model": "jensen"
     },
     "wake_deflection_parameters": {
-      "gauss": {
-        "dm": 1.2,
-        "use_secondary_steering": false
-      }
-    },
-    "wake_turbulence_parameters": {
-      "crespo_hernandez": {
-        "ai": 0.8,
-        "constant": 0.73,
-        "downstream": -0.275,
-        "initial": 0.1
+      "jimenez": {
+        "ad": 0.0,
+        "bd": 0.0,
+        "kd": 0.05
       }
     },
     "wake_velocity_parameters": {
-      "gauss_legacy": {
-        "calculate_VW_velocities": false,
-        "ka": 0.38,
-        "kb": 0.004,
-        "use_yaw_added_recovery": false
+      "jensen": {
+        "we": 0.05
       }
     }
   }

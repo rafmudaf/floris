@@ -23,7 +23,7 @@ import matplotlib.pyplot as plt
 from matplotlib import rcParams
 
 
-def plot_turbines(ax, layout_x, layout_y, yaw_angles, D, color=None, wind_direction=270.0):
+def plot_turbines(ax, layout_x, layout_y, yaw_angles, rotor_diameters, color=None, wind_direction=270.0):
     """
     Plot wind plant layout from turbine locations.
 
@@ -38,12 +38,12 @@ def plot_turbines(ax, layout_x, layout_y, yaw_angles, D, color=None, wind_direct
     """
 
     # Correct for the wind direction
-    yaw_angles = np.array(yaw_angles) - wind_direction - 270
+    yaw_angles = np.array(yaw_angles)  # - wind_direction - 270
 
     if color is None:
         color = "k"
-    for x, y, yaw in zip(layout_x, layout_y, yaw_angles):
-        R = D / 2.0
+    for x, y, yaw, d in zip(layout_x, layout_y, yaw_angles, rotor_diameters):
+        R = d / 2.0
         x_0 = x + np.sin(np.deg2rad(yaw)) * R
         x_1 = x - np.sin(np.deg2rad(yaw)) * R
         y_0 = y - np.cos(np.deg2rad(yaw)) * R
@@ -63,19 +63,14 @@ def plot_turbines_with_fi(ax, fi, color=None):
                 FlowData object.
         color (str, optional): Color to plot turbines
     """
-    # Grab D
-    for i, turbine in enumerate(fi.floris.farm.turbines):
-        D = turbine.rotor_diameter
-        break
-
     plot_turbines(
         ax,
         fi.layout_x,
         fi.layout_y,
-        fi.get_yaw_angles(),
-        D,
+        fi.get_yaw_angles()[0, 0],
+        fi.floris.farm.rotor_diameter[0, 0],
         color=color,
-        wind_direction=fi.floris.farm.wind_map.input_direction,
+        wind_direction=fi.floris.flow_field.wind_directions[0],
     )
 
 
@@ -154,7 +149,6 @@ def visualize_cut_plane(cut_plane, ax=None, minSpeed=None, maxSpeed=None, cmap="
     # Make equal axis
     ax.set_aspect("equal")
 
-    # Return im
     return im
 
 
