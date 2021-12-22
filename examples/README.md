@@ -26,6 +26,7 @@
 ### AEP No Class
 - Updated the way the turbine parameters are retrieved to match the new API
 - If you uncomment lines 78-84, the example will run just fine, otherwise, the you get stuck with the same `NotImplementedError` as in getting started
+- Vectorized the wind rose power calculation
 
 ### AEP
 - Updated the way the turbine parameters are retrieved to match the new API
@@ -40,4 +41,10 @@
 ### Change diameter
 - Added a new function to create a copy of the turbine mapping, then update based on that
 - `FlorisInterface.change_turbine` now lets you map to a turbine that already exists in the `Floris.farm.turbine_map`.
-- Applied vectorization to the wake calculation, but now there is no power being produced
+- Fixed a major bug in `FlorisInterface.reinitialize_flow_field` to ensure the farm is recreated with updated wind speeds and wind directions and that they are updated no matter which farm inputs are intended to be updated
+
+### Change hub height
+- Updated the code for v3
+- hor_plane still not implemented
+
+###

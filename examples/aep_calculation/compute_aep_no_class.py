@@ -75,13 +75,13 @@ fi.calculate_wake()
 print("Plotting the FLORIS flowfield...")
 # ================================================================================
 
-# # Initialize the horizontal cut
-# hor_plane = fi.get_hor_plane(height=fi.floris.farm.hub_height[0, 0, 0])
+# Initialize the horizontal cut
+hor_plane = fi.get_hor_plane(height=fi.floris.farm.hub_height[0, 0, 0])
 
-# # Plot and show
-# fig, ax = plt.subplots()
-# wfct.visualization.visualize_cut_plane(hor_plane, ax=ax)
-# ax.set_title("Baseline flow for U = 8 m/s, Wind Direction = 270$^\\circ$")
+# Plot and show
+fig, ax = plt.subplots()
+wfct.visualization.visualize_cut_plane(hor_plane, ax=ax)
+ax.set_title("Baseline flow for U = 8 m/s, Wind Direction = 270$^\\circ$")
 
 # ================================================================================
 print("Importing wind rose data...")
@@ -156,13 +156,13 @@ df_base = pd.DataFrame.from_dict(power_dict, "index")
 df_base.reset_index(drop=True, inplace=True)
 
 # Initialize power rose
-# case_name = "Example " + str(N_row) + " x " + str(N_row) + " Wind Farm"
-# power_rose = pr.PowerRose()
-# power_rose.make_power_rose_from_user_data(case_name, df, df_base["power_no_wake"], df_base["power_baseline"])
+case_name = "Example " + str(N_row) + " x " + str(N_row) + " Wind Farm"
+power_rose = pr.PowerRose()
+power_rose.make_power_rose_from_user_data(case_name, df, df_base["power_no_wake"], df_base["power_baseline"])
 
-# # Display AEP analysis
-# fig, axarr = plt.subplots(2, 1, sharex=True, figsize=(6.4, 6.5))
-# power_rose.plot_by_direction(axarr)
-# power_rose.report()
+# Display AEP analysis
+fig, axarr = plt.subplots(2, 1, sharex=True, figsize=(6.4, 6.5))
+power_rose.plot_by_direction(axarr)
+power_rose.report()
 
-# plt.show()
+plt.show()

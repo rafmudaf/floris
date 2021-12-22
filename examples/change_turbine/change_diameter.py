@@ -150,7 +150,6 @@ for t in range(2):
     ax = axarr[t]
 
     # Now sweep the heights for this turbine
-    diameters = np.arange(80, 160, 1.0)
     powers = np.zeros_like(diameters)
 
     for d_idx, d in enumerate(diameters):

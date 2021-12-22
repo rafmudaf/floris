@@ -15,27 +15,42 @@
 
 # Show the grid points in hetergenous flow calculation
 
-import numpy as np
-import pandas as pd
+from pathlib import Path
+
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D  # noqa: F401 unused import
 
 import floris.tools as wfct
+
+
+ROOT = Path(__file__).resolve().parent
+FILE_NAME = "example_input.json"
+
+root_parts = ROOT.parts
+if root_parts[-1] == "change_turbine":
+    INPUT_JSON = ROOT.parents[0] / FILE_NAME
+elif root_parts[-1] == "examples":
+    INPUT_JSON = ROOT / FILE_NAME
+elif root_parts[-1] == "floris":
+    INPUT_JSON = ROOT / "examples" / "example_input.json"
+else:
+    raise FileNotFoundError(
+        "Examples must be run from with floris/, floris/examples/, or floris/examples/<topic-folder>!"
+    )
 
 
 # The Axes3D import registers the 3D projection, but is otherwise unused.
 
 
-fi = wfct.floris_interface.FlorisInterface("../example_input.json")
+fi = wfct.floris_interface.FlorisInterface(INPUT_JSON)
 fi.reinitialize_flow_field(layout_array=[[0, 500], [0, 0]])
 fi.calculate_wake()
 
 # Show the grid points (note only on turbines, not on wind measurements)
 fig = plt.figure(figsize=(15, 5))
 ax = fig.add_subplot(131, projection="3d")
-xs = fi.floris.farm.flow_field.x
-ys = fi.floris.farm.flow_field.y
-zs = fi.floris.farm.flow_field.z
+xs = fi.floris.flow_field.x
+ys = fi.floris.flow_field.y
+zs = fi.floris.flow_field.z
 ax.scatter(xs, ys, zs, marker=".")
 
 # Show the turbine points in this case
@@ -55,9 +70,9 @@ ax.set_zlabel("Vertical [m]")
 fi.change_turbine([0], {"hub_height": 150})
 fi.calculate_wake()
 ax = fig.add_subplot(132, projection="3d")
-xs = fi.floris.farm.flow_field.x
-ys = fi.floris.farm.flow_field.y
-zs = fi.floris.farm.flow_field.z
+xs = fi.floris.flow_field.x
+ys = fi.floris.flow_field.y
+zs = fi.floris.flow_field.z
 ax.scatter(xs, ys, zs, marker=".")
 
 # Show the turbine points in this case

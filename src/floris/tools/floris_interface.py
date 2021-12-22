@@ -278,11 +278,15 @@ class FlorisInterface(LoggerBase):
             with_resolution (float, optional): Resolution of output flow_field. Defaults
                 to None.
         """
+        reinitialize_farm = False
+        farm = {}
         flow_field_dict = self.floris.flow_field._asdict()
         if wind_speed is not None:
             flow_field_dict["wind_speeds"] = wind_speed
+            reinitialize_farm = True
         if wind_direction is not None:
             flow_field_dict["wind_directions"] = wind_direction
+            reinitialize_farm = True
         if wind_rose_probability is not None:
             flow_field_dict["probability"] = wind_rose_probability
         else:
@@ -310,8 +314,9 @@ class FlorisInterface(LoggerBase):
             pass
 
         self.floris.flow_field = FlowField.from_dict(flow_field_dict)
+        if reinitialize_farm:
+            farm = farm = self.floris.farm._asdict()
 
-        reinitialize_farm = False
         x = self.floris.farm.layout_x
         if layout_array is not None:
             x, y = layout_array
@@ -319,8 +324,6 @@ class FlorisInterface(LoggerBase):
             farm = self.floris.farm._asdict()
             farm["layout_x"] = x
             farm["layout_y"] = y
-            farm["wind_directions"] = self.floris.flow_field.wind_directions
-            farm["wind_speeds"] = self.floris.flow_field.wind_speeds
             reinitialize_farm = True
 
         turbine_id_check = len(x) != self.floris.farm.n_turbines
@@ -339,7 +342,7 @@ class FlorisInterface(LoggerBase):
 
         # Assign the new turbine_id if one is input
         if turbine_id is not None:
-            if not farm:
+            if farm == {}:
                 farm = self.floris.farm._asdict()
             farm["turbine_id"] = turbine_id
             reinitialize_farm = True
@@ -348,12 +351,14 @@ class FlorisInterface(LoggerBase):
             if len(self.floris.farm.wtg_id) != len(farm["layout_x"]):
                 farm.pop("wtg_id")
         if wtg_id is not None:
-            if not farm:
+            if farm == {}:
                 farm = self.floris.farm._asdict()
             farm["wtg_id"] = wtg_id
             reinitialize_farm = True
 
         if reinitialize_farm:
+            farm["wind_directions"] = self.floris.flow_field.wind_directions
+            farm["wind_speeds"] = self.floris.flow_field.wind_speeds
             self.floris.farm = Farm.from_dict(farm)
 
     def get_plane_of_points(
