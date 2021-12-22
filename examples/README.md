@@ -20,3 +20,17 @@
 - TurbOPark, Multizone, and Gauss Legacy were commented out because they're not implemented
 - A ton of changes to FLORIS functionality to align everything, and get the examples up and running up to the common failure point
 - Gets caught at same point as 00, 01, and 02
+
+
+## AEP Calculations
+### AEP No Class
+- Updated the way the turbine parameters are retrieved to match the new API
+- If you uncomment lines 78-84, the example will run just fine, otherwise, the you get stuck with the same `NotImplementedError` as in getting started
+
+### AEP
+- Updated the way the turbine parameters are retrieved to match the new API
+- Lines 78-84 will not run, per all previous comments
+- Line 124, `YawOptimizationWindRose`, gets stuck at tools/optimization/scipy/yaw_wind_rose:576 where we loop through the turbine's yaw angles
+    - Changed this to just use the farm.farm_controller.yaw_angles....
+- Updated set `FarmController.set_yaw_angles` control flow to allow for nested inputs of the correct size to be used
+- Aside from 78-84, the code runs with seemingly the same results as the previous example

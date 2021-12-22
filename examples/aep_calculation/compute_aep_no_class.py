@@ -13,24 +13,39 @@
 # See https://floris.readthedocs.io for documentation
 
 
-import os
+from pathlib import Path
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 
 import floris.tools as wfct
-import floris.tools.cut_plane as cp
 import floris.tools.wind_rose as rose
 import floris.tools.power_rose as pr
-import floris.tools.visualization as vis
+
+
+# Define the example input and wind rose input files dynamically
+ROOT = Path(__file__).resolve().parent
+FILE_NAME = "example_input.json"
+WIND_ROSE_FILE = Path("optimization") / "scipy" / "windtoolkit_geo_center_us.p"
+root_parts = ROOT.parts
+if root_parts[-1] == "aep_calculation":
+    INPUT_JSON = ROOT.parent / FILE_NAME
+    WIND_ROSE_INPUT = ROOT.parent / WIND_ROSE_FILE
+elif root_parts[-1] == "examples":
+    INPUT_JSON = ROOT / FILE_NAME
+    WIND_ROSE_INPUT = ROOT / WIND_ROSE_FILE
+elif root_parts[-1] == "floris":
+    INPUT_JSON = ROOT / "examples" / "example_input.json"
+    WIND_ROSE_INPUT = ROOT / "examples" / WIND_ROSE_FILE
+else:
+    raise FileNotFoundError(
+        "Examples must be run from with floris/, floris/examples/, or floris/examples/<topic-folder>!"
+    )
 
 
 # Instantiate the FLORIS object
-file_dir = os.path.dirname(os.path.abspath(__file__))
-fi = wfct.floris_interface.FlorisInterface(
-    os.path.join(file_dir, "../example_input.json")
-)
+fi = wfct.floris_interface.FlorisInterface(INPUT_JSON)
 
 # Define wind farm coordinates and layout
 wf_coordinate = [39.8283, -98.5795]
@@ -40,7 +55,7 @@ minimum_ws = 3.0
 
 # Set wind farm to N_row x N_row grid with constant spacing
 # (2 x 2 grid, 5 D spacing)
-D = fi.floris.farm.turbines[0].rotor_diameter
+D = fi.floris.farm.rotor_diameter[0, 0, 0]
 N_row = 2
 spc = 5
 layout_x = []
@@ -51,9 +66,7 @@ for i in range(N_row):
         layout_y.append(k * spc * D)
 N_turb = len(layout_x)
 
-fi.reinitialize_flow_field(
-    layout_array=(layout_x, layout_y), wind_direction=[270.0], wind_speed=[8.0]
-)
+fi.reinitialize_flow_field(layout_array=(layout_x, layout_y), wind_direction=[270.0], wind_speed=[8.0])
 fi.calculate_wake()
 
 # ================================================================================
@@ -61,7 +74,7 @@ print("Plotting the FLORIS flowfield...")
 # ================================================================================
 
 # Initialize the horizontal cut
-hor_plane = fi.get_hor_plane(height=fi.floris.farm.turbines[0].hub_height)
+hor_plane = fi.get_hor_plane(height=fi.floris.farm.hub_height[0, 0, 0])
 
 # Plot and show
 fig, ax = plt.subplots()
@@ -95,9 +108,7 @@ if calculate_new_wind_rose:
     )
 
 else:
-    df = wind_rose.load(
-        os.path.join(file_dir, "../optimization/scipy/windtoolkit_geo_center_us.p")
-    )
+    df = wind_rose.load(WIND_ROSE_INPUT)
 
 # plot wind rose
 wind_rose.plot_wind_rose()
@@ -153,9 +164,7 @@ df_base.reset_index(drop=True, inplace=True)
 # Initialize power rose
 case_name = "Example " + str(N_row) + " x " + str(N_row) + " Wind Farm"
 power_rose = pr.PowerRose()
-power_rose.make_power_rose_from_user_data(
-    case_name, df, df_base["power_no_wake"], df_base["power_baseline"]
-)
+power_rose.make_power_rose_from_user_data(case_name, df, df_base["power_no_wake"], df_base["power_baseline"])
 
 # Display AEP analysis
 fig, axarr = plt.subplots(2, 1, sharex=True, figsize=(6.4, 6.5))
