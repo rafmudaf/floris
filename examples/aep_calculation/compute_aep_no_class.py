@@ -14,10 +14,12 @@
 
 
 from pathlib import Path
+from itertools import product
 
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+from numpy.lib.arraysetops import unique
 
 import floris.tools as wfct
 import floris.tools.wind_rose as rose
@@ -73,13 +75,13 @@ fi.calculate_wake()
 print("Plotting the FLORIS flowfield...")
 # ================================================================================
 
-# Initialize the horizontal cut
-hor_plane = fi.get_hor_plane(height=fi.floris.farm.hub_height[0, 0, 0])
+# # Initialize the horizontal cut
+# hor_plane = fi.get_hor_plane(height=fi.floris.farm.hub_height[0, 0, 0])
 
-# Plot and show
-fig, ax = plt.subplots()
-wfct.visualization.visualize_cut_plane(hor_plane, ax=ax)
-ax.set_title("Baseline flow for U = 8 m/s, Wind Direction = 270$^\\circ$")
+# # Plot and show
+# fig, ax = plt.subplots()
+# wfct.visualization.visualize_cut_plane(hor_plane, ax=ax)
+# ax.set_title("Baseline flow for U = 8 m/s, Wind Direction = 270$^\\circ$")
 
 # ================================================================================
 print("Importing wind rose data...")
@@ -119,56 +121,48 @@ print("Finding power with and without wakes in FLORIS...")
 
 # Determine baseline power with and without wakes
 
-# Put results in dict for speed
+# Initialize the recycled variables
 power_dict = dict()
+unique_wd = df.wd.unique()
+N_wd = len(unique_wd)
+unique_ws = df.ws.unique()
+N_ws = len(unique_ws)
 
-for i in range(len(df.wd)):
-    print(
-        "Computing wind speed, wind direction pair "
-        + str(i)
-        + " out of "
-        + str(len(df.wd))
-        + ": wind speed = "
-        + str(df.ws[i])
-        + " m/s, wind direction = "
-        + str(df.wd[i])
-        + " deg."
-    )
+print(f"Computing all {df.shape[0]} wind direction and wind speed pairs")
+fi.reinitialize_flow_field(wind_direction=unique_wd, wind_speed=unique_ws)
 
-    if df.ws[i] >= minimum_ws:
-        fi.reinitialize_flow_field(wind_direction=[df.wd[i]], wind_speed=[df.ws[i]])
+# calculate baseline power
+print("Calculating with wakes")
+fi.calculate_wake()
+power_base = fi.get_turbine_power()
 
-        # calculate baseline power
-        fi.calculate_wake()
-        power_base = fi.get_turbine_power()
 
-        # calculate power for no wake case
-        fi.calculate_wake(no_wake=True)
-        power_no_wake = fi.get_turbine_power(no_wake=True)
-    else:
-        power_base = N_turb * [0.0]
-        power_no_wake = N_turb * [0.0]
+# calculate power for no wake case
+print("Calculating without wakes")
+fi.calculate_wake(no_wake=True)
+power_no_wake = fi.get_turbine_power(no_wake=True)
 
-    power_dict[i] = {
-        "ws": df.ws[i],
-        "wd": df.wd[i],
-        "power_baseline": np.sum(power_base),
-        "turbine_power_baseline": power_base,
-        "power_no_wake": np.sum(power_no_wake),
-        "turbine_power_no_wake": power_no_wake,
+for ix, ((i, wd_i), (j, ws_j)) in enumerate(product(zip(range(N_wd), unique_wd), zip(range(N_ws), unique_ws))):
+    power_dict[ix] = {
+        "ws": ws_j,
+        "wd": wd_i,
+        "power_baseline": np.sum(power_base[i, j]),
+        "turbine_power_baseline": power_base[i, j],
+        "power_no_wake": np.sum(power_no_wake[i, j]),
+        "turbine_power_no_wake": power_no_wake[i, j],
     }
 
 df_base = pd.DataFrame.from_dict(power_dict, "index")
 df_base.reset_index(drop=True, inplace=True)
 
 # Initialize power rose
-case_name = "Example " + str(N_row) + " x " + str(N_row) + " Wind Farm"
-power_rose = pr.PowerRose()
-power_rose.make_power_rose_from_user_data(case_name, df, df_base["power_no_wake"], df_base["power_baseline"])
+# case_name = "Example " + str(N_row) + " x " + str(N_row) + " Wind Farm"
+# power_rose = pr.PowerRose()
+# power_rose.make_power_rose_from_user_data(case_name, df, df_base["power_no_wake"], df_base["power_baseline"])
 
-# Display AEP analysis
-fig, axarr = plt.subplots(2, 1, sharex=True, figsize=(6.4, 6.5))
-power_rose.plot_by_direction(axarr)
-power_rose.report()
+# # Display AEP analysis
+# fig, axarr = plt.subplots(2, 1, sharex=True, figsize=(6.4, 6.5))
+# power_rose.plot_by_direction(axarr)
+# power_rose.report()
 
-plt.show()
+# plt.show()

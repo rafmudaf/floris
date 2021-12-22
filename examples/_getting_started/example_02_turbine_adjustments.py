@@ -20,7 +20,7 @@ from pathlib import Path
 
 import matplotlib.pyplot as plt
 
-from floris.simulation import turbine
+from floris.simulation import base, turbine
 from floris.tools.visualization import visualize_cut_plane
 from floris.tools.floris_interface import FlorisInterface
 
@@ -51,8 +51,9 @@ fi.reinitialize_flow_field(layout_array=[layout_x, layout_y])
 
 
 # Change turbine 0 and 3 to have a 35 m rotor diameter
-turbine_rd35 = {"nrel_5mw_35m": fi.floris.turbine["nrel_5mw"]._asdict()}
-turbine_rd35["nrel_5mw_35m"]["rotor_diameter"] = 35
+turbine_rd35 = fi.copy_and_update_turbine_map(
+    base_turbine_id="nrel_5mw", update_parameters={"rotor_diameter": 35}, new_id="nrel_5mw_35m"
+)
 fi.change_turbine(turbine_indices=[0, 3], new_turbine_map=turbine_rd35)
 
 # Calculate wake

@@ -34,3 +34,10 @@
     - Changed this to just use the farm.farm_controller.yaw_angles....
 - Updated set `FarmController.set_yaw_angles` control flow to allow for nested inputs of the correct size to be used
 - Aside from 78-84, the code runs with seemingly the same results as the previous example
+
+
+## Change Turbine
+### Change diameter
+- Added a new function to create a copy of the turbine mapping, then update based on that
+- `FlorisInterface.change_turbine` now lets you map to a turbine that already exists in the `Floris.farm.turbine_map`.
+- Applied vectorization to the wake calculation, but now there is no power being produced
