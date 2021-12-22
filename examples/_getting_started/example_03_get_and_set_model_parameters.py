@@ -13,13 +13,31 @@
 # See https://floris.readthedocs.io for documentation
 
 
+from pathlib import Path
+
 import matplotlib.pyplot as plt
 
 import floris.tools as wfct
 
 
+ROOT = Path(__file__).resolve().parent
+FILE_NAME = "example_input.json"
+
+root_parts = ROOT.parts
+if root_parts[-1] == "_getting_started":
+    INPUT_JSON = ROOT.parents[0] / FILE_NAME
+elif root_parts[-1] == "examples":
+    INPUT_JSON = ROOT / FILE_NAME
+elif root_parts[-1] == "floris":
+    INPUT_JSON = ROOT / "examples" / "example_input.json"
+else:
+    raise FileNotFoundError(
+        "Examples must be run from with floris/, floris/examples/, or floris/examples/<topic-folder>!"
+    )
+
+
 # Initialize the FLORIS interface fi
-fi = wfct.floris_interface.FlorisInterface("../example_input.json")
+fi = wfct.floris_interface.FlorisInterface(INPUT_JSON)
 
 # Show the current model parameters
 print("All the model parameters and their current values:\n")

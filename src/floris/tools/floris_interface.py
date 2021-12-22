@@ -173,26 +173,32 @@ class FlorisInterface(LoggerBase):
         else:
             raise TypeError("The Floris `configuration` must of type 'dict', 'str', or 'Path'!")
 
-    def calculate_wake(self, yaw_angles=None, no_wake=False, points=None, track_n_upstream_wakes=False):
+    def calculate_wake(
+        self,
+        yaw_angles: NDArrayFloat | list[float] | None = None,
+        no_wake: bool = False,
+        points: NDArrayFloat | list[float] | None = None,
+        track_n_upstream_wakes: bool = False,
+    ) -> None:
         """
         Wrapper to the :py:meth:`~.Farm.set_yaw_angles` and
         :py:meth:`~.FlowField.calculate_wake` methods.
 
         Args:
-            yaw_angles (np.array, optional): Turbine yaw angles.
+            yaw_angles (NDArrayFloat | list[float] | None, optional): Turbine yaw angles.
                 Defaults to None.
             no_wake: (bool, optional): When *True* updates the turbine
                 quantities without calculating the wake or adding the
                 wake to the flow field. Defaults to *False*.
-            points: (np.array, optional): The x, y, and z coordinates at
-                which the flow field velocity is to be recorded. Defaults
+            points: (NDArrayFloat | list[float] | None, optional): The x, y, and z
+                coordinates at which the flow field velocity is to be recorded. Defaults
                 to None.
-            track_n_upstream_wakes (bool, optional): When *True*, will keep
-                track of the number of upstream wakes a turbine is
-                experiencing. Defaults to *False*.
+            track_n_upstream_wakes (bool, optional): When *True*, will keep track of the
+                number of upstream wakes a turbine is experiencing. Defaults to *False*.
         """
         if yaw_angles is not None:
-            self.floris.farm.set_yaw_angles(yaw_angles)
+            yaw_angles = np.array(yaw_angles)
+            self.floris.farm.farm_controller.set_yaw_angles(yaw_angles)
 
         # TODO: These inputs need to be mapped
         # self.floris.flow_field.calculate_wake(
@@ -215,10 +221,10 @@ class FlorisInterface(LoggerBase):
         turbulence_kinetic_energy=None,
         air_density: float | None = None,
         wake: WakeModelManager = None,
-        layout_array: list[float] | NDArrayFloat | None = None,
+        layout_array: list[list[float]] | NDArrayFloat | None = None,
         turbine_id: list[str] | None = None,
         wtg_id: list[str] | None = None,
-        with_resolution=None,
+        with_resolution: float | None = None,
     ):
         """
         Wrapper to :py:meth:`~.flow_field.reinitialize_flow_field`. All input
@@ -589,7 +595,7 @@ class FlorisInterface(LoggerBase):
         """
         # If height not provided, use the hub height
         if height is None:
-            height = self.floris.farm.hub_height[0]  # TODO: needs multi-turbine support
+            height = self.floris.farm.hub_height[0, 0, 0]  # TODO: needs multi-turbine support
             self.logger.info("Default to hub height = %.1f for horizontal plane." % height)
 
         # Get the points of data in a dataframe

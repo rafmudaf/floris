@@ -13,6 +13,8 @@
 # See https://floris.readthedocs.io for documentation
 
 
+from pathlib import Path
+
 import numpy as np
 import matplotlib.pyplot as plt
 
@@ -20,10 +22,26 @@ from floris.tools import FlorisInterface
 from floris.tools.visualization import visualize_cut_plane
 
 
+ROOT = Path(__file__).resolve().parent
+FILE_NAME = "example_input.json"
+
+root_parts = ROOT.parts
+if root_parts[-1] == "_getting_started":
+    INPUT_JSON = ROOT.parents[0] / FILE_NAME
+elif root_parts[-1] == "examples":
+    INPUT_JSON = ROOT / FILE_NAME
+elif root_parts[-1] == "floris":
+    INPUT_JSON = ROOT / "examples" / "example_input.json"
+else:
+    raise FileNotFoundError(
+        "Examples must be run from with floris/, floris/examples/, or floris/examples/<topic-folder>!"
+    )
+
+
 # Initialize the FLORIS interface fi
 # For basic usage, the florice interface provides a simplified interface to
 # the underlying classes
-fi = FlorisInterface("example_input.json")
+fi = FlorisInterface(INPUT_JSON)
 fi.floris.farm.farm_controller.set_yaw_angles(np.array([25.0]))
 
 # Calculate wake

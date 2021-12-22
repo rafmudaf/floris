@@ -71,11 +71,11 @@ class WakeModelManager(BaseClass):
             dictionary for the model defined in `model_strings["velocity_model"]`.
     """
 
-    model_strings: dict = attr.ib(factory=dict)
-    wake_combination_parameters: dict = attr.ib(factory=dict)
-    wake_deflection_parameters: dict = attr.ib(factory=dict)
-    wake_turbulence_parameters: dict = attr.ib(factory=dict)
-    wake_velocity_parameters: dict = attr.ib(factory=dict)
+    model_strings: dict = attr.ib()
+    wake_combination_parameters: dict = attr.ib(default=attr.Factory(dict))
+    wake_deflection_parameters: dict = attr.ib(default=attr.Factory(dict))
+    wake_turbulence_parameters: dict = attr.ib(default=attr.Factory(dict))
+    wake_velocity_parameters: dict = attr.ib(default=attr.Factory(dict))
 
     combination_model: BaseModel = attr.ib(init=False)
     deflection_model: BaseModel = attr.ib(init=False)
@@ -88,6 +88,7 @@ class WakeModelManager(BaseClass):
     @model_strings.validator
     def validate_model_strings(self, instance: attr.Attribute, value: dict) -> None:
         required_strings = ["velocity_model", "deflection_model", "combination_model", "turbulence_model"]
+
         # Check that all required strings are given
         for s in required_strings:
             if s not in value.keys():
@@ -104,9 +105,14 @@ class WakeModelManager(BaseClass):
         wake_models = {}
         for model_type in ("deflection", "velocity"):  # , "combination", "turbulence")
             model_string = self.model_strings[f"{model_type}_model"]
-            model = MODEL_MAP[f"{model_type}_model"][model_string]
+            try:
+                model = MODEL_MAP[f"{model_type}_model"][model_string]
+            except KeyError as e:
+                raise KeyError(f"The {model_string} model is not a valid wake {model_type} model") from e
 
-            model_def = getattr(self, f"wake_{model_type}_parameters")[model_string]
+            model_def = getattr(self, f"wake_{model_type}_parameters", {})
+            if model_def != {}:
+                model_def = model_def[model_string]
             wake_models[model_type] = model.from_dict(model_def)
 
         # TODO: Uncomment the two models once implemented
