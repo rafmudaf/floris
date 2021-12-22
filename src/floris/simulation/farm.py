@@ -57,9 +57,22 @@ class FarmController:
             yaw_angles (NDArrayFloat): Array of yaw angles with dimensions (n wind directions,
             n wind speeds, n turbines).
         """
-        if yaw_angles.ndim != 1:
-            raise ValueError("yaw_angles must be set for each turbine for all atmospheric conditions.")
-        self.yaw_angles[:, :, :] = yaw_angles[None, None, :]
+        N_yaw = self.yaw_angles.size
+        shape_yaw = self.yaw_angles.shape
+        if yaw_angles.ndim == 1:
+            if yaw_angles.size == shape_yaw[2]:
+                self.yaw_angles[:, :, :] = yaw_angles[None, None, :]
+            elif yaw_angles.size == N_yaw:
+                self.yaw_angles = yaw_angles.reshape(shape_yaw)
+            else:
+                raise ValueError(f"If 1-D inputs of yaw angles are provided, there must be {N_yaw} inputs provided!")
+        elif yaw_angles.shape == shape_yaw:
+            self.yaw_angles = yaw_angles
+        else:
+            raise ValueError(
+                "Yaw_angles must be set for each turbine for all atmospheric conditions,"
+                f" and have 1-D {shape_yaw} combinations in total or have shape: {shape_yaw}"
+            )
 
 
 def create_turbines(mapping: Dict[str, dict]) -> Dict[str, Turbine]:
