@@ -142,14 +142,15 @@ print("Calculating without wakes")
 fi.calculate_wake(no_wake=True)
 power_no_wake = fi.get_turbine_power(no_wake=True)
 
+zero_power = np.zeros(fi.floris.farm.n_turbines)
 for ix, ((i, wd_i), (j, ws_j)) in enumerate(product(zip(range(N_wd), unique_wd), zip(range(N_ws), unique_ws))):
     power_dict[ix] = {
         "ws": ws_j,
         "wd": wd_i,
-        "power_baseline": np.sum(power_base[i, j]),
-        "turbine_power_baseline": power_base[i, j],
-        "power_no_wake": np.sum(power_no_wake[i, j]),
-        "turbine_power_no_wake": power_no_wake[i, j],
+        "power_baseline": np.sum(power_base[i, j]) if ws_j >= minimum_ws else 0,
+        "turbine_power_baseline": power_base[i, j] if ws_j >= minimum_ws else zero_power,
+        "power_no_wake": np.sum(power_no_wake[i, j]) if ws_j >= minimum_ws else 0,
+        "turbine_power_no_wake": power_no_wake[i, j] if ws_j >= minimum_ws else zero_power,
     }
 
 df_base = pd.DataFrame.from_dict(power_dict, "index")
