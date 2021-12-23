@@ -12,6 +12,8 @@
 
 # See https://floris.readthedocs.io for documentation
 
+from itertools import product
+
 import numpy as np
 import pandas as pd
 from scipy.stats import norm
@@ -232,44 +234,29 @@ class YawOptimizationWindRose(Optimization):
 
     def _get_initial_farm_power(self):
         self.initial_farm_powers = []
+        unique_wd = self.wd.unique()
+        unique_ws = self.ws.unique()
 
-        for i in range(len(self.wd)):
-            if (self.ws[i] >= self.minimum_ws) & (self.ws[i] <= self.maximum_ws):
-                if self.ti is None:
-                    self.fi.reinitialize_flow_field(wind_direction=[self.wd[i]], wind_speed=[self.ws[i]])
-                else:
-                    self.fi.reinitialize_flow_field(
-                        wind_direction=[self.wd[i]],
-                        wind_speed=[self.ws[i]],
-                        turbulence_intensity=self.ti[i],
-                    )
+        if self.ti is None:
+            self.fi.reinitialize_flow_field(wind_direction=unique_wd, wind_speed=unique_ws)
+        else:
+            self.fi.reinitialize_flow_field(
+                wind_direction=unique_wd,
+                wind_speed=unique_ws,
+                turbulence_intensity=self.ti,
+            )
+        # initial power
+        print(self.yaw_angles_baseline)
+        self.fi.calculate_wake(yaw_angles=np.array(self.yaw_angles_baseline).flatten())
+        power_init = self.fi.get_turbine_power(
+            include_unc=self.include_unc,
+            unc_pmfs=self.unc_pmfs,
+            unc_options=self.unc_options,
+        )
 
-                # initial power
-                self.fi.calculate_wake(yaw_angles=self.yaw_angles_baseline)
-                power_init = self.fi.get_turbine_power(
-                    include_unc=self.include_unc,
-                    unc_pmfs=self.unc_pmfs,
-                    unc_options=self.unc_options,
-                )
-            elif self.ws[i] >= self.maximum_ws:
-                if self.ti is None:
-                    self.fi.reinitialize_flow_field(wind_direction=[self.wd[i]], wind_speed=[self.ws[i]])
-                else:
-                    self.fi.reinitialize_flow_field(
-                        wind_direction=[self.wd[i]],
-                        wind_speed=[self.ws[i]],
-                        turbulence_intensity=self.ti[i],
-                    )
-                self.fi.calculate_wake(yaw_angles=self.yaw_angles_baseline)
-                power_init = self.fi.get_turbine_power(
-                    include_unc=self.include_unc,
-                    unc_pmfs=self.unc_pmfs,
-                    unc_options=self.unc_options,
-                )
-            else:
-                power_init = self.nturbs * [0.0]
-
-            self.initial_farm_powers.append(np.dot(self.turbine_weights, power_init))
+        ix_zero_power = unique_ws < self.minimum_ws
+        power_init[:, ix_zero_power] = 0.0
+        self.initial_farm_powers.append(np.dot(power_init, self.turbine_weights))
 
     def _get_power_for_yaw_angle_opt(self, yaw_angles_subset_norm):
         """
@@ -696,105 +683,55 @@ class YawOptimizationWindRose(Optimization):
         # Put results in dict for speed, instead of previously
         # appending to frame.
         result_dict = dict()
+        unique_wd = self.wd.unique()
+        N_wd = len(unique_wd)
+        unique_ws = self.ws.unique()
+        N_ws = len(unique_ws)
 
-        for i in range(len(self.wd)):
-            if self.verbose:
-                if self.ti is None:
-                    print(
-                        "Computing wind speed, wind direction pair "
-                        + str(i)
-                        + " out of "
-                        + str(len(self.wd))
-                        + ": wind speed = "
-                        + str(self.ws[i])
-                        + " m/s, wind direction = "
-                        + str(self.wd[i])
-                        + " deg."
-                    )
-                else:
-                    print(
-                        "Computing wind speed, wind direction, turbulence "
-                        + "intensity set "
-                        + str(i)
-                        + " out of "
-                        + str(len(self.wd))
-                        + ": wind speed = "
-                        + str(self.ws[i])
-                        + " m/s, wind direction = "
-                        + str(self.wd[i])
-                        + " deg, turbulence intensity = "
-                        + str(self.ti[i])
-                        + "."
-                    )
+        if self.ti is None:
+            self.fi.reinitialize_flow_field(wind_direction=unique_wd, wind_speed=unique_ws)
+        else:
+            self.fi.reinitialize_flow_field(
+                wind_direction=unique_wd,
+                wind_speed=unique_ws,
+                turbulence_intensity=self.ti,
+            )
+        # calculate baseline power
+        self.fi.calculate_wake(yaw_angles=self.yaw_angles_baseline, no_wake=False)
+        power_base = self.fi.get_turbine_power(
+            include_unc=self.include_unc,
+            unc_pmfs=self.unc_pmfs,
+            unc_options=self.unc_options,
+        )
 
-            # Find baseline power in FLORIS
+        # calculate power for no wake case
+        self.fi.calculate_wake(yaw_angles=self.yaw_angles_baseline, no_wake=True)
+        power_no_wake = self.fi.get_turbine_power(
+            include_unc=self.include_unc,
+            unc_pmfs=self.unc_pmfs,
+            unc_options=self.unc_options,
+            no_wake=True,
+        )
 
-            if self.ws[i] >= self.minimum_ws:
-                if self.ti is None:
-                    self.fi.reinitialize_flow_field(wind_direction=[self.wd[i]], wind_speed=[self.ws[i]])
-                else:
-                    self.fi.reinitialize_flow_field(
-                        wind_direction=[self.wd[i]],
-                        wind_speed=[self.ws[i]],
-                        turbulence_intensity=self.ti[i],
-                    )
+        # Include turbine weighing terms and reset the power to zero for low windspeeds
+        ix_zero_power = unique_ws < self.maximum_ws
+        power_base[:, ix_zero_power] = 0
+        power_no_wake[:, ix_zero_power] = 0
+        power_base = self.turbine_weights * power_base
+        power_no_wake = self.turbine_weights * power_no_wake
 
-                # calculate baseline power
-                self.fi.calculate_wake(yaw_angles=self.yaw_angles_baseline, no_wake=False)
-                power_base = self.fi.get_turbine_power(
-                    include_unc=self.include_unc,
-                    unc_pmfs=self.unc_pmfs,
-                    unc_options=self.unc_options,
-                )
+        for ix, ((i, wd_i), (j, ws_j)) in enumerate(product(zip(range(N_wd), unique_wd), zip(range(N_ws), unique_ws))):
+            result_dict[ix] = {
+                "ws": ws_j,
+                "wd": wd_i,
+                "power_baseline": np.sum(power_base[i, j]),
+                "turbine_power_baseline": power_base[i, j],
+                "power_no_wake": np.sum(power_no_wake[i, j]),
+                "turbine_power_no_wake": power_no_wake[i, j],
+            }
+            if self.ti is not None:
+                result_dict[ix]["ti"] = self.ti[ix]
 
-                # calculate power for no wake case
-                self.fi.calculate_wake(yaw_angles=self.yaw_angles_baseline, no_wake=True)
-                power_no_wake = self.fi.get_turbine_power(
-                    include_unc=self.include_unc,
-                    unc_pmfs=self.unc_pmfs,
-                    unc_options=self.unc_options,
-                    no_wake=True,
-                )
-            else:
-                power_base = self.nturbs * [0.0]
-                power_no_wake = self.nturbs * [0.0]
-
-            # Include turbine weighing terms
-            power_base = np.multiply(self.turbine_weights, power_base)
-            power_no_wake = np.multiply(self.turbine_weights, power_no_wake)
-
-            # add variables to dataframe
-            if self.ti is None:
-                result_dict[i] = {
-                    "ws": self.ws[i],
-                    "wd": self.wd[i],
-                    "power_baseline": np.sum(power_base),
-                    "turbine_power_baseline": power_base,
-                    "power_no_wake": np.sum(power_no_wake),
-                    "turbine_power_no_wake": power_no_wake,
-                }
-                # df_base = df_base.append(pd.DataFrame(
-                #    {'ws':[self.ws[i]],'wd':[self.wd[i]],
-                #    'power_baseline':[np.sum(power_base)],
-                #    'turbine_power_baseline':[power_base],
-                #    'power_no_wake':[np.sum(power_no_wake)],
-                #    'turbine_power_no_wake':[power_no_wake]}))
-            else:
-                result_dict[i] = {
-                    "ws": self.ws[i],
-                    "wd": self.wd[i],
-                    "ti": self.ti[i],
-                    "power_baseline": np.sum(power_base),
-                    "turbine_power_baseline": power_base,
-                    "power_no_wake": np.sum(power_no_wake),
-                    "turbine_power_no_wake": power_no_wake,
-                }
-                # df_base = df_base.append(pd.DataFrame(
-                #    {'ws':[self.ws[i]],'wd':[self.wd[i]],
-                #    'ti':[self.ti[i]],'power_baseline':[np.sum(power_base)],
-                #    'turbine_power_baseline':[power_base],
-                #    'power_no_wake':[np.sum(power_no_wake)],
-                #    'turbine_power_no_wake':[power_no_wake]}))
         df_base = pd.DataFrame.from_dict(result_dict, "index")
         df_base.reset_index(drop=True, inplace=True)
 
