@@ -148,8 +148,7 @@ def power(
     for i in range(n_wind_directions):
         for j in range(n_wind_speeds):
             for k in range(n_turbines):
-                interpolator = power_interp
-                p[i, j, k] = interpolator(yaw_effective_velocity[i, j, k])
+                p[i, j, k] = power_interp(yaw_effective_velocity[i, j, k])
 
     return p * air_density
 
@@ -189,8 +188,7 @@ def Ct(
     for i in range(n_wind_directions):
         for j in range(n_wind_speeds):
             for k in range(n_turbines):
-                _fCt = fCt
-                thrust_coefficient[i, j, k] = _fCt(average_velocities[i, j, k])
+                thrust_coefficient[i, j, k] = fCt(average_velocities[i, j, k])
 
     effective_thrust = thrust_coefficient * cosd(yaw_angle)
 
