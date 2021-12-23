@@ -59,6 +59,7 @@ class FarmController:
         """
         N_yaw = self.yaw_angles.size
         shape_yaw = self.yaw_angles.shape
+        yaw_angles = np.array(yaw_angles)
         if yaw_angles.ndim == 1:
             if yaw_angles.size == shape_yaw[2]:
                 self.yaw_angles[:, :, :] = yaw_angles[None, None, :]
@@ -66,12 +67,16 @@ class FarmController:
                 self.yaw_angles = yaw_angles.reshape(shape_yaw)
             else:
                 raise ValueError(f"If 1-D inputs of yaw angles are provided, there must be {N_yaw} inputs provided!")
+        elif yaw_angles.shape == (1, 1, shape_yaw[2]):
+            yaw_angles = np.resize(yaw_angles, shape_yaw)
         elif yaw_angles.shape == shape_yaw:
             self.yaw_angles = yaw_angles
         else:
             raise ValueError(
                 "Yaw_angles must be set for each turbine for all atmospheric conditions,"
-                f" and have 1-D {shape_yaw} combinations in total or have shape: {shape_yaw}"
+                f" and have 1-D {N_yaw} combinations in total, have shape: {shape_yaw},"
+                f" or have shape {(1, 1, shape_yaw[2])} but yaw_angles provided had"
+                f" shape {yaw_angles.shape}!"
             )
 
 

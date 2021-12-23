@@ -361,6 +361,27 @@ class FlorisInterface(LoggerBase):
             farm["wind_speeds"] = self.floris.flow_field.wind_speeds
             self.floris.farm = Farm.from_dict(farm)
 
+    # TODO: MAYBE????
+    # def get_turbine_grid_points(self, turbine_ix: int):
+    #     """
+    #     Retrieve the x, y, and z grid points on the rotor.
+    #     Args:
+    #         coord (:py:obj:`~.utilities.Vec3`): The coordinate of the turbine.
+    #     Returns:
+    #         np.array, np.array, np.array:
+    #             - x grid points on the rotor.
+    #             - y grid points on the rotor.
+    #             - xzgrid points on the rotor.
+    #     """
+    #     x, y, z = self.floris.farm.coordinates[turbine_ix].elements
+    #     y_array = y
+
+    #     y_array = np.array(self.grid)[:, 0] + coord.x2
+    #     z_array = np.array(self.grid)[:, 1] + self.hub_height
+    #     x_array = np.ones_like(y_array) * coord.x1
+
+    #     return x_array, y_array, z_array
+
     def get_plane_of_points(
         self,
         x1_resolution=200,
