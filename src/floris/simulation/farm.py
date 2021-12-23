@@ -18,6 +18,7 @@ import attr
 import numpy as np
 import xarray as xr
 import numpy.typing as npt
+from numpy.core.fromnumeric import shape
 
 from floris.utilities import (
     Vec3,
@@ -53,6 +54,8 @@ class FarmController:
         Set the yaw angles for each wind turbine at each atmospheric
         condition.
 
+        # TODO: MOVE THIS LOGIC INTO THE FARM CLASS!!!
+
         Args:
             yaw_angles (NDArrayFloat): Array of yaw angles with dimensions (n wind directions,
             n wind speeds, n turbines).
@@ -66,9 +69,12 @@ class FarmController:
             elif yaw_angles.size == N_yaw:
                 self.yaw_angles = yaw_angles.reshape(shape_yaw)
             else:
-                raise ValueError(f"If 1-D inputs of yaw angles are provided, there must be {N_yaw} inputs provided!")
-        elif yaw_angles.shape == (1, 1, shape_yaw[2]):
-            yaw_angles = np.resize(yaw_angles, shape_yaw)
+                raise ValueError(
+                    f"If 1-D inputs of yaw angles are provided, there must be {N_yaw}"
+                    " or {shape_yaw[2]} inputs provided!"
+                )
+        elif yaw_angles.size == shape_yaw[2]:
+            self.yaw_angles = np.resize(yaw_angles, shape_yaw)
         elif yaw_angles.shape == shape_yaw:
             self.yaw_angles = yaw_angles
         else:
@@ -285,3 +291,39 @@ class Farm(BaseClass):
     @property
     def reference_turbine_diameter(self):
         return self.rotor_diameter[0, 0, 0]
+
+    def set_yaw_angles(self, yaw_angles: NDArrayFloat) -> None:
+        """
+        Set the yaw angles for each wind turbine at each atmospheric
+        condition.
+
+        # TODO: MOVE THIS TO WHEREVER IT SHOULD GO IN THE MERGE PROCESS
+
+        Args:
+            yaw_angles (NDArrayFloat): Array of yaw angles with dimensions (n wind directions,
+            n wind speeds, n turbines).
+        """
+        N_yaw = self.yaw_angles.size
+        shape_yaw = self.yaw_angles.shape
+        yaw_angles = np.array(yaw_angles)
+        if yaw_angles.ndim == 1:
+            if yaw_angles.size == shape_yaw[2]:
+                self.yaw_angles[:, :, :] = yaw_angles[None, None, :]
+            elif yaw_angles.size == N_yaw:
+                self.yaw_angles = yaw_angles.reshape(shape_yaw)
+            else:
+                raise ValueError(
+                    f"If 1-D inputs of yaw angles are provided, there must be {N_yaw}"
+                    " or {shape_yaw[2]} inputs provided!"
+                )
+        elif yaw_angles.size == shape_yaw[2]:
+            self.yaw_angles = np.resize(yaw_angles, shape_yaw)
+        elif yaw_angles.shape == shape_yaw:
+            self.yaw_angles = yaw_angles
+        else:
+            raise ValueError(
+                "Yaw_angles must be set for each turbine for all atmospheric conditions,"
+                f" and have 1-D {N_yaw} combinations in total, have shape: {shape_yaw},"
+                f" or have shape {(1, 1, shape_yaw[2])} but yaw_angles provided had"
+                f" shape {yaw_angles.shape}!"
+            )
