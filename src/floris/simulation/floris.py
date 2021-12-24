@@ -44,7 +44,7 @@ class Floris(logging_manager.LoggerBase, FromDictMixin):
         self.wake = WakeModelManager.from_dict(input_dict["wake"])
 
         self.farm = Farm(
-            turbine=input_dict["turbine"],
+            turbine=input_dict["turbine"][input_dict["farm"]["turbine_id"]],
             n_wind_directions=self.flow_field.n_wind_directions,
             n_wind_speeds=self.flow_field.n_wind_speeds,
             layout_x=input_dict["farm"]["layout_x"],
@@ -149,6 +149,7 @@ class Floris(logging_manager.LoggerBase, FromDictMixin):
         return Floris(input_dict)
 
     def _prepare_for_save(self) -> dict:
+        # TODO: Use current state as opposed to a hard-coded value
         logging = {
             "console": {"enable": True, "level": self.logger.level},
             "file": {"enable": False, "level": 1},
