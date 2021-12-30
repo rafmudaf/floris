@@ -196,10 +196,6 @@ class Farm(BaseClass):
     #     else:
     #         raise ValueError("`by` must be set to one of 'x' or 'y'.")
 
-    @property
-    def reference_turbine_diameter(self):
-        return self.rotor_diameter[0, 0, 0]
-
     def set_yaw_angles(self, yaw_angles: NDArrayFloat) -> None:
         """
         Set the yaw angles for each wind turbine at each atmospheric

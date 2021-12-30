@@ -19,7 +19,7 @@ import attr
 
 from floris.utilities import model_attrib, attr_serializer, attr_floris_filter
 from floris.simulation import BaseClass, BaseModel
-from floris.simulation.wake_velocity import (  # CurlVelocityDeficit,
+from floris.simulation.wake_velocity import (
     GaussVelocityDeficit,
     JensenVelocityDeficit,
 )
@@ -32,7 +32,10 @@ from floris.simulation.wake_deflection import (
 MODEL_MAP = {
     # TODO: Need to uncomment these two model types once we have implementations
     # "combination_model": {},
-    "deflection_model": {"jimenez": JimenezVelocityDeflection, "gauss": GaussVelocityDeflection},
+    "deflection_model": {
+        "jimenez": JimenezVelocityDeflection,
+        "gauss": GaussVelocityDeflection,
+    },
     # "turbulence_model": {},
     "velocity_model": {
         # "curl": CurlVelocityDeficit,

@@ -127,9 +127,7 @@ class GaussVelocityDeficit(BaseModel):
         x0 += x_i
 
         # Masks
-        near_wake_mask = np.array(x > xR) * np.array(
-            x < x0
-        )  # This mask defines the near wake; keeps the areas downstream of xR and upstream of x0
+        near_wake_mask = np.array(x > xR) * np.array(x < x0)  # This mask defines the near wake; keeps the areas downstream of xR and upstream of x0
         far_wake_mask = np.array(x >= x0)
 
         # Compute the velocity deficit in the NEAR WAKE region
@@ -137,27 +135,15 @@ class GaussVelocityDeficit(BaseModel):
         #       same question for any grid with a resolution larger than the near wake region
 
         # Calculate the wake expansion
-        near_wake_ramp_up = (x - xR) / (
-            x0 - xR
-        )  # This is a linear ramp from 0 to 1 from the start of the near wake to the start of the far wake.
-        near_wake_ramp_down = (x0 - x) / (
-            x0 - xR
-        )  # Another linear ramp, but positive upstream of the far wake and negative in the far wake; 0 at the start of the far wake
+        near_wake_ramp_up = (x - xR) / (x0 - xR)  # This is a linear ramp from 0 to 1 from the start of the near wake to the start of the far wake.
+        near_wake_ramp_down = (x0 - x) / (x0 - xR)  # Another linear ramp, but positive upstream of the far wake and negative in the far wake; 0 at the start of the far wake
         # near_wake_ramp_down = -1 * (near_wake_ramp_up - 1)  # TODO: this is equivalent, right?
 
-        sigma_y = (
-            near_wake_ramp_down * 0.501 * reference_rotor_diameter * np.sqrt(ct_i / 2.0) + near_wake_ramp_up * sigma_y0
-        )
-        sigma_y = (
-            sigma_y * np.array(x >= xR) + np.ones_like(sigma_y) * np.array(x < xR) * 0.5 * reference_rotor_diameter
-        )
+        sigma_y = near_wake_ramp_down * 0.501 * reference_rotor_diameter * np.sqrt(ct_i / 2.0) + near_wake_ramp_up * sigma_y0
+        sigma_y = sigma_y * np.array(x >= xR) + np.ones_like(sigma_y) * np.array(x < xR) * 0.5 * reference_rotor_diameter
 
-        sigma_z = (
-            near_wake_ramp_down * 0.501 * reference_rotor_diameter * np.sqrt(ct_i / 2.0) + near_wake_ramp_up * sigma_z0
-        )
-        sigma_z = (
-            sigma_z * np.array(x >= xR) + np.ones_like(sigma_z) * np.array(x < xR) * 0.5 * reference_rotor_diameter
-        )
+        sigma_z = near_wake_ramp_down * 0.501 * reference_rotor_diameter * np.sqrt(ct_i / 2.0) + near_wake_ramp_up * sigma_z0
+        sigma_z = sigma_z * np.array(x >= xR) + np.ones_like(sigma_z) * np.array(x < xR) * 0.5 * reference_rotor_diameter
 
         r, C = rC(
             wind_veer,

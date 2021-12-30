@@ -134,15 +134,15 @@ class GaussVelocityDeflection(BaseModel):
         # ==============================================================
 
         # opposite sign convention in this model
-        tilt = 0.0  # turbine.tilt_angle
+        tilt = 0.0 #turbine.tilt_angle
 
         # initial velocity deficits
         uR = (
             freestream_velocity
-            * ct_i
-            * cosd(tilt)
-            * cosd(yaw_i)
-            / (2.0 * (1 - np.sqrt(1 - (ct_i * cosd(tilt) * cosd(yaw_i)))))
+          * ct_i
+          * cosd(tilt)
+          * cosd(yaw_i)
+          / (2.0 * (1 - np.sqrt(1 - (ct_i * cosd(tilt) * cosd(yaw_i)))))
         )
         u0 = freestream_velocity * np.sqrt(1 - ct_i)
 
@@ -167,7 +167,7 @@ class GaussVelocityDeflection(BaseModel):
         sigma_y0 = sigma_z0 * cosd(yaw_i) * cosd(wind_veer)
 
         yR = y - y_i
-        xR = x_i  # yR * tand(yaw) + x_i
+        xR = x_i # yR * tand(yaw) + x_i
 
         # yaw parameters (skew angle and distance from centerline)
         # skew angle in radians
@@ -191,8 +191,10 @@ class GaussVelocityDeflection(BaseModel):
 
         delta_far_wake = (
             delta0
-            + theta_c0 * E0 / 5.2 * np.sqrt(sigma_y0 * sigma_z0 / (ky * kz * M0)) * np.log(ln_deltaNum / ln_deltaDen)
-            + (self.ad + self.bd * (x - x_i))
+          + theta_c0 * E0 / 5.2
+          * np.sqrt(sigma_y0 * sigma_z0 / (ky * kz * M0))
+          * np.log(ln_deltaNum / ln_deltaDen)
+          + (self.ad + self.bd * (x - x_i))
         )
 
         delta_far_wake = delta_far_wake * np.array(x > x0)
