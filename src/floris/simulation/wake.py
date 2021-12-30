@@ -77,6 +77,10 @@ class WakeModelManager(BaseClass):
     wake_turbulence_parameters: dict = attr.ib(default=attr.Factory(dict))
     wake_velocity_parameters: dict = attr.ib(default=attr.Factory(dict))
 
+    enable_secondary_steering: bool = attr.ib(factory=bool)
+    enable_yaw_added_recovery: bool = attr.ib(factory=bool)
+    enable_transverse_velocities: bool = attr.ib(factory=bool)
+
     combination_model: BaseModel = attr.ib(init=False)
     deflection_model: BaseModel = attr.ib(init=False)
     turbulence_model: BaseModel = attr.ib(init=False)
