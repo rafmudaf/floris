@@ -153,10 +153,6 @@ def test_get_turbine_ct():
     pass
 
 
-def test_get_turbine_ti():
-    pass
-
-
 def test_get_farm_power_for_yaw_angle():
     pass
 
@@ -265,10 +261,6 @@ def test_layout_x():  # TODO
 
 
 def test_layout_y():  # TODO
-    pass
-
-
-def test_TKE_to_TI():
     pass
 
 

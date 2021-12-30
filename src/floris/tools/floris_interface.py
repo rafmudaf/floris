@@ -33,7 +33,7 @@ from floris.utilities import Vec3, attrs_array_converter
 from floris.simulation import Farm, Floris, FlowField, WakeModelManager
 from floris.logging_manager import LoggerBase
 from floris.tools.cut_plane import get_plane_from_flow_data
-from floris.tools.flow_data import FlowData
+# from floris.tools.flow_data import FlowData
 from floris.simulation.turbine import Ct, power, axial_induction, average_velocity
 from floris.tools.interface_utilities import get_params, set_params, show_params
 from floris.tools.cut_plane import CutPlane, change_resolution, get_plane_from_flow_data
@@ -382,8 +382,6 @@ class FlorisInterface(LoggerBase):
 
     def get_plane_of_points(
         self,
-        # x1_resolution=200,
-        # x2_resolution=200,
         normal_vector="z",
         x3_value=100,
         x1_bounds=None,
@@ -411,9 +409,6 @@ class FlorisInterface(LoggerBase):
         Returns:
             :py:class:`pandas.DataFrame`: containing values of x1, x2, u, v, w
         """
-        # Get a copy for the flow field so don't change underlying grid points
-        flow_field = copy.deepcopy(self.floris.flow_field)
-
         # If x1 and x2 bounds are not provided, use rules of thumb
         coords = self.floris.farm.coordinates
         x, y, _ = coords.T
@@ -566,8 +561,6 @@ class FlorisInterface(LoggerBase):
     def get_hor_plane(
         self,
         height=None,
-        # x_resolution=200,
-        # y_resolution=200,
         x_bounds=None,
         y_bounds=None,
     ):
@@ -598,8 +591,6 @@ class FlorisInterface(LoggerBase):
 
         # Get the points of data in a dataframe
         df = self.get_plane_of_points(
-            # x1_resolution=x_resolution,
-            # x2_resolution=y_resolution,
             normal_vector="z",
             x3_value=height,
             x1_bounds=x_bounds,
@@ -608,20 +599,10 @@ class FlorisInterface(LoggerBase):
 
         # Compute and return the cutplane
         hor_plane = CutPlane(df)
-        # if self.floris.farm.wake.velocity_model.model_grid_resolution is not None:
-        #     hor_plane = change_resolution(
-        #         hor_plane,
-        #         resolution=(
-        #             self.floris.farm.wake.velocity_model.model_grid_resolution.x1,
-        #             self.floris.farm.wake.velocity_model.model_grid_resolution.x2,
-        #         ),
-        #     )
         return hor_plane
 
     def get_cross_plane(self,
         x_loc,
-        # y_resolution=200,
-        # z_resolution=200,
         y_bounds=None,
         z_bounds=None
     ):
@@ -694,95 +675,95 @@ class FlorisInterface(LoggerBase):
         # Compute and return the cutplane
         return CutPlane(df)
 
-    def get_flow_data(self, resolution=None, grid_spacing=10, velocity_deficit=False):
-        """
-        Generate :py:class:`~.tools.flow_data.FlowData` object corresponding to
-        active FLORIS instance.
+    # def get_flow_data(self, resolution=None, grid_spacing=10, velocity_deficit=False):
+    #     """
+    #     Generate :py:class:`~.tools.flow_data.FlowData` object corresponding to
+    #     active FLORIS instance.
 
-        Velocity and wake models requiring calculation on a grid implement a
-        discretized domain at resolution **grid_spacing**. This is distinct
-        from the resolution of the returned flow field domain.
+    #     Velocity and wake models requiring calculation on a grid implement a
+    #     discretized domain at resolution **grid_spacing**. This is distinct
+    #     from the resolution of the returned flow field domain.
 
-        Args:
-            resolution (float, optional): Resolution of output data.
-                Only used for wake models that require spatial
-                resolution (e.g. curl). Defaults to None.
-            grid_spacing (int, optional): Resolution of grid used for
-                simulation. Model results may be sensitive to resolution.
-                Defaults to 10.
-            velocity_deficit (bool, optional): When *True*, normalizes velocity
-                with respect to initial flow field velocity to show relative
-                velocity deficit (%). Defaults to *False*.
+    #     Args:
+    #         resolution (float, optional): Resolution of output data.
+    #             Only used for wake models that require spatial
+    #             resolution (e.g. curl). Defaults to None.
+    #         grid_spacing (int, optional): Resolution of grid used for
+    #             simulation. Model results may be sensitive to resolution.
+    #             Defaults to 10.
+    #         velocity_deficit (bool, optional): When *True*, normalizes velocity
+    #             with respect to initial flow field velocity to show relative
+    #             velocity deficit (%). Defaults to *False*.
 
-        Returns:
-            :py:class:`~.tools.flow_data.FlowData`: FlowData object
-        """
+    #     Returns:
+    #         :py:class:`~.tools.flow_data.FlowData`: FlowData object
+    #     """
 
-        if resolution is None:
-            if not self.floris.wake.velocity_model.requires_resolution:
-                self.logger.info("Assuming grid with spacing %d" % grid_spacing)
-                (
-                    xmin,
-                    xmax,
-                    ymin,
-                    ymax,
-                    zmin,
-                    zmax,
-                ) = self.floris.flow_field.domain_bounds  # TODO: No grid attribute within FlowField
-                resolution = Vec3(
-                    1 + (xmax - xmin) / grid_spacing,
-                    1 + (ymax - ymin) / grid_spacing,
-                    1 + (zmax - zmin) / grid_spacing,
-                )
-            else:
-                self.logger.info("Assuming model resolution")
-                resolution = self.floris.wake.velocity_model.model_grid_resolution
+    #     if resolution is None:
+    #         if not self.floris.wake.velocity_model.requires_resolution:
+    #             self.logger.info("Assuming grid with spacing %d" % grid_spacing)
+    #             (
+    #                 xmin,
+    #                 xmax,
+    #                 ymin,
+    #                 ymax,
+    #                 zmin,
+    #                 zmax,
+    #             ) = self.floris.flow_field.domain_bounds  # TODO: No grid attribute within FlowField
+    #             resolution = Vec3(
+    #                 1 + (xmax - xmin) / grid_spacing,
+    #                 1 + (ymax - ymin) / grid_spacing,
+    #                 1 + (zmax - zmin) / grid_spacing,
+    #             )
+    #         else:
+    #             self.logger.info("Assuming model resolution")
+    #             resolution = self.floris.wake.velocity_model.model_grid_resolution
 
-        # Get a copy for the flow field so don't change underlying grid points
-        flow_field = copy.deepcopy(self.floris.flow_field)
+    #     # Get a copy for the flow field so don't change underlying grid points
+    #     flow_field = copy.deepcopy(self.floris.flow_field)
 
-        if (
-            flow_field.wake.velocity_model.requires_resolution
-            and flow_field.wake.velocity_model.model_grid_resolution != resolution
-        ):
-            self.logger.warning(
-                "WARNING: The current wake velocity model contains a "
-                + "required grid resolution; the Resolution given to "
-                + "FlorisInterface.get_flow_field is ignored."
-            )
-            resolution = flow_field.wake.velocity_model.model_grid_resolution
-        flow_field.reinitialize_flow_field(with_resolution=resolution)  # TODO: Not implemented
-        self.logger.info(resolution)
-        # print(resolution)
-        flow_field.steady_state_atmospheric_condition()
+    #     if (
+    #         flow_field.wake.velocity_model.requires_resolution
+    #         and flow_field.wake.velocity_model.model_grid_resolution != resolution
+    #     ):
+    #         self.logger.warning(
+    #             "WARNING: The current wake velocity model contains a "
+    #             + "required grid resolution; the Resolution given to "
+    #             + "FlorisInterface.get_flow_field is ignored."
+    #         )
+    #         resolution = flow_field.wake.velocity_model.model_grid_resolution
+    #     flow_field.reinitialize_flow_field(with_resolution=resolution)  # TODO: Not implemented
+    #     self.logger.info(resolution)
+    #     # print(resolution)
+    #     flow_field.steady_state_atmospheric_condition()
 
-        order = "f"
-        x = flow_field.x.flatten(order=order)
-        y = flow_field.y.flatten(order=order)
-        z = flow_field.z.flatten(order=order)
+    #     order = "f"
+    #     x = flow_field.x.flatten(order=order)
+    #     y = flow_field.y.flatten(order=order)
+    #     z = flow_field.z.flatten(order=order)
 
-        u = flow_field.u.flatten(order=order)
-        v = flow_field.v.flatten(order=order)
-        w = flow_field.w.flatten(order=order)
+    #     u = flow_field.u.flatten(order=order)
+    #     v = flow_field.v.flatten(order=order)
+    #     w = flow_field.w.flatten(order=order)
 
-        # find percent velocity deficit
-        if velocity_deficit:
-            u = abs(u - flow_field.u_initial.flatten(order=order)) / flow_field.u_initial.flatten(order=order) * 100
-            v = abs(v - flow_field.v_initial.flatten(order=order)) / flow_field.v_initial.flatten(order=order) * 100
-            w = abs(w - flow_field.w_initial.flatten(order=order)) / flow_field.w_initial.flatten(order=order) * 100
+    #     # find percent velocity deficit
+    #     if velocity_deficit:
+    #         u = abs(u - flow_field.u_initial.flatten(order=order)) / flow_field.u_initial.flatten(order=order) * 100
+    #         v = abs(v - flow_field.v_initial.flatten(order=order)) / flow_field.v_initial.flatten(order=order) * 100
+    #         w = abs(w - flow_field.w_initial.flatten(order=order)) / flow_field.w_initial.flatten(order=order) * 100
 
-        # Determine spacing, dimensions and origin
-        unique_x = np.sort(np.unique(x))
-        unique_y = np.sort(np.unique(y))
-        unique_z = np.sort(np.unique(z))
-        spacing = Vec3(
-            unique_x[1] - unique_x[0],
-            unique_y[1] - unique_y[0],
-            unique_z[1] - unique_z[0],
-        )
-        dimensions = Vec3(len(unique_x), len(unique_y), len(unique_z))
-        origin = Vec3(0.0, 0.0, 0.0)
-        return FlowData(x, y, z, u, v, w, spacing=spacing, dimensions=dimensions, origin=origin)
+    #     # Determine spacing, dimensions and origin
+    #     unique_x = np.sort(np.unique(x))
+    #     unique_y = np.sort(np.unique(y))
+    #     unique_z = np.sort(np.unique(z))
+    #     spacing = Vec3(
+    #         unique_x[1] - unique_x[0],
+    #         unique_y[1] - unique_y[0],
+    #         unique_z[1] - unique_z[0],
+    #     )
+    #     dimensions = Vec3(len(unique_x), len(unique_y), len(unique_z))
+    #     origin = Vec3(0.0, 0.0, 0.0)
+    #     return FlowData(x, y, z, u, v, w, spacing=spacing, dimensions=dimensions, origin=origin)
 
     def get_yaw_angles(self):
         """
@@ -1057,27 +1038,11 @@ class FlorisInterface(LoggerBase):
         Returns:
             list: Thrust coefficient for each wind turbine.
         """
-        turb_ct_array = Ct(
+        return Ct(
             velocities=self.floris.flow_field.u,
-            yaw_angle=self.floris.farm.farm_controller.yaw_angles,
+            yaw_angle=self.floris.farm.yaw_angles,
             fCt=self.floris.farm.fCt_interp,
         )
-        return turb_ct_array
-
-    def get_turbine_ti(self):
-        """
-        Reports turbulence intensity  from each wind turbine.
-
-        Returns:
-            list: Thrust ti for each wind turbine.
-        """
-        # TODO: Are we modeling this piece anymore?
-        turb_ti_array = [
-            turbine.current_turbulence_intensity for turbine in self.floris.flow_field.turbine_map.turbines
-        ]
-        return turb_ti_array
-
-        # calculate the power under different yaw angles
 
     def get_farm_power_for_yaw_angle(
         self,
@@ -1510,35 +1475,6 @@ class FlorisInterface(LoggerBase):
         """
         return self.floris.farm.layout_y
 
-    def TKE_to_TI(self, turbulence_kinetic_energy, wind_speed):
-        """
-        Converts a list of turbulence kinetic energy values to
-        turbulence intensity.
-
-        Args:
-            turbulence_kinetic_energy (list): Values of turbulence kinetic
-                energy in units of meters squared per second squared.
-            wind_speed (list): Measurements of wind speed in meters per second.
-
-        Returns:
-            list: converted turbulence intensity values expressed as a decimal
-            (e.g. 10%TI -> 0.10).
-        """
-        turbulence_intensity = [
-            (np.sqrt((2 / 3) * turbulence_kinetic_energy[i])) / wind_speed[i]
-            for i in range(len(turbulence_kinetic_energy))
-        ]
-
-        return turbulence_intensity
-
-    def set_rotor_diameter(self, rotor_diameter):
-        """
-        This function has been replaced and no longer works correctly, assigning an error
-        """
-        raise Exception(
-            "function set_rotor_diameter has been removed.  Please use the function change_turbine going forward.  See examples/change_turbine for syntax"
-        )
-
     def show_model_parameters(
         self,
         params=None,
@@ -1691,31 +1627,14 @@ class FlorisInterface(LoggerBase):
         visualize_cut_plane(hor_plane, ax=ax)
         plt.show()
 
-    # TODO
-    # Comment this out until sure we'll need it
-    # def get_velocity_at_point(self, points, initial = False):
-    #     """
-    #     Get waked velocity at specified points in the flow field.
 
-    #     Args:
-    #         points (np.array): x, y and z coordinates of specified point(s)
-    #             where flow_field velocity should be reported.
-    #         initial(bool, optional): if set to True, the initial velocity of
-    #             the flow field is returned instead of the waked velocity.
-    #             Defaults to False.
 
-    #     Returns:
-    #         velocity (list): flow field velocity at specified grid point(s), in m/s.
-    #     """
-    #     xp, yp, zp = points[0], points[1], points[2]
-    #     x, y, z = self.floris.flow_field.x, self.floris.flow_field.y, self.floris.flow_field.z
-    #     velocity = self.floris.flow_field.u
-    #     initial_velocity = self.floris.farm.wind_map.grid_wind_speed
-    #     pVel = []
-    #     for i in range(len(xp)):
-    #         xloc, yloc, zloc =np.array(x == xp[i]),np.array(y == yp[i]),np.array(z == zp[i])
-    #         loc = np.logical_and(np.logical_and(xloc, yloc) == True, zloc == True)
-    #         if initial == True: pVel.append(np.mean(initial_velocity[loc]))
-    #         else: pVel.append(np.mean(velocity[loc]))
+    ## Functionality removed in v3
 
-    #     return pVel
+    def set_rotor_diameter(self, rotor_diameter):
+        """
+        This function has been replaced and no longer works correctly, assigning an error
+        """
+        raise Exception(
+            "FlorinInterface.set_rotor_diameter has been removed in favor of FlorinInterface.change_turbine. See examples/change_turbine/."
+        )
