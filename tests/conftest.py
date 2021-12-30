@@ -56,7 +56,7 @@ def print_test_values(average_velocities: list, thrusts: list, powers: list, axi
 WIND_DIRECTIONS = [
     270.0,
     360.0,
-    293.0,
+    315.0, #293.0,
     315.0,
 ]
 N_WIND_DIRECTIONS = len(WIND_DIRECTIONS)
@@ -356,6 +356,10 @@ class SampleInputs:
             "flow_field": self.flow_field,
             "turbine": self.turbine,
             "wake": self.wake,
+            "solver": {
+                "type": "turbine_grid",
+                "turbine_grid_points": 5,
+            },
             "logging": {
                 "console": {"enable": True, "level": 1},
                 "file": {"enable": False, "level": 1},
