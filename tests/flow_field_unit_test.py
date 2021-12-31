@@ -15,8 +15,7 @@
 
 import numpy as np
 import pytest
-from numpy.core.numeric import array_equal
-
+from floris.simulation import FlowField
 from tests.conftest import N_TURBINES
 
 
@@ -71,12 +70,3 @@ def test_initialize_velocity_field(flow_field_fixture, turbine_grid_fixture):
         (flow_field_fixture.n_wind_directions, flow_field_fixture.n_wind_speeds)
     )
     assert np.array_equal(average, baseline)
-
-
-def test_flow_field_get_quantities():
-    # TODO: Chris
-    # Get the average velocity for turbine # at all wind speeds greater than 8...
-    # average_velocity(
-    #     flow_field_fixture.u[...]
-    # )
-    assert True
