@@ -893,8 +893,7 @@ class FlorisInterface(LoggerBase):
             self.calculate_wake(yaw_angles=yaw_angles, no_wake=no_wake)
             return mean_farm_power
 
-        # TODO: This should be returning N wd x N ws x 1
-        return self._get_turbine_powers().sum()
+        return self._get_turbine_powers().sum(axis=(0, 1))
 
     def get_turbine_layout(self, z=False):
         """
@@ -1190,7 +1189,7 @@ class FlorisInterface(LoggerBase):
 
         self.reinitialize_flow_field(wind_direction=wd_unique, wind_speed=ws_unique, wind_rose_probability=freq)
         self.calculate_wake(yaw_angles=yaw)
-        farm_power = self.get_farm_power()  # TODO: Ensure this is N wd x N ws x 1
+        farm_power = self.get_farm_power()
         AEP = farm_power * freq * 8760
         return AEP.sum()
 
