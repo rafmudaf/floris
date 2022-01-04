@@ -15,6 +15,7 @@
 from __future__ import annotations
 
 from math import fsum
+from typing import Union
 
 import attr
 import numpy as np
@@ -31,7 +32,7 @@ from floris.utilities import (
 from floris.simulation import Grid
 
 
-NDArrayFloat = npt.NDArray[np.float64]
+NDArrayFloat = Union[npt.NDArray[np.float64], npt.NDArray[np.float32]]  # TODO: 32 or 64?
 
 
 @attr.s(auto_attribs=True)
