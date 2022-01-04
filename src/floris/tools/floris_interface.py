@@ -15,7 +15,7 @@
 from __future__ import annotations
 
 import copy
-from typing import Any
+from typing import Any, Union
 from pathlib import Path
 from itertools import repeat, product
 from multiprocessing import cpu_count
@@ -42,7 +42,7 @@ from floris.tools.interface_utilities import get_params, set_params, show_params
 # from .visualization import visualize_cut_plane
 # from .layout_functions import visualize_layout, build_turbine_loc
 
-NDArrayFloat = npt.NDArray[np.float64]
+NDArrayFloat = Union[npt.NDArray[np.float64], npt.NDArray[np.float32]]  # TODO: 32 or 64?
 
 DEFAULT_UNCERTAINTY = {"std_wd": 4.95, "std_yaw": 1.75, "pmf_res": 1.0, "pdf_cutoff": 0.995}
 
@@ -199,9 +199,9 @@ class FlorisInterface(LoggerBase):
             no_wake: (bool, optional): When *True* updates the turbine
                 quantities without calculating the wake or adding the
                 wake to the flow field. Defaults to *False*.
-            points: (NDArrayFloat | list[float] | None, optional): The x, y, and z
-                coordinates at which the flow field velocity is to be recorded. Defaults
-                to None.
+            points: (NDArrayFloat | list[float] | None, optional): The additional x, y,
+                and z coordinates at which the flow field velocity is to be recorded.
+                Defaults to None.
             track_n_upstream_wakes (bool, optional): When *True*, will keep track of the
                 number of upstream wakes a turbine is experiencing. Defaults to *False*.
         """
@@ -314,7 +314,7 @@ class FlorisInterface(LoggerBase):
 
         self.floris.flow_field = FlowField.from_dict(flow_field_dict)
         if reinitialize_farm:
-            farm = farm = self.floris.farm._asdict()
+            farm = self.floris.farm._asdict()
 
         x = self.floris.farm.layout_x
         if layout_array is not None:
@@ -893,6 +893,7 @@ class FlorisInterface(LoggerBase):
             self.calculate_wake(yaw_angles=yaw_angles, no_wake=no_wake)
             return mean_farm_power
 
+        # TODO: This should be returning N wd x N ws x 1
         return self._get_turbine_powers().sum()
 
     def get_turbine_layout(self, z=False):
@@ -1189,7 +1190,7 @@ class FlorisInterface(LoggerBase):
 
         self.reinitialize_flow_field(wind_direction=wd_unique, wind_speed=ws_unique, wind_rose_probability=freq)
         self.calculate_wake(yaw_angles=yaw)
-        farm_power = self.get_farm_power()  # TODO: Do we need to specify an axis since this is a sum?
+        farm_power = self.get_farm_power()  # TODO: Ensure this is N wd x N ws x 1
         AEP = farm_power * freq * 8760
         return AEP.sum()
 
@@ -1197,68 +1198,6 @@ class FlorisInterface(LoggerBase):
         self.reinitialize_flow_field(wind_direction=[wd], wind_speed=[ws])
         self.calculate_wake(yaw_angles=yaw)
         return self.get_farm_power() * freq * 8760
-
-    def get_farm_AEP_parallel(
-        self,
-        wd: NDArrayFloat | list[float],
-        ws: NDArrayFloat | list[float],
-        freq: NDArrayFloat | list[list[float]],
-        yaw: NDArrayFloat | list[float] | None = None,
-        jobs=-1,
-    ):
-        """
-        Estimate annual energy production (AEP) for distributions of wind
-        speed, wind direction and yaw offset with parallel computations on
-        a single comptuer.
-
-        # TODO: Update the docstrings and allow for the use of precomputed combinations
-        as well as unique inputs that need to be computed. Same for the other AEPs
-
-        Args:
-            wd (iterable): List or array of wind direction values.
-            ws (iterable): List or array of wind speed values.
-            freq (iterable): Frequencies corresponding to wind direction and wind speed
-                combinations in the wind rose with, shape (N wind directions x N wind speeds).
-            yaw (iterable, optional): List or array of yaw values if wake is steering
-                implemented, with shape (N wind directions). Defaults to None.
-            jobs (int, optional): The number of jobs (cores) to use in the parallel
-                computations.
-
-        Returns:
-            float: AEP for wind farm.
-        """
-        if jobs < -1:
-            raise ValueError("Input 'jobs' cannot be negative.")
-        if jobs == -1:
-            jobs = int(np.ceil(cpu_count() * 0.8))
-        if jobs > 0:
-            jobs = min(jobs, cpu_count())
-        if jobs > len(wd):
-            jobs = len(wd)
-
-        if yaw is None:
-            yaw = [None] * len(wd)
-
-        wd = np.array(wd)
-        ws = np.array(ws)
-        freq = np.array(freq)
-
-        # Make one large list of arguments, then flatten and resort the nested tuples
-        # to the correct ordering of self, wd, ws, freq, yaw
-        global_arguments = list(zip(repeat(self), zip(wd, yaw), ws, freq.flatten()))
-        # OR is this supposed to be all wind speeds for each wind direction?:
-        # global_arguments = list(zip(repeat(self), zip(wd, yaw), repeat(ws), freq))
-        # global_arguments = [(s, n[0], wspd, f, n[1]) for s, n, wspd, f in global_arguments]
-        global_arguments = [(s, n[0][0], n[1], f, n[0][1]) for s, n, f in global_arguments]
-
-        num_cases = wd.size * ws.size
-        chunksize = int(np.ceil(num_cases / jobs))
-
-        with Pool(jobs) as pool:
-            opt = pool.starmap(global_calc_one_AEP_case, global_arguments, chunksize=chunksize)
-            # add AEP to overall AEP
-
-        return 0.0 + np.sum(opt)
 
     def calculate_AEP_wind_limit(self, num_turbines, x_spacing, start_ws, threshold):
         orig_layout_x = self.layout_x
@@ -1328,6 +1267,8 @@ class FlorisInterface(LoggerBase):
             turbine_indices (list[int]): List of turbine indices to change.
             new_turbine_map (dict[str, dict[str, Any]]): New dictionary of turbine
                 parameters to create the new turbines for each of `turbine_indices`.
+                This should only include turbines that do not exist yet in
+                `floris.farm.turbine_map`.
             update_specified_wind_height (bool, optional): When *True*, update specified
                 wind height to match new hub_height. Defaults to *False*.
         """
@@ -1340,12 +1281,11 @@ class FlorisInterface(LoggerBase):
         self.floris.farm.turbine_id = [
             new_turbine_id if i in turbine_indices else t_id for i, t_id in enumerate(self.floris.farm.turbine_id)
         ]
-        if new_turbine:
-            self.logger.info(f"Turbines {turbine_indices} have been mapped to the new definition for: {new_turbine_id}")
 
         # Update the turbine mapping if a new turbine was provided, then regenerate the
         # farm arrays for the turbine farm
         if new_turbine:
+            self.logger.info(f"Turbines {turbine_indices} have been mapped to the new definition for: {new_turbine_id}")
             turbine_map = self.floris.farm._asdict()["turbine_map"]
             turbine_map.update(new_turbine_map)
             self.floris.farm.turbine_map = turbine_map
