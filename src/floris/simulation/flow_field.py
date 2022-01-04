@@ -76,7 +76,7 @@ class FlowField(FromDictMixin):
     @probability.validator
     def probability_validator_setter(self, instance: attr.Attribute, value: NDArrayFloat) -> None:
         """Checks that the size and dimensions of the wind rose probabilities make sense, and that
-        if nothing is passed, then a probability of 1 for all values is set.
+        if nothing is passed, then all combinations are set with an equal probability.
         """
         valid_shape = (self.n_wind_directions, self.n_wind_speeds)
         size = np.product(valid_shape)
