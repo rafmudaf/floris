@@ -32,11 +32,12 @@ from numpy.lib.arraysetops import unique
 from floris.utilities import Vec3, attrs_array_converter
 from floris.simulation import Farm, Floris, FlowField, WakeModelManager
 from floris.logging_manager import LoggerBase
-from floris.tools.cut_plane import get_plane_from_flow_data
+from floris.tools.cut_plane import CutPlane, change_resolution, get_plane_from_flow_data
+
 # from floris.tools.flow_data import FlowData
 from floris.simulation.turbine import Ct, power, axial_induction, average_velocity
 from floris.tools.interface_utilities import get_params, set_params, show_params
-from floris.tools.cut_plane import CutPlane, change_resolution, get_plane_from_flow_data
+
 
 # from .visualization import visualize_cut_plane
 # from .layout_functions import visualize_layout, build_turbine_loc
@@ -601,11 +602,7 @@ class FlorisInterface(LoggerBase):
         hor_plane = CutPlane(df)
         return hor_plane
 
-    def get_cross_plane(self,
-        x_loc,
-        y_bounds=None,
-        z_bounds=None
-    ):
+    def get_cross_plane(self, x_loc, y_bounds=None, z_bounds=None):
         """
         Shortcut method to instantiate a :py:class:`~.tools.cut_plane.CutPlane`
         object containing the velocity field in a vertical plane cut through
@@ -1303,7 +1300,7 @@ class FlorisInterface(LoggerBase):
         Args:
             base_turbine_id (str): The base turbine's ID in `floris.farm.turbine_id`.
             update_parameters (dict): A dictionary of the turbine parameters to update
-                and their new valies.
+                and their new values.
             new_id (str, optional): The new `turbine_id`, if `None` a unique
                 identifier will be appended to the end. Defaults to None.
 
@@ -1627,9 +1624,7 @@ class FlorisInterface(LoggerBase):
         visualize_cut_plane(hor_plane, ax=ax)
         plt.show()
 
-
-
-    ## Functionality removed in v3
+    # Functionality removed in v3
 
     def set_rotor_diameter(self, rotor_diameter):
         """
