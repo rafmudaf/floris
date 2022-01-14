@@ -34,7 +34,7 @@ def load_floris():
     )
 
     # Specify wind farm layout and update in the floris object
-    N = 9  # number of turbines per row and per column
+    N = 5  # number of turbines per row and per column
     X, Y = np.meshgrid(
         5.0 * fi.floris.grid.reference_turbine_diameter * np.arange(0, N, 1),
         5.0 * fi.floris.grid.reference_turbine_diameter * np.arange(0, N, 1),
