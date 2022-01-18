@@ -367,8 +367,8 @@ class YawOptimization:
         # Ensure format [incompatible with _subset notation]
         yaw_angles = self._unpack_variable(yaw_angles, subset=True)
 
-        # Correct wind direction definition: 270 deg is from left, cw positive
-        wd_array = wrap_360(270.0 + wd_array)
+        # # Correct wind direction definition: 270 deg is from left, cw positive
+        # wd_array = wrap_360(wd_array)
 
         # Calculate solutions
         turbine_power = np.zeros_like(self._minimum_yaw_angle_subset[:, 0, :])
