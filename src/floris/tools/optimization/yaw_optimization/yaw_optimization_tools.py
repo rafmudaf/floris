@@ -317,7 +317,7 @@ def derive_downstream_turbines(fi, wind_direction, wake_slope=0.30, plot_lines=F
     return turbs_downstream
 
 
-def find_layout_symmetry(x, y, step_sizes = [15.0, 1.0], eps=0.00001):
+def find_layout_symmetry(x, y, step_sizes = [15.0], eps=0.00001):
     # Place center of farm at (0, 0)
     x = x - np.mean(x)
     y = y - np.mean(y)
