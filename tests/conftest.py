@@ -73,9 +73,9 @@ def print_test_values(
 
 WIND_DIRECTIONS = [
     270.0,
-    360.0,
-    285.0,
-    315.0,
+    # 360.0,
+    # 285.0,
+    # 315.0,
 ]
 N_WIND_DIRECTIONS = len(WIND_DIRECTIONS)
 WIND_SPEEDS = [
@@ -464,7 +464,7 @@ class SampleInputs:
                 "turbine_grid_points": 3,
             },
             "logging": {
-                "console": {"enable": True, "level": 1},
+                "console": {"enable": False, "level": 1},
                 "file": {"enable": False, "level": 1},
             },
             "name": "conftest",
