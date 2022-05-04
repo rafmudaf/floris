@@ -8,27 +8,8 @@ import numpy as np
 from conftest import SampleInputs
 
 from floris.simulation import Floris
+from runners import time_profile, memory_profile
 
-
-def time_profile(input_dict):
-    floris = Floris.from_dict(input_dict.floris)
-    start = time.perf_counter()
-    floris.steady_state_atmospheric_condition()
-    end = time.perf_counter()
-    return end - start
-
-def internal_probe(input_dict):
-    floris = Floris(input_dict=input_dict.floris)
-    internal_quantity = floris.steady_state_atmospheric_condition()
-    return internal_quantity
-
-def memory_profile(input_dict):
-    floris = Floris(input_dict=input_dict.floris)
-    mem_usage = memory_profiler.memory_usage(
-        (floris.steady_state_atmospheric_condition, (), {}),
-        max_usage=True
-    )
-    return mem_usage
 
 if __name__=="__main__":
     sample_inputs = SampleInputs()

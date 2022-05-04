@@ -21,6 +21,7 @@ import numpy as np
 from linux_perf import perf
 
 from floris.simulation import Floris
+from runners import time_profile, memory_profile
 
 
 WIND_DIRECTIONS = np.arange(0, 360.0, 5)
@@ -38,32 +39,6 @@ X_COORDS = X_COORDS.flatten()
 Y_COORDS = Y_COORDS.flatten()
 
 N_ITERATIONS = 20
-
-
-def run_floris(input_dict):
-    try:
-        start = time.perf_counter()
-        floris = Floris.from_dict(copy.deepcopy(input_dict.floris))
-        floris.initialize_domain()
-        floris.steady_state_atmospheric_condition()
-        end = time.perf_counter()
-        return end - start
-    except KeyError:
-        # Catch the errors when an invalid wake model was given because the model
-        # was not yet implemented
-        return -1.0
-
-
-def time_profile(input_dict):
-
-    # Run once to initialize Python and memory
-    run_floris(input_dict)
-
-    times = np.zeros(N_ITERATIONS)
-    for i in range(N_ITERATIONS):
-        times[i] = run_floris(input_dict)
-
-    return np.sum(times) / N_ITERATIONS
 
 
 def test_time_jensen_jimenez(sample_inputs_fixture):
@@ -91,24 +66,6 @@ def test_time_cumulative(sample_inputs_fixture):
     sample_inputs_fixture.floris["wake"]["model_strings"]["velocity_model"] = "cc"
     sample_inputs_fixture.floris["wake"]["model_strings"]["deflection_model"] = "gauss"
     return time_profile(sample_inputs_fixture)
-
-
-def memory_profile(input_dict):
-    # Run once to initialize Python and memory
-    floris = Floris.from_dict(copy.deepcopy(input_dict.floris))
-    floris.initialize_domain()
-    floris.steady_state_atmospheric_condition()
-
-    with perf():
-        for i in range(N_ITERATIONS):
-            floris = Floris.from_dict(copy.deepcopy(input_dict.floris))
-            floris.initialize_domain()
-            floris.steady_state_atmospheric_condition()
-
-    print(
-        "Size of one data array: "
-        f"{64 * N_WIND_DIRECTIONS * N_WIND_SPEEDS * N_TURBINES * 25 / (1000 * 1000)} MB"
-    )
 
 
 def test_mem_jensen_jimenez(sample_inputs_fixture):
