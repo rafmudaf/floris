@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-from typing import Any, Dict
+from typing import Any
 
 import numpy as np
 import numexpr as ne
@@ -43,7 +43,7 @@ class JensenVelocityDeficit(BaseModel):
         self,
         grid: Grid,
         flow_field: FlowField,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         """
         This function prepares the inputs from the various FLORIS data structures
         for use in the Jensen model. This should only be used to 'initialize'

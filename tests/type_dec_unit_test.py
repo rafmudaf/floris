@@ -14,7 +14,6 @@
 
 import numpy as np
 import pytest
-from typing import List
 
 from attrs import define, field
 
@@ -31,7 +30,7 @@ class AttrsDemoClass(FromDictMixin):
     y: float = field(converter=float, default=2.1)
     z: str = field(converter=str, default="z")
 
-    liststr: List[str] = field(
+    liststr: list[str] = field(
         default=["qwerty", "asdf"],
         validator=iter_validator(list, str)
     )

@@ -11,7 +11,7 @@
 # the License.
 
 import os
-from typing import Any, Dict
+from typing import Any
 from pathlib import Path
 
 import numpy as np
@@ -48,7 +48,7 @@ class TurbOParkVelocityDeficit(BaseModel):
         self,
         grid: Grid,
         flow_field: FlowField,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
 
         kwargs = dict(
             x=grid.x_sorted,

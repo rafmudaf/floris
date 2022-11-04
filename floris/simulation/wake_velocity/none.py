@@ -10,7 +10,7 @@
 # License for the specific language governing permissions and limitations under
 # the License.
 
-from typing import Any, Dict
+from typing import Any
 
 import numpy as np
 from attrs import field, define
@@ -29,7 +29,7 @@ class NoneVelocityDeficit(BaseModel):
         self,
         grid: Grid,
         flow_field: FlowField,
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
 
         kwargs = dict(
             u_initial=flow_field.u_initial_sorted,

@@ -323,11 +323,11 @@ class Turbine(BaseClass):
         power_thrust_table (PowerThrustTable): A dictionary containing the
             following key-value pairs:
 
-            power (:py:obj: List[float]): The coefficient of power at
+            power (:py:obj: list[float]): The coefficient of power at
                 different wind speeds.
-            thrust (:py:obj: List[float]): The coefficient of thrust
+            thrust (:py:obj: list[float]): The coefficient of thrust
                 at different wind speeds.
-            wind_speed (:py:obj: List[float]): The wind speeds for
+            wind_speed (:py:obj: list[float]): The wind speeds for
                 which the power and thrust values are provided (m/s).
         ngrid (*int*, optional): The square root of the number
             of points to use on the turbine grid. This number will be

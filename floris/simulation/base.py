@@ -19,7 +19,7 @@ Defines the BaseClass parent class for all models to be based upon.
 
 from abc import ABC, abstractmethod
 from enum import Enum
-from typing import Any, Dict, Final
+from typing import Any, Final
 
 import attrs
 
@@ -42,12 +42,12 @@ class BaseClass(LoggerBase, FromDictMixin):
 
 
     @classmethod
-    def get_model_defaults(cls) -> Dict[str, Any]:
+    def get_model_defaults(cls) -> dict[str, Any]:
         """Produces a dictionary of the keyword arguments and their defaults.
 
         Returns
         -------
-        Dict[str, Any]
+        dict[str, Any]
             Dictionary of keyword argument: default.
         """
         return {el.name: el.default for el in attrs.fields(cls)}

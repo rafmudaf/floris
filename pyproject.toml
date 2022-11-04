@@ -22,7 +22,7 @@ filterwarnings = [
 
 
 [tool.black]
-target-version = ["py37", "py38", "py39"]
+target-version = ["py39", "py310"]
 line-length = 120
 include = '\.pyi?$'
 exclude = '''

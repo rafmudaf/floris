@@ -13,7 +13,6 @@
 # See https://floris.readthedocs.io for documentation
 
 import os
-from typing import Tuple
 
 import yaml
 import numpy as np

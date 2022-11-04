@@ -13,7 +13,7 @@
 import os
 import copy
 
-from typing import Any, List
+from typing import Any
 from pathlib import Path
 
 import attrs
@@ -45,7 +45,7 @@ class Farm(BaseClass):
 
     layout_x: NDArrayFloat = field(converter=floris_array_converter)
     layout_y: NDArrayFloat = field(converter=floris_array_converter)
-    turbine_type: List = field()
+    turbine_type: list = field()
 
     turbine_definitions: dict = field(init=False)
     yaw_angles: NDArrayFloat = field(init=False, converter=floris_array_converter, on_setattr=attrs.setters.convert)
