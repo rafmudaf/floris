@@ -16,7 +16,7 @@
 from __future__ import annotations
 
 from abc import ABC, abstractmethod
-from typing import Iterable
+from typing import Iterable, Sequence
 
 import attrs
 import numpy as np
@@ -68,7 +68,6 @@ class Grid(ABC):
     """
     turbine_coordinates: list[Vec3] = field()
     reference_turbine_diameter: float
-    grid_resolution: int | Iterable = field()
     wind_directions: NDArrayFloat = field(converter=floris_array_converter)
     wind_speeds: NDArrayFloat = field(converter=floris_array_converter)
     time_series: bool = field()
@@ -113,23 +112,6 @@ class Grid(ABC):
         """Using the validator method to keep the `n_wind_directions` attribute up to date."""
         self.n_wind_directions = value.size
 
-    @grid_resolution.validator
-    def grid_resolution_validator(self, instance: attrs.Attribute, value: int | Iterable) -> None:
-        # TODO move this to the grid types and off of the base class
-        """Check that grid resolution is given as int or Vec3 with int components."""
-        if isinstance(value, int) and \
-            isinstance(self, (TurbineGrid, TurbineCubatureGrid, PointsGrid)):
-            return
-        elif isinstance(value, Iterable) and isinstance(self, FlowFieldPlanarGrid):
-            assert type(value[0]) is int
-            assert type(value[1]) is int
-        elif isinstance(value, Iterable) and isinstance(self, FlowFieldGrid):
-            assert type(value[0]) is int
-            assert type(value[1]) is int
-            assert type(value[2]) is int
-        else:
-            raise TypeError("`grid_resolution` must be of type int or Iterable(int,)")
-
     @abstractmethod
     def set_grid(self) -> None:
         raise NotImplementedError("Grid.set_grid")
@@ -150,6 +132,7 @@ class TurbineGrid(Grid):
             series.
     """
     # TODO: describe these and the differences between `sorted_indices` and `sorted_coord_indices`
+    grid_resolution: int = field()
     sorted_indices: NDArrayInt = field(init=False)
     sorted_coord_indices: NDArrayInt = field(init=False)
     unsorted_indices: NDArrayInt = field(init=False)
@@ -164,7 +147,10 @@ class TurbineGrid(Grid):
     @grid_resolution.validator
     def grid_resolution_validator(self, instance: attrs.Attribute, value: int) -> None:
         if not isinstance(value, int):
-            self.error(TypeError, "TurbineGrid.grid_resolution must be a single value of type `int`.")
+            self.error(
+                TypeError,
+                "TurbineGrid.grid_resolution must be a single value of type `int`."
+            )
 
     def set_grid(self) -> None:
         """
@@ -315,6 +301,7 @@ class TurbineCubatureGrid(Grid):
         time_series (:py:obj:`bool`): Flag to indicate whether the supplied wind data is a time
             series.
     """
+    grid_resolution: int = field()
     sorted_indices: NDArrayInt = field(init=False)
     sorted_coord_indices: NDArrayInt = field(init=False)
     unsorted_indices: NDArrayInt = field(init=False)
@@ -325,6 +312,14 @@ class TurbineCubatureGrid(Grid):
     def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
         self.set_grid()
+
+    @grid_resolution.validator
+    def grid_resolution_validator(self, instance: attrs.Attribute, value: int) -> None:
+        if not isinstance(value, int):
+            self.error(
+                TypeError,
+                "TurbineCubatureGrid.grid_resolution must be a single value of type `int`."
+            )
 
     def set_grid(self) -> None:
         """
@@ -475,6 +470,7 @@ class FlowFieldGrid(Grid):
         reference_turbine_diameter (:py:obj:`float`): The reference turbine's rotor diameter.
         grid_resolution (:py:obj:`int`): The number of points on each turbine
     """
+    grid_resolution: Sequence = field()
     x_center_of_rotation: NDArrayFloat = field(init=False)
     y_center_of_rotation: NDArrayFloat = field(init=False)
 
@@ -551,6 +547,7 @@ class FlowFieldPlanarGrid(Grid):
         reference_turbine_diameter (:py:obj:`float`): The reference turbine's rotor diameter.
         grid_resolution (:py:obj:`int`): The number of points on each turbine
     """
+    grid_resolution: Iterable = field()
     normal_vector: str = field()
     planar_coordinate: float = field()
     x1_bounds: tuple = field(default=None)
@@ -687,6 +684,7 @@ class PointsGrid(Grid):
             of rotation to account for wind direction changes. If not supplied, the center
             of rotation will be the centroid of the points in the PointsGrid.
     """
+    grid_resolution: int = field()
     points_x: NDArrayFloat = field(converter=floris_array_converter)
     points_y: NDArrayFloat = field(converter=floris_array_converter)
     points_z: NDArrayFloat = field(converter=floris_array_converter)
@@ -696,6 +694,14 @@ class PointsGrid(Grid):
     def __attrs_post_init__(self) -> None:
         super().__attrs_post_init__()
         self.set_grid()
+
+    @grid_resolution.validator
+    def grid_resolution_validator(self, instance: attrs.Attribute, value: int) -> None:
+        if not isinstance(value, int):
+            self.error(
+                TypeError,
+                "PointsGrid.grid_resolution must be a single value of type `int`."
+            )
 
     def set_grid(self) -> None:
         """
