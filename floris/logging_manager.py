@@ -14,6 +14,7 @@
 
 import logging
 from datetime import datetime
+from typing import Type
 
 import coloredlogs
 
@@ -155,3 +156,48 @@ class LoggerBase:
         return logging.getLogger(
             "{}.{}".format(type(self).__module__, type(self).__name__)
         )
+
+    def error(self, error_type: Type[Exception], message: str, stack_info=True):
+        """
+        Logs an error with the logger module and raises the given exception-type. This is a helper
+        method to avoid this pattern:
+
+        ```
+        msg = "Error message goes here"
+        self.logger.error(msg)
+        raise Error(msg)
+        ```
+
+        Args:
+            error_type (Type[Exception]): The error to raise with the supplied message
+            message (str): The message to include in the log and raised error
+            stack_info (bool, optional): Whether to include stack trace in the logger message.
+                This may be redundant with the raised exception. Defaults to True.
+
+        Raises:
+            error_type: The caller-supplied error
+        """
+        self.logger.error(message, stack_info=stack_info)
+        raise error_type(message)
+
+    def warn(self, message: str, stack_info=True):
+        """
+        Logs a warning to the logger module. This is a helper method to simplify warning statements
+        and funnel all through a single location in the code.
+
+        Args:
+            message (str): Warning message to log
+            stack_info (bool, optional): Whether to include stack trace in the logger message.
+                Defaults to True.
+        """
+        self.logger.warning(message, stack_info=stack_info)
+
+    def info(self, message: str):
+        """
+        Logs an info message to the logger module. This is a helper method to simplify info
+        statements and funnel all through a single location in the code.
+
+        Args:
+            message (str): Info message to log
+        """
+        self.logger.info(message)

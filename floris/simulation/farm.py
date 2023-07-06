@@ -136,7 +136,8 @@ class Farm(BaseClass):
                 # definition, then raise an error
                 is_unique_path = self.turbine_library_path != default_turbine_library_path
                 if is_unique_path and in_external and in_internal:
-                    raise ValueError(
+                    self.error(
+                        ValueError,
                         f"The turbine type: {t} exists in both the internal and external"
                         " turbine library."
                     )
@@ -146,7 +147,8 @@ class Farm(BaseClass):
                 elif in_external:
                     full_path = external_fn
                 else:
-                    raise FileNotFoundError(
+                    self.error(
+                        FileNotFoundError,
                         f"The turbine type: {t} does not exist in either the internal or"
                         " external turbine library."
                     )
@@ -178,12 +180,12 @@ class Farm(BaseClass):
     @layout_x.validator
     def check_x(self, attribute: attrs.Attribute, value: Any) -> None:
         if len(value) != len(self.layout_y):
-            raise ValueError("layout_x and layout_y must have the same number of entries.")
+            self.error(ValueError, "layout_x and layout_y must have the same number of entries.")
 
     @layout_y.validator
     def check_y(self, attribute: attrs.Attribute, value: Any) -> None:
         if len(value) != len(self.layout_x):
-            raise ValueError("layout_x and layout_y must have the same number of entries.")
+            self.error(ValueError, "layout_x and layout_y must have the same number of entries.")
 
     @turbine_type.validator
     def check_turbine_type(self, attribute: attrs.Attribute, value: Any) -> None:
