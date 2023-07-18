@@ -328,8 +328,8 @@ class TurbineCubatureGrid(Grid):
         zv = np.expand_dims(zv, axis=-1)
 
         for ti in range(self.n_turbines):
-            _y[:, ti, :, :] += yv[:, ti] * self.turbine_diameters[ti] / 2.0
-            _z[:, ti, :, :] += zv[:, ti] * self.turbine_diameters[ti] / 2.0
+            _y[:, ti] += yv[:, ti] * self.turbine_diameters[ti] / 2.0
+            _z[:, ti] += zv[:, ti] * self.turbine_diameters[ti] / 2.0
 
         # Sort the turbines at each wind direction
 
