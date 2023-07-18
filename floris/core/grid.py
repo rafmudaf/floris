@@ -419,10 +419,10 @@ class TurbineCubatureGrid(Grid):
             A = [ 0.0592317212640472718785660, 0.1196571676248416170103229, 0.1422222222222222222222222, 0.1196571676248416170103229, 0.0592317212640472718785660, 0.0592317212640472718785660, 0.1196571676248416170103229, 0.1422222222222222222222222, 0.1196571676248416170103229, 0.0592317212640472718785660]  # noqa: E501
 
         return {
-            "r": np.array(r, dtype=float),
-            "t": np.array(t, dtype=float),
-            "q": np.array(q, dtype=float),
-            "A": np.array(A, dtype=float),
+            "r": np.array(r, dtype=floris_float_type),
+            "t": np.array(t, dtype=floris_float_type),
+            "q": np.array(q, dtype=floris_float_type),
+            "A": np.array(A, dtype=floris_float_type),
             "B": np.pi/N,
         }
 
