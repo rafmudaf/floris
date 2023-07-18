@@ -55,6 +55,10 @@ class Grid(ABC, BaseClass):
 
     n_turbines: int = field(init=False)
     n_findex: int = field(init=False)
+    turbine_coordinates_array: NDArrayFloat = field(init=False)
+    x: NDArrayFloat = field(init=False)
+    y: NDArrayFloat = field(init=False)
+    z: NDArrayFloat = field(init=False)    
     x_sorted: NDArrayFloat = field(init=False)
     y_sorted: NDArrayFloat = field(init=False)
     z_sorted: NDArrayFloat = field(init=False)
@@ -255,6 +259,16 @@ class TurbineGrid(Grid):
                 x_center_of_rotation=self.x_center_of_rotation,
                 y_center_of_rotation=self.y_center_of_rotation,
             )
+
+        # Save the unsorted coordinates for pre and post processing. These are in the order
+        # as given by the user.
+        self.x = _x
+        self.y = _y
+        self.z = _z
+
+        # self.x = np.take_along_axis(self.x_sorted, self.unsorted_indices, axis=2)
+        # self.y = np.take_along_axis(self.y_sorted, self.unsorted_indices, axis=2)
+        # self.z = np.take_along_axis(self.z_sorted, self.unsorted_indices, axis=2)
 
 @define
 class TurbineCubatureGrid(Grid):
