@@ -19,3 +19,4 @@ from .wind_data import (
     WindRose,
     WindTIRose,
 )
+from .defaults import DEFAULT_INPUTS
