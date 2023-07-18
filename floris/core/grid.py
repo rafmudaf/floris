@@ -197,7 +197,7 @@ class TurbineGrid(Grid):
         #         Defaults to 0.5.
 
         # Create the data for the turbine grids
-        radius_ratio = 0.5
+        radius_ratio = np.sqrt(2) / 2.0
         disc_area_radius = radius_ratio * self.turbine_diameters / 2
         template_grid = np.ones(
             (
