@@ -1,14 +1,18 @@
 
 import copy
-import time
 
 import matplotlib.pyplot as plt
-import memory_profiler
 import numpy as np
 from conftest import SampleInputs
 
 from floris.simulation import Floris
 from runners import time_profile, memory_profile
+
+
+def internal_probe(input_dict):
+    floris = Floris(input_dict=input_dict.floris)
+    internal_quantity = floris.steady_state_atmospheric_condition()
+    return internal_quantity
 
 
 if __name__=="__main__":

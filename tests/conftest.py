@@ -400,11 +400,11 @@ class SampleInputs:
                     "kd": 0.05,
                 },
                 "empirical_gauss": {
-                   "horizontal_deflection_gain_D": 3.0,
-                   "vertical_deflection_gain_D": -1,
-                   "deflection_rate": 15,
-                   "mixing_gain_deflection": 0.0,
-                   "yaw_added_mixing_gain": 0.0
+                    "horizontal_deflection_gain_D": 3.0,
+                    "vertical_deflection_gain_D": -1,
+                    "deflection_rate": 15,
+                    "mixing_gain_deflection": 0.0,
+                    "yaw_added_mixing_gain": 0.0
                 },
             },
             "wake_velocity_parameters": {
