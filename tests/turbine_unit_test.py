@@ -34,8 +34,20 @@ from floris.simulation.turbine import (
 from tests.conftest import SampleInputs, WIND_SPEEDS
 
 
+# This was the version when 0,1 dimensions were wd, ws
 # size 3 x 4 x 1 x 1 x 1
-WIND_CONDITION_BROADCAST = np.stack(
+# WIND_CONDITION_BROADCAST = np.stack(
+#     (
+#         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 0
+#         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 1
+#         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 2
+#     ),
+#     axis=0,
+# )
+
+# This was the version when 0 dimension is samples
+# size 12 x 1 x 1 x 1
+WIND_CONDITION_BROADCAST = np.concatenate(
     (
         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 0
         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 1
@@ -43,6 +55,8 @@ WIND_CONDITION_BROADCAST = np.stack(
     ),
     axis=0,
 )
+
+
 INDEX_FILTER = [0, 2]
 
 
@@ -198,20 +212,22 @@ def test_ct():
     turbine = Turbine.from_dict(turbine_data)
     turbine_floating = Turbine.from_dict(turbine_floating_data)
     turbine_type_map = np.array(N_TURBINES * [turbine.turbine_type])
-    turbine_type_map = turbine_type_map[None, None, :]
+
+    # Add the sample (0th) dimension
+    turbine_type_map = turbine_type_map[None, :]
 
     # Single turbine
-    # yaw angle / fCt are (n wind direction, n wind speed, n turbine)
+    # yaw angle / fCt are (n sample, n turbine)
     wind_speed = 10.0
     thrust = Ct(
-        velocities=wind_speed * np.ones((1, 1, 1, 3, 3)),
-        yaw_angle=np.zeros((1, 1, 1)),
-        tilt_angle=np.ones((1, 1, 1)) * 5.0,
-        ref_tilt_cp_ct=np.ones((1, 1, 1)) * 5.0,
+        velocities=wind_speed * np.ones((1, 1, 3, 3)),
+        yaw_angle=np.zeros((1, 1)),
+        tilt_angle=np.ones((1, 1)) * 5.0,
+        ref_tilt_cp_ct=np.ones((1, 1)) * 5.0,
         fCt={turbine.turbine_type: turbine.fCt_interp},
         tilt_interp=np.array([(turbine.turbine_type, None)]),
-        correct_cp_ct_for_tilt=np.array([[[False]]]),
-        turbine_type_map=turbine_type_map[:,:,0]
+        correct_cp_ct_for_tilt=np.array([[False]]),
+        turbine_type_map=turbine_type_map[:,0]
     )
 
     truth_index = turbine_data["power_thrust_table"]["wind_speed"].index(wind_speed)
@@ -220,35 +236,35 @@ def test_ct():
     # Multiple turbines with index filter
     # 4 turbines with 3 x 3 grid arrays
     thrusts = Ct(
-        velocities=np.ones((N_TURBINES, 3, 3)) * WIND_CONDITION_BROADCAST,  # 3 x 4 x 4 x 3 x 3
-        yaw_angle=np.zeros((1, 1, N_TURBINES)),
-        tilt_angle=np.ones((1, 1, N_TURBINES)) * 5.0,
-        ref_tilt_cp_ct=np.ones((1, 1, N_TURBINES)) * 5.0,
+        velocities=np.ones((N_TURBINES, 3, 3)) * WIND_CONDITION_BROADCAST,  # 12 x 4 x 3 x 3
+        yaw_angle=np.zeros((1, N_TURBINES)),
+        tilt_angle=np.ones((1, N_TURBINES)) * 5.0,
+        ref_tilt_cp_ct=np.ones((1, N_TURBINES)) * 5.0,
         fCt={turbine.turbine_type: turbine.fCt_interp},
         tilt_interp=np.array([(turbine.turbine_type, None)]),
-        correct_cp_ct_for_tilt=np.array([[[False] * N_TURBINES]]),
+        correct_cp_ct_for_tilt=np.array([[False] * N_TURBINES]),
         turbine_type_map=turbine_type_map,
         ix_filter=INDEX_FILTER,
     )
-    assert len(thrusts[0, 0]) == len(INDEX_FILTER)
+    assert len(thrusts[0]) == len(INDEX_FILTER)
 
     for i in range(len(INDEX_FILTER)):
         truth_index = turbine_data["power_thrust_table"]["wind_speed"].index(WIND_SPEEDS[0])
         np.testing.assert_allclose(
-            thrusts[0, 0, i],
+            thrusts[0, i],
             turbine_data["power_thrust_table"]["thrust"][truth_index]
         )
 
     # Single floating turbine; note that 'tilt_interp' is not set to None
     thrust = Ct(
-        velocities=wind_speed * np.ones((1, 1, 1, 3, 3)),
-        yaw_angle=np.zeros((1, 1, 1)),
-        tilt_angle=np.ones((1, 1, 1)) * 5.0,
-        ref_tilt_cp_ct=np.ones((1, 1, 1)) * 5.0,
+        velocities=wind_speed * np.ones((1, 1, 3, 3)), # One sample, one turbine
+        yaw_angle=np.zeros((1, 1)),
+        tilt_angle=np.ones((1, 1)) * 5.0,
+        ref_tilt_cp_ct=np.ones((1, 1)) * 5.0,
         fCt={turbine.turbine_type: turbine_floating.fCt_interp},
         tilt_interp=np.array([(turbine_floating.turbine_type, turbine_floating.fTilt_interp)]),
-        correct_cp_ct_for_tilt=np.array([[[True]]]),
-        turbine_type_map=turbine_type_map[:,:,0]
+        correct_cp_ct_for_tilt=np.array([[True]]),
+        turbine_type_map=turbine_type_map[:,0]
     )
 
     truth_index = turbine_floating_data["power_thrust_table"]["wind_speed"].index(wind_speed)
