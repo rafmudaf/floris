@@ -403,13 +403,13 @@ def cubic_mean(array, axis=0):
 def simple_cubature(array, cubature_weights, axis=0):
     weights = cubature_weights.flatten()
     weights = weights * len(weights) / np.sum(weights)
-    product = (array * weights[None, None, None, :, None])
+    product = (array * weights[None, None, :, None])
     return simple_mean(product, axis)
 
 def cubic_cubature(array, cubature_weights, axis=0):
     weights = cubature_weights.flatten()
     weights = weights * len(weights) / np.sum(weights)
-    return np.cbrt(np.mean((array**3.0 * weights[None, None, None, :, None]), axis=axis))
+    return np.cbrt(np.mean((array**3.0 * weights[None, None, :, None]), axis=axis))
 
 def average_velocity(
     velocities: NDArrayFloat,

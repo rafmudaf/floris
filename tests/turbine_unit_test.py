@@ -586,7 +586,7 @@ def test_asdict(sample_inputs_fixture: SampleInputs):
 def test_simple_cubature():
 
     # Define a sample array
-    velocities = np.ones((1, 1, 1, 3, 3))
+    velocities = np.ones((1, 1, 3, 3))
 
     # Define sample cubature weights
     cubature_weights = np.array([1., 1., 1.])
@@ -606,7 +606,7 @@ def test_simple_cubature():
 def test_cubic_cubature():
 
     # Define a sample array
-    velocities = np.ones((1, 1, 1, 3, 3))
+    velocities = np.ones((1, 1, 3, 3))
 
     # Define sample cubature weights
     cubature_weights = np.array([1., 1., 1.])
