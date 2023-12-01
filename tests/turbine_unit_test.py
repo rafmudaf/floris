@@ -423,8 +423,8 @@ def test_axial_induction():
 def test_rotor_velocity_yaw_correction():
     N_TURBINES = 4
 
-    wind_speed = average_velocity(10.0 * np.ones((1, 1, 1, 3, 3)))
-    wind_speed_N_TURBINES = average_velocity(10.0 * np.ones((1, 1, N_TURBINES, 3, 3)))
+    wind_speed = average_velocity(10.0 * np.ones((1, 1, 3, 3)))
+    wind_speed_N_TURBINES = average_velocity(10.0 * np.ones((1, N_TURBINES, 3, 3)))
 
     # Test a single turbine for zero yaw
     yaw_corrected_velocities = _rotor_velocity_yaw_correction(
@@ -445,7 +445,7 @@ def test_rotor_velocity_yaw_correction():
     # Test multiple turbines for zero yaw
     yaw_corrected_velocities = _rotor_velocity_yaw_correction(
         pP=3.0,
-        yaw_angle=np.zeros((1, 1, N_TURBINES)),
+        yaw_angle=np.zeros((1, N_TURBINES)),
         rotor_effective_velocities=wind_speed_N_TURBINES,
     )
     np.testing.assert_allclose(yaw_corrected_velocities, wind_speed_N_TURBINES)
@@ -453,7 +453,7 @@ def test_rotor_velocity_yaw_correction():
     # Test multiple turbines for non-zero yaw
     yaw_corrected_velocities = _rotor_velocity_yaw_correction(
         pP=3.0,
-        yaw_angle=np.ones((1, 1, N_TURBINES)) * 60.0,
+        yaw_angle=np.ones((1, N_TURBINES)) * 60.0,
         rotor_effective_velocities=wind_speed_N_TURBINES,
     )
     np.testing.assert_allclose(yaw_corrected_velocities, 0.5 * wind_speed_N_TURBINES)
