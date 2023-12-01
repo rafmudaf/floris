@@ -531,9 +531,9 @@ def test_compute_tilt_angles_for_floating_turbines():
     N_TURBINES = 4
 
     wind_speed = 25.0
-    rotor_effective_velocities = average_velocity(wind_speed * np.ones((1, 1, 1, 3, 3)))
+    rotor_effective_velocities = average_velocity(wind_speed * np.ones((1, 1, 3, 3)))
     rotor_effective_velocities_N_TURBINES = average_velocity(
-        wind_speed * np.ones((1, 1, N_TURBINES, 3, 3))
+        wind_speed * np.ones((1, N_TURBINES, 3, 3))
     )
 
     turbine_floating_data = SampleInputs().turbine_floating
@@ -544,7 +544,7 @@ def test_compute_tilt_angles_for_floating_turbines():
     # Single turbine
     tilt = compute_tilt_angles_for_floating_turbines(
         turbine_type_map=np.array([turbine_type_map[:, 0]]),
-        tilt_angle=5.0*np.ones((1, 1, 1)),
+        tilt_angle=5.0*np.ones((1, 1)),
         tilt_interp=np.array([(turbine_floating.turbine_type, turbine_floating.fTilt_interp)]),
         rotor_effective_velocities=rotor_effective_velocities,
     )
@@ -557,7 +557,7 @@ def test_compute_tilt_angles_for_floating_turbines():
     # Mulitple turbines
     tilt_N_turbines = compute_tilt_angles_for_floating_turbines(
         turbine_type_map=np.array(turbine_type_map),
-        tilt_angle=5.0*np.ones((1, 1, N_TURBINES)),
+        tilt_angle=5.0*np.ones((1, N_TURBINES)),
         tilt_interp=np.array(
             [(turbine_floating.turbine_type, turbine_floating.fTilt_interp)] * N_TURBINES
         ),
@@ -567,7 +567,7 @@ def test_compute_tilt_angles_for_floating_turbines():
     # calculate tilt again
     truth_index = turbine_floating_data["floating_tilt_table"]["wind_speeds"].index(wind_speed)
     tilt_truth = turbine_floating_data["floating_tilt_table"]["tilt"][truth_index]
-    np.testing.assert_allclose(tilt_N_turbines, [[[tilt_truth] * N_TURBINES]])
+    np.testing.assert_allclose(tilt_N_turbines, [[tilt_truth] * N_TURBINES])
 
 
 def test_asdict(sample_inputs_fixture: SampleInputs):
