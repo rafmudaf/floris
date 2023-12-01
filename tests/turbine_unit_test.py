@@ -602,3 +602,23 @@ def test_simple_cubature():
 
     # Check if the result matches the expected output
     np.testing.assert_allclose(result, expected_output)
+
+def test_cubic_cubature():
+
+    # Define a sample array
+    velocities = np.ones((1, 1, 1, 3, 3))
+
+    # Define sample cubature weights
+    cubature_weights = np.array([1., 1., 1.])
+
+    # Define the axis as last 2 dimensions
+    axis = (velocities.ndim-2, velocities.ndim-1)
+
+    # Calculate expected output based on the given inputs
+    expected_output = 1.0
+
+    # Call the function with the given inputs
+    result = cubic_cubature(velocities, cubature_weights, axis)
+
+    # Check if the result matches the expected output
+    np.testing.assert_allclose(result, expected_output)
