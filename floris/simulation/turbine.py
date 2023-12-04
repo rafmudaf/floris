@@ -245,19 +245,19 @@ def Ct(
     wind speed table using the rotor swept area average velocity.
 
     Args:
-        velocities (NDArrayFloat[sample, turbines, grid1, grid2]): The velocity field at
+        velocities (NDArrayFloat[findex, turbines, grid1, grid2]): The velocity field at
             a turbine.
-        yaw_angle (NDArrayFloat[sample, turbines]): The yaw angle for each turbine.
-        tilt_angle (NDArrayFloat[sample, turbines]): The tilt angle for each turbine.
-        ref_tilt_cp_ct (NDArrayFloat[sample, turbines]): The reference tilt angle for each turbine
+        yaw_angle (NDArrayFloat[findex, turbines]): The yaw angle for each turbine.
+        tilt_angle (NDArrayFloat[findex, turbines]): The tilt angle for each turbine.
+        ref_tilt_cp_ct (NDArrayFloat[findex, turbines]): The reference tilt angle for each turbine
             that the Cp/Ct tables are defined at.
         fCt (dict): The thrust coefficient interpolation functions for each turbine. Keys are
             the turbine type string and values are the interpolation functions.
         tilt_interp (Iterable[tuple]): The tilt interpolation functions for each
             turbine.
-        correct_cp_ct_for_tilt (NDArrayBool[sample, turbines]): Boolean for determining if the
+        correct_cp_ct_for_tilt (NDArrayBool[findex, turbines]): Boolean for determining if the
             turbines Cp and Ct should be corrected for tilt.
-        turbine_type_map: (NDArrayObject[sample, turbines]): The Turbine type definition
+        turbine_type_map: (NDArrayObject[findex, turbines]): The Turbine type definition
             for each turbine.
         ix_filter (NDArrayFilter | Iterable[int] | None, optional): The boolean array, or
             integer indices as an iterable of array to filter out before calculation.
@@ -315,14 +315,14 @@ def Ct(
 
 
 def axial_induction(
-    velocities: NDArrayFloat,  # (samples, turbines, grid, grid)
-    yaw_angle: NDArrayFloat,  # (samples, turbines)
-    tilt_angle: NDArrayFloat,  # (samples, turbines)
+    velocities: NDArrayFloat,  # (findex, turbines, grid, grid)
+    yaw_angle: NDArrayFloat,  # (findex, turbines)
+    tilt_angle: NDArrayFloat,  # (findex, turbines)
     ref_tilt_cp_ct: NDArrayFloat,
     fCt: dict,  # (turbines)
     tilt_interp: NDArrayObject,  # (turbines)
-    correct_cp_ct_for_tilt: NDArrayBool, # (samples, turbines)
-    turbine_type_map: NDArrayObject, # (samples, turbines)
+    correct_cp_ct_for_tilt: NDArrayBool, # (findex, turbines)
+    turbine_type_map: NDArrayObject, # (findex, turbines)
     ix_filter: NDArrayFilter | Iterable[int] | None = None,
     average_method: str = "cubic-mean",
     cubature_weights: NDArrayFloat | None = None
@@ -333,17 +333,17 @@ def axial_induction(
     Args:
         velocities (NDArrayFloat): The velocity field at each turbine; should be shape:
             (number of turbines, ngrid, ngrid), or (ngrid, ngrid) for a single turbine.
-        yaw_angle (NDArrayFloat[samples, turbines]): The yaw angle for each turbine.
-        tilt_angle (NDArrayFloat[samples, turbines]): The tilt angle for each turbine.
-        ref_tilt_cp_ct (NDArrayFloat[samples, turbines]): The reference tilt angle for each turbine
+        yaw_angle (NDArrayFloat[findex, turbines]): The yaw angle for each turbine.
+        tilt_angle (NDArrayFloat[findex, turbines]): The tilt angle for each turbine.
+        ref_tilt_cp_ct (NDArrayFloat[findex, turbines]): The reference tilt angle for each turbine
             that the Cp/Ct tables are defined at.
         fCt (dict): The thrust coefficient interpolation functions for each turbine. Keys are
             the turbine type string and values are the interpolation functions.
         tilt_interp (Iterable[tuple]): The tilt interpolation functions for each
             turbine.
-        correct_cp_ct_for_tilt (NDArrayBool[samples, turbines]): Boolean for determining if the
+        correct_cp_ct_for_tilt (NDArrayBool[findex, turbines]): Boolean for determining if the
             turbines Cp and Ct should be corrected for tilt.
-        turbine_type_map: (NDArrayObject[samples, turbines]): The Turbine type definition
+        turbine_type_map: (NDArrayObject[findex, turbines]): The Turbine type definition
             for each turbine.
         ix_filter (NDArrayFilter | Iterable[int] | None, optional): The boolean array, or
             integer indices (as an array or iterable) to filter out before calculation.
@@ -445,7 +445,7 @@ def average_velocity(
     """
 
     # The input velocities are expected to be a 5 dimensional array with shape:
-    # (# samples, # turbines, grid resolution, grid resolution)
+    # (# findex, # turbines, grid resolution, grid resolution)
 
     if ix_filter is not None:
         velocities = velocities[:, ix_filter]

@@ -47,7 +47,7 @@ from tests.conftest import SampleInputs, WIND_SPEEDS
 #     axis=0,
 # )
 
-# This was the version when 0 dimension is samples
+# This was the version when 0 dimension is findex
 # size 12 x 1 x 1 x 1
 WIND_CONDITION_BROADCAST = np.concatenate(
     (
@@ -149,20 +149,20 @@ def test_rotor_area():
 
 def test_average_velocity():
     # TODO: why do we use cube root - mean - cube (like rms) instead of a simple average (np.mean)?
-    # Dimensions are (n sample, n turbines, grid x, grid y)
+    # Dimensions are (n_findex, n turbines, grid x, grid y)
     velocities = np.ones((1, 1, 5, 5))
     assert average_velocity(velocities, method="cubic-mean") == 1
 
     # Constructs an array of shape 1 x 2 x 3 x 3 with first turbine all 1, second turbine all 2
     velocities = np.stack(
         (
-            np.ones((1, 3, 3)),  # The first dimension here is the sample dimension and the second
+            np.ones((1, 3, 3)),  # The first dimension here is the findex dimension and the second
             2 * np.ones((1, 3, 3)),  # is the n turbine since we are stacking on axis=1
         ),
         axis=1,
     )
 
-    # Pull out the first sample for the test
+    # Pull out the first findex for the test
     np.testing.assert_array_equal(
         average_velocity(velocities, method="cubic-mean")[0],
         np.array([1, 2])
@@ -173,7 +173,7 @@ def test_average_velocity():
     velocities = np.stack(  # 4 turbines with 3 x 3 velocity array; shape (1,4,3,3)
         [i * np.ones((1, 3, 3)) for i in range(1,5)],
         # (
-        #     # The first dimension here is the sample dimension
+        #     # The first dimension here is the findex dimension
         #     # and second is the turbine dimension since we are stacking on axis=1
         #     np.ones(
         #         (1, 3, 3)
@@ -185,9 +185,9 @@ def test_average_velocity():
         axis=1,
     )
     avg = average_velocity(velocities, ix_filter, method="cubic-mean")
-    assert avg.shape == (1, 2)  # 1 sample, 2 turbines filtered
+    assert avg.shape == (1, 2)  # 1 = n_findex, 2 turbines filtered
 
-    # Pull out the first sample for the comparison
+    # Pull out the first findex for the comparison
     assert np.allclose(avg[0], np.array([1.0, 3.0]))
     # This fails in GitHub Actions due to a difference in precision:
     # E           assert 3.0000000000000004 == 3.0
@@ -200,9 +200,9 @@ def test_average_velocity():
         axis=1,
     )
     avg = average_velocity(velocities, INDEX_FILTER, method="cubic-mean")
-    assert avg.shape == (1, 2)  # 1 sample, 2 turbines filtered
+    assert avg.shape == (1, 2)  # 1 findex, 2 turbines filtered
 
-    # Pull out the first sample for the comparison
+    # Pull out the first findex for the comparison
     assert np.allclose(avg[0], np.array([1.0, 3.0]))
 
 
@@ -215,11 +215,11 @@ def test_ct():
     turbine_floating = Turbine.from_dict(turbine_floating_data)
     turbine_type_map = np.array(N_TURBINES * [turbine.turbine_type])
 
-    # Add the sample (0th) dimension
+    # Add the findex (0th) dimension
     turbine_type_map = turbine_type_map[None, :]
 
     # Single turbine
-    # yaw angle / fCt are (n sample, n turbine)
+    # yaw angle / fCt are (n_findex, n turbine)
     wind_speed = 10.0
     thrust = Ct(
         velocities=wind_speed * np.ones((1, 1, 3, 3)),
@@ -259,7 +259,7 @@ def test_ct():
 
     # Single floating turbine; note that 'tilt_interp' is not set to None
     thrust = Ct(
-        velocities=wind_speed * np.ones((1, 1, 3, 3)), # One sample, one turbine
+        velocities=wind_speed * np.ones((1, 1, 3, 3)), # One findex, one turbine
         yaw_angle=np.zeros((1, 1)),
         tilt_angle=np.ones((1, 1)) * 5.0,
         ref_tilt_cp_ct=np.ones((1, 1)) * 5.0,
@@ -288,7 +288,7 @@ def test_power():
     turbine_type_map = turbine_type_map[None, :]
     test_power = power(
         ref_density_cp_ct=AIR_DENSITY,
-        rotor_effective_velocities=wind_speed * np.ones((1, 1)), # 1 sample, 1 turbine
+        rotor_effective_velocities=wind_speed * np.ones((1, 1)), # 1 findex, 1 turbine
         power_interp={turbine.turbine_type: turbine.power_interp},
         turbine_type_map=turbine_type_map[:,0]
     )
@@ -379,7 +379,7 @@ def test_axial_induction():
     # Single turbine
     wind_speed = 10.0
     ai = axial_induction(
-        velocities=wind_speed * np.ones((1, 1, 3, 3)), # 1 Sample, 1 Turbine
+        velocities=wind_speed * np.ones((1, 1, 3, 3)), # 1 findex, 1 Turbine
         yaw_angle=np.zeros((1, 1)),
         tilt_angle=np.ones((1, 1)) * 5.0,
         ref_tilt_cp_ct=np.ones((1, 1)) * 5.0,
@@ -585,7 +585,7 @@ def test_asdict(sample_inputs_fixture: SampleInputs):
 
 def test_simple_cubature():
 
-    # Define a sample array
+    # Define a velocity array
     velocities = np.ones((1, 1, 3, 3))
 
     # Define sample cubature weights
@@ -605,7 +605,7 @@ def test_simple_cubature():
 
 def test_cubic_cubature():
 
-    # Define a sample array
+    # Define a velocity array
     velocities = np.ones((1, 1, 3, 3))
 
     # Define sample cubature weights
