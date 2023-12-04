@@ -84,6 +84,7 @@ WIND_SPEEDS = [
     11.0,
 ]
 N_WIND_SPEEDS = len(WIND_SPEEDS)
+N_FINDEX = N_WIND_SPEEDS
 X_COORDS = [
     0.0,
     5 * 126.0,
