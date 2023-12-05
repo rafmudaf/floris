@@ -93,9 +93,13 @@ def test_rotate_coordinates_rel_west():
         wind_directions, coordinates
     )
 
-    np.testing.assert_array_equal(X_COORDS, x_rotated[0, 0])
-    np.testing.assert_array_equal(Y_COORDS, y_rotated[0, 0])
-    np.testing.assert_array_equal(Z_COORDS, z_rotated[0, 0])
+    # Test that x_rotated has 2 dimensions
+    np.testing.assert_equal(np.ndim(x_rotated), 2)
+
+    # Assert the rotating to 270 doesn't change coordinates
+    np.testing.assert_array_equal(X_COORDS, x_rotated[0])
+    np.testing.assert_array_equal(Y_COORDS, y_rotated[0])
+    np.testing.assert_array_equal(Z_COORDS, z_rotated[0])
 
     # For 360, the coordinates should be rotated 90 degrees counter clockwise
     # from looking fown at the wind farm from above. The series of turbines
@@ -110,19 +114,19 @@ def test_rotate_coordinates_rel_west():
     x_rotated, y_rotated, z_rotated, _, _ = rotate_coordinates_rel_west(
         wind_directions, coordinates
     )
-    np.testing.assert_almost_equal(Y_COORDS, x_rotated[0, 0] - np.min(x_rotated[0, 0]))
-    np.testing.assert_almost_equal(X_COORDS, y_rotated[0, 0] - np.min(y_rotated[0, 0]))
+    np.testing.assert_almost_equal(Y_COORDS, x_rotated[0] - np.min(x_rotated[0]))
+    np.testing.assert_almost_equal(X_COORDS, y_rotated[0] - np.min(y_rotated[0]))
     np.testing.assert_almost_equal(
-        Z_COORDS + np.min(Z_COORDS), z_rotated[0, 0] + np.min(z_rotated[0, 0])
+        Z_COORDS + np.min(Z_COORDS), z_rotated[0] + np.min(z_rotated[0])
     )
 
     wind_directions = np.array([90.0])
     x_rotated, y_rotated, z_rotated, _, _ = rotate_coordinates_rel_west(
         wind_directions, coordinates
     )
-    np.testing.assert_almost_equal(X_COORDS[-1:-4:-1], x_rotated[0, 0])
-    np.testing.assert_almost_equal(Y_COORDS, y_rotated[0, 0])
-    np.testing.assert_almost_equal(Z_COORDS, z_rotated[0, 0])
+    np.testing.assert_almost_equal(X_COORDS[-1:-4:-1], x_rotated[0])
+    np.testing.assert_almost_equal(Y_COORDS, y_rotated[0])
+    np.testing.assert_almost_equal(Z_COORDS, z_rotated[0])
 
 
 def test_reverse_rotate_coordinates_rel_west():
@@ -143,10 +147,10 @@ def test_reverse_rotate_coordinates_rel_west():
         y_center_of_rotation,
     ) = rotate_coordinates_rel_west(wind_directions, coordinates)
 
-    # Go up to 5 dimensions (reverse function is expecting grid)
-    grid_x = x_rotated[:, :, :, None, None]
-    grid_y = y_rotated[:, :, :, None, None]
-    grid_z = z_rotated[:, :, :, None, None]
+    # Go up to 4 dimensions (reverse function is expecting grid)
+    grid_x = x_rotated[:, :,  None, None]
+    grid_y = y_rotated[:, :,  None, None]
+    grid_z = z_rotated[:, :,  None, None]
 
     # Perform reverse rotation
     grid_x_reversed, grid_y_reversed, grid_z_reversed = reverse_rotate_coordinates_rel_west(
