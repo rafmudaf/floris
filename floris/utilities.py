@@ -189,8 +189,6 @@ def reverse_rotate_coordinates_rel_west(
 
     Args:
         wind_directions (NDArrayFloat): Series of wind directions to base the rotation.
-        coordinates (NDArrayFloat): Series of coordinates to rotate with shape (N coordinates, 3)
-            so that each element of the array coordinates[i] yields a three-component coordinate.
         grid_x (NDArrayFloat): X-coordinates to be rotated.
         grid_y (NDArrayFloat): Y-coordinates to be rotated.
         grid_z (NDArrayFloat): Z-coordinates to be rotated.
