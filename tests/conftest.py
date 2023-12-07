@@ -88,10 +88,6 @@ WIND_SPEEDS = [
 # Could use either
 N_FINDEX = len(WIND_DIRECTIONS)
 
-# Note since len(WIND_DIRECTIONS) == len(WIND_SPEEDS)
-# Could use either
-N_FINDEX = len(WIND_DIRECTIONS)
-
 X_COORDS = [
     0.0,
     5 * 126.0,
