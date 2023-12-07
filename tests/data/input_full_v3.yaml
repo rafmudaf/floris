@@ -18,7 +18,11 @@ solver:
 farm:
   layout_x:
   - 0.0
+  - 630.0
+  - 1260.0
   layout_y:
+  - 0.0
+  - 0.0
   - 0.0
   turbine_type:
   - nrel_5MW
