@@ -36,19 +36,9 @@ from floris.simulation.turbine import (
 from tests.conftest import SampleInputs, WIND_SPEEDS
 
 
-# This was the version when 0,1 dimensions were wd, ws
-# size 3 x 4 x 1 x 1 x 1
-# WIND_CONDITION_BROADCAST = np.stack(
-#     (
-#         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 0
-#         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 1
-#         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 2
-#     ),
-#     axis=0,
-# )
-
-# This was the version when 0 dimension is findex
 # size 12 x 1 x 1 x 1
+# (in previous version stack was used in place of conatenate,
+# yielding 3 x 4 x 1 x 1 x 1 )
 WIND_CONDITION_BROADCAST = np.concatenate(
     (
         np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 0
@@ -57,8 +47,6 @@ WIND_CONDITION_BROADCAST = np.concatenate(
     ),
     axis=0,
 )
-
-
 INDEX_FILTER = [0, 2]
 
 
