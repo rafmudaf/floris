@@ -301,7 +301,7 @@ def test_power():
         ref_density_cp_ct=AIR_DENSITY,
         rotor_effective_velocities=wind_speed * np.ones((1, 1, 1)),
         power_interp={turbine.turbine_type: turbine.power_interp},
-        turbine_type_map=turbine_type_map[:,:,0]
+        turbine_type_map=turbine_type_map[:,0]
     )
     assert np.allclose(rated_power, 5e6)
 
@@ -312,7 +312,7 @@ def test_power():
         ref_density_cp_ct=AIR_DENSITY,
         rotor_effective_velocities=wind_speed * np.ones((1, 1, 1)),
         power_interp={turbine.turbine_type: turbine.power_interp},
-        turbine_type_map=turbine_type_map[:,:,0]
+        turbine_type_map=turbine_type_map[:,0]
     )
     assert np.allclose(zero_power, 0.0)
 
