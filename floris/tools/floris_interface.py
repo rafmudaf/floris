@@ -32,6 +32,7 @@ from floris.simulation.turbine import (
 from floris.simulation.turbine_multi_dim import multidim_power_down_select, power_multidim
 from floris.tools.cut_plane import CutPlane
 from floris.type_dec import NDArrayFloat
+from floris.simulation.grid import TurbineGrid
 
 
 class FlorisInterface(LoggingManager):
@@ -188,6 +189,39 @@ class FlorisInterface(LoggingManager):
         # Finalize values to user-supplied order
         self.floris.finalize()
 
+    def reset(
+        self,
+        layout_x: NDArrayFloat,
+        layout_y: NDArrayFloat,
+        wind_speeds: NDArrayFloat,
+        wind_directions: NDArrayFloat
+    ):
+        # NOTE: if the layout changes, then the grid will need to be reinitialized. The grid
+        # points are placed in space based on the farm.layout.
+        # The size of the grid arrays can remain the same, but the grid points will need to be
+        # reset.
+
+        self.floris.farm.layout_x = layout_x
+        self.floris.farm.layout_y = layout_y
+        # TODO: the hub heights are expanded to 3d in the farm, so this takes the first wind
+        # condition as the reference hub height array. It should instead either not change
+        # the shape of the hub heights array or get the raw data differently.
+        self.floris.farm.hub_heights = self.floris.farm.hub_heights[0,0]
+
+        self.floris.flow_field.wind_speeds = wind_speeds
+        self.floris.flow_field.wind_directions = wind_directions
+
+        self.floris.grid = TurbineGrid(
+            turbine_coordinates=self.floris.farm.coordinates,
+            turbine_diameters=self.floris.farm.rotor_diameters[0,0],
+            wind_directions=self.floris.flow_field.wind_directions,
+            wind_speeds=self.floris.flow_field.wind_speeds,
+            grid_resolution=self.floris.solver["turbine_grid_points"],
+            time_series=self.floris.flow_field.time_series,
+        )
+        self.floris.initialize_domain()
+
+    # @profile
     def reinitialize(
         self,
         wind_speeds: list[float] | NDArrayFloat | None = None,
