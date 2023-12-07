@@ -311,8 +311,6 @@ class Farm(BaseClass):
 
     def expand_farm_properties(
         self,
-        # n_wind_directions: int,
-        # n_wind_speeds: int,
         n_findex: int,
         sorted_coord_indices
     ):
