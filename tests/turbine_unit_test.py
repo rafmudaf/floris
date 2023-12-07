@@ -323,7 +323,7 @@ def test_power():
     turbine_data = SampleInputs().turbine
     turbine = Turbine.from_dict(turbine_data)
     turbine_type_map = np.array(n_turbines * [turbine.turbine_type])
-    turbine_type_map = turbine_type_map[None, None, :]
+    turbine_type_map = turbine_type_map[None, :]
     test_4_power = power(
         ref_density_cp_ct=AIR_DENSITY,
         rotor_effective_velocities=wind_speed * np.ones((1, 1, n_turbines)),
@@ -339,12 +339,12 @@ def test_power():
     turbine_data = SampleInputs().turbine
     turbine = Turbine.from_dict(turbine_data)
     turbine_type_map = np.array(n_turbines * [turbine.turbine_type])
-    turbine_type_map = turbine_type_map[None, None, :]
+    turbine_type_map = turbine_type_map[None, :]
     test_grid_power = power(
         ref_density_cp_ct=AIR_DENSITY,
         rotor_effective_velocities=wind_speed * np.ones((1, 1, n_turbines, 3, 3)),
         power_interp={turbine.turbine_type: turbine.power_interp},
-        turbine_type_map=turbine_type_map[:,:,0]
+        turbine_type_map=turbine_type_map[:,0]
     )
     baseline_grid_power = baseline_power * np.ones((1, 1, n_turbines, 3, 3))
     assert np.allclose(baseline_grid_power, test_grid_power)
