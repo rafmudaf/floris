@@ -76,7 +76,6 @@ WIND_DIRECTIONS = [
     285.0,
     315.0,
 ]
-
 WIND_SPEEDS = [
     8.0,
     9.0,
@@ -84,8 +83,8 @@ WIND_SPEEDS = [
     11.0,
 ]
 
-# Note since len(WIND_DIRECTIONS) == len(WIND_SPEEDS)
-# Could use either
+# FINDEX is the length of the number of conditions, so it can be
+# len(WIND_DIRECTIONS) or len(WIND_SPEEDS
 N_FINDEX = len(WIND_DIRECTIONS)
 
 X_COORDS = [
@@ -128,7 +127,7 @@ def turbine_grid_fixture(sample_inputs_fixture) -> TurbineGrid:
         grid_resolution=TURBINE_GRID_RESOLUTION,
         time_series=TIME_SERIES
     )
-    rotor_diameters = ROTOR_DIAMETER * np.ones( (N_FINDEX, N_TURBINES) )
+
 @pytest.fixture
 def flow_field_grid_fixture(sample_inputs_fixture) -> FlowFieldGrid:
     turbine_coordinates = np.array(list(zip(X_COORDS, Y_COORDS, Z_COORDS)))
@@ -140,7 +139,7 @@ def flow_field_grid_fixture(sample_inputs_fixture) -> FlowFieldGrid:
         wind_speeds=np.array(WIND_SPEEDS),
         grid_resolution=[3,2,2]
     )
-    rotor_diameters = ROTOR_DIAMETER * np.ones( (N_FINDEX, N_TURBINES) )
+
 @pytest.fixture
 def points_grid_fixture(sample_inputs_fixture) -> PointsGrid:
     turbine_coordinates = np.array(list(zip(X_COORDS, Y_COORDS, Z_COORDS)))
