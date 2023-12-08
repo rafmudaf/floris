@@ -433,7 +433,7 @@ class Farm(BaseClass):
             and self.turbine_definitions[0]['multi_dimensional_cp_ct'] is True:
             self.turbine_fCts = np.take_along_axis(
                 self.turbine_fCts_sorted,
-                unsorted_indices[:,:,0,0]
+                unsorted_indices[:,:,0,0],
                 axis=1
             )
             self.turbine_power_interps = np.take_along_axis(

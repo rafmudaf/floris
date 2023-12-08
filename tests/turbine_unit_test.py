@@ -37,7 +37,7 @@ from tests.conftest import SampleInputs, WIND_SPEEDS
 
 
 # size 12 x 1 x 1 x 1
-# (in previous version stack was used in place of conatenate,
+# (in previous version stack was used in place of concatenate,
 # yielding 3 x 4 x 1 x 1 x 1 )
 WIND_CONDITION_BROADCAST = np.concatenate(
     (

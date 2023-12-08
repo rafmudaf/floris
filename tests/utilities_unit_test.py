@@ -85,7 +85,7 @@ def test_wind_delta():
 
 
 def test_rotate_coordinates_rel_west():
-    coordinates = np.array([[x, y, z] for x, y, z in zip(X_COORDS, Y_COORDS, Z_COORDS)])
+    coordinates = np.array(list(zip(X_COORDS, Y_COORDS, Z_COORDS)))
 
     # For 270, the coordinates should not change.
     wind_directions = np.array([270.0])
