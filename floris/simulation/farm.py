@@ -318,10 +318,10 @@ class Farm(BaseClass):
         self.hub_heights_sorted = np.take_along_axis(
             self.hub_heights * template_shape,
             sorted_coord_indices,
-            axis=1 # PF: Pretty sure this needs to move to 1 but can confirm later
+            axis=1
         )
 
-        # TODO: Waiting for RM and CB for this part~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        # TODO: update multidimensional turbine for 4D arrays
         if 'multi_dimensional_cp_ct' in self.turbine_definitions[0].keys() \
             and self.turbine_definitions[0]['multi_dimensional_cp_ct'] is True:
             wd_dim = np.shape(template_shape)[0]
@@ -333,7 +333,7 @@ class Farm(BaseClass):
                         np.shape(template_shape)
                     ),
                     sorted_coord_indices,
-                    axis=2 #PF TODO: Probably this should change to 1
+                    axis=2 # TODO: This should probably be 1
                 )
                 self.turbine_power_interps_sorted = np.take_along_axis(
                     np.reshape(
@@ -341,21 +341,19 @@ class Farm(BaseClass):
                         np.shape(template_shape)
                     ),
                     sorted_coord_indices,
-                    axis=2#PF TODO: Probably this should change to 1
+                    axis=2 # TODO: This should probably be 1
                 )
             else:
                 self.turbine_fCts_sorted = np.take_along_axis(
                     np.reshape(self.turbine_fCts, np.shape(template_shape)),
                     sorted_coord_indices,
-                    axis=2#PF TODO: Probably this should change to 1
+                    axis=1
                 )
                 self.turbine_power_interps_sorted = np.take_along_axis(
                     np.reshape(self.turbine_power_interps, np.shape(template_shape)),
                     sorted_coord_indices,
-                    axis=2#PF TODO: Probably this should change to 1
+                    axis=1
                 )
-        # TODO: Waiting for RM and CB for this part~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
         self.rotor_diameters_sorted = np.take_along_axis(
             self.rotor_diameters * template_shape,
             sorted_coord_indices,
@@ -408,10 +406,6 @@ class Farm(BaseClass):
         )
 
     def set_yaw_angles(self, n_findex: int):
-
-        # TODO Is this just for initializing yaw angles to zero?
-        # TODO (PF): I think just setting to 0
-
         self.yaw_angles = np.zeros((n_findex, self.n_turbines))
         self.yaw_angles_sorted = np.zeros((n_findex, self.n_turbines))
 
@@ -439,13 +433,13 @@ class Farm(BaseClass):
             and self.turbine_definitions[0]['multi_dimensional_cp_ct'] is True:
             self.turbine_fCts = np.take_along_axis(
                 self.turbine_fCts_sorted,
-                unsorted_indices[:,:,0,0],#TODO PF: Changed to 1, RM/CB confirm
-                axis=1 #TODO PF: Changed to 1, RM/CB confirm
+                unsorted_indices[:,:,0,0]
+                axis=1
             )
             self.turbine_power_interps = np.take_along_axis(
                 self.turbine_power_interps_sorted,
-                unsorted_indices[:,:,0,0],#TODO PF: Changed to 1, RM/CB confirm
-                axis=1#TODO PF: Changed to 1, RM/CB confirm
+                unsorted_indices[:,:,0,0],
+                axis=1
             )
         self.yaw_angles = np.take_along_axis(
             self.yaw_angles_sorted,
