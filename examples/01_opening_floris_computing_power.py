@@ -30,7 +30,8 @@ Main concept is introduce FLORIS and illustrate essential structure of most-used
 # Initialize FLORIS with the given input file via FlorisInterface.
 # For basic usage, FlorisInterface provides a simplified and expressive
 # entry point to the simulation routines.
-fi = FlorisInterface("inputs/gch.yaml")
+# fi = FlorisInterface("inputs/gch.yaml")
+fi = FlorisInterface("inputs/jensen.yaml")
 
 # Convert to a simple two turbine layout
 fi.reinitialize(layout_x=[0, 500.], layout_y=[0., 0.])
@@ -38,26 +39,32 @@ fi.reinitialize(layout_x=[0, 500.], layout_y=[0., 0.])
 # Single wind speed and wind direction
 print('\n========================= Single Wind Direction and Wind Speed =========================')
 
-# Get the turbine powers assuming 1 wind speed and 1 wind direction
+# Get the turbine powers assuming 1 wind direction and speed
 fi.reinitialize(wind_directions=[270.], wind_speeds=[8.0])
 
 # Set the yaw angles to 0
-yaw_angles = np.zeros([1,1,2]) # 1 wind direction, 1 wind speed, 2 turbines
+yaw_angles = np.zeros([1,2]) # 1 wind direction / speed, 2 turbines
 fi.calculate_wake(yaw_angles=yaw_angles)
 
 # Get the turbine powers
 turbine_powers = fi.get_turbine_powers()/1000.
-print('The turbine power matrix should be of dimensions 1 WD X 1 WS X 2 Turbines')
+
+# TODO what should we call this user/facing?
+print('The turbine power matrix should be of dimensions 1 FINDEX X 2 Turbines')
 print(turbine_powers)
 print("Shape: ",turbine_powers.shape)
 
 # Single wind speed and multiple wind directions
 print('\n========================= Single Wind Direction and Multiple Wind Speeds ===============')
-
+# Note in v3 FLORIS wind directions and speeds would be expanded to all combinations
+# in v4 the assumption is that each entry wind direction and wind speed corresponds
+# to one condtions and wind directions and wind speeds arrays should be the same length
 
 wind_speeds = np.array([8.0, 9.0, 10.0])
-fi.reinitialize(wind_speeds=wind_speeds)
-yaw_angles = np.zeros([1,3,2]) # 1 wind direction, 3 wind speeds, 2 turbines
+wind_directions = np.arrary([270.0, 270., 270.0])
+
+fi.reinitialize(wind_speeds=wind_speeds, wind_directions=wind_directions)
+yaw_angles = np.zeros([3,2]) # 1 wind direction, 3 wind directions/ speeds, 2 turbines
 fi.calculate_wake(yaw_angles=yaw_angles)
 turbine_powers = fi.get_turbine_powers()/1000.
 print('The turbine power matrix should be of dimensions 1 WD X 3 WS X 2 Turbines')
