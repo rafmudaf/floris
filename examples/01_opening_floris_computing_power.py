@@ -30,8 +30,7 @@ Main concept is introduce FLORIS and illustrate essential structure of most-used
 # Initialize FLORIS with the given input file via FlorisInterface.
 # For basic usage, FlorisInterface provides a simplified and expressive
 # entry point to the simulation routines.
-# fi = FlorisInterface("inputs/gch.yaml")
-fi = FlorisInterface("inputs/jensen.yaml")
+fi = FlorisInterface("inputs/gch.yaml")
 
 # Convert to a simple two turbine layout
 fi.reinitialize(layout_x=[0, 500.0], layout_y=[0.0, 0.0])
