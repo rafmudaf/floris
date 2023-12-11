@@ -94,6 +94,35 @@ yawed_baseline = np.array(
     ]
 )
 
+yaw_added_mixing_baseline = np.array(
+    [
+        # 8 m/s
+        [
+            [7.9736330, 0.7606986, 1679924.0721706, 0.2549029],
+            [6.0012490, 0.8353654, 707912.3201655, 0.2971241],
+            [6.0404040, 0.8335607, 723777.1688957, 0.2960151],
+        ],
+        # 9 m/s
+        [
+            [8.9703371, 0.7596552, 2391434.0080674, 0.2543734],
+            [6.7531818, 0.8021893, 1027839.1215598, 0.2776204],
+            [6.8331381, 0.7989720, 1065054.4872236, 0.2758193],
+        ],
+        # 10 m/s
+        [
+            [9.9670412, 0.7500732, 3275671.6727516, 0.2495630],
+            [7.5219271, 0.7752809, 1420639.3564230, 0.2629773],
+            [7.6244680, 0.7726302, 1482087.5389477, 0.2615835],
+        ],
+        # 11 m/s
+        [
+            [10.9637454, 0.7278454, 4333842.6695283, 0.2387424],
+            [8.3229921, 0.7620429, 1926896.4413586, 0.2560958],
+            [8.3952439, 0.7618461, 1976057.7564083, 0.2559949],
+        ],
+    ]
+)
+
 # Note: compare the yawed vs non-yawed results. The upstream turbine
 # power should be lower in the yawed case. The following turbine
 # powers should higher in the yawed case.
@@ -341,6 +370,95 @@ def test_regression_yaw(sample_inputs_fixture):
         )
 
     assert_results_arrays(test_results[0:4], yawed_baseline)
+
+def test_regression_yaw_added_mixing(sample_inputs_fixture):
+    """
+    Tandem turbines with the upstream turbine yawed and yaw added recovery
+    correction enabled
+    """
+
+    sample_inputs_fixture.floris["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
+    sample_inputs_fixture.floris["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
+    sample_inputs_fixture.floris["wake"]["model_strings"]["turbulence_model"] = TURBULENCE_MODEL
+
+    # Turn on yaw added mixing
+    sample_inputs_fixture.floris["wake"]["enable_yaw_added_recovery"] = True
+
+    floris = Floris.from_dict(sample_inputs_fixture.floris)
+
+    yaw_angles = np.zeros((N_FINDEX, N_TURBINES))
+    yaw_angles[:,0] = 5.0
+    floris.farm.yaw_angles = yaw_angles
+
+    floris.initialize_domain()
+    floris.steady_state_atmospheric_condition()
+
+    n_turbines = floris.farm.n_turbines
+    n_findex = floris.flow_field.n_findex
+
+    velocities = floris.flow_field.u
+    yaw_angles = floris.farm.yaw_angles
+    tilt_angles = floris.farm.tilt_angles
+    test_results = np.zeros((n_findex, n_turbines, 4))
+
+    farm_avg_velocities = average_velocity(
+        velocities,
+    )
+    farm_eff_velocities = rotor_effective_velocity(
+        floris.flow_field.air_density,
+        floris.farm.ref_density_cp_cts,
+        velocities,
+        yaw_angles,
+        tilt_angles,
+        floris.farm.ref_tilt_cp_cts,
+        floris.farm.pPs,
+        floris.farm.pTs,
+        floris.farm.turbine_fTilts,
+        floris.farm.correct_cp_ct_for_tilt,
+        floris.farm.turbine_type_map,
+    )
+    farm_cts = Ct(
+        velocities,
+        yaw_angles,
+        tilt_angles,
+        floris.farm.ref_tilt_cp_cts,
+        floris.farm.turbine_fCts,
+        floris.farm.turbine_fTilts,
+        floris.farm.correct_cp_ct_for_tilt,
+        floris.farm.turbine_type_map,
+    )
+    farm_powers = power(
+        floris.farm.ref_density_cp_cts,
+        farm_eff_velocities,
+        floris.farm.turbine_power_interps,
+        floris.farm.turbine_type_map,
+    )
+    farm_axial_inductions = axial_induction(
+        velocities,
+        yaw_angles,
+        tilt_angles,
+        floris.farm.ref_tilt_cp_cts,
+        floris.farm.turbine_fCts,
+        floris.farm.turbine_fTilts,
+        floris.farm.correct_cp_ct_for_tilt,
+        floris.farm.turbine_type_map,
+    )
+    for i in range(n_findex):
+        for j in range(n_turbines):
+            test_results[i, j, 0] = farm_avg_velocities[i, j]
+            test_results[i, j, 1] = farm_cts[i, j]
+            test_results[i, j, 2] = farm_powers[i, j]
+            test_results[i, j, 3] = farm_axial_inductions[i, j]
+
+    if DEBUG:
+        print_test_values(
+            farm_avg_velocities,
+            farm_cts,
+            farm_powers,
+            farm_axial_inductions,
+        )
+    
+    assert_results_arrays(test_results[0], yaw_added_mixing_baseline)
 
 
 def test_regression_small_grid_rotation(sample_inputs_fixture):
