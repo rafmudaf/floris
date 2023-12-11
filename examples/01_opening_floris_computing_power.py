@@ -64,22 +64,26 @@ wind_speeds = np.array([8.0, 9.0, 10.0])
 wind_directions = np.arrary([270.0, 270., 270.0])
 
 fi.reinitialize(wind_speeds=wind_speeds, wind_directions=wind_directions)
-yaw_angles = np.zeros([3,2]) # 1 wind direction, 3 wind directions/ speeds, 2 turbines
+yaw_angles = np.zeros([9,2]) # 9 wind directions/ speeds, 2 turbines
 fi.calculate_wake(yaw_angles=yaw_angles)
 turbine_powers = fi.get_turbine_powers()/1000.
-print('The turbine power matrix should be of dimensions 1 WD X 3 WS X 2 Turbines')
+print('The turbine power matrix should be of dimensions 9 FINDEX X 2 Turbines')
 print(turbine_powers)
 print("Shape: ",turbine_powers.shape)
 
 # Multiple wind speeds and multiple wind directions
 print('\n========================= Multiple Wind Directions and Multiple Wind Speeds ============')
 
-wind_directions = np.array([260., 270., 280.])
-wind_speeds = np.array([8.0, 9.0, 10.0])
+# In the case want to consider each combination this needs to be broadcast out in advance
+
+wind_speeds = np.tile([8.0, 9.0, 10.0] , 3)
+wind_directions = np.repeat([260.0, 270., 280.0], 3)
+
+
 fi.reinitialize(wind_directions=wind_directions, wind_speeds=wind_speeds)
-yaw_angles = np.zeros([1,3,2]) # 1 wind direction, 3 wind speeds, 2 turbines
+yaw_angles = np.zeros([9,2]) # 9 wind directions/ speeds, 2 turbines
 fi.calculate_wake(yaw_angles=yaw_angles)
 turbine_powers = fi.get_turbine_powers()/1000.
-print('The turbine power matrix should be of dimensions 3 WD X 3 WS X 2 Turbines')
+print('The turbine power matrix should be of dimensions 9 WD/WS X 2 Turbines')
 print(turbine_powers)
 print("Shape: ",turbine_powers.shape)
