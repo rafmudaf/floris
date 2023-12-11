@@ -852,6 +852,7 @@ class FlorisInterface(LoggingManager):
         # Copy the full wind speed array from the floris object and initialize
         # the the farm_power variable as an empty array.
         wind_speeds = np.array(self.floris.flow_field.wind_speeds, copy=True)
+        wind_directions = np.array(self.floris.flow_field.wind_directions, copy=True)
         farm_power = np.zeros(self.floris.flow_field.n_findex)
 
         # Determine which wind speeds we must evaluate in floris
@@ -863,10 +864,12 @@ class FlorisInterface(LoggingManager):
         #TODO confirm this is working in new framework
         if np.any(conditions_to_evaluate):
             wind_speeds_subset = wind_speeds[conditions_to_evaluate]
+            wind_directions_subset = wind_directions[conditions_to_evaluate]
             yaw_angles_subset = None
             if yaw_angles is not None:
                 yaw_angles_subset = yaw_angles[conditions_to_evaluate]
-            self.reinitialize(wind_speeds=wind_speeds_subset)
+            self.reinitialize(wind_speeds=wind_speeds_subset,
+                              wind_directions = wind_directions_subset)
             if no_wake:
                 self.calculate_no_wake(yaw_angles=yaw_angles_subset)
             else:
@@ -879,7 +882,7 @@ class FlorisInterface(LoggingManager):
         aep = np.sum(np.multiply(freq, farm_power) * 365 * 24)
 
         # Reset the FLORIS object to the full wind speed array
-        self.reinitialize(wind_speeds=wind_speeds)
+        self.reinitialize(wind_speeds=wind_speeds, wind_directions=wind_directions)
 
         return aep
 
