@@ -728,7 +728,7 @@ class FlorisInterface(LoggingManager):
                 turbines to 0.0. The array of turbine powers from floris
                 is multiplied with this array in the calculation of the
                 objective function. If None, this  is an array with all values
-                1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
+                1.0 and with shape equal to (n_findex,
                 n_turbines). Defaults to None.
             use_turbulence_correction: (bool, optional): When *True* uses a
                 turbulence parameter to adjust power output calculations.
@@ -791,8 +791,8 @@ class FlorisInterface(LoggingManager):
         direction, frequency of occurrence, and yaw offset.
 
         Args:
-            freq (NDArrayFloat): NumPy array with shape (n_wind_directions,
-                n_wind_speeds) with the frequencies of each wind direction and
+            freq (NDArrayFloat): NumPy array with shape (n_findex)
+                with the frequencies of each wind direction and
                 wind speed combination. These frequencies should typically sum
                 up to 1.0 and are used to weigh the wind farm power for every
                 condition in calculating the wind farm's AEP.
@@ -820,7 +820,7 @@ class FlorisInterface(LoggingManager):
                 turbines to 0.0. The array of turbine powers from floris
                 is multiplied with this array in the calculation of the
                 objective function. If None, this  is an array with all values
-                1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
+                1.0 and with shape equal to (n_findex,
                 n_turbines). Defaults to None.
             no_wake: (bool, optional): When *True* updates the turbine
                 quantities without calculating the wake or adding the wake to
