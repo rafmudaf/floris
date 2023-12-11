@@ -112,17 +112,16 @@ def test_regression_tandem(sample_inputs_fixture):
     floris.steady_state_atmospheric_condition()
 
     n_turbines = floris.farm.n_turbines
-    n_wind_speeds = floris.flow_field.n_wind_speeds
-    n_wind_directions = floris.flow_field.n_wind_directions
+    n_findex = floris.flow_field.n_findex
 
     velocities = floris.flow_field.u
     yaw_angles = floris.farm.yaw_angles
     tilt_angles = floris.farm.tilt_angles
     ref_tilt_cp_cts = (
-        np.ones((n_wind_directions, n_wind_speeds, n_turbines))
+        np.ones((n_findex, n_turbines))
         * floris.farm.ref_tilt_cp_cts
     )
-    test_results = np.zeros((n_wind_directions, n_wind_speeds, n_turbines, 4))
+    test_results = np.zeros((n_findex, n_turbines, 4))
 
     farm_avg_velocities = average_velocity(
         velocities,
@@ -166,13 +165,12 @@ def test_regression_tandem(sample_inputs_fixture):
         floris.farm.correct_cp_ct_for_tilt,
         floris.farm.turbine_type_map,
     )
-    for i in range(n_wind_directions):
-        for j in range(n_wind_speeds):
-            for k in range(n_turbines):
-                test_results[i, j, k, 0] = farm_avg_velocities[i, j, k]
-                test_results[i, j, k, 1] = farm_cts[i, j, k]
-                test_results[i, j, k, 2] = farm_powers[i, j, k]
-                test_results[i, j, k, 3] = farm_axial_inductions[i, j, k]
+    for i in range(n_findex):
+        for j in range(n_turbines):
+            test_results[i, j, 0] = farm_avg_velocities[i, j]
+            test_results[i, j, 1] = farm_cts[i, j]
+            test_results[i, j, 2] = farm_powers[i, j]
+            test_results[i, j, 3] = farm_axial_inductions[i, j]
 
     if DEBUG:
         print_test_values(
@@ -182,7 +180,7 @@ def test_regression_tandem(sample_inputs_fixture):
             farm_axial_inductions,
         )
 
-    assert_results_arrays(test_results[0], baseline)
+    assert_results_arrays(test_results, baseline)
 
 
 def test_regression_rotation(sample_inputs_fixture):
