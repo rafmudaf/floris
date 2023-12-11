@@ -1274,6 +1274,7 @@ def empirical_gauss_solver(
 
         if model_manager.enable_yaw_added_recovery:
             # Influence of yawing on turbine's own wake
+            # TODO: Create reg test for the case when enable_yaw_added_recovery is True
             mixing_factor[:, i:i+1, i] += \
                 yaw_added_wake_mixing(
                     axial_induction_i,
@@ -1285,7 +1286,7 @@ def empirical_gauss_solver(
         # Extract total wake induced mixing for turbine i
         mixing_i = np.linalg.norm(
             mixing_factor[:, i:i+1, :, None],
-            ord=2, axis=3, keepdims=True
+            ord=2, axis=2, keepdims=True
         )
 
         # Model calculations
@@ -1324,21 +1325,21 @@ def empirical_gauss_solver(
         )
 
         # Calculate wake overlap for wake-added turbulence (WAT)
-        import ipdb; ipdb.set_trace() # AT THIS POINT
-        area_overlap = np.sum(velocity_deficit * flow_field.u_initial_sorted > 0.05, axis=(3, 4))\
+        area_overlap = np.sum(velocity_deficit * flow_field.u_initial_sorted > 0.05, axis=(2, 3))\
             / (grid.grid_resolution * grid.grid_resolution)
 
         # Compute wake induced mixing factor
-        mixing_factor[:,:,:,i] += \
+        mixing_factor[:,:,i] += \
             area_overlap * model_manager.turbulence_model.function(
-                axial_induction_i, downstream_distance_D[:,:,:,i]
+                axial_induction_i, downstream_distance_D[:,:,i]
             )
         if model_manager.enable_yaw_added_recovery:
-            mixing_factor[:,:,:,i] += \
+            # TODO: Create reg test for the case when enable_yaw_added_recovery is True
+            mixing_factor[:,:,i] += \
                 area_overlap * yaw_added_wake_mixing(
                 axial_induction_i,
                 yaw_angle_i,
-                downstream_distance_D[:,:,:,i],
+                downstream_distance_D[:,:,i],
                 model_manager.deflection_model.yaw_added_mixing_gain
             )
 

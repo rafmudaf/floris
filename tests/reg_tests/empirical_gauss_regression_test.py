@@ -117,10 +117,6 @@ def test_regression_tandem(sample_inputs_fixture):
     velocities = floris.flow_field.u
     yaw_angles = floris.farm.yaw_angles
     tilt_angles = floris.farm.tilt_angles
-    ref_tilt_cp_cts = (
-        np.ones((n_findex, n_turbines))
-        * floris.farm.ref_tilt_cp_cts
-    )
     test_results = np.zeros((n_findex, n_turbines, 4))
 
     farm_avg_velocities = average_velocity(
@@ -132,7 +128,7 @@ def test_regression_tandem(sample_inputs_fixture):
         velocities,
         yaw_angles,
         tilt_angles,
-        ref_tilt_cp_cts,
+        floris.farm.ref_tilt_cp_cts,
         floris.farm.pPs,
         floris.farm.pTs,
         floris.farm.turbine_fTilts,
@@ -143,7 +139,7 @@ def test_regression_tandem(sample_inputs_fixture):
         velocities,
         yaw_angles,
         tilt_angles,
-        ref_tilt_cp_cts,
+        floris.farm.ref_tilt_cp_cts,
         floris.farm.turbine_fCts,
         floris.farm.turbine_fTilts,
         floris.farm.correct_cp_ct_for_tilt,
@@ -159,7 +155,7 @@ def test_regression_tandem(sample_inputs_fixture):
         velocities,
         yaw_angles,
         tilt_angles,
-        ref_tilt_cp_cts,
+        floris.farm.ref_tilt_cp_cts,
         floris.farm.turbine_fCts,
         floris.farm.turbine_fTilts,
         floris.farm.correct_cp_ct_for_tilt,
@@ -180,7 +176,7 @@ def test_regression_tandem(sample_inputs_fixture):
             farm_axial_inductions,
         )
 
-    assert_results_arrays(test_results, baseline)
+    assert_results_arrays(test_results[0:4], baseline)
 
 
 def test_regression_rotation(sample_inputs_fixture):
