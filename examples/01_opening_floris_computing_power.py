@@ -61,7 +61,7 @@ print("\n========================= Single Wind Direction and Multiple Wind Speed
 # to one condtions and wind directions and wind speeds arrays should be the same length
 
 wind_speeds = np.array([8.0, 9.0, 10.0])
-wind_directions = np.arrary([270.0, 270.0, 270.0])
+wind_directions = np.array([270.0, 270.0, 270.0])
 
 fi.reinitialize(wind_speeds=wind_speeds, wind_directions=wind_directions)
 yaw_angles = np.zeros([9, 2])  # 9 wind directions/ speeds, 2 turbines
