@@ -64,7 +64,7 @@ wind_speeds = np.array([8.0, 9.0, 10.0])
 wind_directions = np.array([270.0, 270.0, 270.0])
 
 fi.reinitialize(wind_speeds=wind_speeds, wind_directions=wind_directions)
-yaw_angles = np.zeros([9, 2])  # 9 wind directions/ speeds, 2 turbines
+yaw_angles = np.zeros([3, 2])  # 9 wind directions/ speeds, 2 turbines
 fi.calculate_wake(yaw_angles=yaw_angles)
 turbine_powers = fi.get_turbine_powers() / 1000.0
 print("The turbine power matrix should be of dimensions 9 FINDEX X 2 Turbines")
