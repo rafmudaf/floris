@@ -134,8 +134,7 @@ class FlorisInterface(LoggingManager):
         if yaw_angles is None:
             yaw_angles = np.zeros(
                 (
-                    self.floris.flow_field.n_wind_directions,
-                    self.floris.flow_field.n_wind_speeds,
+                    self.floris.flow_field.n_findex,
                     self.floris.farm.n_turbines
                 )
             )
@@ -175,8 +174,7 @@ class FlorisInterface(LoggingManager):
         if yaw_angles is None:
             yaw_angles = np.zeros(
                 (
-                    self.floris.flow_field.n_wind_directions,
-                    self.floris.flow_field.n_wind_speeds,
+                    self.floris.flow_field.n_findex,
                     self.floris.farm.n_turbines
                 )
             )
@@ -204,7 +202,6 @@ class FlorisInterface(LoggingManager):
         turbine_type: list | None = None,
         turbine_library_path: str | Path | None = None,
         solver_settings: dict | None = None,
-        time_series: bool = False,
         heterogenous_inflow_config=None,
     ):
         # Export the floris object recursively as a dictionary
@@ -241,8 +238,6 @@ class FlorisInterface(LoggingManager):
             farm_dict["turbine_type"] = turbine_type
         if turbine_library_path is not None:
             farm_dict["turbine_library_path"] = turbine_library_path
-
-        flow_field_dict["time_series"] = time_series
 
         ## Wake
         # if wake is not None:
@@ -712,7 +707,7 @@ class FlorisInterface(LoggingManager):
     def get_farm_power(
         self,
         turbine_weights=None,
-        use_turbulence_correction=False,
+        use_turbulence_correction=False, #TODO v4 handles differently
     ):
         """
         Report wind plant power from instance of floris. Optionally includes
@@ -760,18 +755,18 @@ class FlorisInterface(LoggingManager):
             # Default to equal weighing of all turbines when turbine_weights is None
             turbine_weights = np.ones(
                 (
-                    self.floris.flow_field.n_wind_directions,
-                    self.floris.flow_field.n_wind_speeds,
+                    self.floris.flow_field.n_findex,
                     self.floris.farm.n_turbines
                 )
             )
+
+        #TODO: PF Confirm this is correct?
         elif len(np.shape(turbine_weights)) == 1:
             # Deal with situation when 1D array is provided
             turbine_weights = np.tile(
                 turbine_weights,
                 (
-                    self.floris.flow_field.n_wind_directions,
-                    self.floris.flow_field.n_wind_speeds,
+                    self.floris.flow_field.n_findex,
                     1
                 )
             )
@@ -840,13 +835,12 @@ class FlorisInterface(LoggingManager):
 
         # Verify dimensions of the variable "freq"
         if not (
-            (np.shape(freq)[0] == self.floris.flow_field.n_wind_directions)
-            & (np.shape(freq)[1] == self.floris.flow_field.n_wind_speeds)
-            & (len(np.shape(freq)) == 2)
+            (np.shape(freq)[0] == self.floris.flow_field.n_findex)
+            & (len(np.shape(freq)) == 1)
         ):
             raise UserWarning(
-                "'freq' should be a two-dimensional array with dimensions "
-                " (n_wind_directions, n_wind_speeds)."
+                "'freq' should be a one-dimensional array with dimensions "
+                " (n_findex)."
             )
 
         # Check if frequency vector sums to 1.0. If not, raise a warning
@@ -859,7 +853,7 @@ class FlorisInterface(LoggingManager):
         # Copy the full wind speed array from the floris object and initialize
         # the the farm_power variable as an empty array.
         wind_speeds = np.array(self.floris.flow_field.wind_speeds, copy=True)
-        farm_power = np.zeros((self.floris.flow_field.n_wind_directions, len(wind_speeds)))
+        farm_power = np.zeros(self.floris.flow_field.n_findex)
 
         # Determine which wind speeds we must evaluate in floris
         conditions_to_evaluate = wind_speeds >= cut_in_wind_speed
@@ -867,17 +861,18 @@ class FlorisInterface(LoggingManager):
             conditions_to_evaluate = conditions_to_evaluate & (wind_speeds < cut_out_wind_speed)
 
         # Evaluate the conditions in floris
+        #TODO confirm this is working in new framework
         if np.any(conditions_to_evaluate):
             wind_speeds_subset = wind_speeds[conditions_to_evaluate]
             yaw_angles_subset = None
             if yaw_angles is not None:
-                yaw_angles_subset = yaw_angles[:, conditions_to_evaluate]
+                yaw_angles_subset = yaw_angles[conditions_to_evaluate]
             self.reinitialize(wind_speeds=wind_speeds_subset)
             if no_wake:
                 self.calculate_no_wake(yaw_angles=yaw_angles_subset)
             else:
                 self.calculate_wake(yaw_angles=yaw_angles_subset)
-            farm_power[:, conditions_to_evaluate] = (
+            farm_power[conditions_to_evaluate] = (
                 self.get_farm_power(turbine_weights=turbine_weights)
             )
 
@@ -889,91 +884,93 @@ class FlorisInterface(LoggingManager):
 
         return aep
 
-    def get_farm_AEP_wind_rose_class(
-        self,
-        wind_rose,
-        cut_in_wind_speed=0.001,
-        cut_out_wind_speed=None,
-        yaw_angles=None,
-        turbine_weights=None,
-        no_wake=False,
-    ) -> float:
-        """
-        Estimate annual energy production (AEP) for distributions of wind speed, wind
-        direction, frequency of occurrence, and yaw offset.
+    #TODO: This class should be overhauled when the new rose is ready,
+    # but more likely in new framework this special case is not necessary
+    # def get_farm_AEP_wind_rose_class(
+    #     self,
+    #     wind_rose,
+    #     cut_in_wind_speed=0.001,
+    #     cut_out_wind_speed=None,
+    #     yaw_angles=None,
+    #     turbine_weights=None,
+    #     no_wake=False,
+    # ) -> float:
+    #     """
+    #     Estimate annual energy production (AEP) for distributions of wind speed, wind
+    #     direction, frequency of occurrence, and yaw offset.
 
-        Args:
-            wind_rose (wind_rose): An object of the wind rose class
-            cut_in_wind_speed (float, optional): Wind speed in m/s below which
-                any calculations are ignored and the wind farm is known to
-                produce 0.0 W of power. Note that to prevent problems with the
-                wake models at negative / zero wind speeds, this variable must
-                always have a positive value. Defaults to 0.001 [m/s].
-            cut_out_wind_speed (float, optional): Wind speed above which the
-                wind farm is known to produce 0.0 W of power. If None is
-                specified, will assume that the wind farm does not cut out
-                at high wind speeds. Defaults to None.
-            yaw_angles (NDArrayFloat | list[float] | None, optional):
-                The relative turbine yaw angles in degrees. If None is
-                specified, will assume that the turbine yaw angles are all
-                zero degrees for all conditions. Defaults to None.
-            turbine_weights (NDArrayFloat | list[float] | None, optional):
-                weighing terms that allow the user to emphasize power at
-                particular turbines and/or completely ignore the power
-                from other turbines. This is useful when, for example, you are
-                modeling multiple wind farms in a single floris object. If you
-                only want to calculate the power production for one of those
-                farms and include the wake effects of the neighboring farms,
-                you can set the turbine_weights for the neighboring farms'
-                turbines to 0.0. The array of turbine powers from floris
-                is multiplied with this array in the calculation of the
-                objective function. If None, this  is an array with all values
-                1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
-                n_turbines). Defaults to None.
-            no_wake: (bool, optional): When *True* updates the turbine
-                quantities without calculating the wake or adding the wake to
-                the flow field. This can be useful when quantifying the loss
-                in AEP due to wakes. Defaults to *False*.
+    #     Args:
+    #         wind_rose (wind_rose): An object of the wind rose class
+    #         cut_in_wind_speed (float, optional): Wind speed in m/s below which
+    #             any calculations are ignored and the wind farm is known to
+    #             produce 0.0 W of power. Note that to prevent problems with the
+    #             wake models at negative / zero wind speeds, this variable must
+    #             always have a positive value. Defaults to 0.001 [m/s].
+    #         cut_out_wind_speed (float, optional): Wind speed above which the
+    #             wind farm is known to produce 0.0 W of power. If None is
+    #             specified, will assume that the wind farm does not cut out
+    #             at high wind speeds. Defaults to None.
+    #         yaw_angles (NDArrayFloat | list[float] | None, optional):
+    #             The relative turbine yaw angles in degrees. If None is
+    #             specified, will assume that the turbine yaw angles are all
+    #             zero degrees for all conditions. Defaults to None.
+    #         turbine_weights (NDArrayFloat | list[float] | None, optional):
+    #             weighing terms that allow the user to emphasize power at
+    #             particular turbines and/or completely ignore the power
+    #             from other turbines. This is useful when, for example, you are
+    #             modeling multiple wind farms in a single floris object. If you
+    #             only want to calculate the power production for one of those
+    #             farms and include the wake effects of the neighboring farms,
+    #             you can set the turbine_weights for the neighboring farms'
+    #             turbines to 0.0. The array of turbine powers from floris
+    #             is multiplied with this array in the calculation of the
+    #             objective function. If None, this  is an array with all values
+    #             1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
+    #             n_turbines). Defaults to None.
+    #         no_wake: (bool, optional): When *True* updates the turbine
+    #             quantities without calculating the wake or adding the wake to
+    #             the flow field. This can be useful when quantifying the loss
+    #             in AEP due to wakes. Defaults to *False*.
 
-        Returns:
-            float:
-                The Annual Energy Production (AEP) for the wind farm in
-                watt-hours.
-        """
+    #     Returns:
+    #         float:
+    #             The Annual Energy Production (AEP) for the wind farm in
+    #             watt-hours.
+    #     """
 
-        # Hold the starting values of wind speed and direction
-        wind_speeds = np.array(self.floris.flow_field.wind_speeds, copy=True)
-        wind_directions = np.array(self.floris.flow_field.wind_directions, copy=True)
+    #     # Hold the starting values of wind speed and direction
+    #     wind_speeds = np.array(self.floris.flow_field.wind_speeds, copy=True)
+    #     wind_directions = np.array(self.floris.flow_field.wind_directions, copy=True)
 
-        # Now set FLORIS wind speed and wind direction
-        # over to those values in the wind rose class
-        wind_speeds_wind_rose = wind_rose.df.ws.unique()
-        wind_directions_wind_rose = wind_rose.df.wd.unique()
-        self.reinitialize(
-            wind_speeds=wind_speeds_wind_rose,
-            wind_directions=wind_directions_wind_rose
-        )
+    #     # Now set FLORIS wind speed and wind direction
+    #     # over to those values in the wind rose class
+    #     wind_speeds_wind_rose = wind_rose.df.ws.unique()
+    #     wind_directions_wind_rose = wind_rose.df.wd.unique()
+    #     self.reinitialize(
+    #         wind_speeds=wind_speeds_wind_rose,
+    #         wind_directions=wind_directions_wind_rose
+    #     )
 
-        # Build the frequency matrix from wind rose
-        freq = wind_rose.df.set_index(['wd','ws']).unstack().values
+    #     # Build the frequency matrix from wind rose
+    #     freq = wind_rose.df.set_index(['wd','ws']).unstack().values
 
-        # Now compute aep
-        aep = self.get_farm_AEP(
-            freq,
-            cut_in_wind_speed=cut_in_wind_speed,
-            cut_out_wind_speed=cut_out_wind_speed,
-            yaw_angles=yaw_angles,
-            turbine_weights=turbine_weights,
-            no_wake=no_wake)
+    #     # Now compute aep
+    #     aep = self.get_farm_AEP(
+    #         freq,
+    #         cut_in_wind_speed=cut_in_wind_speed,
+    #         cut_out_wind_speed=cut_out_wind_speed,
+    #         yaw_angles=yaw_angles,
+    #         turbine_weights=turbine_weights,
+    #         no_wake=no_wake)
 
 
-        # Reset the FLORIS object to the original wind speed and directions
-        self.reinitialize(
-            wind_speeds=wind_speeds,
-            wind_directions=wind_directions
-        )
+    #     # Reset the FLORIS object to the original wind speed and directions
+    #     self.reinitialize(
+    #         wind_speeds=wind_speeds,
+    #         wind_directions=wind_directions
+    #     )
 
-        return aep
+    #     return aep
 
     def sample_flow_at_points(self, x: NDArrayFloat, y: NDArrayFloat, z: NDArrayFloat):
         """
