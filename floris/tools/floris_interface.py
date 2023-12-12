@@ -861,7 +861,6 @@ class FlorisInterface(LoggingManager):
             conditions_to_evaluate = conditions_to_evaluate & (wind_speeds < cut_out_wind_speed)
 
         # Evaluate the conditions in floris
-        #TODO confirm this is working in new framework
         if np.any(conditions_to_evaluate):
             wind_speeds_subset = wind_speeds[conditions_to_evaluate]
             wind_directions_subset = wind_directions[conditions_to_evaluate]
