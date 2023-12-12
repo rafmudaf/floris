@@ -23,7 +23,7 @@ from floris.tools import FlorisInterface
 04_sweep_wind_directions
 
 This example sweeps across wind directions while holding wind speed
-constant
+constant via an array of constant wind speed
 
 The power of both turbines for each wind direction is then plotted
 
