@@ -44,11 +44,11 @@ wd_array = 270.0 * np.ones_like(ws_array)
 fi.reinitialize(wind_directions=wd_array,wind_speeds=ws_array)
 
 # Define a matrix of yaw angles to be all 0
-# Note that yaw angles is now specified as a matrix whose dimesions are
+# Note that yaw angles is now specified as a matrix whose dimensions are
 # wd/ws/turbine
 num_wd = len(wd_array)
 num_ws = len(ws_array)
-n_findex = num_wd # Could be either
+n_findex = num_wd  # Could be either num_wd or num_ws
 num_turbine = len(layout_x)
 yaw_angles = np.zeros((n_findex, num_turbine))
 

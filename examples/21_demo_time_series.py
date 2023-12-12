@@ -21,6 +21,7 @@ from floris.tools import FlorisInterface
 
 """
 This example demonstrates running FLORIS given a time series
+of wind direction and wind speed combinations.
 """
 
 # Initialize FLORIS to simple 4 turbine farm
@@ -69,7 +70,7 @@ ax.grid(True)
 
 ax = axarr[2]
 for t in range(num_turbines):
-    ax.plot(time,turbine_powers[:,  t], 'o-', label='Turbine %d' % t)
+    ax.plot(time,turbine_powers[:, t], 'o-', label='Turbine %d' % t)
 ax.legend()
 ax.set_ylabel('Turbine Power (kW)')
 ax.set_xlabel('Time (minutes)')

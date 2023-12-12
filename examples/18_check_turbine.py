@@ -101,7 +101,7 @@ for t in turbines:
         # Power loss to yaw, try a range of yaw angles
         ax = axarr[1]
 
-        fi.reinitialize(wind_speeds=[wind_speed_to_test_yaw], wind_directions=[270.])
+        fi.reinitialize(wind_speeds=[wind_speed_to_test_yaw], wind_directions=[270.0])
         yaw_result = []
         for yaw in yaw_angles:
             fi.calculate_wake(yaw_angles=np.array([[yaw]]))

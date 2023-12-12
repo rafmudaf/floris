@@ -20,9 +20,11 @@ from floris.tools import FlorisInterface
 
 
 """
-06_sweep_wind_conditions
-
-Calculate a set of wind speeds and directions
+This example demonstrates the vectorized wake calculation for
+a set of wind speeds and directions combinations. When given
+a list of conditions, FLORIS leverages features of the CPU
+to perform chunks of the computations at once rather than
+looping over each condition.
 
 This calculation is performed for a single-row 5 turbine farm.  In addition
 to plotting the powers of the individual turbines, an energy by turbine
@@ -37,7 +39,7 @@ fi = FlorisInterface("inputs/gch.yaml")  # GCH model matched to the default "leg
 
 # Define a 5 turbine farm
 D = 126.0
-layout_x = np.array([0, D * 6, D * 12, D * 18, D * 24])
+layout_x = np.array([0, D*6, D*12, D*18, D*24])
 layout_y = [0, 0, 0, 0, 0]
 fi.reinitialize(layout_x=layout_x, layout_y=layout_y)
 
@@ -49,22 +51,23 @@ num_unique_wd = len(wind_directions_to_expand)
 
 # Create grids to make combinations of ws/wd
 wind_speeds_grid, wind_directions_grid = np.meshgrid(
-    wind_speeds_to_expand, wind_directions_to_expand
+    wind_speeds_to_expand,
+    wind_directions_to_expand
 )
 
 # Flatten the grids back to 1D arrays
 ws_array = wind_speeds_grid.flatten()
 wd_array = wind_directions_grid.flatten()
 
-# Nor reinitialize FLORIS
+# Now reinitialize FLORIS
 fi.reinitialize(wind_speeds=ws_array, wind_directions=wd_array)
 
 # Define a matrix of yaw angles to be all 0
-# Note that yaw angles is now specified as a matrix whose dimesions are
-# findex/turbine
+# Note that yaw angles is now specified as a matrix whose dimensions are
+# (findex, turbine)
 num_wd = len(wd_array)
 num_ws = len(ws_array)
-n_findex = num_wd  # Could be either
+n_findex = num_wd  # Could be either num_wd or num_ws
 num_turbine = len(layout_x)
 yaw_angles = np.zeros((n_findex, num_turbine))
 
