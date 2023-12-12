@@ -759,7 +759,7 @@ class FlorisInterface(LoggingManager):
                 )
             )
 
-        #TODO: PF Confirm this is correct?
+
         elif len(np.shape(turbine_weights)) == 1:
             # Deal with situation when 1D array is provided
             turbine_weights = np.tile(
