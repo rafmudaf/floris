@@ -727,8 +727,8 @@ class FlorisInterface(LoggingManager):
                 turbines to 0.0. The array of turbine powers from floris
                 is multiplied with this array in the calculation of the
                 objective function. If None, this  is an array with all values
-                1.0 and with shape equal to (n_findex,
-                n_turbines). Defaults to None.
+                1.0 and with shape equal to (n_findex, n_turbines).
+                Defaults to None.
             use_turbulence_correction: (bool, optional): When *True* uses a
                 turbulence parameter to adjust power output calculations.
                 Defaults to *False*.
@@ -758,8 +758,6 @@ class FlorisInterface(LoggingManager):
                     self.floris.farm.n_turbines
                 )
             )
-
-
         elif len(np.shape(turbine_weights)) == 1:
             # Deal with situation when 1D array is provided
             turbine_weights = np.tile(
@@ -833,13 +831,9 @@ class FlorisInterface(LoggingManager):
         """
 
         # Verify dimensions of the variable "freq"
-        if not (
-            (np.shape(freq)[0] == self.floris.flow_field.n_findex)
-            & (len(np.shape(freq)) == 1)
-        ):
+        if not (np.shape(freq)[0] == self.floris.flow_field.n_findex & len(np.shape(freq)) == 1):
             raise UserWarning(
-                "'freq' should be a one-dimensional array with dimensions "
-                " (n_findex)."
+                "'freq' should be a one-dimensional array with dimensions (n_findex)."
             )
 
         # Check if frequency vector sums to 1.0. If not, raise a warning

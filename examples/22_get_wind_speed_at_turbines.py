@@ -41,7 +41,7 @@ print(fi.turbine_average_velocities)
 # Show that one is equivalent to the other following averaging
 print(
     'turbine_average_velocities is determined by taking the cube root of mean '
-    'of the cubed value across the points'
-    f'turbine_average_velocities: {fi.turbine_average_velocities}'
-    f'Recomputed:       {np.cbrt(np.mean(u_points**3, axis=(2,3)))}'
+    'of the cubed value across the points '
 )
+print(f'turbine_average_velocities: {fi.turbine_average_velocities}')
+print(f'Recomputed:       {np.cbrt(np.mean(u_points**3, axis=(2,3)))}')

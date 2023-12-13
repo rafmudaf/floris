@@ -200,7 +200,3 @@ def test_get_farm_aep_with_conditions():
 
     #Confirm n_findex reset after the operation
     assert n_findex == fi.floris.flow_field.n_findex
-
-
-def test_reinitialize():
-    pass
