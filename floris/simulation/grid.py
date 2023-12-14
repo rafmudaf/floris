@@ -40,10 +40,8 @@ class Grid(ABC, BaseClass):
     """
     Grid should establish domain bounds based on given criteria,
     and develop three arrays to contain components of the grid
-    locations in space.
-
-    This could be generalized to any number of dimensions to be
-    used by perhaps a turbulence field.
+    locations in space. This could be generalized to any number
+    of dimensions to be used by perhaps a turbulence field.
 
     The grid will have to be reestablished for each wind direction since the planform
     area of the farm will be different.
@@ -582,9 +580,9 @@ class FlowFieldPlanarGrid(Grid):
                 indexing="ij"
             )
 
-            self.x_sorted = x_points[None, None, :, :, :]
-            self.y_sorted = y_points[None, None, :, :, :]
-            self.z_sorted = z_points[None, None, :, :, :]
+            self.x_sorted = x_points[None, :, :, :]
+            self.y_sorted = y_points[None, :, :, :]
+            self.z_sorted = z_points[None, :, :, :]
 
         elif self.normal_vector == "x":  # Rules of thumb for cross plane
             if self.x1_bounds is None:
@@ -600,9 +598,9 @@ class FlowFieldPlanarGrid(Grid):
                 indexing="ij"
             )
 
-            self.x_sorted = x_points[None, None, :, :, :]
-            self.y_sorted = y_points[None, None, :, :, :]
-            self.z_sorted = z_points[None, None, :, :, :]
+            self.x_sorted = x_points[None, :, :, :]
+            self.y_sorted = y_points[None, :, :, :]
+            self.z_sorted = z_points[None, :, :, :]
 
         elif self.normal_vector == "y":  # Rules of thumb for y plane
             if self.x1_bounds is None:
@@ -618,9 +616,9 @@ class FlowFieldPlanarGrid(Grid):
                 indexing="ij"
             )
 
-            self.x_sorted = x_points[None, None, :, :, :]
-            self.y_sorted = y_points[None, None, :, :, :]
-            self.z_sorted = z_points[None, None, :, :, :]
+            self.x_sorted = x_points[None, :, :, :]
+            self.y_sorted = y_points[None, :, :, :]
+            self.z_sorted = z_points[None, :, :, :]
 
         # Now calculate grid coordinates in original frame (from 270 deg perspective)
         self.x_sorted_inertial_frame, self.y_sorted_inertial_frame, self.z_sorted_inertial_frame = \
@@ -681,6 +679,6 @@ class PointsGrid(Grid):
             x_center_of_rotation=self.x_center_of_rotation,
             y_center_of_rotation=self.y_center_of_rotation
         )
-        self.x_sorted = x[:,:,:,None,None]
-        self.y_sorted = y[:,:,:,None,None]
-        self.z_sorted = z[:,:,:,None,None]
+        self.x_sorted = x[:,:,None,None]
+        self.y_sorted = y[:,:,None,None]
+        self.z_sorted = z[:,:,None,None]

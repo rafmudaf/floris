@@ -17,17 +17,23 @@ import copy
 import warnings
 from typing import Union
 
+import attrs
 import matplotlib as mpl
 import matplotlib.colors as mplcolors
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
+from attrs import define, field
 from matplotlib import rcParams
 from scipy.spatial import ConvexHull
 
 from floris.simulation import Floris
 from floris.tools.cut_plane import CutPlane
 from floris.tools.floris_interface import FlorisInterface
+from floris.type_dec import (
+    floris_array_converter,
+    NDArrayFloat,
+)
 from floris.utilities import rotate_coordinates_rel_west, wind_delta
 
 
@@ -108,7 +114,7 @@ def plot_turbines_with_fi(
         color = "k"
 
     rotor_diameters = fi.floris.farm.rotor_diameters.flatten()
-    for x, y, yaw, d in zip(fi.layout_x, fi.layout_y, yaw_angles[0,0], rotor_diameters):
+    for x, y, yaw, d in zip(fi.layout_x, fi.layout_y, yaw_angles[0], rotor_diameters):
         R = d / 2.0
         x_0 = x + np.sin(np.deg2rad(yaw)) * R
         x_1 = x - np.sin(np.deg2rad(yaw)) * R
@@ -144,7 +150,7 @@ def add_turbine_id_labels(fi: FlorisInterface, ax: plt.Axes, **kwargs):
     for i in range(fi.floris.farm.n_turbines):
         ax.annotate(
             i,
-            (layout_x[0,0,i], layout_y[0,0,i]),
+            (layout_x[0,i], layout_y[0,i]),
             xytext=(0,10),
             textcoords="offset points",
             **kwargs
@@ -306,7 +312,7 @@ def visualize_cut_plane(
     # Make equal axis
     ax.set_aspect("equal")
 
-    return im
+    return ax
 
 
 def visualize_heterogeneous_cut_plane(
@@ -502,8 +508,7 @@ def reverse_cut_plane_x_axis_in_plot(ax):
 
 def plot_rotor_values(
     values: np.ndarray,
-    wd_index: int,
-    ws_index: int,
+    findex: int,
     n_rows: int,
     n_cols: int,
     t_range: range | None = None,
@@ -518,10 +523,9 @@ def plot_rotor_values(
     used for inspection of what values are differing, and under what conditions.
 
     Parameters:
-        values (np.ndarray): The 5-dimensional array of values to plot. Should be:
-            N wind directions x N wind speeds x N turbines X N rotor points X N rotor points.
-        wd_index (int): The index for the wind direction to plot.
-        ws_index (int): The index of the wind speed to plot.
+        values (np.ndarray): The 4-dimensional array of values to plot. Should be:
+            (N findex, N turbines, N rotor points, N rotor points).
+        findex (int): The index for the sample point to plot.
         n_rows (int): The number of rows to include for subplots. With ncols, this should
             generally add up to the number of turbines in the farm.
         n_cols (int): The number of columns to include for subplots. With ncols, this should
@@ -542,9 +546,9 @@ def plot_rotor_values(
 
     Example:
         from floris.tools.visualization import plot_rotor_values
-        plot_rotor_values(floris.flow_field.u, wd_index=0, ws_index=0, n_rows=1, ncols=4)
-        plot_rotor_values(floris.flow_field.v, wd_index=0, ws_index=0, n_rows=1, ncols=4)
-        plot_rotor_values(floris.flow_field.w, wd_index=0, ws_index=0, n_rows=1, ncols=4, show=True)
+        plot_rotor_values(floris.flow_field.u, findex=0, n_rows=1, ncols=4)
+        plot_rotor_values(floris.flow_field.v, findex=0, n_rows=1, ncols=4)
+        plot_rotor_values(floris.flow_field.w, findex=0, n_rows=1, ncols=4, show=True)
     """
 
     cmap = plt.cm.get_cmap(name=cmap)
@@ -564,12 +568,12 @@ def plot_rotor_values(
 
     for ax, t, i in zip(axes.flatten(), titles, t_range):
 
-        vmin = np.min(values[wd_index, ws_index])
-        vmax = np.max(values[wd_index, ws_index])
+        vmin = np.min(values[findex])
+        vmax = np.max(values[findex])
 
         norm = mplcolors.Normalize(vmin, vmax)
 
-        ax.imshow(values[wd_index, ws_index, i].T, cmap=cmap, norm=norm, origin="lower")
+        ax.imshow(values[findex, i].T, cmap=cmap, norm=norm, origin="lower")
         ax.invert_xaxis()
 
         ax.set_xticks([])
@@ -651,12 +655,12 @@ def calculate_horizontal_plane_with_turbines(
         # Grab the turbine layout
         layout_x = copy.deepcopy(fi.layout_x)
         layout_y = copy.deepcopy(fi.layout_y)
-        D = fi.floris.farm.rotor_diameters_sorted[0, 0, 0]
+        D = np.unique(fi.floris.farm.rotor_diameters_sorted)[0]
 
         # Declare a new layout array with an extra turbine
         layout_x_test = np.append(layout_x,[0])
         layout_y_test = np.append(layout_y,[0])
-        yaw_angles = np.append(yaw_angles, np.zeros([len(wd), len(ws), 1]), axis=2)
+        yaw_angles = np.append(yaw_angles, [[0.0]], axis=1)
 
         # Get a grid of points test test
         if x_bounds is None:
@@ -692,8 +696,8 @@ def calculate_horizontal_plane_with_turbines(
                 fi.calculate_wake(yaw_angles=yaw_angles)
 
                 # Get the velocity of that test turbines central point
-                center_point = int(np.floor(fi.floris.flow_field.u[0,0,-1].shape[0] / 2.0))
-                u_results[idx] = fi.floris.flow_field.u[0,0,-1,center_point,center_point]
+                center_point = int(np.floor(fi.floris.flow_field.u[0,-1].shape[0] / 2.0))
+                u_results[idx] = fi.floris.flow_field.u[0,-1,center_point,center_point]
 
                 # Increment index
                 idx = idx + 1
@@ -712,3 +716,199 @@ def calculate_horizontal_plane_with_turbines(
         horizontal_plane = CutPlane(df, x_resolution, y_resolution, "z")
 
         return horizontal_plane
+
+@define
+class VelocityProfilesFigure():
+    """
+    Create a figure which displays velocity deficit profiles at several downstream
+    locations of a turbine.
+
+    Args:
+        downstream_dists_D: A list/array of streamwise locations at which the velocity deficit
+            profiles have been sampled. The locations should be normalized by the turbine
+            diameter D.
+        layout: A one- or two-element list defining the direction of the profiles and in which
+            order the directions are plotted. For example, ['cross-stream', 'vertical'] initializes
+            a figure where cross-stream profiles are expected on the top row of Axes in the figure,
+            and vertical profiles are expected on the bottom row.
+        ax_width: Roughly the width of each Axes.
+        ax_height: Roughly the height of each Axes.
+        coordinate_labels: A list of labels for the normalized coordinates.
+
+    """
+    downstream_dists_D: NDArrayFloat = field(converter=floris_array_converter)
+    layout: list[str] = field(default=['cross-stream'])
+    ax_width: float = field(default=2.07)
+    ax_height: float = field(default=3.0)
+    coordinate_labels: list[str] = field(default=['x_1/D', 'x_2/D', 'x_3/D'])
+
+    n_rows: int = field(init=False)
+    n_cols: int = field(init=False)
+    fig: plt.Figure = field(init=False)
+    axs: np.ndarray = field(init=False)
+    deficit_max: float = field(init=False, default=0.0)
+
+    def __attrs_post_init__(self) -> None:
+        self.n_rows = len(self.layout)
+        self.n_cols = len(self.downstream_dists_D)
+        figsize = [0.7 + self.ax_width * self.n_cols, 1.0 + self.ax_height * self.n_rows]
+        self.fig, self.axs = plt.subplots(
+            self.n_rows,
+            self.n_cols,
+            figsize=figsize,
+            layout='tight',
+            sharex='col',
+            sharey='row',
+            squeeze=False,
+        )
+
+        for ax in self.axs[-1]:
+            ax.set_xlabel(r'$\Delta U / U_\infty$', fontsize=14)
+            ax.tick_params('x', labelsize=14)
+
+        for ax, x1_D in zip(self.axs[0], self.downstream_dists_D):
+            ax.set_title(f'${self.coordinate_labels[0]} = {x1_D:.1f}$', fontsize=14)
+
+        for ax, profile_direction in zip(self.axs[:,0], self.layout):
+            if profile_direction == 'cross-stream':
+                ylabel = f'${self.coordinate_labels[1]}$'
+            elif profile_direction == 'vertical':
+                ylabel = f'${self.coordinate_labels[2]}$'
+            ax.set_ylabel(ylabel, fontsize=14)
+            ax.tick_params('y', labelsize=14)
+
+    @layout.validator
+    def layout_validator(self, instance : attrs.Attribute, value : list[str]) -> None:
+        allowed_layouts = [
+            ['cross-stream'],
+            ['vertical'],
+            ['cross-stream', 'vertical'],
+            ['vertical', 'cross-stream'],
+        ]
+        if value not in allowed_layouts:
+            raise ValueError(f"'layout' must be one of the following: {allowed_layouts}.")
+
+    def add_profiles(
+        self,
+        velocity_deficit_profiles: list[pd.DataFrame],
+        **kwargs
+    ) -> None:
+        """
+        Add a list of velocity deficit profiles to the figure. Each profile is represented
+        as a pandas DataFrame. `kwargs` are passed to `ax.plot`.
+        """
+        for df in velocity_deficit_profiles:
+            ax, profile_direction = self.match_profile_to_axes(df)
+            profile_direction_D = f'{profile_direction}/D'
+            ax.plot(df['velocity_deficit'], df[profile_direction_D], **kwargs)
+            self.deficit_max = max(self.deficit_max, df['velocity_deficit'].max())
+
+        margin = 0.05
+        self.set_xlim([0.0 - margin, self.deficit_max + margin])
+
+    def match_profile_to_axes(
+        self,
+        df: pd.DataFrame,
+    ) -> tuple[plt.Axes, str]:
+        x1_D = np.unique(df['x1/D'])
+        if len(x1_D) == 1:
+            x1_D = x1_D[0]
+        else:
+            raise ValueError(
+                "The streamwise location x1/D must be constant for each velocity profile."
+            )
+
+        unique_x2 = np.unique(df['x2/D'])
+        unique_x3 = np.unique(df['x3/D'])
+        if len(unique_x2) == 1:
+            profile_direction = 'x3'
+            profile_direction_name = 'vertical'
+        elif len(unique_x3) == 1:
+            profile_direction = 'x2'
+            profile_direction_name = 'cross-stream'
+        else:
+            raise ValueError(
+                f"Velocity deficit profile at x1/D = {x1_D} is neither in the cross-stream (x2) "
+                "nor the vertical (x3) direction."
+            )
+        row = self.layout.index(profile_direction_name)
+
+        col = None
+        for i in range(self.n_cols):
+            if np.abs(x1_D - self.downstream_dists_D[i]) < 0.001:
+                col = i
+                break
+        if col is None:
+            raise ValueError(
+                "Could not add a velocity deficit profile at downstream distance "
+                f"x1/D = {x1_D}. The downstream distance must be one of the following "
+                "values with which this VelocityProfilesFigure object was initialized: "
+                f"{self.downstream_dists_D}."
+            )
+        return self.axs[row,col], profile_direction
+
+    def set_xlim(
+        self,
+        xlim: list[float] | NDArrayFloat,
+    ) -> None:
+        for ax in self.axs[-1]:
+            ax.set_xlim(xlim)
+
+    def add_ref_lines_x2(
+        self,
+        ref_lines_x2_D: list[float] | NDArrayFloat,
+        **kwargs
+    ) -> None:
+        """
+        Add reference lines to the VelocityProfilesFigure which go along the XAxis.
+        Commonly used to show the extent of the turbine.
+        Args:
+            ref_lines_x2_D: A list of x2-coordinates normalized by the turbine diameter D.
+                One coordinate per reference line.
+            **kwargs: Additional parameters to pass to `ax.plot`.
+        """
+        if 'cross-stream' not in self.layout:
+            raise Exception(
+                "Could not add reference lines to cross-stream (x2) velocity profiles. No "
+                "such profiles exist in the figure."
+            )
+        row_x2 = self.layout.index('cross-stream')
+        self.add_ref_lines(ref_lines_x2_D, row_x2, **kwargs)
+
+    def add_ref_lines_x3(
+        self,
+        ref_lines_x3_D: list[float] | NDArrayFloat,
+        **kwargs
+    ) -> None:
+        """
+        Add reference lines to the VelocityProfilesFigure which go along the XAxis.
+        Commonly used to show the extent of the turbine.
+        Args:
+            ref_lines_x3_D: A list of x3-coordinates normalized by the turbine diameter D.
+                One coordinate per reference line.
+            **kwargs: Additional parameters to pass to `ax.plot`.
+        """
+        if 'vertical' not in self.layout:
+            raise Exception(
+                "Could not add reference lines to vertical (x3) velocity profiles. No "
+                "such profiles exist in the figure."
+            )
+        row_x3 = self.layout.index('vertical')
+        self.add_ref_lines(ref_lines_x3_D, row_x3, **kwargs)
+
+    def add_ref_lines(
+        self,
+        ref_lines_D: list[float] | NDArrayFloat,
+        row: int,
+        **kwargs
+    ) -> None:
+        default_params = {
+                'linestyle': (0, (4, 2)),
+                'color': 'k',
+                'linewidth': 1.1
+        }
+        kwargs = default_params | kwargs
+
+        for ax in self.axs[row]:
+            for coordinate in ref_lines_D:
+                ax.plot([0.0, 1.0], [coordinate, coordinate], **kwargs)

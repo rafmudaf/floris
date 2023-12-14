@@ -134,8 +134,7 @@ class FlorisInterface(LoggingManager):
         if yaw_angles is None:
             yaw_angles = np.zeros(
                 (
-                    self.floris.flow_field.n_wind_directions,
-                    self.floris.flow_field.n_wind_speeds,
+                    self.floris.flow_field.n_findex,
                     self.floris.farm.n_turbines
                 )
             )
@@ -146,8 +145,7 @@ class FlorisInterface(LoggingManager):
         #     self.floris.farm.tilt_angles = tilt_angles
         # else:
         #     self.floris.farm.set_tilt_to_ref_tilt(
-        #         self.floris.flow_field.n_wind_directions,
-        #         self.floris.flow_field.n_wind_speeds
+        #         self.floris.flow_field.n_findex,
         #     )
 
         # Initialize solution space
@@ -175,8 +173,7 @@ class FlorisInterface(LoggingManager):
         if yaw_angles is None:
             yaw_angles = np.zeros(
                 (
-                    self.floris.flow_field.n_wind_directions,
-                    self.floris.flow_field.n_wind_speeds,
+                    self.floris.flow_field.n_findex,
                     self.floris.farm.n_turbines
                 )
             )
@@ -204,7 +201,6 @@ class FlorisInterface(LoggingManager):
         turbine_type: list | None = None,
         turbine_library_path: str | Path | None = None,
         solver_settings: dict | None = None,
-        time_series: bool = False,
         heterogenous_inflow_config=None,
     ):
         # Export the floris object recursively as a dictionary
@@ -242,8 +238,6 @@ class FlorisInterface(LoggingManager):
         if turbine_library_path is not None:
             farm_dict["turbine_library_path"] = turbine_library_path
 
-        flow_field_dict["time_series"] = time_series
-
         ## Wake
         # if wake is not None:
         #     self.floris.wake = wake
@@ -280,16 +274,16 @@ class FlorisInterface(LoggingManager):
         """
         # Get results vectors
         if (normal_vector == "z"):
-            x_flat = self.floris.grid.x_sorted_inertial_frame[0, 0].flatten()
-            y_flat = self.floris.grid.y_sorted_inertial_frame[0, 0].flatten()
-            z_flat = self.floris.grid.z_sorted_inertial_frame[0, 0].flatten()
+            x_flat = self.floris.grid.x_sorted_inertial_frame[0].flatten()
+            y_flat = self.floris.grid.y_sorted_inertial_frame[0].flatten()
+            z_flat = self.floris.grid.z_sorted_inertial_frame[0].flatten()
         else:
-            x_flat = self.floris.grid.x_sorted[0, 0].flatten()
-            y_flat = self.floris.grid.y_sorted[0, 0].flatten()
-            z_flat = self.floris.grid.z_sorted[0, 0].flatten()
-        u_flat = self.floris.flow_field.u_sorted[0, 0].flatten()
-        v_flat = self.floris.flow_field.v_sorted[0, 0].flatten()
-        w_flat = self.floris.flow_field.w_sorted[0, 0].flatten()
+            x_flat = self.floris.grid.x_sorted[0].flatten()
+            y_flat = self.floris.grid.y_sorted[0].flatten()
+            z_flat = self.floris.grid.z_sorted[0].flatten()
+        u_flat = self.floris.flow_field.u_sorted[0].flatten()
+        v_flat = self.floris.flow_field.v_sorted[0].flatten()
+        w_flat = self.floris.flow_field.w_sorted[0].flatten()
 
         # Create a df of these
         if normal_vector == "z":
@@ -656,7 +650,7 @@ class FlorisInterface(LoggingManager):
             tilt_angle=self.floris.farm.tilt_angles,
             ref_tilt_cp_ct=self.floris.farm.ref_tilt_cp_cts,
             fCt=self.floris.farm.turbine_fCts,
-            tilt_interp=self.floris.farm.turbine_fTilts,
+            tilt_interp=self.floris.farm.turbine_tilt_interps,
             correct_cp_ct_for_tilt=self.floris.farm.correct_cp_ct_for_tilt,
             turbine_type_map=self.floris.farm.turbine_type_map,
             average_method=self.floris.grid.average_method,
@@ -671,7 +665,7 @@ class FlorisInterface(LoggingManager):
             tilt_angle=self.floris.farm.tilt_angles,
             ref_tilt_cp_ct=self.floris.farm.ref_tilt_cp_cts,
             fCt=self.floris.farm.turbine_fCts,
-            tilt_interp=self.floris.farm.turbine_fTilts,
+            tilt_interp=self.floris.farm.turbine_tilt_interps,
             correct_cp_ct_for_tilt=self.floris.farm.correct_cp_ct_for_tilt,
             turbine_type_map=self.floris.farm.turbine_type_map,
             average_method=self.floris.grid.average_method,
@@ -698,7 +692,7 @@ class FlorisInterface(LoggingManager):
             ref_tilt_cp_ct=self.floris.farm.ref_tilt_cp_cts,
             pP=self.floris.farm.pPs,
             pT=self.floris.farm.pTs,
-            tilt_interp=self.floris.farm.turbine_fTilts,
+            tilt_interp=self.floris.farm.turbine_tilt_interps,
             correct_cp_ct_for_tilt=self.floris.farm.correct_cp_ct_for_tilt,
             turbine_type_map=self.floris.farm.turbine_type_map,
             average_method=self.floris.grid.average_method,
@@ -733,8 +727,8 @@ class FlorisInterface(LoggingManager):
                 turbines to 0.0. The array of turbine powers from floris
                 is multiplied with this array in the calculation of the
                 objective function. If None, this  is an array with all values
-                1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
-                n_turbines). Defaults to None.
+                1.0 and with shape equal to (n_findex, n_turbines).
+                Defaults to None.
             use_turbulence_correction: (bool, optional): When *True* uses a
                 turbulence parameter to adjust power output calculations.
                 Defaults to *False*.
@@ -760,8 +754,7 @@ class FlorisInterface(LoggingManager):
             # Default to equal weighing of all turbines when turbine_weights is None
             turbine_weights = np.ones(
                 (
-                    self.floris.flow_field.n_wind_directions,
-                    self.floris.flow_field.n_wind_speeds,
+                    self.floris.flow_field.n_findex,
                     self.floris.farm.n_turbines
                 )
             )
@@ -770,8 +763,7 @@ class FlorisInterface(LoggingManager):
             turbine_weights = np.tile(
                 turbine_weights,
                 (
-                    self.floris.flow_field.n_wind_directions,
-                    self.floris.flow_field.n_wind_speeds,
+                    self.floris.flow_field.n_findex,
                     1
                 )
             )
@@ -780,7 +772,7 @@ class FlorisInterface(LoggingManager):
         turbine_powers = self.get_turbine_powers()
         turbine_powers = np.multiply(turbine_weights, turbine_powers)
 
-        return np.sum(turbine_powers, axis=2)
+        return np.sum(turbine_powers, axis=1)
 
     def get_farm_AEP(
         self,
@@ -796,8 +788,8 @@ class FlorisInterface(LoggingManager):
         direction, frequency of occurrence, and yaw offset.
 
         Args:
-            freq (NDArrayFloat): NumPy array with shape (n_wind_directions,
-                n_wind_speeds) with the frequencies of each wind direction and
+            freq (NDArrayFloat): NumPy array with shape (n_findex)
+                with the frequencies of each wind direction and
                 wind speed combination. These frequencies should typically sum
                 up to 1.0 and are used to weigh the wind farm power for every
                 condition in calculating the wind farm's AEP.
@@ -825,7 +817,7 @@ class FlorisInterface(LoggingManager):
                 turbines to 0.0. The array of turbine powers from floris
                 is multiplied with this array in the calculation of the
                 objective function. If None, this  is an array with all values
-                1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
+                1.0 and with shape equal to (n_findex,
                 n_turbines). Defaults to None.
             no_wake: (bool, optional): When *True* updates the turbine
                 quantities without calculating the wake or adding the wake to
@@ -839,14 +831,9 @@ class FlorisInterface(LoggingManager):
         """
 
         # Verify dimensions of the variable "freq"
-        if not (
-            (np.shape(freq)[0] == self.floris.flow_field.n_wind_directions)
-            & (np.shape(freq)[1] == self.floris.flow_field.n_wind_speeds)
-            & (len(np.shape(freq)) == 2)
-        ):
+        if np.shape(freq)[0] != self.floris.flow_field.n_findex:
             raise UserWarning(
-                "'freq' should be a two-dimensional array with dimensions "
-                " (n_wind_directions, n_wind_speeds)."
+                "'freq' should be a one-dimensional array with dimensions (n_findex)."
             )
 
         # Check if frequency vector sums to 1.0. If not, raise a warning
@@ -859,7 +846,8 @@ class FlorisInterface(LoggingManager):
         # Copy the full wind speed array from the floris object and initialize
         # the the farm_power variable as an empty array.
         wind_speeds = np.array(self.floris.flow_field.wind_speeds, copy=True)
-        farm_power = np.zeros((self.floris.flow_field.n_wind_directions, len(wind_speeds)))
+        wind_directions = np.array(self.floris.flow_field.wind_directions, copy=True)
+        farm_power = np.zeros(self.floris.flow_field.n_findex)
 
         # Determine which wind speeds we must evaluate in floris
         conditions_to_evaluate = wind_speeds >= cut_in_wind_speed
@@ -869,15 +857,17 @@ class FlorisInterface(LoggingManager):
         # Evaluate the conditions in floris
         if np.any(conditions_to_evaluate):
             wind_speeds_subset = wind_speeds[conditions_to_evaluate]
+            wind_directions_subset = wind_directions[conditions_to_evaluate]
             yaw_angles_subset = None
             if yaw_angles is not None:
-                yaw_angles_subset = yaw_angles[:, conditions_to_evaluate]
-            self.reinitialize(wind_speeds=wind_speeds_subset)
+                yaw_angles_subset = yaw_angles[conditions_to_evaluate]
+            self.reinitialize(wind_speeds=wind_speeds_subset,
+                              wind_directions = wind_directions_subset)
             if no_wake:
                 self.calculate_no_wake(yaw_angles=yaw_angles_subset)
             else:
                 self.calculate_wake(yaw_angles=yaw_angles_subset)
-            farm_power[:, conditions_to_evaluate] = (
+            farm_power[conditions_to_evaluate] = (
                 self.get_farm_power(turbine_weights=turbine_weights)
             )
 
@@ -885,93 +875,7 @@ class FlorisInterface(LoggingManager):
         aep = np.sum(np.multiply(freq, farm_power) * 365 * 24)
 
         # Reset the FLORIS object to the full wind speed array
-        self.reinitialize(wind_speeds=wind_speeds)
-
-        return aep
-
-    def get_farm_AEP_wind_rose_class(
-        self,
-        wind_rose,
-        cut_in_wind_speed=0.001,
-        cut_out_wind_speed=None,
-        yaw_angles=None,
-        turbine_weights=None,
-        no_wake=False,
-    ) -> float:
-        """
-        Estimate annual energy production (AEP) for distributions of wind speed, wind
-        direction, frequency of occurrence, and yaw offset.
-
-        Args:
-            wind_rose (wind_rose): An object of the wind rose class
-            cut_in_wind_speed (float, optional): Wind speed in m/s below which
-                any calculations are ignored and the wind farm is known to
-                produce 0.0 W of power. Note that to prevent problems with the
-                wake models at negative / zero wind speeds, this variable must
-                always have a positive value. Defaults to 0.001 [m/s].
-            cut_out_wind_speed (float, optional): Wind speed above which the
-                wind farm is known to produce 0.0 W of power. If None is
-                specified, will assume that the wind farm does not cut out
-                at high wind speeds. Defaults to None.
-            yaw_angles (NDArrayFloat | list[float] | None, optional):
-                The relative turbine yaw angles in degrees. If None is
-                specified, will assume that the turbine yaw angles are all
-                zero degrees for all conditions. Defaults to None.
-            turbine_weights (NDArrayFloat | list[float] | None, optional):
-                weighing terms that allow the user to emphasize power at
-                particular turbines and/or completely ignore the power
-                from other turbines. This is useful when, for example, you are
-                modeling multiple wind farms in a single floris object. If you
-                only want to calculate the power production for one of those
-                farms and include the wake effects of the neighboring farms,
-                you can set the turbine_weights for the neighboring farms'
-                turbines to 0.0. The array of turbine powers from floris
-                is multiplied with this array in the calculation of the
-                objective function. If None, this  is an array with all values
-                1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
-                n_turbines). Defaults to None.
-            no_wake: (bool, optional): When *True* updates the turbine
-                quantities without calculating the wake or adding the wake to
-                the flow field. This can be useful when quantifying the loss
-                in AEP due to wakes. Defaults to *False*.
-
-        Returns:
-            float:
-                The Annual Energy Production (AEP) for the wind farm in
-                watt-hours.
-        """
-
-        # Hold the starting values of wind speed and direction
-        wind_speeds = np.array(self.floris.flow_field.wind_speeds, copy=True)
-        wind_directions = np.array(self.floris.flow_field.wind_directions, copy=True)
-
-        # Now set FLORIS wind speed and wind direction
-        # over to those values in the wind rose class
-        wind_speeds_wind_rose = wind_rose.df.ws.unique()
-        wind_directions_wind_rose = wind_rose.df.wd.unique()
-        self.reinitialize(
-            wind_speeds=wind_speeds_wind_rose,
-            wind_directions=wind_directions_wind_rose
-        )
-
-        # Build the frequency matrix from wind rose
-        freq = wind_rose.df.set_index(['wd','ws']).unstack().values
-
-        # Now compute aep
-        aep = self.get_farm_AEP(
-            freq,
-            cut_in_wind_speed=cut_in_wind_speed,
-            cut_out_wind_speed=cut_out_wind_speed,
-            yaw_angles=yaw_angles,
-            turbine_weights=turbine_weights,
-            no_wake=no_wake)
-
-
-        # Reset the FLORIS object to the original wind speed and directions
-        self.reinitialize(
-            wind_speeds=wind_speeds,
-            wind_directions=wind_directions
-        )
+        self.reinitialize(wind_speeds=wind_speeds, wind_directions=wind_directions)
 
         return aep
 
@@ -986,7 +890,7 @@ class FlorisInterface(LoggingManager):
 
         Returns:
             3DArrayFloat containing wind speed with dimensions
-            (# of wind directions, # of wind speeds, # of sample points)
+            (# of findex, # of sample points)
         """
 
         # Check that x, y, z are all the same length
@@ -994,6 +898,130 @@ class FlorisInterface(LoggingManager):
             raise ValueError("x, y, and z must be the same size")
 
         return self.floris.solve_for_points(x, y, z)
+
+    def sample_velocity_deficit_profiles(
+            self,
+            direction: str = 'cross-stream',
+            downstream_dists: NDArrayFloat | list = None,
+            profile_range: NDArrayFloat | list = None,
+            resolution: int = 100,
+            wind_direction: float = None,
+            homogeneous_wind_speed: float = None,
+            ref_rotor_diameter: float = None,
+            x_start: float = 0.0,
+            y_start: float = 0.0,
+            reference_height: float = None,
+    ) -> list[pd.DataFrame]:
+        """
+        Extract velocity deficit profiles at a set of downstream distances from a starting point
+        (usually a turbine location). For each downstream distance, a profile is sampled along
+        a line in either the cross-stream direction (x2) or the vertical direction (x3).
+        Velocity deficit is here defined as (homogeneous_wind_speed - u)/homogeneous_wind_speed,
+        where u is the wake velocity obtained when wind_shear = 0.0.
+
+        Args:
+            direction: At each downstream location, this is the direction in which to sample the
+                profile. Either `cross-stream` or `vertical`.
+            downstream_dists: A list/array of streamwise locations for where to sample the profiles.
+                Default starting point is (0.0, 0.0, reference_height).
+            profile_range: Determines the extent of the line along which the profiles are sampled.
+                The range is defined about a point which lies some distance directly downstream of
+                the starting point.
+            resolution: Number of sample points in each profile.
+            wind_direction: A single wind direction.
+            homogeneous_wind_speed: A single wind speed. It is called homogeneous since 'wind_shear'
+                is temporarily set to 0.0 in this method.
+            ref_rotor_diameter: A reference rotor diameter which is used to normalize the
+                coordinates.
+            x_start: x-coordinate of starting point.
+            y_start: y-coordinate of starting point.
+            reference_height: If `direction` is cross-stream, then `reference_height` defines the
+                height of the horizontal plane in which the velocity profiles are sampled.
+                If `direction` is vertical, then the velocity is sampled along the vertical
+                direction with the `profile_range` being relative to the `reference_height`.
+        Returns:
+            A list of pandas DataFrame objects where each DataFrame represents one velocity deficit
+            profile.
+        """
+
+        if direction not in ['cross-stream', 'vertical']:
+            raise ValueError("`direction` must be either `cross-stream` or `vertical`.")
+
+        if ref_rotor_diameter is None:
+            unique_rotor_diameters = np.unique(self.floris.farm.rotor_diameters)
+            if len(unique_rotor_diameters) == 1:
+                ref_rotor_diameter = unique_rotor_diameters[0]
+            else:
+                raise ValueError(
+                    "Please provide a `ref_rotor_diameter`. This is needed to normalize the "
+                    "coordinates. Could not select a value automatically since the number of "
+                    "unique rotor diameters in the turbine layout is not 1. "
+                    f"Found the following rotor diameters: {unique_rotor_diameters}."
+                )
+
+        if downstream_dists is None:
+            downstream_dists = ref_rotor_diameter * np.array([3, 5, 7, 9])
+
+        if profile_range is None:
+            profile_range = ref_rotor_diameter * np.array([-2, 2])
+
+        wind_directions_copy = np.array(self.floris.flow_field.wind_directions, copy=True)
+        wind_speeds_copy = np.array(self.floris.flow_field.wind_speeds, copy=True)
+        wind_shear_copy = self.floris.flow_field.wind_shear
+
+        if wind_direction is None:
+            if len(wind_directions_copy) == 1:
+                wind_direction = wind_directions_copy[0]
+            else:
+                raise ValueError(
+                    "Could not determine a wind direction for which to sample the velocity "
+                    "profiles. Either provide a single `wind_direction` as an argument to this "
+                    "method, or initialize the Floris object with a single wind direction."
+                )
+
+        if homogeneous_wind_speed is None:
+            if len(wind_speeds_copy) == 1:
+                homogeneous_wind_speed = wind_speeds_copy[0]
+                self.logger.warning(
+                    "`homogeneous_wind_speed` not provided. Setting it to the following wind speed "
+                    f"found in the current flow field: {wind_speeds_copy[0]} m/s. Note that the "
+                    "inflow is always homogeneous when calculating the velocity deficit profiles. "
+                    "This is done by temporarily setting `wind_shear` to 0.0"
+                )
+            else:
+                raise ValueError(
+                    "Could not determine a wind speed for which to sample the velocity "
+                    "profiles. Provide a single `homogeneous_wind_speed` to this method."
+                )
+
+        if reference_height is None:
+            reference_height = self.floris.flow_field.reference_wind_height
+
+        self.reinitialize(
+            wind_directions=[wind_direction],
+            wind_speeds=[homogeneous_wind_speed],
+            wind_shear=0.0,
+        )
+
+        velocity_deficit_profiles = self.floris.solve_for_velocity_deficit_profiles(
+            direction,
+            downstream_dists,
+            profile_range,
+            resolution,
+            homogeneous_wind_speed,
+            ref_rotor_diameter,
+            x_start,
+            y_start,
+            reference_height,
+        )
+
+        self.reinitialize(
+            wind_directions=wind_directions_copy,
+            wind_speeds=wind_speeds_copy,
+            wind_shear=wind_shear_copy,
+        )
+
+        return velocity_deficit_profiles
 
     @property
     def layout_x(self):

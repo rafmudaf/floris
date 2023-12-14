@@ -12,6 +12,7 @@
 
 # See https://floris.readthedocs.io for documentation
 
+from __future__ import annotations
 
 import copy
 
@@ -55,7 +56,7 @@ def print_test_values(
     thrusts: list,
     powers: list,
     axial_inductions: list,
-    max_findex_print: int | None=None
+    max_findex_print: int | None =None
 ):
     n_findex, n_turb = np.shape(average_velocities)
     if max_findex_print is not None:
@@ -369,13 +370,13 @@ class SampleInputs:
                 5.0,
                 5.0,
             ],
-            "wind_speeds": [
+            "wind_speed": [
                 0.0,
                 25.0,
                 50.0,
             ],
         }
-        self.turbine_floating["floating_correct_cp_ct_for_tilt"] = True
+        self.turbine_floating["correct_cp_ct_for_tilt"] = True
 
         self.turbine_multi_dim = copy.deepcopy(self.turbine)
         del self.turbine_multi_dim['power_thrust_table']
