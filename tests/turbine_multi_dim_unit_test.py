@@ -38,15 +38,10 @@ TEST_DATA = Path(__file__).resolve().parent.parent / "floris" / "turbine_library
 CSV_INPUT = TEST_DATA / "iea_15MW_multi_dim_Tp_Hs.csv"
 
 
-# size 3 x 4 x 1 x 1 x 1
-WIND_CONDITION_BROADCAST = np.stack(
-    (
-        np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 0
-        np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 1
-        np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1)),  # Wind direction 2
-    ),
-    axis=0,
-)
+# size 16 x 1 x 1 x 1
+# 16 wind speed and wind direction combinations from conftest
+WIND_CONDITION_BROADCAST = np.reshape(np.array(WIND_SPEEDS), (-1, 1, 1, 1))
+
 INDEX_FILTER = [0, 2]
 
 
