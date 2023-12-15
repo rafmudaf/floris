@@ -51,10 +51,8 @@ def test_multidim_Ct_down_select():
     turbine_data = SampleInputs().turbine_multi_dim
     turbine_data["power_thrust_data_file"] = CSV_INPUT
     turbine = TurbineMultiDimensional.from_dict(turbine_data)
-    turbine_type_map = np.array([turbine.turbine_type])
-    turbine_type_map = turbine_type_map[None, None, :]
 
-    downselect_turbine_fCts = multidim_Ct_down_select([[[turbine.fCt_interp]]], CONDITIONS)
+    downselect_turbine_fCts = multidim_Ct_down_select([[turbine.fCt_interp]], CONDITIONS)
 
     assert downselect_turbine_fCts == turbine.fCt_interp[(2, 1)]
 
@@ -65,10 +63,8 @@ def test_multidim_power_down_select():
     turbine_data = SampleInputs().turbine_multi_dim
     turbine_data["power_thrust_data_file"] = CSV_INPUT
     turbine = TurbineMultiDimensional.from_dict(turbine_data)
-    turbine_type_map = np.array([turbine.turbine_type])
-    turbine_type_map = turbine_type_map[None, None, :]
 
-    downselect_power_interps = multidim_power_down_select([[[turbine.power_interp]]], CONDITIONS)
+    downselect_power_interps = multidim_power_down_select([[turbine.power_interp]], CONDITIONS)
 
     assert downselect_power_interps == turbine.power_interp[(2, 1)]
 
@@ -166,7 +162,7 @@ def test_ct():
         [0.77853469, 0.77853469],
         [0.77853469, 0.77853469],
         [0.6957943,  0.6957943 ],
-        
+
         [0.77853469, 0.77853469],
         [0.77853469, 0.77853469],
         [0.77853469, 0.77853469],
