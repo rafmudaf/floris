@@ -22,6 +22,7 @@ import pandas as pd
 
 from floris.logging_manager import LoggingManager
 from floris.simulation import Floris, State
+from floris.simulation.grid import TurbineGrid
 from floris.simulation.turbine import (
     average_velocity,
     axial_induction,
@@ -32,7 +33,6 @@ from floris.simulation.turbine import (
 from floris.simulation.turbine_multi_dim import multidim_power_down_select, power_multidim
 from floris.tools.cut_plane import CutPlane
 from floris.type_dec import NDArrayFloat
-from floris.simulation.grid import TurbineGrid
 
 
 class FlorisInterface(LoggingManager):
