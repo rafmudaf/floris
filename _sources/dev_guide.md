@@ -362,7 +362,7 @@ classDiagram
     Solver --> FlowField
     Solver --> Grid
     Solver --> WakeModelManager
-    
+
     WakeModelManager -- BaseModel
 
     style Grid stroke:#FF496B, stroke-width:2px
