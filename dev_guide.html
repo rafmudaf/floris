@@ -65,6 +65,8 @@ const thebe_selector_output = ".output, .cell_output"
                 gtag('js', new Date());
                 gtag('config', 'G-L8RGXZCW3F');
             </script>
+    <script src="https://unpkg.com/mermaid@10.8/dist/mermaid.min.js"></script>
+    <script>mermaid.initialize({startOnLoad:true});</script>
     <script>DOCUMENTATION_OPTIONS.pagename = 'dev_guide';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -986,6 +988,11 @@ title="Print to PDF"
    Deploying to pip
   </a>
  </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extending-the-models">
+   Extending the models
+  </a>
+ </li>
 </ul>
 
             </nav>
@@ -1267,6 +1274,118 @@ If it fails, the latest release will not be distributed.</p></li>
 FLORIS updates. When the time comes, here is a great reference on doing it
 is available <a class="reference external" href="https://medium.freecodecamp.org/how-to-publish-a-pyton-package-on-pypi-a89e9522ce24">here</a>.</p>
 </section>
+<section id="extending-the-models">
+<h2>Extending the models<a class="headerlink" href="#extending-the-models" title="Permalink to this heading">#</a></h2>
+<p>The FLORIS architecture is designed to support adding new wake models relatively easily.
+Each of the following components have a general API that support plugging in to the rest of the
+FLORIS framework:</p>
+<ul class="simple">
+<li><p>Velocity deficit</p></li>
+<li><p>Wake deflection</p></li>
+<li><p>Added turbulence due to the turbine wake</p></li>
+<li><p>Wake combination</p></li>
+<li><p>Solver algorithm</p></li>
+<li><p>Grid-points</p></li>
+</ul>
+<p>Initially, it's recommended to copy an existing model as a starting point, and the
+<a class="reference external" href="https://github.com/NREL/floris/blob/main/floris/simulation/wake_velocity/jensen.py">Jensen</a> and
+<a class="reference external" href="https://github.com/NREL/floris/blob/main/floris/simulation/wake_deflection/jimenez.py">Jimenez</a>
+models are good choices due to their simplicity.
+New models must be registered in
+<a class="reference external" href="https://github.com/NREL/floris/blob/main/floris/simulation/wake.py#L45">Wake.model_map</a>
+so that they can be enabled via the input dictionary.</p>
+<div class="mermaid">
+            classDiagram
+
+    class Floris
+
+    class Farm
+
+    class FlowField {
+        u: NDArrayFloat
+        v: NDArrayFloat
+        w: NDArrayFloat
+    }
+
+    class Grid {
+        &lt;&lt;interface&gt;&gt;
+        x: NDArrayFloat
+        y: NDArrayFloat
+        z: NDArrayFloat
+    }
+
+    class WakeModelManager {
+        &lt;&lt;interface&gt;&gt;
+        combination_model: BaseModel
+        deflection_model: BaseModel
+        velocity_model: BaseModel
+        turbulence_model: BaseModel
+    }
+
+    class Solver {
+        &lt;&lt;interface&gt;&gt;
+        parameters: dict
+    }
+
+    class BaseModel {
+        prepare_function() dict
+        function() None
+    }
+
+    Floris *-- Farm
+    Floris *-- FlowField
+    Floris *-- Grid
+    Floris *-- WakeModelManager
+    Floris --&gt; Solver
+
+    Solver --&gt; Farm
+    Solver --&gt; FlowField
+    Solver --&gt; Grid
+    Solver --&gt; WakeModelManager
+    
+    WakeModelManager -- BaseModel
+
+    style Grid stroke:#FF496B, stroke-width:2px
+    style WakeModelManager stroke:#FF496B, stroke-width:2px
+    style Solver stroke:#FF496B, stroke-width:2px
+        </div><p>All of the models have a <code class="docutils literal notranslate"><span class="pre">prepare_function</span></code> and a <code class="docutils literal notranslate"><span class="pre">function</span></code> method.
+The <code class="docutils literal notranslate"><span class="pre">prepare_function</span></code> allows the model classes to extract any information from the <code class="docutils literal notranslate"><span class="pre">Grid</span></code> and
+<code class="docutils literal notranslate"><span class="pre">FlowField</span></code> data structures, and this is generally used for sizing the data arrays.
+The <code class="docutils literal notranslate"><span class="pre">prepare_function</span></code> should return a dictionary that will ultimately be passed to the
+<code class="docutils literal notranslate"><span class="pre">function</span></code>.
+The <code class="docutils literal notranslate"><span class="pre">function</span></code> method is where the actual calculation is performed.
+The API is dependent on the type of model, but generally it requires some indicationg of
+the location of the current turbine in the solve step and some other information about the
+atmospheric conditions and operation of the turbine.
+Note the <code class="docutils literal notranslate"><span class="pre">*</span></code> in the function signature, which is a Python feature that allows
+any number of arguments to be passed to the function after the <code class="docutils literal notranslate"><span class="pre">*</span></code> as keyword arguments.
+Typically, these arguments are the ones returned from the <code class="docutils literal notranslate"><span class="pre">prepare_function</span></code>.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="k">def</span> <span class="nf">prepare_function</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">grid</span><span class="p">:</span> <span class="n">Grid</span><span class="p">,</span> <span class="n">flow_field</span><span class="p">:</span> <span class="n">FlowField</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]</span>
+
+<span class="k">def</span> <span class="nf">function</span><span class="p">(</span>
+    <span class="bp">self</span><span class="p">,</span>
+    <span class="n">x_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">y_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">z_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">axial_induction_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">deflection_field_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">yaw_angle_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">turbulence_intensity_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">ct_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">hub_height_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">rotor_diameter_i</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">variables_from_prepare_function</span><span class="p">:</span> <span class="nb">dict</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+</pre></div>
+</div>
+<p>Some models require a special grid and/or solver, and that mapping happens in
+<a class="reference external" href="https://github.com/NREL/floris/blob/main/floris/simulation/floris.py#L145">floris.simulation.Floris</a>.
+Generally, a specific kind of solver requires one or a number of specific grid-types.
+For example, <code class="docutils literal notranslate"><span class="pre">full_flow_sequential_solver</span></code> requires either <code class="docutils literal notranslate"><span class="pre">FlowFieldGrid</span></code> or
+<code class="docutils literal notranslate"><span class="pre">FlowFieldPlanarGrid</span></code>.
+So, it is often the case that adding a new solver will require adding a new grid type, as well.</p>
+</section>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1391,6 +1510,11 @@ is available <a class="reference external" href="https://medium.freecodecamp.org
  <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#deploying-to-pip">
    Deploying to pip
+  </a>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#extending-the-models">
+   Extending the models
   </a>
  </li>
 </ul>
