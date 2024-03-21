@@ -579,9 +579,7 @@ increase in wake expansion due to wake-induced mixing.</p></li>
 </ul>
 </div></blockquote>
 </dd>
-</dl>
-<p class="rubric">References</p>
-<div class="docutils container" id="id5">
+<dt>References:</dt><dd><div class="docutils container" id="id5">
 <div role="list" class="citation-list">
 <div class="citation" id="id8" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
@@ -595,6 +593,8 @@ increase in wake expansion due to wake-induced mixing.</p></li>
 </div>
 </div>
 </div>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -657,41 +657,66 @@ increase in wake expansion due to wake-induced mixing.</p></li>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>x_i</strong> (<em>np.array</em>) -- Streamwise direction grid coordinates of
-the ith turbine (m).</p></li>
-<li><p><strong>y_i</strong> (<em>np.array</em>) -- Cross stream direction grid coordinates of
-the ith turbine (m).</p></li>
-<li><p><strong>z_i</strong> (<em>np.array</em>) -- Vertical direction grid coordinates of
-the ith turbine (m) [not used].</p></li>
-<li><p><strong>axial_induction_i</strong> (<em>np.array</em>) -- Axial induction factor of the
-ith turbine (-) [not used].</p></li>
-<li><p><strong>deflection_field_y_i</strong> (<em>np.array</em>) -- Horizontal wake deflections
-due to the ith turbine's yaw misalignment (m).</p></li>
-<li><p><strong>deflection_field_z_i</strong> (<em>np.array</em>) -- Vertical wake deflections
-due to the ith turbine's tilt angle (m).</p></li>
-<li><p><strong>yaw_angle_i</strong> (<em>np.array</em>) -- Yaw angle of the ith turbine (deg).</p></li>
-<li><p><strong>tilt_angle_i</strong> (<em>np.array</em>) -- Tilt angle of the ith turbine
-(deg).</p></li>
-<li><p><strong>mixing_i</strong> (<em>np.array</em>) -- The wake-induced mixing term for the
-ith turbine.</p></li>
-<li><p><strong>ct_i</strong> (<em>np.array</em>) -- Thrust coefficient for the ith turbine (-).</p></li>
-<li><p><strong>hub_height_i</strong> (<em>float</em>) -- Hub height for the ith turbine (m).</p></li>
-<li><p><strong>rotor_diameter_i</strong> (<em>np.array</em>) -- Rotor diameter for the ith
-turbine (m).</p></li>
-<li><p><strong>x</strong> (<em>np.array</em>) -- Streamwise direction grid coordinates of the
-flow field domain (m).</p></li>
-<li><p><strong>y</strong> (<em>np.array</em>) -- Cross stream direction grid coordinates of the
-flow field domain (m).</p></li>
-<li><p><strong>z</strong> (<em>np.array</em>) -- Vertical direction grid coordinates of the
-flow field domain (m).</p></li>
-<li><p><strong>wind_veer</strong> (<em>np.array</em>) -- Wind veer (deg).</p></li>
+<li><p><strong>x_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>y_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>z_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>axial_induction_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>deflection_field_y_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>deflection_field_z_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>yaw_angle_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>tilt_angle_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>mixing_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>ct_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>hub_height_i</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>rotor_diameter_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>x</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>y</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>z</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>wind_veer</strong> (<em>float</em>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Velocity deficits (-).</p>
+</dl>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>x_i (np.array): Streamwise direction grid coordinates of</dt><dd><p>the ith turbine (m).</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>np.array</p>
+<dt>y_i (np.array): Cross stream direction grid coordinates of</dt><dd><p>the ith turbine (m).</p>
+</dd>
+<dt>z_i (np.array): Vertical direction grid coordinates of</dt><dd><p>the ith turbine (m) [not used].</p>
+</dd>
+<dt>axial_induction_i (np.array): Axial induction factor of the</dt><dd><p>ith turbine (-) [not used].</p>
+</dd>
+<dt>deflection_field_y_i (np.array): Horizontal wake deflections</dt><dd><p>due to the ith turbine's yaw misalignment (m).</p>
+</dd>
+<dt>deflection_field_z_i (np.array): Vertical wake deflections</dt><dd><p>due to the ith turbine's tilt angle (m).</p>
+</dd>
+</dl>
+<p>yaw_angle_i (np.array): Yaw angle of the ith turbine (deg).
+tilt_angle_i (np.array): Tilt angle of the ith turbine</p>
+<blockquote>
+<div><p>(deg).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>mixing_i (np.array): The wake-induced mixing term for the</dt><dd><p>ith turbine.</p>
+</dd>
+</dl>
+<p>ct_i (np.array): Thrust coefficient for the ith turbine (-).
+hub_height_i (float): Hub height for the ith turbine (m).
+rotor_diameter_i (np.array): Rotor diameter for the ith</p>
+<blockquote>
+<div><p>turbine (m).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>x (np.array): Streamwise direction grid coordinates of the</dt><dd><p>flow field domain (m).</p>
+</dd>
+<dt>y (np.array): Cross stream direction grid coordinates of the</dt><dd><p>flow field domain (m).</p>
+</dd>
+<dt>z (np.array): Vertical direction grid coordinates of the</dt><dd><p>flow field domain (m).</p>
+</dd>
+</dl>
+<p>wind_veer (np.array): Wind veer (deg).</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.array: Velocity deficits (-).</p>
 </dd>
 </dl>
 </dd></dl>

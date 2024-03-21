@@ -540,37 +540,35 @@ optionally turbulence intensity) using the scipy optimize package.</p>
 <span class="sig-name descname"><span class="pre">reinitialize_opt_wind_rose</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ti</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_yaw_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_yaw_angle</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">minimum_ws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_ws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaw_angles_baseline</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bnds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">include_unc</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unc_pmfs</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">unc_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turbine_weights</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">calc_init_power</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">exclude_downstream_turbines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/optimization/legacy/scipy/yaw_wind_rose.html#YawOptimizationWindRose.reinitialize_opt_wind_rose"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.optimization.legacy.scipy.yaw_wind_rose.YawOptimizationWindRose.reinitialize_opt_wind_rose" title="Link to this definition">#</a></dt>
 <dd><p>This method reinitializes any optimization parameters that are
 specified. Otherwise, the current parameter values are kept.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wd</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- The wind directions for which the yaw
-angles are optimized (deg). Defaults to None.</p></li>
-<li><p><strong>ws</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- The wind speeds for which the yaw angles
-are optimized (m/s). Defaults to None.</p></li>
-<li><p><strong>ti</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- An optional list of turbulence intensity
-values for which the yaw angles are optimized. Defaults to None.</p></li>
-<li><p><strong>minimum_yaw_angle</strong> (<em>float</em><em>, </em><em>optional</em>) -- Minimum constraint on yaw
-angle (deg). This value will be ignored if bnds is also
-specified. Defaults to None.</p></li>
-<li><p><strong>maximum_yaw_angle</strong> (<em>float</em><em>, </em><em>optional</em>) -- Maximum constraint on yaw
-angle (deg). This value will be ignored if bnds is also
-specified. Defaults to None.</p></li>
-<li><p><strong>minimum_ws</strong> (<em>float</em><em>, </em><em>optional</em>) -- Minimum wind speed at which
-optimization is performed (m/s). Assumes zero power generated
-below this value. Defaults to None.</p></li>
-<li><p><strong>maximum_ws</strong> (<em>float</em><em>, </em><em>optional</em>) -- Maximum wind speed at which
-optimization is performed (m/s). Assumes optimal yaw offsets
-are zero above this wind speed. Defaults to None.</p></li>
-<li><p><strong>yaw_angles_baseline</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- The baseline yaw
-angles used to calculate the initial and baseline power
+<dl>
+<dt>Args:</dt><dd><dl>
+<dt>wd (iterable, optional)<span class="classifier">The wind directions for which the yaw</span></dt><dd><p>angles are optimized (deg). Defaults to None.</p>
+</dd>
+<dt>ws (iterable, optional): The wind speeds for which the yaw angles</dt><dd><p>are optimized (m/s). Defaults to None.</p>
+</dd>
+<dt>ti (iterable, optional): An optional list of turbulence intensity</dt><dd><p>values for which the yaw angles are optimized. Defaults to None.</p>
+</dd>
+<dt>minimum_yaw_angle (float, optional): Minimum constraint on yaw</dt><dd><p>angle (deg). This value will be ignored if bnds is also
+specified. Defaults to None.</p>
+</dd>
+<dt>maximum_yaw_angle (float, optional): Maximum constraint on yaw</dt><dd><p>angle (deg). This value will be ignored if bnds is also
+specified. Defaults to None.</p>
+</dd>
+<dt>minimum_ws (float, optional): Minimum wind speed at which</dt><dd><p>optimization is performed (m/s). Assumes zero power generated
+below this value. Defaults to None.</p>
+</dd>
+<dt>maximum_ws (float, optional): Maximum wind speed at which</dt><dd><p>optimization is performed (m/s). Assumes optimal yaw offsets
+are zero above this wind speed. Defaults to None.</p>
+</dd>
+<dt>yaw_angles_baseline (iterable, optional): The baseline yaw</dt><dd><p>angles used to calculate the initial and baseline power
 production in the wind farm and used to normalize the cost
 function. If none are specified, this variable is set equal
 to the current yaw angles in floris. Note that this variable
 need not meet the yaw constraints specified in self.bnds,
 yet a warning is raised if it does to inform the user.
-Defaults to None.</p></li>
-<li><p><strong>x0</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- The initial guess for the optimization
-problem. These values must meet the constraints specified
+Defaults to None.</p>
+</dd>
+<dt>x0 (iterable, optional): The initial guess for the optimization</dt><dd><p>problem. These values must meet the constraints specified
 in self.bnds. Note that, if exclude_downstream_turbines=True,
 the initial guess for any downstream turbines are ignored
 since they are not part of the optimization. Instead, the yaw
@@ -579,9 +577,9 @@ upper bound, or otherwise as close to 0.0 as feasible. If no
 values for x0 are specified, x0 is set to be equal to zeros
 wherever feasible (w.r.t. the bounds), and equal to the
 average of its lower and upper bound for all non-downstream
-turbines otherwise. Defaults to None.</p></li>
-<li><p><strong>bnds</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- Bounds for the yaw angles, as tuples of
-min, max values for each turbine (deg). One can fix the yaw
+turbines otherwise. Defaults to None.</p>
+</dd>
+<dt>bnds (iterable, optional): Bounds for the yaw angles, as tuples of</dt><dd><p>min, max values for each turbine (deg). One can fix the yaw
 angle of certain turbines to a predefined value by setting that
 turbine's lower bound equal to its upper bound (i.e., an
 equality constraint), as: bnds[ti] = (x, x), where x is the
@@ -592,24 +590,24 @@ downstream turbines will be 0.0 or a feasible value closest to
 0.0. If none are specified, the bounds are set to
 (minimum_yaw_angle, maximum_yaw_angle) for each turbine. Note
 that, if bnds is not none, its values overwrite any value given
-in minimum_yaw_angle and maximum_yaw_angle. Defaults to None.</p></li>
-<li><p><strong>opt_method</strong> (<em>str</em><em>, </em><em>optional</em>) -- The optimization method used by
-scipy.optimize.minize. Defaults to None.</p></li>
-<li><p><strong>opt_options</strong> (<em>dictionary</em><em>, </em><em>optional</em>) -- Optimization options used by
-scipy.optimize.minize. Defaults to None.</p></li>
-<li><p><strong>include_unc</strong> (<em>bool</em><em>, </em><em>optional</em>) -- Determines whether wind direction or
-yaw uncertainty are included. If True, uncertainty in wind
+in minimum_yaw_angle and maximum_yaw_angle. Defaults to None.</p>
+</dd>
+<dt>opt_method (str, optional): The optimization method used by</dt><dd><p>scipy.optimize.minize. Defaults to None.</p>
+</dd>
+<dt>opt_options (dictionary, optional): Optimization options used by</dt><dd><p>scipy.optimize.minize. Defaults to None.</p>
+</dd>
+<dt>include_unc (bool, optional): Determines whether wind direction or</dt><dd><p>yaw uncertainty are included. If True, uncertainty in wind
 direction and/or yaw position is included when determining
 wind farm power. Uncertainty is included by computing the
 mean wind farm power for a distribution of wind direction
 and yaw position deviations from the intended wind direction
-and yaw angles. Defaults to None.</p></li>
-<li><p><strong>unc_pmfs</strong> (<em>dictionary</em><em>, </em><em>optional</em>) -- <p>A dictionary containing
-probability mass functions describing the distribution of
+and yaw angles. Defaults to None.</p>
+</dd>
+<dt>unc_pmfs (dictionary, optional): A dictionary containing</dt><dd><p>probability mass functions describing the distribution of
 wind direction and yaw position deviations when wind direction
 and/or yaw position uncertainty is included in the power
 calculations. Contains the following key-value pairs:</p>
-<ul>
+<ul class="simple">
 <li><p><strong>wd_unc</strong> (<em>np.array</em>): The wind direction
 deviations from the intended wind direction (deg).</p></li>
 <li><p><strong>wd_unc_pmf</strong> (<em>np.array</em>): The probability
@@ -621,14 +619,13 @@ of each yaw angle deviation in <strong>yaw_unc</strong> occuring.</p></li>
 </ul>
 <p>If none are specified, default PMFs are calculated using
 values provided in <strong>unc_options</strong>. Defaults to None.</p>
-</p></li>
-<li><p><strong>unc_options</strong> (<em>dictionary</em><em>, </em><em>optional</em>) -- <p>A dictionary containing values
-used to create normally-distributed, zero-mean probability mass
+</dd>
+<dt>unc_options (dictionary, optional): A dictionary containing values</dt><dd><p>used to create normally-distributed, zero-mean probability mass
 functions describing the distribution of wind direction and yaw
 position deviations when wind direction and/or yaw position
 uncertainty is included. This argument is only used when
 <strong>unc_pmfs</strong> is None and contains the following key-value pairs:</p>
-<ul>
+<ul class="simple">
 <li><p><strong>std_wd</strong> (<em>float</em>): The standard deviation of
 the wind direction deviations from the original wind
 direction (deg).</p></li>
@@ -643,26 +640,26 @@ PMFs are truncated.</p></li>
 <p>If none are specified, default values of
 {'std_wd': 4.95, 'std_yaw': 1.75, 'pmf_res': 1.0,
 'pdf_cutoff': 0.995} are used. Defaults to None.</p>
-</p></li>
-<li><p><strong>turbine_weights</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- weighing terms that allow
-the user to emphasize power gains at particular turbines or
+</dd>
+<dt>turbine_weights (iterable, optional): weighing terms that allow</dt><dd><p>the user to emphasize power gains at particular turbines or
 completely ignore power gains from other turbines. The array
 of turbine powers from floris is multiplied with this array
 in the calculation of the objective function. If None, this
 is an array with all values 1.0 and length equal to the
-number of turbines. Defaults to None.</p></li>
-<li><p><strong>calc_init_power</strong> (<em>bool</em><em>, </em><em>optional</em>) -- If True, calculates initial
-wind farm power for each set of wind conditions. Defaults to
-None.</p></li>
-<li><p><strong>exclude_downstream_turbines</strong> (<em>bool</em><em>, </em><em>optional</em>) -- If True,
-automatically finds and excludes turbines that are most
+number of turbines. Defaults to None.</p>
+</dd>
+<dt>calc_init_power (bool, optional): If True, calculates initial</dt><dd><p>wind farm power for each set of wind conditions. Defaults to
+None.</p>
+</dd>
+<dt>exclude_downstream_turbines (bool, optional): If True,</dt><dd><p>automatically finds and excludes turbines that are most
 downstream from the optimization problem. This significantly
 reduces computation time at no loss in performance. The yaw
 angles of these downstream turbines are fixed to 0.0 deg if
 the yaw bounds specified in self.bnds allow that, or otherwise
 are fixed to the lower or upper yaw bound, whichever is closer
-to 0.0. Defaults to None.</p></li>
-</ul>
+to 0.0. Defaults to None.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -673,9 +670,8 @@ to 0.0. Defaults to None.</p></li>
 <dd><p>This method computes the baseline power produced by the wind farm and
 the ideal power without wake losses for a series of wind speed, wind
 direction, and optionally TI combinations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>A pandas DataFrame with the same number of rows
+<dl>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: A pandas DataFrame with the same number of rows
 as the length of the wd and ws arrays, containing the following
 columns:</p>
 <blockquote>
@@ -698,10 +694,6 @@ each wind turbine in the wind farm (W).
 containing the ideal power without wake losses for each wind
 turbine in the wind farm (W).</p>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -712,9 +704,8 @@ turbine in the wind farm (W).</p>
 <dd><p>This method solves for the optimum turbine yaw angles for power
 production and the resulting power produced by the wind farm for a
 series of wind speed, wind direction, and optionally TI combinations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>A pandas DataFrame with the same number of rows
+<dl>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: A pandas DataFrame with the same number of rows
 as the length of the wd and ws arrays, containing the following
 columns:</p>
 <blockquote>
@@ -736,10 +727,6 @@ yaw offsets (W).
 the optimal yaw offsets for maximizing total wind farm power
 for each wind turbine (deg).</p>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>

@@ -542,25 +542,18 @@ To be conservative, the user is recommended to use the rule of thumb:
 0.30 and is likely to provide valid estimates of which turbines are
 downstream until a turbulence intensity of 0.50. This simple model saves
 time compared to FLORIS.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fi</strong> (<em>[</em><em>floris object</em><em>]</em>) -- FLORIS object of the farm of interest.</p></li>
-<li><p><strong>wind_direction</strong> (<em>float</em>) -- The wind direction in the FLORIS frame</p></li>
-<li><p><strong>determined.</strong> (<em>of reference for which the downstream turbines are to be</em>) -- </p></li>
-<li><p><strong>wake_slope</strong> (<em>float</em><em>, </em><em>optional</em>) -- linear slope of the wake (dy/dx)</p></li>
-<li><p><strong>plot_lines</strong> (<em>bool</em><em>, </em><em>optional</em>) -- Enable plotting wakes/turbines.</p></li>
-<li><p><strong>False.</strong> (<em>Defaults to</em>) -- </p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>fi ([floris object]): FLORIS object of the farm of interest.
+wind_direction (float): The wind direction in the FLORIS frame
+of reference for which the downstream turbines are to be determined.
+wake_slope (float, optional): linear slope of the wake (dy/dx)
+plot_lines (bool, optional): Enable plotting wakes/turbines.
+Defaults to False.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list in which each entry contains a list
+<dt>Returns:</dt><dd><p>clusters (iterable): A list in which each entry contains a list
 of turbine numbers that together form a cluster which
 exclusively interact with one another and have zero
 interaction with turbines outside of this cluster.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>clusters (iterable)</p>
 </dd>
 </dl>
 </dd></dl>

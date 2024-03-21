@@ -532,8 +532,8 @@ document.write(`
 <dd><p>MAX uses the maximum wake velocity deficit to add to the
 base flow field. For more information, refer to
 <span id="id1">[<a class="reference internal" href="#id17" title="Kester Gunn, Clym Stock-Williams, M Burke, Richard Willden, C Vogel, W Hunter, T Stallard, N Robinson, and SR Schmidt. Limitations to the validity of single wake superposition in wind farm yield assessment. In Journal of Physics: Conference Series, number 1. IOP Publishing: Conference Series, 2016.">1</a>]</span>.</p>
-<p class="rubric">References</p>
-<div class="docutils container" id="id2">
+<dl>
+<dt>References:</dt><dd><div class="docutils container" id="id2">
 <div role="list" class="citation-list">
 <div class="citation" id="id17" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
@@ -542,6 +542,8 @@ base flow field. For more information, refer to
 </div>
 </div>
 </div>
+</dd>
+</dl>
 <dl class="field-list simple">
 </dl>
 <dl class="py method">
@@ -559,24 +561,22 @@ base flow field. For more information, refer to
 <span class="sig-name descname"><span class="pre">function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wake_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_field</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/wake_combination/max.html#MAX.function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.wake_combination.max.MAX.function" title="Link to this definition">#</a></dt>
 <dd><p>Incorporates the velocity deficits into the base flow field by
 selecting the maximum of the two for each point.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>u_field (np.array): The base flow field.
+u_wake (np.array): The wake to apply to the base flow field.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>np.array: The resulting flow field after applying the wake to the</dt><dd><p>base.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u_field</strong> (<em>np.array</em>) -- The base flow field.</p></li>
-<li><p><strong>u_wake</strong> (<em>np.array</em>) -- The wake to apply to the base flow field.</p></li>
 <li><p><strong>wake_field</strong> (<em>ndarray</em>) -- </p></li>
 <li><p><strong>velocity_field</strong> (<em>ndarray</em>) -- </p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>The resulting flow field after applying the wake to the</dt><dd><p>base.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>

@@ -599,9 +599,7 @@ See property on super-class for more details.</p></li>
 </ul>
 </div></blockquote>
 </dd>
-</dl>
-<p class="rubric">References</p>
-<div class="docutils container" id="id5">
+<dt>References:</dt><dd><div class="docutils container" id="id5">
 <div role="list" class="citation-list">
 <div class="citation" id="id8" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
@@ -615,6 +613,8 @@ See property on super-class for more details.</p></li>
 </div>
 </div>
 </div>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -697,10 +697,15 @@ See property on super-class for more details.</p></li>
 <dd><p>Calculates the deflection field of the wake. See
 <span id="id32">[<a class="reference internal" href="#id8" title="Majid Bastankhah and Fernando Porté-Agel. Experimental and theoretical study of wind turbine wakes in yawed conditions. Journal of Fluid Mechanics, 806:506–541, 2016.">1</a>]</span> and <span id="id33">[<a class="reference internal" href="#id21" title="Jennifer King, Paul Fleming, Ryan King, and Luis A. Martinez-Tossas. Controls-oriented model to capture secondary effects of wake steering. Submitted to Wind Energy Science, 2019.">2</a>]</span>
 for details on the methods used.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p># TODO</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.array: Deflection field for the wake.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>TODO</strong> (<em>#</em>) -- </p></li>
 <li><p><strong>x_i</strong> (<em>ndarray</em>) -- </p></li>
 <li><p><strong>y_i</strong> (<em>ndarray</em>) -- </p></li>
 <li><p><strong>yaw_i</strong> (<em>ndarray</em>) -- </p></li>
@@ -714,12 +719,6 @@ for details on the methods used.</p>
 <li><p><strong>wind_veer</strong> (<em>float</em>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Deflection field for the wake.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
-</dd>
 </dl>
 </dd></dl>
 
@@ -729,20 +728,13 @@ for details on the methods used.</p>
 <dt class="sig sig-object py" id="floris.simulation.wake_deflection.gauss.gamma">
 <span class="sig-prename descclassname"><span class="pre">floris.simulation.wake_deflection.gauss.</span></span><span class="sig-name descname"><span class="pre">gamma</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Uinf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Ct</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/wake_deflection/gauss.html#gamma"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.wake_deflection.gauss.gamma" title="Link to this definition">#</a></dt>
 <dd><p>Vortex circulation strength. Units of XXX TODO</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>D</strong> (<em>float</em>) -- Rotor diameter of the current turbine</p></li>
-<li><p><strong>velocity</strong> (<em>np.array</em><em>(</em><em>float</em><em>)</em>) -- Velocities at the current turbine</p></li>
-<li><p><strong>Uinf</strong> (<em>float</em>) -- Free-stream velocity</p></li>
-<li><p><strong>Ct</strong> (<em>float</em>) -- Thrust coefficient at the current turbine</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>D (float): Rotor diameter of the current turbine
+velocity (np.array(float)): Velocities at the current turbine
+Uinf (float): Free-stream velocity
+Ct (float): Thrust coefficient at the current turbine</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>[description]</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[type]</p>
+<dt>Returns:</dt><dd><p>[type]: [description]</p>
 </dd>
 </dl>
 </dd></dl>

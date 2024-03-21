@@ -558,16 +558,14 @@ distributions used in evaluating FLORIS. Must either specify
 'unc_options', in which case distributions are calculated assuming
 a Gaussian distribution, or <cite>unc_pmfs</cite> must be specified directly
 assigning the probability distribution functions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>unc_options</strong> (<em>dictionary</em><em>, </em><em>optional</em>) -- <p>A dictionary containing values
-used to create normally-distributed, zero-mean probability mass
+<dl>
+<dt>Args:</dt><dd><dl>
+<dt>unc_options (dictionary, optional): A dictionary containing values</dt><dd><p>used to create normally-distributed, zero-mean probability mass
 functions describing the distribution of wind direction and yaw
 position deviations when wind direction and/or yaw position
 uncertainty is included. This argument is only used when
 <strong>unc_pmfs</strong> is None and contains the following key-value pairs:</p>
-<ul>
+<ul class="simple">
 <li><p><strong>std_wd</strong> (<em>float</em>): A float containing the standard
 deviation of the wind direction deviations from the
 original wind direction.</p></li>
@@ -581,13 +579,12 @@ distribution function value at which the tails of the
 PMFs are truncated.</p></li>
 </ul>
 <p>Defaults to None.</p>
-</p></li>
-<li><p><strong>unc_pmfs</strong> (<em>dictionary</em><em>, </em><em>optional</em>) -- <p>A dictionary containing optional
-probability mass functions describing the distribution of wind
+</dd>
+<dt>unc_pmfs (dictionary, optional): A dictionary containing optional</dt><dd><p>probability mass functions describing the distribution of wind
 direction and yaw position deviations when wind direction and/or
 yaw position uncertainty is included in the power calculations.
 Contains the following key-value pairs:</p>
-<ul>
+<ul class="simple">
 <li><p><strong>wd_unc</strong> (<em>np.array</em>): Wind direction deviations from the
 original wind direction.</p></li>
 <li><p><strong>wd_unc_pmf</strong> (<em>np.array</em>): Probability of each wind
@@ -598,9 +595,8 @@ original yaw angles.</p></li>
 deviation in <strong>yaw_unc</strong> occuring.</p></li>
 </ul>
 <p>Defaults to None.</p>
-</p></li>
-<li><p><strong>fix_yaw_in_relative_frame</strong> (<em>bool</em><em>, </em><em>optional</em>) -- When set to True, the
-relative yaw angle of all turbines is fixed and always has the
+</dd>
+<dt>fix_yaw_in_relative_frame (bool, optional): When set to True, the</dt><dd><p>relative yaw angle of all turbines is fixed and always has the
 nominal value (e.g., 0 deg) when evaluating uncertainty in the
 wind direction. Evaluating  wind direction uncertainty like this
 will essentially come down to a Gaussian smoothing of FLORIS
@@ -624,8 +620,9 @@ Then, fix_yaw_in_relative_frame=False is typically used for robust
 yaw angle optimization, in which we take into account that the turbine
 often does not perfectly know the true wind direction, and that a
 turbine often does not perfectly achieve its desired yaw angle offset.
-Defaults to fix_yaw_in_relative_frame=False.</p></li>
-</ul>
+Defaults to fix_yaw_in_relative_frame=False.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -648,9 +645,8 @@ are performed once 'get_turbine_powers' or 'get_farm_powers' is
 called. However, to allow users to directly replace a FlorisInterface
 object with this UncertaintyInterface object, this function is
 required.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>yaw_angles</strong> -- NDArrayFloat | list[float] | None = None,</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>yaw_angles: NDArrayFloat | list[float] | None = None,</p>
 </dd>
 </dl>
 </dd></dl>
@@ -665,9 +661,8 @@ are performed once 'get_turbine_powers' or 'get_farm_powers' is
 called. However, to allow users to directly replace a FlorisInterface
 object with this UncertaintyInterface object, this function is
 required.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>yaw_angles</strong> -- NDArrayFloat | list[float] | None = None,</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>yaw_angles: NDArrayFloat | list[float] | None = None,</p>
 </dd>
 </dl>
 </dd></dl>
@@ -677,14 +672,10 @@ required.</p>
 <span class="sig-name descname"><span class="pre">get_turbine_powers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/uncertainty_interface.html#UncertaintyInterface.get_turbine_powers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.uncertainty_interface.UncertaintyInterface.get_turbine_powers" title="Link to this definition">#</a></dt>
 <dd><p>Calculates the probability-weighted power production of each
 turbine in the wind farm.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Power production of all turbines in the wind farm.
+<dl class="simple">
+<dt>Returns:</dt><dd><p>NDArrayFloat: Power production of all turbines in the wind farm.
 This array has the shape (num_wind_directions, num_wind_speeds,
 num_turbines).</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>NDArrayFloat</p>
 </dd>
 </dl>
 </dd></dl>
@@ -695,9 +686,9 @@ num_turbines).</p>
 <dd><p>Calculates the probability-weighted power production of the
 collective of all turbines in the farm, for each wind direction
 and wind speed specified.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>turbine_weights</strong> (<em>NDArrayFloat</em><em> | </em><em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) -- weighing terms that allow the user to emphasize power at
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_weights (NDArrayFloat | list[float] | None, optional):</dt><dd><p>weighing terms that allow the user to emphasize power at
 particular turbines and/or completely ignore the power
 from other turbines. This is useful when, for example, you are
 modeling multiple wind farms in a single floris object. If you
@@ -710,12 +701,10 @@ objective function. If None, this  is an array with all values
 1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
 n_turbines). Defaults to None.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Expectation of power production of the wind farm.
-This array has the shape (num_wind_directions, num_wind_speeds).</p>
+</dl>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NDArrayFloat</p>
+<dt>Returns:</dt><dd><p>NDArrayFloat: Expectation of power production of the wind farm.
+This array has the shape (num_wind_directions, num_wind_speeds).</p>
 </dd>
 </dl>
 </dd></dl>
@@ -729,26 +718,28 @@ direction, frequency of occurrence, and yaw offset.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>freq</strong> (<em>NDArrayFloat</em>) -- NumPy array with shape (n_wind_directions,
-n_wind_speeds) with the frequencies of each wind direction and
+</dl>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>freq (NDArrayFloat): NumPy array with shape (n_wind_directions,</dt><dd><p>n_wind_speeds) with the frequencies of each wind direction and
 wind speed combination. These frequencies should typically sum
 up to 1.0 and are used to weigh the wind farm power for every
-condition in calculating the wind farm's AEP.</p></li>
-<li><p><strong>cut_in_wind_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Wind speed in m/s below which
-any calculations are ignored and the wind farm is known to
+condition in calculating the wind farm's AEP.</p>
+</dd>
+<dt>cut_in_wind_speed (float, optional): Wind speed in m/s below which</dt><dd><p>any calculations are ignored and the wind farm is known to
 produce 0.0 W of power. Note that to prevent problems with the
 wake models at negative / zero wind speeds, this variable must
-always have a positive value. Defaults to 0.001 [m/s].</p></li>
-<li><p><strong>cut_out_wind_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Wind speed above which the
-wind farm is known to produce 0.0 W of power. If None is
+always have a positive value. Defaults to 0.001 [m/s].</p>
+</dd>
+<dt>cut_out_wind_speed (float, optional): Wind speed above which the</dt><dd><p>wind farm is known to produce 0.0 W of power. If None is
 specified, will assume that the wind farm does not cut out
-at high wind speeds. Defaults to None.</p></li>
-<li><p><strong>yaw_angles</strong> (<em>NDArrayFloat</em><em> | </em><em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) -- The relative turbine yaw angles in degrees. If None is
+at high wind speeds. Defaults to None.</p>
+</dd>
+<dt>yaw_angles (NDArrayFloat | list[float] | None, optional):</dt><dd><p>The relative turbine yaw angles in degrees. If None is
 specified, will assume that the turbine yaw angles are all
-zero degrees for all conditions. Defaults to None.</p></li>
-<li><p><strong>turbine_weights</strong> (<em>NDArrayFloat</em><em> | </em><em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) -- weighing terms that allow the user to emphasize power at
+zero degrees for all conditions. Defaults to None.</p>
+</dd>
+<dt>turbine_weights (NDArrayFloat | list[float] | None, optional):</dt><dd><p>weighing terms that allow the user to emphasize power at
 particular turbines and/or completely ignore the power
 from other turbines. This is useful when, for example, you are
 modeling multiple wind farms in a single floris object. If you
@@ -759,19 +750,19 @@ turbines to 0.0. The array of turbine powers from floris
 is multiplied with this array in the calculation of the
 objective function. If None, this  is an array with all values
 1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
-n_turbines). Defaults to None.</p></li>
-<li><p><strong>no_wake</strong> -- (bool, optional): When <em>True</em> updates the turbine
-quantities without calculating the wake or adding the wake to
-the flow field. This can be useful when quantifying the loss
-in AEP due to wakes. Defaults to <em>False</em>.</p></li>
-</ul>
+n_turbines). Defaults to None.</p>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The Annual Energy Production (AEP) for the wind farm in
+<dt>no_wake: (bool, optional): When <em>True</em> updates the turbine</dt><dd><p>quantities without calculating the wake or adding the wake to
+the flow field. This can be useful when quantifying the loss
+in AEP due to wakes. Defaults to <em>False</em>.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>float:</dt><dd><p>The Annual Energy Production (AEP) for the wind farm in
 watt-hours.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>

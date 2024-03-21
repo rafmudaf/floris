@@ -548,9 +548,8 @@ loaded.</p>
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/power_rose.html#PowerRose.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.power_rose.PowerRose.load" title="Link to this definition">#</a></dt>
 <dd><p>This method loads data from a previously saved PowerRose pickle file
 into a PowerRose object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- Path and filename of pickle file to load.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (str): Path and filename of pickle file to load.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -560,9 +559,8 @@ into a PowerRose object.</p>
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/power_rose.html#PowerRose.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.power_rose.PowerRose.save" title="Link to this definition">#</a></dt>
 <dd><p>This method saves PowerRose data as a pickle file so that it can be
 imported into a PowerRose object later.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- Path and filename of pickle file to save.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (str): Path and filename of pickle file to save.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -576,29 +574,29 @@ variables, as well as baseline wind farm power, ideal wind farm power
 without wake losses, and optionally optimal wind farm power with wake
 steering corresponding to each wind condition.</p>
 <p>TODO: Add inputs for turbine-level power and optimal yaw offsets.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>name</strong> (<em>str</em>) -- The name of the PowerRose object.</p></li>
-<li><p><strong>df_windrose</strong> (<em>pandas.DataFrame</em>) -- <p>A DataFrame with wind rose
-information containing at least
+<dl>
+<dt>Args:</dt><dd><p>name (str): The name of the PowerRose object.
+df_windrose (pandas.DataFrame): A DataFrame with wind rose</p>
+<blockquote>
+<div><p>information containing at least
 the following columns:</p>
-<ul>
+<ul class="simple">
 <li><p><strong>wd</strong> (<em>float</em>) - Wind direction bin center values (deg).</p></li>
 <li><p><strong>ws</strong> (<em>float</em>) - Wind speed bin center values (m/s).</p></li>
 <li><p><strong>freq_val</strong> (<em>float</em>) - The frequency of occurance of the</p></li>
 </ul>
 <p>wind conditions in the other columns.</p>
-</p></li>
-<li><p><strong>power_no_wake</strong> (<em>iterable</em>) -- A list of wind farm power without wake
-losses corresponding to the wind conditions in df_windrose (W).</p></li>
-<li><p><strong>power_baseline</strong> (<em>iterable</em>) -- A list of baseline wind farm power with
-wake losses corresponding to the wind conditions in df_windrose
-(W).</p></li>
-<li><p><strong>power_opt</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- A list of optimal wind farm power
-with wake steering corresponding to the wind conditions in
-df_windrose (W). Defaults to None.</p></li>
-</ul>
+</div></blockquote>
+<dl class="simple">
+<dt>power_no_wake (iterable): A list of wind farm power without wake</dt><dd><p>losses corresponding to the wind conditions in df_windrose (W).</p>
+</dd>
+<dt>power_baseline (iterable): A list of baseline wind farm power with</dt><dd><p>wake losses corresponding to the wind conditions in df_windrose
+(W).</p>
+</dd>
+<dt>power_opt (iterable, optional): A list of optimal wind farm power</dt><dd><p>with wake steering corresponding to the wind conditions in
+df_windrose (W). Defaults to None.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -633,20 +631,17 @@ baseline and, if applicable, optimal wake steering cases.
 3) Percent gain in energy production with optimal wake steering as a
 function of wind direction. This third plot is only created if optimal
 power data are stored in the PowerRose object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>axarr</strong> (<em>numpy.ndarray</em><em>, </em><em>optional</em>) -- An array of 2 or 3
-<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code> axes objects
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>axarr (numpy.ndarray, optional): An array of 2 or 3</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code> axes objects
 on which data are plotted. Three axes are rquired if the
 PowerRose object contains optimal power data. Default is None.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An array of 2 or 3
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>numpy.ndarray: An array of 2 or 3
 <code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.axes._subplots.AxesSubplot</span></code> axes objects on
 which the data are plotted.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>numpy.ndarray</p>
 </dd>
 </dl>
 </dd></dl>

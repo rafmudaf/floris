@@ -543,31 +543,32 @@ Of these, wind_speed is required. One of power_absolute and power_coefficient
 must be specified; and one of thrust_absolute and thrust_coefficient must be
 specified. If both _absolute and _coefficient versions are specified, the
 _coefficient entry will be used and the _absolute entry ignored.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>turbine_data_dict</strong> (<em>dict</em>) -- Dictionary containing performance of the wind
-turbine as a function of wind speed. Described in more detail above.</p></li>
-<li><p><strong>turbine_name</strong> (<em>string</em>) -- Name of the turbine, which will be used for the
-turbine_type field as well as the filename.</p></li>
-<li><p><strong>(</strong><strong>)</strong> (<em>file_path</em>) -- Path for placement of the produced yaml. Defaults to None,
-in which case no yaml is written.</p></li>
-<li><p><strong>generator_efficiency</strong> (<em>float</em>) -- Generator efficiency [-]. Defaults to 1.0.</p></li>
-<li><p><strong>hub_height</strong> (<em>float</em>) -- Hub height [m]. Defaults to 90.0.</p></li>
-<li><p><strong>pP</strong> (<em>float</em>) -- Cosine exponent for power loss to yaw [-]. Defaults to 1.88.</p></li>
-<li><p><strong>pT</strong> (<em>float</em>) -- Cosine exponent for thrust loss to yaw [-]. Defaults to 1.88.</p></li>
-<li><p><strong>rotor_diameter</strong> (<em>float</em>) -- </p></li>
-<li><p><strong>TSR</strong> (<em>float</em>) -- </p></li>
-<li><p><strong>air_density</strong> (<em>float</em>) -- curves [kg/m^3]. Defaults to 1.225.</p></li>
-<li><p><strong>ref_tilt_cp_ct</strong> (<em>float</em>) -- tilt) used when defining the power and thrust curves [deg]. Defaults
-to 5.0.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_data_dict (dict): Dictionary containing performance of the wind</dt><dd><p>turbine as a function of wind speed. Described in more detail above.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Formatted turbine dictionary as expected by FLORIS.</p>
+<dt>turbine_name (string): Name of the turbine, which will be used for the</dt><dd><p>turbine_type field as well as the filename.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>turbine_dict (dict)</p>
+<dt>file_path (): Path for placement of the produced yaml. Defaults to None,</dt><dd><p>in which case no yaml is written.</p>
+</dd>
+</dl>
+<p>generator_efficiency (float): Generator efficiency [-]. Defaults to 1.0.
+hub_height (float): Hub height [m]. Defaults to 90.0.
+pP (float): Cosine exponent for power loss to yaw [-]. Defaults to 1.88.
+pT (float): Cosine exponent for thrust loss to yaw [-]. Defaults to 1.88.
+rotor_diameter (float). Rotor diameter [m]. Defaults to 126.0.
+TSR (float). Turbine optimal tip-speed ratio [-]. Defaults to 8.0.
+air_density (float). Air density used to specify power and thrust</p>
+<blockquote>
+<div><p>curves [kg/m^3]. Defaults to 1.225.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>ref_tilt_cp_ct (float). Rotor tilt (due to shaft tilt and/or platform</dt><dd><p>tilt) used when defining the power and thrust curves [deg]. Defaults
+to 5.0.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>turbine_dict (dict): Formatted turbine dictionary as expected by FLORIS.</p>
 </dd>
 </dl>
 </dd></dl>

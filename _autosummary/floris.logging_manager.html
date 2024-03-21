@@ -551,16 +551,14 @@ document.write(`
 <dd><p>Sets whether the log statements are displayed in the console logging, and,
 if enabled, the log level to use. If not explicitly configured, console
 logging is ON at the INFO level.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>enabled</strong> (<em>bool</em><em>, </em><em>optional</em>) -- Whether to enable console logging.
-Defaults to True.</p></li>
-<li><p><strong>level</strong> (<em>str</em><em>, </em><em>optional</em>) -- <p>If <cite>enabled</cite> is True, sets the level that the
-logging module displays. This level is the minimum and all
+<dl>
+<dt>Args:</dt><dd><dl>
+<dt>enabled (bool, optional): Whether to enable console logging.</dt><dd><p>Defaults to True.</p>
+</dd>
+<dt>level (str, optional): If <cite>enabled</cite> is True, sets the level that the</dt><dd><p>logging module displays. This level is the minimum and all
 messages at a higher level are included. Valid values are</p>
 <blockquote>
-<div><ul>
+<div><ul class="simple">
 <li><p>CRITICAL</p></li>
 <li><p>ERROR</p></li>
 <li><p>WARNING</p></li>
@@ -569,8 +567,8 @@ messages at a higher level are included. Valid values are</p>
 </ul>
 </div></blockquote>
 <p>Defaults to &quot;INFO&quot;.</p>
-</p></li>
-</ul>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -581,16 +579,14 @@ messages at a higher level are included. Valid values are</p>
 <dd><p>Sets whether the log statements are exported to a log file, and,
 if enabled, the log level to use. If not explicitly configured, file
 logging is OFF.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>enabled</strong> (<em>bool</em><em>, </em><em>optional</em>) -- Whether to enable file logging.
-This argument defaults to True.</p></li>
-<li><p><strong>level</strong> (<em>str</em><em>, </em><em>optional</em>) -- <p>If <cite>enabled</cite> is True, sets the level that the
-logging module displays. This level is the minimum and all
+<dl>
+<dt>Args:</dt><dd><dl>
+<dt>enabled (bool, optional): Whether to enable file logging.</dt><dd><p>This argument defaults to True.</p>
+</dd>
+<dt>level (str, optional): If <cite>enabled</cite> is True, sets the level that the</dt><dd><p>logging module displays. This level is the minimum and all
 messages at a higher level are included. Valid values are</p>
 <blockquote>
-<div><ul>
+<div><ul class="simple">
 <li><p>CRITICAL</p></li>
 <li><p>ERROR</p></li>
 <li><p>WARNING</p></li>
@@ -599,8 +595,8 @@ messages at a higher level are included. Valid values are</p>
 </ul>
 </div></blockquote>
 <p>Defaults to &quot;INFO&quot;.</p>
-</p></li>
-</ul>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>

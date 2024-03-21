@@ -542,48 +542,51 @@ height is changing, all turbines will be assigned the same turbine height.</p>
 <span class="sig-name descname"><span class="pre">reinitialize_opt_height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">boundaries</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_lims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AEP_initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">COE_initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plant_kw</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bnds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/optimization/legacy/scipy/layout_height.html#LayoutHeightOptimization.reinitialize_opt_height"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.optimization.legacy.scipy.layout_height.LayoutHeightOptimization.reinitialize_opt_height" title="Link to this definition">#</a></dt>
 <dd><p>This method reinitializes any optimization parameters that are
 specified. Otherwise, the current parameter values are kept.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>boundaries</strong> (<em>iterable</em><em>(</em><em>float</em><em>, </em><em>float</em><em>)</em>) -- Pairs of x- and y-coordinates
-that represent the boundary's vertices (m).</p></li>
-<li><p><strong>height_lims</strong> (<em>iterable</em>) -- A list of the minimum and maximum
-height limits for the optimization (m). Each value only
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>boundaries (iterable(float, float)): Pairs of x- and y-coordinates</dt><dd><p>that represent the boundary's vertices (m).</p>
+</dd>
+<dt>height_lims (iterable): A list of the minimum and maximum</dt><dd><p>height limits for the optimization (m). Each value only
 needs to be defined once since all the turbine heights
-are the same (ie. [h_min, h_max]). Defaults to None.</p></li>
-<li><p><strong>wd</strong> (<em>np.array</em>) -- An array of wind directions (deg). Defaults to None.</p></li>
-<li><p><strong>ws</strong> (<em>np.array</em>) -- An array of wind speeds (m/s). Defaults to None.</p></li>
-<li><p><strong>freq</strong> (<em>np.array</em>) -- An array of the frequencies of occurance
-correponding to each pair of wind direction and wind speed
-values. Defaults to None.</p></li>
-<li><p><strong>AEP_initial</strong> (<em>float</em>) -- The initial Annual Energy
-Production used for normalization in the optimization (Wh).
-Defaults to None.</p></li>
-<li><p><strong>COE_initial</strong> (<em>float</em>) -- Initial Cost of Energy used for
-normalization in the optimization ($/kWh). Defaults to None.</p></li>
-<li><p><strong>plant_kw</strong> (<em>float</em>) -- The rating of the entire wind plant (kW).
-Defaults to None.</p></li>
-<li><p><strong>x0</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- The initial turbine locations,
-ordered by x-coordinate and then y-coordiante
+are the same (ie. [h_min, h_max]). Defaults to None.</p>
+</dd>
+</dl>
+<p>wd (np.array): An array of wind directions (deg). Defaults to None.
+ws (np.array): An array of wind speeds (m/s). Defaults to None.
+freq (np.array): An array of the frequencies of occurance</p>
+<blockquote>
+<div><p>correponding to each pair of wind direction and wind speed
+values. Defaults to None.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>AEP_initial (float): The initial Annual Energy</dt><dd><p>Production used for normalization in the optimization (Wh).
+Defaults to None.</p>
+</dd>
+<dt>COE_initial (float): Initial Cost of Energy used for</dt><dd><p>normalization in the optimization ($/kWh). Defaults to None.</p>
+</dd>
+<dt>plant_kw (float): The rating of the entire wind plant (kW).</dt><dd><p>Defaults to None.</p>
+</dd>
+<dt>x0 (iterable, optional): The initial turbine locations,</dt><dd><p>ordered by x-coordinate and then y-coordiante
 (ie. [x1, x2, ..., xn, y1, y2, ..., yn]), and the
 initial turbine hub height (m). If none are provided, x0
 initializes to the current turbine locations and hub height.
-Defaults to None.</p></li>
-<li><p><strong>bnds</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- Bounds for the optimization
-variables (TODO: just coordinates, or height too?) (pairs of
+Defaults to None.</p>
+</dd>
+<dt>bnds (iterable, optional): Bounds for the optimization</dt><dd><p>variables (TODO: just coordinates, or height too?) (pairs of
 min/max values for each variable (m)). If none are specified,
 they are set to the min. and max. of the boundaries iterable.
-Defaults to None.</p></li>
-<li><p><strong>min_dist</strong> (<em>float</em><em>, </em><em>optional</em>) -- The minimum distance to be
-maintained between turbines during the optimization (m). If not
-specified, initializes to 2 rotor diameters. Defaults to None.</p></li>
-<li><p><strong>opt_method</strong> (<em>str</em><em>, </em><em>optional</em>) -- The optimization method used by
-scipy.optimize.minize. Defaults to 'SLSQP'.</p></li>
-<li><p><strong>opt_options</strong> (<em>dict</em><em>, </em><em>optional</em>) -- Optimization options used by
-scipy.optimize.minize. If none are specified, they are set to
+Defaults to None.</p>
+</dd>
+<dt>min_dist (float, optional): The minimum distance to be</dt><dd><p>maintained between turbines during the optimization (m). If not
+specified, initializes to 2 rotor diameters. Defaults to None.</p>
+</dd>
+<dt>opt_method (str, optional): The optimization method used by</dt><dd><p>scipy.optimize.minize. Defaults to 'SLSQP'.</p>
+</dd>
+<dt>opt_options (dict, optional): Optimization options used by</dt><dd><p>scipy.optimize.minize. If none are specified, they are set to
 {'maxiter': 100, 'disp': True, 'iprint': 2, 'ftol': 1e-9}.
-Defaults to None.</p></li>
-</ul>
+Defaults to None.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -595,13 +598,9 @@ Defaults to None.</p></li>
 turbine height for power production and cost of energy given the
 provided frequencies of occurance of wind conditions (wind speed,
 direction).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list containing the optimized (x, y) locations of
+<dl class="simple">
+<dt>Returns:</dt><dd><p>(iterable): A list containing the optimized (x, y) locations of
 each turbine followed by the optimized height for all turbines (m).</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>(iterable)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -610,12 +609,8 @@ each turbine followed by the optimized height for all turbines (m).</p>
 <dt class="sig sig-object py" id="floris.tools.optimization.legacy.scipy.layout_height.LayoutHeightOptimization.get_farm_COE">
 <span class="sig-name descname"><span class="pre">get_farm_COE</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/optimization/legacy/scipy/layout_height.html#LayoutHeightOptimization.get_farm_COE"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.optimization.legacy.scipy.layout_height.LayoutHeightOptimization.get_farm_COE" title="Link to this definition">#</a></dt>
 <dd><p>This method returns the cost of energy (COE) for the wind farm.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The cost of energy for a wind plant in units of $/kWh.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: The cost of energy for a wind plant in units of $/kWh.</p>
 </dd>
 </dl>
 </dd></dl>

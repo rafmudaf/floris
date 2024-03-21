@@ -537,13 +537,11 @@ document.write(`
 additional variability introduced to the flow field by operation of a wind
 turbine. Implementation of the model follows the original formulation and
 limitations outlined in <span id="id1">[<a class="reference internal" href="#id16" title="A Crespo and J Hernandez. Turbulence characteristics in wind-turbine wakes. Journal of wind engineering and industrial aerodynamics, 61(1):71–85, 1996.">1</a>]</span>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parameter_dictionary</strong> (<em>dict</em>) -- <p>Model-specific parameters.
-Default values are used when a parameter is not included
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>parameter_dictionary (dict): Model-specific parameters.</dt><dd><p>Default values are used when a parameter is not included
 in <cite>parameter_dictionary</cite>. Possible key-value pairs include:</p>
-<ul>
+<ul class="simple">
 <li><p><strong>initial</strong> (<em>float</em>): The initial ambient turbulence
 intensity, expressed as a decimal fraction.</p></li>
 <li><p><strong>constant</strong> (<em>float</em>): The constant used to scale the
@@ -555,16 +553,10 @@ distance downstream of an upstream turbine normalized by
 the rotor diameter used in the calculation of wake-added
 turbulence.</p></li>
 </ul>
-</p></li>
-<li><p><strong>initial</strong> (<em>float</em>) -- </p></li>
-<li><p><strong>constant</strong> (<em>float</em>) -- </p></li>
-<li><p><strong>ai</strong> (<em>float</em>) -- </p></li>
-<li><p><strong>downstream</strong> (<em>float</em>) -- </p></li>
-</ul>
 </dd>
 </dl>
-<p class="rubric">References</p>
-<div class="docutils container" id="id2">
+</dd>
+<dt>References:</dt><dd><div class="docutils container" id="id2">
 <div role="list" class="citation-list">
 <div class="citation" id="id16" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
@@ -573,6 +565,18 @@ turbulence.</p></li>
 </div>
 </div>
 </div>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>initial</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>constant</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>ai</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>downstream</strong> (<em>float</em>) -- </p></li>
+</ul>
+</dd>
+</dl>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="floris.simulation.wake_turbulence.crespo_hernandez.CrespoHernandez.initial">
 <span class="sig-name descname"><span class="pre">initial</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#floris.simulation.wake_turbulence.crespo_hernandez.CrespoHernandez.initial" title="Link to this definition">#</a></dt>

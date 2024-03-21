@@ -548,24 +548,22 @@ wake velocity deficits to the base flow field.</p>
 <span class="sig-name descname"><span class="pre">function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wake_field</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">velocity_field</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/wake_combination/sosfs.html#SOSFS.function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.wake_combination.sosfs.SOSFS.function" title="Link to this definition">#</a></dt>
 <dd><p>Combines the base flow field with the velocity deficits
 using sum of squares.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>u_field (np.array): The base flow field.
+u_wake (np.array): The wake to apply to the base flow field.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>np.array: The resulting flow field after applying the wake to the</dt><dd><p>base.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u_field</strong> (<em>np.array</em>) -- The base flow field.</p></li>
-<li><p><strong>u_wake</strong> (<em>np.array</em>) -- The wake to apply to the base flow field.</p></li>
 <li><p><strong>wake_field</strong> (<em>ndarray</em>) -- </p></li>
 <li><p><strong>velocity_field</strong> (<em>ndarray</em>) -- </p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>The resulting flow field after applying the wake to the</dt><dd><p>base.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>

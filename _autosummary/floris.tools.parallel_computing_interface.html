@@ -573,26 +573,28 @@ direction, frequency of occurrence, and yaw offset.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>freq</strong> (<em>NDArrayFloat</em>) -- NumPy array with shape (n_wind_directions,
-n_wind_speeds) with the frequencies of each wind direction and
+</dl>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>freq (NDArrayFloat): NumPy array with shape (n_wind_directions,</dt><dd><p>n_wind_speeds) with the frequencies of each wind direction and
 wind speed combination. These frequencies should typically sum
 up to 1.0 and are used to weigh the wind farm power for every
-condition in calculating the wind farm's AEP.</p></li>
-<li><p><strong>cut_in_wind_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Wind speed in m/s below which
-any calculations are ignored and the wind farm is known to
+condition in calculating the wind farm's AEP.</p>
+</dd>
+<dt>cut_in_wind_speed (float, optional): Wind speed in m/s below which</dt><dd><p>any calculations are ignored and the wind farm is known to
 produce 0.0 W of power. Note that to prevent problems with the
 wake models at negative / zero wind speeds, this variable must
-always have a positive value. Defaults to 0.001 [m/s].</p></li>
-<li><p><strong>cut_out_wind_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Wind speed above which the
-wind farm is known to produce 0.0 W of power. If None is
+always have a positive value. Defaults to 0.001 [m/s].</p>
+</dd>
+<dt>cut_out_wind_speed (float, optional): Wind speed above which the</dt><dd><p>wind farm is known to produce 0.0 W of power. If None is
 specified, will assume that the wind farm does not cut out
-at high wind speeds. Defaults to None.</p></li>
-<li><p><strong>yaw_angles</strong> (<em>NDArrayFloat</em><em> | </em><em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) -- The relative turbine yaw angles in degrees. If None is
+at high wind speeds. Defaults to None.</p>
+</dd>
+<dt>yaw_angles (NDArrayFloat | list[float] | None, optional):</dt><dd><p>The relative turbine yaw angles in degrees. If None is
 specified, will assume that the turbine yaw angles are all
-zero degrees for all conditions. Defaults to None.</p></li>
-<li><p><strong>turbine_weights</strong> (<em>NDArrayFloat</em><em> | </em><em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) -- weighing terms that allow the user to emphasize power at
+zero degrees for all conditions. Defaults to None.</p>
+</dd>
+<dt>turbine_weights (NDArrayFloat | list[float] | None, optional):</dt><dd><p>weighing terms that allow the user to emphasize power at
 particular turbines and/or completely ignore the power
 from other turbines. This is useful when, for example, you are
 modeling multiple wind farms in a single floris object. If you
@@ -603,19 +605,19 @@ turbines to 0.0. The array of turbine powers from floris
 is multiplied with this array in the calculation of the
 objective function. If None, this  is an array with all values
 1.0 and with shape equal to (n_wind_directions, n_wind_speeds,
-n_turbines). Defaults to None.</p></li>
-<li><p><strong>no_wake</strong> -- (bool, optional): When <em>True</em> updates the turbine
-quantities without calculating the wake or adding the wake to
-the flow field. This can be useful when quantifying the loss
-in AEP due to wakes. Defaults to <em>False</em>.</p></li>
-</ul>
+n_turbines). Defaults to None.</p>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The Annual Energy Production (AEP) for the wind farm in
+<dt>no_wake: (bool, optional): When <em>True</em> updates the turbine</dt><dd><p>quantities without calculating the wake or adding the wake to
+the flow field. This can be useful when quantifying the loss
+in AEP due to wakes. Defaults to <em>False</em>.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>float:</dt><dd><p>The Annual Energy Production (AEP) for the wind farm in
 watt-hours.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
+</dl>
 </dd>
 </dl>
 </dd></dl>

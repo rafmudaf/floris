@@ -549,9 +549,8 @@ the ideal power without wake losses for a series of wind speed, wind
 direction, and optionally TI combinations. The optimization for
 different wind condition combinations is parallelized using the mpi4py
 futures module.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>A pandas DataFrame with the same number of rows
+<dl>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: A pandas DataFrame with the same number of rows
 as the length of the wd and ws arrays, containing the following
 columns:</p>
 <blockquote>
@@ -574,10 +573,6 @@ wind turbine in the wind farm (W).
 containing the ideal power without wake losses for each wind
 turbine in the wind farm (W).</p>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -590,9 +585,8 @@ production and the resulting power produced by the wind farm for a
 series of wind speed, wind direction, and optionally TI combinations.
 The optimization for different wind condition combinations is
 parallelized using the mpi4py.futures module.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><p>A pandas DataFrame with the same number of rows
+<dl>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: A pandas DataFrame with the same number of rows
 as the length of the wd and ws arrays, containing the following
 columns:</p>
 <blockquote>
@@ -614,10 +608,6 @@ offsets (W).
 optimal yaw offsets for maximizing total wind farm power for
 each wind turbine (deg).</p>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>

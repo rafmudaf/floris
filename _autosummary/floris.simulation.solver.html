@@ -733,17 +733,17 @@ Move on to the next turbine.</p>
 <li><p><strong>model_manager</strong> (<a class="reference internal" href="floris.simulation.wake.html#floris.simulation.wake.WakeModelManager" title="floris.simulation.wake.WakeModelManager"><em>WakeModelManager</em></a>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>NotImplementedError</strong> -- Raised if secondary steering is enabled with the EmGauss model.</p></li>
-<li><p><strong>NotImplementedError</strong> -- Raised if transverse velocities is enabled with the EmGauss model.</p></li>
-</ul>
+</dl>
+<dl class="simple">
+<dt>Args:</dt><dd><p>farm (Farm)
+flow_field (FlowField)
+grid (TurbineGrid)
+model_manager (WakeModelManager)</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>wake induced mixing field primarily for use in the full-flow EmGauss solver</p>
+<dt>Raises:</dt><dd><p>NotImplementedError: Raised if secondary steering is enabled with the EmGauss model.
+NotImplementedError: Raised if transverse velocities is enabled with the EmGauss model.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>NDArrayFloat</p>
+<dt>Returns:</dt><dd><p>NDArrayFloat: wake induced mixing field primarily for use in the full-flow EmGauss solver</p>
 </dd>
 </dl>
 </dd></dl>

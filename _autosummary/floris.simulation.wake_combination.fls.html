@@ -549,24 +549,22 @@ deficits to the freestream flow field.</p>
 <dd><p>Combines the base flow field with the velocity deficits
 using freestream linear superposition. In other words, the wake
 field and base fields are simply added together.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>u_field (np.array): The base flow field.
+u_wake (np.array): The wake to apply to the base flow field.</p>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>np.array: The resulting flow field after applying the wake to the</dt><dd><p>base.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>u_field</strong> (<em>np.array</em>) -- The base flow field.</p></li>
-<li><p><strong>u_wake</strong> (<em>np.array</em>) -- The wake to apply to the base flow field.</p></li>
 <li><p><strong>wake_field</strong> (<em>ndarray</em>) -- </p></li>
 <li><p><strong>velocity_field</strong> (<em>ndarray</em>) -- </p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>The resulting flow field after applying the wake to the</dt><dd><p>base.</p>
-</dd>
-</dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>

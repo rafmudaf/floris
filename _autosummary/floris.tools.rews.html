@@ -538,21 +538,16 @@ document.write(`
 <dt class="sig sig-object py" id="floris.tools.rews.log_law_interpolate">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.rews.</span></span><span class="sig-name descname"><span class="pre">log_law_interpolate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">z_test</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">z_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">v_ref</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">roughness</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.03</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/rews.html#log_law_interpolate"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.rews.log_law_interpolate" title="Link to this definition">#</a></dt>
 <dd><p>Interpolate wind speed assuming a log-law profile.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>z_test</strong> (<em>float</em>) -- height of interest for wind speed estimate.</p></li>
-<li><p><strong>z_ref</strong> (<em>float</em>) -- reference height.</p></li>
-<li><p><strong>v_ref</strong> (<em>float</em>) -- reference velocity.</p></li>
-<li><p><strong>roughness</strong> (<em>float</em><em>, </em><em>optional</em>) -- Effective roughness length.
-Defaults to 0.03.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><p>z_test (float): height of interest for wind speed estimate.
+z_ref (float): reference height.
+v_ref (float): reference velocity.
+roughness (float, optional): Effective roughness length.</p>
+<blockquote>
+<div><p>Defaults to 0.03.</p>
+</div></blockquote>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>interpolated wind speed at z_test.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>v_test (np.float)</p>
+<dt>Returns:</dt><dd><p>v_test (np.float): interpolated wind speed at z_test.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -561,19 +556,12 @@ Defaults to 0.03.</p></li>
 <dt class="sig sig-object py" id="floris.tools.rews.determine_rews_weights">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.rews.</span></span><span class="sig-name descname"><span class="pre">determine_rews_weights</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">R</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">HH</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">heights_in</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/rews.html#determine_rews_weights"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.rews.determine_rews_weights" title="Link to this definition">#</a></dt>
 <dd><p>Weighting for rotor-equivalent wind speed (REWS).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>R</strong> (<em>float</em>) -- rotor diameter.</p></li>
-<li><p><strong>HH</strong> (<em>float</em>) -- hub height.</p></li>
-<li><p><strong>heights_in</strong> (<em>iterable</em>) -- heights of interest.</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>R (float): rotor diameter.
+HH (float): hub height.
+heights_in (iterable): heights of interest.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>list of weighting values for REWS.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>weights_return (list)</p>
+<dt>Returns:</dt><dd><p>weights_return (list): list of weighting values for REWS.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -582,22 +570,17 @@ Defaults to 0.03.</p></li>
 <dt class="sig sig-object py" id="floris.tools.rews.rews_from_df">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.rews.</span></span><span class="sig-name descname"><span class="pre">rews_from_df</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns_in</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rews_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">circular</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/rews.html#rews_from_df"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.rews.rews_from_df" title="Link to this definition">#</a></dt>
 <dd><p>Estimate the rotor-equivalent wind speed (REWS) from wind speed.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>pd.DataFrame</em>) -- DataFrame containing flow information</p></li>
-<li><p><strong>columns_in</strong> (<em>list</em>) -- columns to include estimate of REWS.</p></li>
-<li><p><strong>weights</strong> (<em>iterable</em>) -- weighting values for REWS.</p></li>
-<li><p><strong>rews_name</strong> (<em>str</em>) -- column name for REWS output.</p></li>
-<li><p><strong>circular</strong> (<em>bool</em><em>, </em><em>optional</em>) -- flag to consider REWS azimuthally.
-Defaults to False.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><p>df (pd.DataFrame): DataFrame containing flow information
+columns_in (list): columns to include estimate of REWS.
+weights (iterable): weighting values for REWS.
+rews_name (str): column name for REWS output.
+circular (bool, optional): flag to consider REWS azimuthally.</p>
+<blockquote>
+<div><p>Defaults to False.</p>
+</div></blockquote>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>updated dataframe with REWS column.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>df (pd.DataFrame)</p>
+<dt>Returns:</dt><dd><p>df (pd.DataFrame): updated dataframe with REWS column.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -606,18 +589,11 @@ Defaults to False.</p></li>
 <dt class="sig sig-object py" id="floris.tools.rews.compute_rews">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.rews.</span></span><span class="sig-name descname"><span class="pre">compute_rews</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_matrix</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">weights</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/rews.html#compute_rews"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.rews.compute_rews" title="Link to this definition">#</a></dt>
 <dd><p>Calculation method for REWS from wind speed and weighting values.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_matrix</strong> (<em>np.array</em>) -- wind speed data</p></li>
-<li><p><strong>weights</strong> (<em>np.array</em>) -- weighting values for REWS.</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>data_matrix (np.array): wind speed data
+weights (np.array): weighting values for REWS.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>rotor-equivalent wind speed.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>REWS (float)</p>
+<dt>Returns:</dt><dd><p>REWS (float): rotor-equivalent wind speed.</p>
 </dd>
 </dl>
 </dd></dl>

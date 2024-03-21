@@ -542,12 +542,8 @@ object.</p>
 <dt class="sig sig-object py" id="floris.tools.optimization.legacy.scipy.base_COE.BaseCOE.FCR">
 <span class="sig-name descname"><span class="pre">FCR</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/optimization/legacy/scipy/base_COE.html#BaseCOE.FCR"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.optimization.legacy.scipy.base_COE.BaseCOE.FCR" title="Link to this definition">#</a></dt>
 <dd><p>This method returns the fixed charge rate used in the COE calculation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The fixed charge rate.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: The fixed charge rate.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -567,15 +563,10 @@ while the turbine rotor diameter is pulled directly from the
 turbine object within the
 <a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlorisInterface</span></code></a>:.</p>
 <p>TODO: Turbine capital cost or tower capital cost?</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>height</strong> (<em>float</em>) -- Turbine hub height in meters.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>height (float): Turbine hub height in meters.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The turbine capital cost of a wind plant in units of $/kWh.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
+<dt>Returns:</dt><dd><p>float: The turbine capital cost of a wind plant in units of $/kWh.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -586,13 +577,9 @@ turbine object within the
 <dd><p>This method returns the balance of station cost of a wind plant as
 determined by a constant factor. As the rating of a wind plant grows,
 the cost of the wind plant grows as well.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The balance of station cost of a wind plant in units of
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: The balance of station cost of a wind plant in units of
 $/kWh.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -603,12 +590,8 @@ $/kWh.</p>
 <dd><p>This method returns the finance charge cost of a wind plant as
 determined by a constant factor. As the rating of a wind plant grows,
 the cost of the wind plant grows as well.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The finance charge cost of a wind plant in units of $/kWh.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: The finance charge cost of a wind plant in units of $/kWh.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -619,12 +602,8 @@ the cost of the wind plant grows as well.</p>
 <dd><p>This method returns the operational cost of a wind plant as determined
 by a constant factor. As the rating of a wind plant grows, the cost of
 the wind plant grows as well.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The operational cost of a wind plant in units of $/kWh.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>float</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: The operational cost of a wind plant in units of $/kWh.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -637,22 +616,17 @@ This cost of energy (COE) formulation for a wind plant varies based on
 turbine height, rotor diameter, and total annualized energy production
 (AEP). The components of the COE equation are defined throughout the
 BaseCOE class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>height</strong> (<em>float</em>) -- The hub height of the turbines in meters
-(all turbines are set to the same height).</p></li>
-<li><p><strong>AEP_sum</strong> (<em>float</em>) -- The annualized energy production (AEP)
-for the wind plant as calculated across the wind rose
-in kWh.</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>height (float): The hub height of the turbines in meters</dt><dd><p>(all turbines are set to the same height).</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>The cost of energy for a wind plant in units of
+<dt>AEP_sum (float): The annualized energy production (AEP)</dt><dd><p>for the wind plant as calculated across the wind rose
+in kWh.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>float: The cost of energy for a wind plant in units of
 $/kWh.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>

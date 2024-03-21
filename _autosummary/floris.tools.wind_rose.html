@@ -564,23 +564,24 @@ calculate annual energy production (AEP) when combined with Floris power
 calculations for different wind conditions. Several methods exist for
 populating a WindRose object with wind data. WindRose also contains methods
 for visualizing wind roses.</p>
-<p class="rubric">References</p>
-<div class="docutils container" id="id1">
+<dl>
+<dt>References:</dt><dd><div class="docutils container" id="id1">
 <div role="list" class="citation-list">
 <div class="citation" id="id21" role="doc-biblioentry">
-<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id28">1</a><span class="fn-bracket">]</span></span>
+<span class="label"><span class="fn-bracket">[</span><a role="doc-backlink" href="#id32">1</a><span class="fn-bracket">]</span></span>
 <p>Sonia Wharton and JK Lundquist. Assessing atmospheric stability and the impacts on wind characteristics at an onshore wind farm. Technical Report, Lawrence Livermore National Lab.(LLNL), Livermore, CA (United States), 2010.</p>
 </div>
 </div>
 </div>
+</dd>
+</dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="floris.tools.wind_rose.WindRose.save">
 <span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/wind_rose.html#WindRose.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.wind_rose.WindRose.save" title="Link to this definition">#</a></dt>
 <dd><p>This method saves the WindRose data as a pickle file so that it can be
 imported into a WindRose object later.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- Path and filename of pickle file to save.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>filename (str): Path and filename of pickle file to save.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -590,12 +591,12 @@ imported into a WindRose object later.</p>
 <span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">filename</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/wind_rose.html#WindRose.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.wind_rose.WindRose.load" title="Link to this definition">#</a></dt>
 <dd><p>This method loads data from a previously saved WindRose pickle file
 into a WindRose object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>filename</strong> (<em>str</em>) -- Path and filename of pickle file to load.</p>
+<dl>
+<dt>Args:</dt><dd><p>filename (str): Path and filename of pickle file to load.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><ul class="simple">
+<dt>Returns:</dt><dd><p>int, int, float, float, np.array, np.array, pandas.DataFrame:</p>
+<blockquote>
+<div><ul class="simple">
 <li><p>Number of wind direction bins.</p></li>
 <li><p>Number of wind speed bins.</p></li>
 <li><p>Wind direction bin size (deg).</p></li>
@@ -611,10 +612,7 @@ the wind conditions in the other columns.</p></li>
 </ul>
 </li>
 </ul>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>int, int, float, float, np.array, np.array, pandas.DataFrame</p>
+</div></blockquote>
 </dd>
 </dl>
 </dd></dl>
@@ -624,24 +622,21 @@ the wind conditions in the other columns.</p></li>
 <span class="sig-name descname"><span class="pre">resample_wind_speed</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">array([0.,</span> <span class="pre">1.,</span> <span class="pre">2.,</span> <span class="pre">3.,</span> <span class="pre">4.,</span> <span class="pre">5.,</span> <span class="pre">6.,</span> <span class="pre">7.,</span> <span class="pre">8.,</span> <span class="pre">9.,</span> <span class="pre">10.,</span> <span class="pre">11.,</span> <span class="pre">12.,</span> <span class="pre">13.,</span> <span class="pre">14.,</span> <span class="pre">15.,</span> <span class="pre">16.,</span> <span class="pre">17.,</span> <span class="pre">18.,</span> <span class="pre">19.,</span> <span class="pre">20.,</span> <span class="pre">21.,</span> <span class="pre">22.,</span> <span class="pre">23.,</span> <span class="pre">24.,</span> <span class="pre">25.])</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/wind_rose.html#WindRose.resample_wind_speed"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.wind_rose.WindRose.resample_wind_speed" title="Link to this definition">#</a></dt>
 <dd><p>This method resamples the wind speed bins using the specified wind
 speed bin center values. The frequency values are adjusted accordingly.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>pandas.DataFrame</em>) -- <p>Wind rose DataFrame containing at least the
-following columns:</p>
-<ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>df (pandas.DataFrame): Wind rose DataFrame containing at least the</dt><dd><p>following columns:</p>
+<ul class="simple">
 <li><p><strong>wd</strong> (<em>float</em>) - Wind direction bin center values (deg).</p></li>
 <li><p><strong>ws</strong> (<em>float</em>) - Wind speed bin center values (m/s).</p></li>
 <li><p><strong>freq_val</strong> (<em>float</em>) - The frequency of occurance of the
 wind conditions in the other columns.</p></li>
 </ul>
-</p></li>
-<li><p><strong>ws</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- List of new wind speed center bins (m/s).
-Defaults to np.arange(0, 26, 1.).</p></li>
-</ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame with the resampled wind speed
+<dt>ws (np.array, optional): List of new wind speed center bins (m/s).</dt><dd><p>Defaults to np.arange(0, 26, 1.).</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame with the resampled wind speed
 bins and frequencies containing at least the following columns:</p>
 <blockquote>
 <div><ul class="simple">
@@ -651,10 +646,6 @@ bins and frequencies containing at least the following columns:</p>
 new wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -666,10 +657,11 @@ new wind conditions in the other columns.</p></li>
 frequency values are adjusted accordingly. Modifies data within
 WindRose object without explicit return.</p>
 <p>TODO: make a private method</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ws</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Vector of wind speed bin centers for
-the wind rose (m/s). Defaults to np.arange(0, 26, 1.).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>ws (np.array, optional): Vector of wind speed bin centers for</dt><dd><p>the wind rose (m/s). Defaults to np.arange(0, 26, 1.).</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -680,24 +672,21 @@ the wind rose (m/s). Defaults to np.arange(0, 26, 1.).</p>
 <dd><p>This method resamples the wind direction bins using the specified wind
 direction bin center values. The frequency values are adjusted
 accordingly.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>pandas.DataFrame</em>) -- <p>Wind rose DataFrame containing at least the
-following columns:</p>
-<ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>df (pandas.DataFrame): Wind rose DataFrame containing at least the</dt><dd><p>following columns:</p>
+<ul class="simple">
 <li><p><strong>wd</strong> (<em>float</em>) - Wind direction bin center values (deg).</p></li>
 <li><p><strong>ws</strong> (<em>float</em>) - Wind speed bin center values (m/s).</p></li>
 <li><p><strong>freq_val</strong> (<em>float</em>) - The frequency of occurance of the
 wind conditions in the other columns.</p></li>
 </ul>
-</p></li>
-<li><p><strong>wd</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- List of new wind direction center bins
-(deg). Defaults to np.arange(0, 360, 5.).</p></li>
-</ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame with the resampled wind
+<dt>wd (np.array, optional): List of new wind direction center bins</dt><dd><p>(deg). Defaults to np.arange(0, 360, 5.).</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame with the resampled wind
 direction bins and frequencies containing at least the following
 columns:</p>
 <blockquote>
@@ -708,10 +697,6 @@ columns:</p>
 new wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -723,10 +708,11 @@ new wind conditions in the other columns.</p></li>
 frequency values are adjusted accordingly. Modifies data within
 WindRose object without explicit return.</p>
 <p>TODO: make a private method</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>wd</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Vector of wind direction bin centers for
-the wind rose (deg). Defaults to np.arange(0, 360, 5.).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>wd (np.array, optional): Vector of wind direction bin centers for</dt><dd><p>the wind rose (deg). Defaults to np.arange(0, 360, 5.).</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -737,25 +723,24 @@ the wind rose (deg). Defaults to np.arange(0, 360, 5.).</p>
 <dd><p>This method resamples the specified wind parameter column using the
 specified bin center values. The frequency values are adjusted
 accordingly.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>df</strong> (<em>pandas.DataFrame</em>) -- <p>Wind rose DataFrame containing at least the
-following columns as well as <em>col</em>:</p>
-<ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>df (pandas.DataFrame): Wind rose DataFrame containing at least the</dt><dd><p>following columns as well as <em>col</em>:</p>
+<ul class="simple">
 <li><p><strong>wd</strong> (<em>float</em>) - Wind direction bin center values (deg).</p></li>
 <li><p><strong>ws</strong> (<em>float</em>) - Wind speed bin center values (m/s).</p></li>
 <li><p><strong>freq_val</strong> (<em>float</em>) - The frequency of occurance of the
 wind conditions in the other columns.</p></li>
 </ul>
-</p></li>
-<li><p><strong>col</strong> (<em>str</em>) -- The name of the column to resample.</p></li>
-<li><p><strong>bins</strong> (<em>np.array</em>) -- List of new bin center values for the specified
-column.</p></li>
-</ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame with the resampled wind
+</dl>
+<p>col (str): The name of the column to resample.
+bins (np.array): List of new bin center values for the specified</p>
+<blockquote>
+<div><p>column.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame with the resampled wind
 parameter bins and frequencies containing at least the following
 columns as well as <em>col</em>:</p>
 <blockquote>
@@ -766,10 +751,6 @@ columns as well as <em>col</em>:</p>
 new wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -781,12 +762,9 @@ new wind conditions in the other columns.</p></li>
 values are adjusted accordingly. Modifies data within WindRose object
 without explicit return.</p>
 <p>TODO: make a private method</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>col</strong> (<em>str</em>) -- Name of column to resample.</p></li>
-<li><p><strong>bins</strong> (<em>np.array</em>) -- Vector of bins for the WindRose column.</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>col (str): Name of column to resample.
+bins (np.array): Vector of bins for the WindRose column.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -797,20 +775,19 @@ without explicit return.</p>
 <dd><p>This method calculates the mean wind speed for each wind direction bin
 and resamples the wind rose, resulting in a single mean wind speed per
 wind direction bin. The frequency values are adjusted accordingly.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>df</strong> (<em>pandas.DataFrame</em>) -- <p>Wind rose DataFrame containing at least the
-following columns:</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>df (pandas.DataFrame): Wind rose DataFrame containing at least the</dt><dd><p>following columns:</p>
 <ul class="simple">
 <li><p><strong>wd</strong> (<em>float</em>) - Wind direction bin center values (deg).</p></li>
 <li><p><strong>ws</strong> (<em>float</em>) - Wind speed bin center values (m/s).</p></li>
 <li><p><strong>freq_val</strong> (<em>float</em>) - The frequency of occurance of the
 wind conditions in the other columns.</p></li>
 </ul>
-</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame with the resampled wind speed
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame with the resampled wind speed
 bins and frequencies containing at least the following columns:</p>
 <blockquote>
 <div><ul class="simple">
@@ -821,10 +798,6 @@ direction bin (m/s).</p></li>
 new wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -837,15 +810,11 @@ wind direction bin and resamples the wind rose, resulting in a single
 mean wind speed per wind direction bin. The frequency values are
 adjusted accordingly.</p>
 <p>TODO: make an internal method</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wd</strong> (<em>np.arange</em><em>, </em><em>optional</em>) -- Wind direction bin centers (deg).</p></li>
-<li><p><strong>np.arange</strong> (<em>Defaults to</em>) -- </p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><p>wd (np.arange, optional): Wind direction bin centers (deg).
+Defaults to np.arange(0, 360, 5.).</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame with the resampled wind speed
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame with the resampled wind speed
 bins and frequencies containing at least the following columns:</p>
 <blockquote>
 <div><ul class="simple">
@@ -856,10 +825,6 @@ direction bin (m/s).</p></li>
 new wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -871,38 +836,31 @@ new wind conditions in the other columns.</p></li>
 frequency for any given wind direction and wind speed combination(s).
 This can be particularly useful when evaluating the wind rose at a
 higher frequency than the input data is provided.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wind_directions</strong> (<em>np.ndarray</em>) -- One or multi-dimensional array containing</p></li>
-<li><p><strong>occurrence</strong> (<em>the wind speed values at which the wind rose frequency of</em>) -- </p></li>
-<li><p><strong>evaluated.</strong> (<em>should be</em>) -- </p></li>
-<li><p><strong>wind_speeds</strong> (<em>np.ndarray</em>) -- One or multi-dimensional array containing</p></li>
-<li><p><strong>occurrence</strong> -- </p></li>
-<li><p><strong>evaluated.</strong> -- </p></li>
-<li><p><strong>mirror_0_to_360</strong> (<em>bool</em><em>, </em><em>optional</em>) -- This function copies the wind rose</p></li>
-<li><p><strong>when</strong> (<em>frequency values from 0 deg to 360 deg. This can be useful</em>) -- </p></li>
-<li><p><strong>example</strong> (<em>for</em>) -- </p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>wind_directions (np.ndarray): One or multi-dimensional array containing
+the wind direction values at which the wind rose frequency of occurrence
+should be evaluated.
+wind_speeds (np.ndarray): One or multi-dimensional array containing
+the wind speed values at which the wind rose frequency of occurrence
+should be evaluated.
+mirror_0_to_360 (bool, optional): This function copies the wind rose
+frequency values from 0 deg to 360 deg. This can be useful when, for example,
+the wind rose is only calculated until 357 deg but then interpolant is
+requesting values at 359 deg. Defaults to True.
+fill_value (float, optional): Fill value for the interpolant when
+interpolating values outside of the data region. Defaults to 0.0.
+method (str, optional): The interpolation method. Options are 'linear' and
+'nearest'. Recommended usage is 'linear'. Defaults to 'linear'.</p>
 </dd>
-</dl>
-<p>:param :
-:param the wind rose is only calculated until 357 deg but then interpolant is:
-:param requesting values at 359 deg. Defaults to True.:
-:param fill_value: Fill value for the interpolant when
-:type fill_value: float, optional
-:param interpolating values outside of the data region. Defaults to 0.0.:
-:param method: The interpolation method. Options are 'linear' and
-:type method: str, optional
-:param 'nearest'. Recommended usage is 'linear'. Defaults to 'linear'.:</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Linear interpolant for the
+<dt>Returns:</dt><dd><p>scipy.interpolate.LinearNDInterpolant: Linear interpolant for the
 wind rose currently available in the class (self.df).</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>scipy.interpolate.LinearNDInterpolant</p>
+<dt>Example:</dt><dd><p>wr = wind_rose.WindRose()
+wr.make_wind_rose_from_user_data(...)
+freq_floris = wr.interpolate(floris_wind_direction_grid, floris_wind_speed_grid)</p>
 </dd>
+</dl>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>wind_directions</strong> (<em>ndarray</em>) -- </p></li>
@@ -910,10 +868,6 @@ wind rose currently available in the class (self.df).</p>
 </ul>
 </dd>
 </dl>
-<p class="rubric">Example</p>
-<p>wr = wind_rose.WindRose()
-wr.make_wind_rose_from_user_data(...)
-freq_floris = wr.interpolate(floris_wind_direction_grid, floris_wind_speed_grid)</p>
 </dd></dl>
 
 <dl class="py method">
@@ -922,21 +876,16 @@ freq_floris = wr.interpolate(floris_wind_direction_grid, floris_wind_speed_grid)
 <dd><p>This method returns a Weibull distribution corresponding to the input
 data array (typically wind speed) using the specified Weibull
 parameters.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>x</strong> (<em>np.array</em>) -- List of input data (typically binned wind speed
-observations).</p></li>
-<li><p><strong>k</strong> (<em>float</em><em>, </em><em>optional</em>) -- Weibull shape parameter. Defaults to 2.5.</p></li>
-<li><p><strong>lam</strong> (<em>float</em><em>, </em><em>optional</em>) -- Weibull scale parameter. Defaults to 8.0.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>x (np.array): List of input data (typically binned wind speed</dt><dd><p>observations).</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Weibull distribution probabilities corresponding to
+</dl>
+<p>k (float, optional): Weibull shape parameter. Defaults to 2.5.
+lam (float, optional): Weibull scale parameter. Defaults to 8.0.</p>
+</dd>
+<dt>Returns:</dt><dd><p>np.array: Weibull distribution probabilities corresponding to
 values in the input array.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -947,17 +896,15 @@ values in the input array.</p>
 <dd><p>Populate WindRose object with an example wind rose with wind speed
 frequencies given by a Weibull distribution. The wind direction
 frequencies are initialized according to an example distribution.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wd</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind direciton bin centers (deg). Defaults</p></li>
-<li><p><strong>np.arange</strong> (<em>to</em>) -- </p></li>
-<li><p><strong>ws</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind speed bin centers (m/s). Defaults to
-np.arange(0, 26, 1.).</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><p>wd (np.array, optional): Wind direciton bin centers (deg). Defaults
+to np.arange(0, 360, 5.).
+ws (np.array, optional): Wind speed bin centers (m/s). Defaults to</p>
+<blockquote>
+<div><p>np.arange(0, 26, 1.).</p>
+</div></blockquote>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame containing at least the
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame containing at least the
 following columns:</p>
 <blockquote>
 <div><ul class="simple">
@@ -967,10 +914,6 @@ following columns:</p>
 wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -982,16 +925,14 @@ wind conditions in the other columns.</p></li>
 observations of wind direction, wind speed, and additional optional
 variables. The wind parameters are binned and the frequencies of
 occurance of each binned wind condition combination are calculated.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wd_raw</strong> (<em>array-like</em>) -- An array-like list of all wind direction
-observations used to calculate the normalized frequencies (deg).</p></li>
-<li><p><strong>ws_raw</strong> (<em>array-like</em>) -- An array-like list of all wind speed
-observations used to calculate the normalized frequencies (m/s).</p></li>
-<li><p><strong>*args</strong> -- <p>Variable length argument list consisting of a sequence of
-the following alternating arguments:</p>
-<ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>wd_raw (array-like): An array-like list of all wind direction</dt><dd><p>observations used to calculate the normalized frequencies (deg).</p>
+</dd>
+<dt>ws_raw (array-like): An array-like list of all wind speed</dt><dd><p>observations used to calculate the normalized frequencies (m/s).</p>
+</dd>
+<dt><a href="#id28"><span class="problematic" id="id29">*</span></a>args: Variable length argument list consisting of a sequence of</dt><dd><p>the following alternating arguments:</p>
+<ul class="simple">
 <li><p>string - Name of additional wind parameters to include in
 wind rose.</p></li>
 <li><p>array-like - Values of the additional wind parameters used
@@ -999,15 +940,14 @@ to calculate the frequencies of occurance</p></li>
 <li><p>np.array - Bin center values for binning the additional
 wind parameters.</p></li>
 </ul>
-</p></li>
-<li><p><strong>wd</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind direction bin centers (deg). Defaults
-to np.arange(0, 360, 5.).</p></li>
-<li><p><strong>ws</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind speed bin limits (m/s). Defaults to
-np.arange(0, 26, 1.).</p></li>
-</ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame containing at least the
+<dt>wd (np.array, optional): Wind direction bin centers (deg). Defaults</dt><dd><p>to np.arange(0, 360, 5.).</p>
+</dd>
+<dt>ws (np.array, optional): Wind speed bin limits (m/s). Defaults to</dt><dd><p>np.arange(0, 26, 1.).</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame containing at least the
 following columns:</p>
 <blockquote>
 <div><ul class="simple">
@@ -1017,10 +957,6 @@ following columns:</p>
 wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1038,18 +974,16 @@ combinations of wind direction, wind speed, additional optional
 variables, and the corresponding frequencies of occurance. The wind
 parameters are binned using the specified wind parameter bin center
 values and the corresponding frequencies of occrance are calculated.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wd_raw</strong> (<em>array-like</em>) -- An array-like list of wind directions
-corresponding to the specified frequencies of occurance (deg).</p></li>
-<li><p><strong>wd_raw</strong> -- An array-like list of wind speeds
-corresponding to the specified frequencies of occurance (m/s).</p></li>
-<li><p><strong>freq_val</strong> (<em>array-like</em>) -- An array-like list of normalized frequencies
-corresponding to the provided wind parameter combinations.</p></li>
-<li><p><strong>*args</strong> -- <p>Variable length argument list consisting of a sequence of
-the following alternating arguments:</p>
-<ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>wd_raw (array-like): An array-like list of wind directions</dt><dd><p>corresponding to the specified frequencies of occurance (deg).</p>
+</dd>
+<dt>wd_raw (array-like): An array-like list of wind speeds</dt><dd><p>corresponding to the specified frequencies of occurance (m/s).</p>
+</dd>
+<dt>freq_val (array-like): An array-like list of normalized frequencies</dt><dd><p>corresponding to the provided wind parameter combinations.</p>
+</dd>
+<dt><a href="#id30"><span class="problematic" id="id31">*</span></a>args: Variable length argument list consisting of a sequence of</dt><dd><p>the following alternating arguments:</p>
+<ul class="simple">
 <li><p>string - Name of additional wind parameters to include in
 wind rose.</p></li>
 <li><p>array-like - Values of the additional wind parameters
@@ -1057,15 +991,14 @@ corresponding to the specified frequencies of occurance.</p></li>
 <li><p>np.array - Bin center values for binning the additional
 wind parameters.</p></li>
 </ul>
-</p></li>
-<li><p><strong>wd</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind direction bin centers (deg). Defaults
-to np.arange(0, 360, 5.).</p></li>
-<li><p><strong>ws</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind speed bin centers (m/s). Defaults to
-np.arange(0, 26, 1.).</p></li>
-</ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame containing at least the
+<dt>wd (np.array, optional): Wind direction bin centers (deg). Defaults</dt><dd><p>to np.arange(0, 360, 5.).</p>
+</dd>
+<dt>ws (np.array, optional): Wind speed bin centers (m/s). Defaults to</dt><dd><p>np.arange(0, 26, 1.).</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame containing at least the
 following columns:</p>
 <blockquote>
 <div><ul class="simple">
@@ -1075,10 +1008,6 @@ following columns:</p>
 wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1092,23 +1021,21 @@ application (see <a class="reference external" href="https://www.nrel.gov/grid/w
 information). The wind parameters are binned using the specified wind
 parameter bin center values and the corresponding frequencies of
 occurance are calculated.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_name</strong> (<em>str</em>) -- Path to the folder containing the WIND Toolkit
-data files.</p></li>
-<li><p><strong>wd</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind direction bin centers (deg). Defaults
-to np.arange(0, 360, 5.).</p></li>
-<li><p><strong>ws</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind speed bin centers (m/s). Defaults to
-np.arange(0, 26, 1.).</p></li>
-<li><p><strong>limit_month</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of ints of month(s) (e.g., 1, 2
-3...) to consider when calculating the wind condition
-frequencies. If none are specified, all months will be used.
-Defaults to None.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>folder_name (str): Path to the folder containing the WIND Toolkit</dt><dd><p>data files.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame containing the following
+<dt>wd (np.array, optional): Wind direction bin centers (deg). Defaults</dt><dd><p>to np.arange(0, 360, 5.).</p>
+</dd>
+<dt>ws (np.array, optional): Wind speed bin centers (m/s). Defaults to</dt><dd><p>np.arange(0, 26, 1.).</p>
+</dd>
+<dt>limit_month (list, optional): List of ints of month(s) (e.g., 1, 2</dt><dd><p>3...) to consider when calculating the wind condition
+frequencies. If none are specified, all months will be used.
+Defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame containing the following
 columns:</p>
 <blockquote>
 <div><ul class="simple">
@@ -1118,10 +1045,6 @@ columns:</p>
 wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1134,29 +1057,23 @@ files in the specified folder downloaded from the WIND Toolkit
 application (see <a class="reference external" href="https://www.nrel.gov/grid/wind-toolkit.html">https://www.nrel.gov/grid/wind-toolkit.html</a> for more
 information).</p>
 <p>TODO: make private method?</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>folder_name</strong> (<em>str</em>) -- Path to the folder containing the WIND Toolkit
-csv data files.</p></li>
-<li><p><strong>limit_month</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of ints of month(s) (e.g., 1, 2,
-3...) to consider when calculating the wind condition
-frequencies. If none are specified, all months will be used.
-Defaults to None.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>folder_name (str): Path to the folder containing the WIND Toolkit</dt><dd><p>csv data files.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>DataFrame containing the following columns:</p>
+<dt>limit_month (list, optional): List of ints of month(s) (e.g., 1, 2,</dt><dd><p>3...) to consider when calculating the wind condition
+frequencies. If none are specified, all months will be used.
+Defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: DataFrame containing the following columns:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p><strong>wd</strong> (<em>float</em>) - Raw wind direction data (deg).</p></li>
 <li><p><strong>ws</strong> (<em>float</em>) - Raw wind speed data (m/s).</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1168,18 +1085,16 @@ Defaults to None.</p></li>
 specified csv file downloaded from the WIND Toolkit application (see
 <a class="reference external" href="https://www.nrel.gov/grid/wind-toolkit.html">https://www.nrel.gov/grid/wind-toolkit.html</a> for more information).</p>
 <p>TODO: make private method?</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>filename</strong> (<em>str</em>) -- Path to the WIND Toolkit csv file.</p></li>
-<li><p><strong>limit_month</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of ints of month(s) (e.g., 1, 2,
-3...) to consider when calculating the wind condition
+<dl>
+<dt>Args:</dt><dd><p>filename (str): Path to the WIND Toolkit csv file.
+limit_month (list, optional): List of ints of month(s) (e.g., 1, 2,</p>
+<blockquote>
+<div><p>3...) to consider when calculating the wind condition
 frequencies. If none are specified, all months will be used.
-Defaults to None.</p></li>
-</ul>
+Defaults to None.</p>
+</div></blockquote>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>DataFrame containing the following columns with
+<dt>Returns:</dt><dd><p>pandas.DataFrame: DataFrame containing the following columns with
 data from the WIND Toolkit file:</p>
 <blockquote>
 <div><ul class="simple">
@@ -1187,10 +1102,6 @@ data from the WIND Toolkit file:</p>
 <li><p><strong>ws</strong> (<em>float</em>) - Raw wind speed data (m/s).</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1222,39 +1133,39 @@ corresponding frequencies of occrance are calculated.</p>
 rate-limited per IP. To get your own API key, visit
 <a class="reference external" href="https://developer.nrel.gov/signup/">https://developer.nrel.gov/signup/</a>.</p>
 <p>More information can be found at: <a class="github reference external" href="https://github.com/NREL/hsds-examples">NREL/hsds-examples</a>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>lat</strong> (<em>float</em>) -- Latitude in degrees.</p></li>
-<li><p><strong>lon</strong> (<em>float</em>) -- Longitude in degrees.</p></li>
-<li><p><strong>ht</strong> (<em>int</em><em>, </em><em>optional</em>) -- The height above ground where wind
-information is obtained (m). Defaults to 100.</p></li>
-<li><p><strong>wd</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind direction bin centers (deg). Defaults
-to np.arange(0, 360, 5.).</p></li>
-<li><p><strong>ws</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Wind speed bin centers (m/s). Defaults to
-np.arange(0, 26, 1.).</p></li>
-<li><p><strong>include_ti</strong> (<em>bool</em><em>, </em><em>optional</em>) -- Determines whether turbulence
-intensity is included as an additional parameter. If True, TI
-is added as an additional wind rose variable, estimated based
-on the Obukhov length from WIND Toolkit. Defaults to False.</p></li>
-<li><p><strong>limit_month</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of ints of month(s) (e.g., 1, 2,
-3...) to consider when calculating the wind condition
-frequencies. If none are specified, all months will be used.
-Defaults to None.</p></li>
-<li><p><strong>limit_hour</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of ints of hour(s) (e.g., 0, 1,
-... 23) to consider when calculating the wind condition
-frequencies. If none are specified, all hours will be used.
-Defaults to None.</p></li>
-<li><p><strong>st_date</strong> (<em>str</em><em>, </em><em>optional</em>) -- The start date to consider when creating
-the wind rose, formatted as 'MM-DD-YYYY'. If not specified data
-beginning in 2007 will be used. Defaults to None.</p></li>
-<li><p><strong>en_date</strong> (<em>str</em><em>, </em><em>optional</em>) -- The end date to consider when creating
-the wind rose, formatted as 'MM-DD-YYYY'. If not specified data
-through 2013 will be used. Defaults to None.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><p>lat (float): Latitude in degrees.
+lon (float): Longitude in degrees.
+ht (int, optional): The height above ground where wind</p>
+<blockquote>
+<div><p>information is obtained (m). Defaults to 100.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>wd (np.array, optional): Wind direction bin centers (deg). Defaults</dt><dd><p>to np.arange(0, 360, 5.).</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>Wind rose DataFrame containing at least the
+<dt>ws (np.array, optional): Wind speed bin centers (m/s). Defaults to</dt><dd><p>np.arange(0, 26, 1.).</p>
+</dd>
+<dt>include_ti (bool, optional): Determines whether turbulence</dt><dd><p>intensity is included as an additional parameter. If True, TI
+is added as an additional wind rose variable, estimated based
+on the Obukhov length from WIND Toolkit. Defaults to False.</p>
+</dd>
+<dt>limit_month (list, optional): List of ints of month(s) (e.g., 1, 2,</dt><dd><p>3...) to consider when calculating the wind condition
+frequencies. If none are specified, all months will be used.
+Defaults to None.</p>
+</dd>
+<dt>limit_hour (list, optional): List of ints of hour(s) (e.g., 0, 1,</dt><dd><p>... 23) to consider when calculating the wind condition
+frequencies. If none are specified, all hours will be used.
+Defaults to None.</p>
+</dd>
+<dt>st_date (str, optional): The start date to consider when creating</dt><dd><p>the wind rose, formatted as 'MM-DD-YYYY'. If not specified data
+beginning in 2007 will be used. Defaults to None.</p>
+</dd>
+<dt>en_date (str, optional): The end date to consider when creating</dt><dd><p>the wind rose, formatted as 'MM-DD-YYYY'. If not specified data
+through 2013 will be used. Defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: Wind rose DataFrame containing at least the
 following columns:</p>
 <blockquote>
 <div><ul class="simple">
@@ -1264,10 +1175,6 @@ following columns:</p>
 wind conditions in the other columns.</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1285,35 +1192,35 @@ from the WIND Toolkit dataset using the HSDS service
 obtained from the nearest 2km x 2km grid point to the input coordinate
 and is limited to the years 2007-2013.</p>
 <p>TODO: make private method?</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>lat</strong> (<em>float</em>) -- Latitude in degrees.</p></li>
-<li><p><strong>lon</strong> (<em>float</em>) -- Longitude in degrees</p></li>
-<li><p><strong>ht</strong> (<em>int</em><em>, </em><em>optional</em>) -- The height above ground where wind
-information is obtained (m). Defaults to 100.</p></li>
-<li><p><strong>include_ti</strong> (<em>bool</em><em>, </em><em>optional</em>) -- Determines whether turbulence
-intensity is included as an additional parameter. If True, TI
+<dl>
+<dt>Args:</dt><dd><p>lat (float): Latitude in degrees.
+lon (float): Longitude in degrees
+ht (int, optional): The height above ground where wind</p>
+<blockquote>
+<div><p>information is obtained (m). Defaults to 100.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>include_ti (bool, optional): Determines whether turbulence</dt><dd><p>intensity is included as an additional parameter. If True, TI
 is added as an additional wind rose variable, estimated based
-on the Obukhov length from WIND Toolkit. Defaults to False.</p></li>
-<li><p><strong>limit_month</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of ints of month(s) (e.g., 1, 2,
-3...) to consider when calculating the wind condition
-frequencies. If none are specified, all months will be used.
-Defaults to None.</p></li>
-<li><p><strong>limit_hour</strong> (<em>list</em><em>, </em><em>optional</em>) -- List of ints of hour(s) (e.g., 0, 1,
-... 23) to consider when calculating the wind condition
-frequencies. If none are specified, all hours will be used.
-Defaults to None.</p></li>
-<li><p><strong>st_date</strong> (<em>str</em><em>, </em><em>optional</em>) -- The start date to consider, formatted as
-'MM-DD-YYYY'. If not specified data beginning in 2007 will be
-used. Defaults to None.</p></li>
-<li><p><strong>en_date</strong> (<em>str</em><em>, </em><em>optional</em>) -- The end date to consider, formatted as
-'MM-DD-YYYY'. If not specified data through 2013 will be used.
-Defaults to None.</p></li>
-</ul>
+on the Obukhov length from WIND Toolkit. Defaults to False.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><p>DataFrame containing the following columns(abd
+<dt>limit_month (list, optional): List of ints of month(s) (e.g., 1, 2,</dt><dd><p>3...) to consider when calculating the wind condition
+frequencies. If none are specified, all months will be used.
+Defaults to None.</p>
+</dd>
+<dt>limit_hour (list, optional): List of ints of hour(s) (e.g., 0, 1,</dt><dd><p>... 23) to consider when calculating the wind condition
+frequencies. If none are specified, all hours will be used.
+Defaults to None.</p>
+</dd>
+<dt>st_date (str, optional): The start date to consider, formatted as</dt><dd><p>'MM-DD-YYYY'. If not specified data beginning in 2007 will be
+used. Defaults to None.</p>
+</dd>
+<dt>en_date (str, optional): The end date to consider, formatted as</dt><dd><p>'MM-DD-YYYY'. If not specified data through 2013 will be used.
+Defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>pandas.DataFrame: DataFrame containing the following columns(abd
 optionally turbulence intensity) with hourly data from WIND Toolkit:</p>
 <blockquote>
 <div><ul class="simple">
@@ -1321,10 +1228,6 @@ optionally turbulence intensity) with hourly data from WIND Toolkit:</p>
 <li><p><strong>ws</strong> (<em>float</em>) - Raw wind speed data (m/s).</p></li>
 </ul>
 </div></blockquote>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>pandas.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1334,21 +1237,16 @@ optionally turbulence intensity) with hourly data from WIND Toolkit:</p>
 <span class="sig-name descname"><span class="pre">obkv_dset_to_L</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">obkv_dset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Location_idx</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/wind_rose.html#WindRose.obkv_dset_to_L"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.wind_rose.WindRose.obkv_dset_to_L" title="Link to this definition">#</a></dt>
 <dd><p>This function returns an array containing hourly Obukhov lengths from
 the WIND Toolkit dataset for the specified Lat/Lon coordinate indices.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>obkv_dset</strong> (<em>np.ndarray</em>) -- Dataset for Obukhov lengths from WIND
-Toolkit.</p></li>
-<li><p><strong>Location_idx</strong> (<em>tuple</em>) -- A tuple containing the Lat/Lon coordinate
-indices of interest in the Obukhov length dataset.</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>obkv_dset (np.ndarray): Dataset for Obukhov lengths from WIND</dt><dd><p>Toolkit.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An array containing Obukhov lengths for each time index
+<dt>Location_idx (tuple): A tuple containing the Lat/Lon coordinate</dt><dd><p>indices of interest in the Obukhov length dataset.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>np.array: An array containing Obukhov lengths for each time index
 in the Wind Toolkit dataset (m).</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1359,16 +1257,11 @@ in the Wind Toolkit dataset (m).</p>
 <dd><p>This function estimates the turbulence intensity corresponding to each
 Obukhov length value in the input list using the relationship between
 Obukhov length bins and TI given in the I_U2SODAR column in Table 2 of
-<span id="id28">[<a class="reference internal" href="#id21" title="Sonia Wharton and JK Lundquist. Assessing atmospheric stability and the impacts on wind characteristics at an onshore wind farm. Technical Report, Lawrence Livermore National Lab.(LLNL), Livermore, CA (United States), 2010.">1</a>]</span>.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>L</strong> (<em>iterable</em>) -- A list of Obukhov Length values (m).</p>
+<span id="id32">[<a class="reference internal" href="#id21" title="Sonia Wharton and JK Lundquist. Assessing atmospheric stability and the impacts on wind characteristics at an onshore wind farm. Technical Report, Lawrence Livermore National Lab.(LLNL), Livermore, CA (United States), 2010.">1</a>]</span>.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>L (iterable): A list of Obukhov Length values (m).</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A list of turbulence intensity values expressed as fractions.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list</p>
+<dt>Returns:</dt><dd><p>list: A list of turbulence intensity values expressed as fractions.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1384,22 +1277,19 @@ indices.</p>
 <p><strong>Note</strong>: This method is obtained directly from:
 <a class="github reference external" href="https://github.com/NREL/hsds-examples/blob/master/notebooks/01_WTK_introduction.ipynb">NREL/hsds-examples</a>,
 where it is called &quot;indicesForCoord.&quot;</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>f</strong> (<em>h5pyd.File</em>) -- A HDF5 &quot;file&quot; used to access the WIND Toolkit data.</p></li>
-<li><p><strong>lat_index</strong> (<em>float</em>) -- Latitude coordinate for which dataset indices
-are to be found (degrees).</p></li>
-<li><p><strong>lon_index</strong> (<em>float</em>) -- Longitude coordinate for which dataset indices
-are to be found (degrees).</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><p>f (h5pyd.File): A HDF5 &quot;file&quot; used to access the WIND Toolkit data.
+lat_index (float): Latitude coordinate for which dataset indices</p>
+<blockquote>
+<div><p>are to be found (degrees).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>lon_index (float): Longitude coordinate for which dataset indices</dt><dd><p>are to be found (degrees).</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A tuple containing the Lat/Lon coordinate indices of
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>tuple: A tuple containing the Lat/Lon coordinate indices of
 interest in the WIND Toolkit dataset.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -1410,10 +1300,11 @@ interest in the WIND Toolkit dataset.</p>
 <dd><p>This method plots the wind speed frequency distribution of the WindRose
 object averaged across all wind directions. If no axis is provided, a
 new one is created.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional) -- Figure axes on
-which data should be plotted. Defaults to None.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional): Figure axes on</dt><dd><p>which data should be plotted. Defaults to None.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -1426,14 +1317,13 @@ object for each specified wind direction bin center. The wind
 directions are resampled using the specified bin centers and the
 frequencies of occurance of the wind conditions are modified
 accordingly. If no axis is provided, a new one is created.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dirs</strong> (<em>np.array</em>) -- A list of wind direction bin centers for which
-wind speed distributions are plotted (deg).</p></li>
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional) -- Figure axes on
-which data should be plotted. Defaults to None.</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>dirs (np.array): A list of wind direction bin centers for which</dt><dd><p>wind speed distributions are plotted (deg).</p>
+</dd>
+<dt>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional): Figure axes on</dt><dd><p>which data should be plotted. Defaults to None.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
@@ -1446,27 +1336,26 @@ of the specified wind direction and wind speed bins. If no axis is
 provided, a new one is created.</p>
 <p><strong>Note</strong>: Based on code provided by Patrick Murphy from the University
 of Colorado Boulder.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional) -- The figure axes
-on which the wind rose is plotted. Defaults to None.</p></li>
-<li><p><strong>color_map</strong> (<em>str</em><em>, </em><em>optional</em>) -- Colormap to use. Defaults to 'viridis_r'.</p></li>
-<li><p><strong>ws_right_edges</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- The upper bounds of the wind
-speed bins (m/s). The first bin begins at 0. Defaults to
-np.array([5, 10, 15, 20, 25]).</p></li>
-<li><p><strong>wd_bins</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- The wind direction bin centers used
-for plotting (deg). Defaults to np.arange(0, 360, 15.).</p></li>
-<li><p><strong>legend_kwargs</strong> (<em>dict</em><em>, </em><em>optional</em>) -- Keyword arguments to be passed to
-ax.legend().</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional): The figure axes</dt><dd><p>on which the wind rose is plotted. Defaults to None.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A figure axes object containing
+</dl>
+<p>color_map (str, optional): Colormap to use. Defaults to 'viridis_r'.
+ws_right_edges (np.array, optional): The upper bounds of the wind</p>
+<blockquote>
+<div><p>speed bins (m/s). The first bin begins at 0. Defaults to
+np.array([5, 10, 15, 20, 25]).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>wd_bins (np.array, optional): The wind direction bin centers used</dt><dd><p>for plotting (deg). Defaults to np.arange(0, 360, 15.).</p>
+</dd>
+<dt>legend_kwargs (dict, optional): Keyword arguments to be passed to</dt><dd><p>ax.legend().</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>: A figure axes object containing
 the plotted wind rose.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1480,25 +1369,24 @@ requires turbulence intensity to already be included as a parameter in
 the wind rose. If no axis is provided,a new one is created.</p>
 <p><strong>Note</strong>: Based on code provided by Patrick Murphy from the University
 of Colorado Boulder.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional) -- The figure axes
-on which the wind rose is plotted. Defaults to None.</p></li>
-<li><p><strong>color_map</strong> (<em>str</em><em>, </em><em>optional</em>) -- Colormap to use. Defaults to 'viridis_r'.</p></li>
-<li><p><strong>ti_right_edges</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- The upper bounds of the
-turbulence intensity bins. The first bin begins at 0. Defaults
-to np.array([0.06, 0.1, 0.14, 0.18,0.22]).</p></li>
-<li><p><strong>wd_bins</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- The wind direction bin centers used
-for plotting (deg). Defaults to np.arange(0, 360, 15.).</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional): The figure axes</dt><dd><p>on which the wind rose is plotted. Defaults to None.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A figure axes object containing
+</dl>
+<p>color_map (str, optional): Colormap to use. Defaults to 'viridis_r'.
+ti_right_edges (np.array, optional): The upper bounds of the</p>
+<blockquote>
+<div><p>turbulence intensity bins. The first bin begins at 0. Defaults
+to np.array([0.06, 0.1, 0.14, 0.18,0.22]).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>wd_bins (np.array, optional): The wind direction bin centers used</dt><dd><p>for plotting (deg). Defaults to np.arange(0, 360, 15.).</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>: A figure axes object containing
 the plotted wind rose.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1511,22 +1399,17 @@ object for each turbulence intensity bin. The wind speeds are resampled
 using the specified bin centers and the frequencies of occurance of the
 wind conditions are modified accordingly. This method assumes there are
 five TI bins. If no axis is provided, a new one is created.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional) -- Figure axes on
-which data should be plotted. Defaults to None.</p></li>
-<li><p><strong>ws_bins</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- A list of wind speed bin centers on
-which the wind speeds are resampled before plotting (m/s).
-Defaults to np.arange(0, 26, 1.).</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional): Figure axes on</dt><dd><p>which data should be plotted. Defaults to None.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A figure axes object containing
+<dt>ws_bins (np.array, optional): A list of wind speed bin centers on</dt><dd><p>which the wind speeds are resampled before plotting (m/s).
+Defaults to np.arange(0, 26, 1.).</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>: A figure axes object containing
 the plotted wind speed distributions.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code></p>
 </dd>
 </dl>
 </dd></dl>
@@ -1537,14 +1420,10 @@ the plotted wind speed distributions.</p>
 <dd><p>This method returns a list of tuples of at least wind speed, wind
 direction, and frequency of occurance, which can be used to help loop
 through different wind conditions for Floris power calculations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of tuples containing all combinations of wind
+<dl class="simple">
+<dt>Returns:</dt><dd><p>list: A list of tuples containing all combinations of wind
 parameters and frequencies of occurance in the WindRose object's
 wind rose DataFrame values.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>

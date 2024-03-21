@@ -540,13 +540,9 @@ dimension?</p>
 <dd><p>This method finds the optimized layout of wind turbines for power
 production given the provided frequencies of occurance of wind
 conditions (wind speed, direction).</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>A list of the optimized x, y locations of each
+<dl class="simple">
+<dt>Returns:</dt><dd><p>opt_locs (iterable): A list of the optimized x, y locations of each
 turbine (m).</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>opt_locs (iterable)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -556,35 +552,36 @@ turbine (m).</p>
 <span class="sig-name descname"><span class="pre">reinitialize_opt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">wd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ws</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">freq</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">AEP_initial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x0</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bnds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_dist</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaw_lims</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_method</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">opt_options</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/optimization/legacy/scipy/power_density_1D.html#PowerDensityOptimization1D.reinitialize_opt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.optimization.legacy.scipy.power_density_1D.PowerDensityOptimization1D.reinitialize_opt" title="Link to this definition">#</a></dt>
 <dd><p>This method reinitializes any optimization parameters that are
 specified. Otherwise, the current parameter values are kept.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>wd</strong> (<em>np.array</em>) -- An array of wind directions (deg). Defaults to None.</p></li>
-<li><p><strong>ws</strong> (<em>np.array</em>) -- An array of wind speeds (m/s). Defaults to None.</p></li>
-<li><p><strong>freq</strong> (<em>np.array</em>) -- An array of the frequencies of occurance
-correponding to each pair of wind direction and wind speed
-values. Defaults to None.</p></li>
-<li><p><strong>AEP_initial</strong> (<em>float</em>) -- The initial Annual Energy
-Production used for normalization in the optimization (Wh)
-(TODO: Is Watt-hours the correct unit?). Defaults to None.</p></li>
-<li><p><strong>x0</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- The initial turbine locations,
-ordered by x-coordinate and then y-coordiante
+<dl>
+<dt>Args:</dt><dd><p>wd (np.array): An array of wind directions (deg). Defaults to None.
+ws (np.array): An array of wind speeds (m/s). Defaults to None.
+freq (np.array): An array of the frequencies of occurance</p>
+<blockquote>
+<div><p>correponding to each pair of wind direction and wind speed
+values. Defaults to None.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>AEP_initial (float): The initial Annual Energy</dt><dd><p>Production used for normalization in the optimization (Wh)
+(TODO: Is Watt-hours the correct unit?). Defaults to None.</p>
+</dd>
+<dt>x0 (iterable, optional): The initial turbine locations,</dt><dd><p>ordered by x-coordinate and then y-coordiante
 (ie. [x1, x2, ..., xn, y1, y2, ..., yn]) (m). If none are
 provided, x0 initializes to the current turbine locations.
-Defaults to None.</p></li>
-<li><p><strong>bnds</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- Bounds for the optimization
-variables (pairs of min/max values for each variable (m)). If
+Defaults to None.</p>
+</dd>
+<dt>bnds (iterable, optional): Bounds for the optimization</dt><dd><p>variables (pairs of min/max values for each variable (m)). If
 none are specified, they are set to some example values (TODO:
 what is the significance of these example values?). Defaults to
-None.</p></li>
-<li><p><strong>min_dist</strong> (<em>float</em><em>, </em><em>optional</em>) -- The minimum distance to be
-maintained between turbines during the optimization (m). If not
-specified, initializes to 2 rotor diameters. Defaults to None.</p></li>
-<li><p><strong>opt_method</strong> (<em>str</em><em>, </em><em>optional</em>) -- The optimization method used by
-scipy.optimize.minize. Defaults to None.</p></li>
-<li><p><strong>opt_options</strong> (<em>dict</em><em>, </em><em>optional</em>) -- Optimization options used by
-scipy.optimize.minize. Defaults to None.</p></li>
-</ul>
+None.</p>
+</dd>
+<dt>min_dist (float, optional): The minimum distance to be</dt><dd><p>maintained between turbines during the optimization (m). If not
+specified, initializes to 2 rotor diameters. Defaults to None.</p>
+</dd>
+<dt>opt_method (str, optional): The optimization method used by</dt><dd><p>scipy.optimize.minize. Defaults to None.</p>
+</dd>
+<dt>opt_options (dict, optional): Optimization options used by</dt><dd><p>scipy.optimize.minize. Defaults to None.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>

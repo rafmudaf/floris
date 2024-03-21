@@ -600,16 +600,18 @@ document.write(`
 <span class="sig-prename descclassname"><span class="pre">floris.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">plot_turbines</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaw_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotor_diameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/visualization.html#plot_turbines"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.visualization.plot_turbines" title="Link to this definition">#</a></dt>
 <dd><p>This function is deprecated and will be removed in v3.5, use <cite>plot_turbines_with_fi</cite> instead.</p>
 <p>Plot wind plant layout from turbine locations.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>): Figure axes.
+layout_x (np.array): Wind turbine locations (east-west).
+layout_y (np.array): Wind turbine locations (north-south).
+yaw_angles (np.array): Yaw angles of each wind turbine.
+rotor_diameters (np.array): Wind turbine rotor diameter.
+color (str): pyplot color option to plot the turbines.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>) -- Figure axes.</p></li>
-<li><p><strong>layout_x</strong> (<em>np.array</em>) -- Wind turbine locations (east-west).</p></li>
-<li><p><strong>layout_y</strong> (<em>np.array</em>) -- Wind turbine locations (north-south).</p></li>
-<li><p><strong>yaw_angles</strong> (<em>np.array</em>) -- Yaw angles of each wind turbine.</p></li>
-<li><p><strong>rotor_diameters</strong> (<em>np.array</em>) -- Wind turbine rotor diameter.</p></li>
-<li><p><strong>color</strong> (<em>str</em>) -- pyplot color option to plot the turbines.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>color</strong> (<em>str</em><em> | </em><em>None</em>) -- </p>
 </dd>
 </dl>
 </dd></dl>
@@ -621,14 +623,22 @@ document.write(`
 Note that this function automatically uses the first wind direction and first wind speed.
 Generally, it is most explicit to create a new FlorisInterface with only the single
 wind condition that should be plotted.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>fi (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.tools.floris_interface.FlorisInterface</span></code></a>): FlorisInterface object.
+ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>): Figure axes. Defaults to None.
+color (str, optional): Color to plot turbines. Defaults to None.
+wd (list, optional): The wind direction to plot the turbines relative to. Defaults to None.
+yaw_angles (NDArray, optional): The yaw angles for the turbines. Defaults to None.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fi</strong> (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.tools.floris_interface.FlorisInterface</span></code></a>) -- FlorisInterface object.</p></li>
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>) -- Figure axes. Defaults to None.</p></li>
-<li><p><strong>color</strong> (<em>str</em><em>, </em><em>optional</em>) -- Color to plot turbines. Defaults to None.</p></li>
-<li><p><strong>wd</strong> (<em>list</em><em>, </em><em>optional</em>) -- The wind direction to plot the turbines relative to. Defaults to None.</p></li>
-<li><p><strong>yaw_angles</strong> (<em>NDArray</em><em>, </em><em>optional</em>) -- The yaw angles for the turbines. Defaults to None.</p></li>
+<li><p><strong>fi</strong> (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><em>FlorisInterface</em></a>) -- </p></li>
+<li><p><strong>ax</strong> (<em>Axes</em><em> | </em><em>None</em>) -- </p></li>
+<li><p><strong>color</strong> (<em>str</em><em> | </em><em>None</em>) -- </p></li>
+<li><p><strong>wd</strong> (<em>ndarray</em><em> | </em><em>None</em>) -- </p></li>
+<li><p><strong>yaw_angles</strong> (<em>ndarray</em><em> | </em><em>None</em>) -- </p></li>
 </ul>
 </dd>
 </dl>
@@ -642,11 +652,16 @@ See the pyplot.annotate docs for more info:
 <a class="reference external" href="https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.annotate.html">https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.annotate.html</a>.
 kwargs are passed to Text
 (<a class="reference external" href="https://matplotlib.org/stable/api/text_api.html#matplotlib.text.Text">https://matplotlib.org/stable/api/text_api.html#matplotlib.text.Text</a>).</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>fi (FlorisInterface): Simulation object to get the layout and index information.
+ax (plt.Axes): Axes object to add the labels.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>fi</strong> (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><em>FlorisInterface</em></a>) -- Simulation object to get the layout and index information.</p></li>
-<li><p><strong>ax</strong> (<em>plt.Axes</em>) -- Axes object to add the labels.</p></li>
+<li><p><strong>fi</strong> (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><em>FlorisInterface</em></a>) -- </p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>) -- </p></li>
 </ul>
 </dd>
 </dl>
@@ -656,20 +671,20 @@ kwargs are passed to Text
 <dt class="sig sig-object py" id="floris.tools.visualization.line_contour_cut_plane">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">line_contour_cut_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">colors</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/visualization.html#line_contour_cut_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.visualization.line_contour_cut_plane" title="Link to this definition">#</a></dt>
 <dd><p>Visualize a cut_plane as a line contour plot.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cut_plane</strong> (<a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>) -- CutPlane Object.</p></li>
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>) -- Figure axes. Defaults
-to None.</p></li>
-<li><p><strong>levels</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Contour levels for plot.
-Defaults to None.</p></li>
-<li><p><strong>colors</strong> (<em>list</em><em>, </em><em>optional</em>) -- Strings of color specification info.
-Defaults to None.</p></li>
-<li><p><strong>label_contours</strong> (<em>Boolean</em><em>, </em><em>optional</em>) -- Flag to include a numerical contour labels
-on the plot. Defaults to False.</p></li>
-<li><p><strong>**kwargs</strong> -- Additional parameters to pass to <cite>ax.contour</cite>.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>cut_plane (<a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>):</dt><dd><p>CutPlane Object.</p>
+</dd>
+<dt>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>): Figure axes. Defaults</dt><dd><p>to None.</p>
+</dd>
+<dt>levels (np.array, optional): Contour levels for plot.</dt><dd><p>Defaults to None.</p>
+</dd>
+<dt>colors (list, optional): Strings of color specification info.</dt><dd><p>Defaults to None.</p>
+</dd>
+<dt>label_contours (Boolean, optional): Flag to include a numerical contour labels</dt><dd><p>on the plot. Defaults to False.</p>
+</dd>
+</dl>
+<p><a href="#id1"><span class="problematic" id="id2">**</span></a>kwargs: Additional parameters to pass to <cite>ax.contour</cite>.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -678,38 +693,33 @@ on the plot. Defaults to False.</p></li>
 <dt class="sig sig-object py" id="floris.tools.visualization.visualize_cut_plane">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">visualize_cut_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vel_component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'u'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'coolwarm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clevels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/visualization.html#visualize_cut_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.visualization.visualize_cut_plane" title="Link to this definition">#</a></dt>
 <dd><p>Generate pseudocolor mesh plot of the cut_plane.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cut_plane</strong> (<a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>) -- 2D
-plane through wind plant.</p></li>
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional) -- Figure axes. Defaults
-to None.</p></li>
-<li><p><strong>vel_component</strong> (<em>str</em><em>, </em><em>optional</em>) -- The velocity component that the cut plane is
-perpendicular to.</p></li>
-<li><p><strong>min_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Minimum value of wind speed for
-contours. Defaults to None.</p></li>
-<li><p><strong>max_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Maximum value of wind speed for
-contours. Defaults to None.</p></li>
-<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) -- Colormap specifier. Defaults to
-'coolwarm'.</p></li>
-<li><p><strong>levels</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Contour levels for line contour plot.
-Defaults to None.</p></li>
-<li><p><strong>clevels</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Contour levels for tricontourf plot.
-Defaults to None.</p></li>
-<li><p><strong>color_bar</strong> (<em>Boolean</em><em>, </em><em>optional</em>) -- Flag to include a color bar on the plot.
-Defaults to False.</p></li>
-<li><p><strong>label_contours</strong> (<em>Boolean</em><em>, </em><em>optional</em>) -- Flag to include a numerical contour labels
-on the plot. Defaults to False.</p></li>
-<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) -- User-supplied title for the plot. Defaults to &quot;&quot;.</p></li>
-<li><p><strong>**kwargs</strong> -- Additional parameters to pass to line contour plot.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>cut_plane (<a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>): 2D</dt><dd><p>plane through wind plant.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Image handle.</p>
+<dt>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>, optional): Figure axes. Defaults</dt><dd><p>to None.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>im (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.plt.pcolormesh</span></code>)</p>
+<dt>vel_component (str, optional): The velocity component that the cut plane is</dt><dd><p>perpendicular to.</p>
+</dd>
+<dt>min_speed (float, optional): Minimum value of wind speed for</dt><dd><p>contours. Defaults to None.</p>
+</dd>
+<dt>max_speed (float, optional): Maximum value of wind speed for</dt><dd><p>contours. Defaults to None.</p>
+</dd>
+<dt>cmap (str, optional): Colormap specifier. Defaults to</dt><dd><p>'coolwarm'.</p>
+</dd>
+<dt>levels (np.array, optional): Contour levels for line contour plot.</dt><dd><p>Defaults to None.</p>
+</dd>
+<dt>clevels (np.array, optional): Contour levels for tricontourf plot.</dt><dd><p>Defaults to None.</p>
+</dd>
+<dt>color_bar (Boolean, optional): Flag to include a color bar on the plot.</dt><dd><p>Defaults to False.</p>
+</dd>
+<dt>label_contours (Boolean, optional): Flag to include a numerical contour labels</dt><dd><p>on the plot. Defaults to False.</p>
+</dd>
+</dl>
+<p>title (str, optional): User-supplied title for the plot. Defaults to &quot;&quot;.
+<a href="#id3"><span class="problematic" id="id4">**</span></a>kwargs: Additional parameters to pass to line contour plot.</p>
+</dd>
+<dt>Returns:</dt><dd><p>im (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.plt.pcolormesh</span></code>): Image handle.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -718,41 +728,42 @@ on the plot. Defaults to False.</p></li>
 <dt class="sig sig-object py" id="floris.tools.visualization.visualize_heterogeneous_cut_plane">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">visualize_heterogeneous_cut_plane</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fi</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">vel_component</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'u'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cmap</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'coolwarm'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">levels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">clevels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">color_bar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">label_contours</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">''</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">plot_het_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/visualization.html#visualize_heterogeneous_cut_plane"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.visualization.visualize_heterogeneous_cut_plane" title="Link to this definition">#</a></dt>
 <dd><p>Generate pseudocolor mesh plot of the heterogeneous cut_plane.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cut_plane</strong> (<a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>) -- 2D
-plane through wind plant.</p></li>
-<li><p><strong>fi</strong> (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlorisInterface</span></code></a>) -- FlorisInterface object.</p></li>
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>) -- Figure axes. Defaults
-to None.</p></li>
-<li><p><strong>vel_component</strong> (<em>str</em><em>, </em><em>optional</em>) -- The velocity component that the cut plane is
-perpendicular to.</p></li>
-<li><p><strong>min_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Minimum value of wind speed for
-contours. Defaults to None.</p></li>
-<li><p><strong>max_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Maximum value of wind speed for
-contours. Defaults to None.</p></li>
-<li><p><strong>cmap</strong> (<em>str</em><em>, </em><em>optional</em>) -- Colormap specifier. Defaults to
-'coolwarm'.</p></li>
-<li><p><strong>levels</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Contour levels for line contour plot.
-Defaults to None.</p></li>
-<li><p><strong>clevels</strong> (<em>np.array</em><em>, </em><em>optional</em>) -- Contour levels for tricontourf plot.
-Defaults to None.</p></li>
-<li><p><strong>color_bar</strong> (<em>Boolean</em><em>, </em><em>optional</em>) -- Flag to include a color bar on the plot.
-Defaults to False.</p></li>
-<li><p><strong>label_contours</strong> (<em>Boolean</em><em>, </em><em>optional</em>) -- Flag to include a numerical contour labels
-on the plot. Defaults to False.</p></li>
-<li><p><strong>title</strong> (<em>str</em><em>, </em><em>optional</em>) -- User-supplied title for the plot. Defaults to &quot;&quot;.</p></li>
-<li><p><strong>plot_het_bonds</strong> (<em>boolean</em><em>, </em><em>optional</em>) -- Flag to include the user-defined bounds of the
-heterogeneous wind speed area. Defaults to True.</p></li>
-<li><p><strong>**kwargs</strong> -- Additional parameters to pass to line contour plot.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>cut_plane (<a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>): 2D</dt><dd><p>plane through wind plant.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Image handle.</p>
+</dl>
+<p>fi (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">FlorisInterface</span></code></a>): FlorisInterface object.
+ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>): Figure axes. Defaults</p>
+<blockquote>
+<div><p>to None.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>vel_component (str, optional): The velocity component that the cut plane is</dt><dd><p>perpendicular to.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>im (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.plt.pcolormesh</span></code>)</p>
+<dt>min_speed (float, optional): Minimum value of wind speed for</dt><dd><p>contours. Defaults to None.</p>
+</dd>
+<dt>max_speed (float, optional): Maximum value of wind speed for</dt><dd><p>contours. Defaults to None.</p>
+</dd>
+<dt>cmap (str, optional): Colormap specifier. Defaults to</dt><dd><p>'coolwarm'.</p>
+</dd>
+<dt>levels (np.array, optional): Contour levels for line contour plot.</dt><dd><p>Defaults to None.</p>
+</dd>
+<dt>clevels (np.array, optional): Contour levels for tricontourf plot.</dt><dd><p>Defaults to None.</p>
+</dd>
+<dt>color_bar (Boolean, optional): Flag to include a color bar on the plot.</dt><dd><p>Defaults to False.</p>
+</dd>
+<dt>label_contours (Boolean, optional): Flag to include a numerical contour labels</dt><dd><p>on the plot. Defaults to False.</p>
+</dd>
+</dl>
+<p>title (str, optional): User-supplied title for the plot. Defaults to &quot;&quot;.
+plot_het_bonds (boolean, optional): Flag to include the user-defined bounds of the</p>
+<blockquote>
+<div><p>heterogeneous wind speed area. Defaults to True.</p>
+</div></blockquote>
+<p><a href="#id5"><span class="problematic" id="id6">**</span></a>kwargs: Additional parameters to pass to line contour plot.</p>
+</dd>
+<dt>Returns:</dt><dd><p>im (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.plt.pcolormesh</span></code>): Image handle.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -761,27 +772,22 @@ heterogeneous wind speed area. Defaults to True.</p></li>
 <dt class="sig sig-object py" id="floris.tools.visualization.visualize_quiver">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">visualize_quiver</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cut_plane</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_speed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">downSamp</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/visualization.html#visualize_quiver"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.visualization.visualize_quiver" title="Link to this definition">#</a></dt>
 <dd><p>Visualize the in-plane flows in a cut_plane using quiver.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>cut_plane</strong> (<a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>) -- 2D
-plane through wind plant.</p></li>
-<li><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>) -- Figure axes. Defaults
-to None.</p></li>
-<li><p><strong>min_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Minimum value of wind speed for
-contours. Defaults to None.</p></li>
-<li><p><strong>max_speed</strong> (<em>float</em><em>, </em><em>optional</em>) -- Maximum value of wind speed for
-contours. Defaults to None.</p></li>
-<li><p><strong>downSamp</strong> (<em>int</em><em>, </em><em>optional</em>) -- Down sample the number of quiver arrows
-from underlying grid.</p></li>
-<li><p><strong>**kwargs</strong> -- Additional parameters to pass to <cite>ax.streamplot</cite>.</p></li>
-</ul>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>cut_plane (<a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>): 2D</dt><dd><p>plane through wind plant.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Image handle.</p>
+<dt>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>): Figure axes. Defaults</dt><dd><p>to None.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>im (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.plt.pcolormesh</span></code>)</p>
+<dt>min_speed (float, optional): Minimum value of wind speed for</dt><dd><p>contours. Defaults to None.</p>
+</dd>
+<dt>max_speed (float, optional): Maximum value of wind speed for</dt><dd><p>contours. Defaults to None.</p>
+</dd>
+<dt>downSamp (int, optional): Down sample the number of quiver arrows</dt><dd><p>from underlying grid.</p>
+</dd>
+</dl>
+<p><a href="#id7"><span class="problematic" id="id8">**</span></a>kwargs: Additional parameters to pass to <cite>ax.streamplot</cite>.</p>
+</dd>
+<dt>Returns:</dt><dd><p>im (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.plt.pcolormesh</span></code>): Image handle.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -790,9 +796,8 @@ from underlying grid.</p></li>
 <dt class="sig sig-object py" id="floris.tools.visualization.reverse_cut_plane_x_axis_in_plot">
 <span class="sig-prename descclassname"><span class="pre">floris.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">reverse_cut_plane_x_axis_in_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ax</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/visualization.html#reverse_cut_plane_x_axis_in_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.visualization.reverse_cut_plane_x_axis_in_plot" title="Link to this definition">#</a></dt>
 <dd><p>Shortcut method to reverse direction of x-axis.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>ax</strong> (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>) -- Figure axes.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><p>ax (<code class="xref py py-class docutils literal notranslate"><span class="pre">matplotlib.pyplot.axes</span></code>): Figure axes.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -809,38 +814,57 @@ used for inspection of what values are differing, and under what conditions.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>values</strong> (<em>np.ndarray</em>) -- The 5-dimensional array of values to plot. Should be:
-N wind directions x N wind speeds x N turbines X N rotor points X N rotor points.</p></li>
-<li><p><strong>wd_index</strong> (<em>int</em>) -- The index for the wind direction to plot.</p></li>
-<li><p><strong>ws_index</strong> (<em>int</em>) -- The index of the wind speed to plot.</p></li>
-<li><p><strong>n_rows</strong> (<em>int</em>) -- The number of rows to include for subplots. With ncols, this should
-generally add up to the number of turbines in the farm.</p></li>
-<li><p><strong>n_cols</strong> (<em>int</em>) -- The number of columns to include for subplots. With ncols, this should
-generally add up to the number of turbines in the farm.</p></li>
-<li><p><strong>t_range</strong> (<em>range</em><em> | </em><em>None</em>) -- Optional. The turbine count used to create the title for each
-subplot. If not provided, the size of the 2-th dimension of <cite>values</cite> is used.</p></li>
-<li><p><strong>cmap</strong> (<em>str</em>) -- Optional. The matplotlib colormap to be used, default &quot;coolwarm&quot;.</p></li>
-<li><p><strong>return_fig_objects</strong> (<em>bool</em>) -- Optional. Flag to return the primary figure objects for
-further editing, default False.</p></li>
-<li><p><strong>save_path</strong> (<em>str</em><em> | </em><em>None</em>) -- Optional. Where to save the figure, if a value is provided.</p></li>
-<li><p><strong>show</strong> (<em>bool</em>) -- Optional. Flag to run <cite>plt.show()</cite> to present all the plots
-currently created with matplotlib.</p></li>
+<li><p><strong>values</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>wd_index</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>ws_index</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>n_rows</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>n_cols</strong> (<em>int</em>) -- </p></li>
+<li><p><strong>t_range</strong> (<em>range</em><em> | </em><em>None</em>) -- </p></li>
+<li><p><strong>cmap</strong> (<em>str</em>) -- </p></li>
+<li><p><strong>return_fig_objects</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>save_path</strong> (<em>str</em><em> | </em><em>None</em>) -- </p></li>
+<li><p><strong>show</strong> (<em>bool</em>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>If
+</dl>
+<dl>
+<dt>Parameters:</dt><dd><dl class="simple">
+<dt>values (np.ndarray): The 5-dimensional array of values to plot. Should be:</dt><dd><p>N wind directions x N wind speeds x N turbines X N rotor points X N rotor points.</p>
+</dd>
+</dl>
+<p>wd_index (int): The index for the wind direction to plot.
+ws_index (int): The index of the wind speed to plot.
+n_rows (int): The number of rows to include for subplots. With ncols, this should</p>
+<blockquote>
+<div><p>generally add up to the number of turbines in the farm.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>n_cols (int): The number of columns to include for subplots. With ncols, this should</dt><dd><p>generally add up to the number of turbines in the farm.</p>
+</dd>
+<dt>t_range (range | None): Optional. The turbine count used to create the title for each</dt><dd><p>subplot. If not provided, the size of the 2-th dimension of <cite>values</cite> is used.</p>
+</dd>
+</dl>
+<p>cmap (str): Optional. The matplotlib colormap to be used, default &quot;coolwarm&quot;.
+return_fig_objects (bool): Optional. Flag to return the primary figure objects for</p>
+<blockquote>
+<div><p>further editing, default False.</p>
+</div></blockquote>
+<p>save_path (str | None): Optional. Where to save the figure, if a value is provided.
+show (bool): Optional. Flag to run <cite>plt.show()</cite> to present all the plots</p>
+<blockquote>
+<div><p>currently created with matplotlib.</p>
+</div></blockquote>
+</dd>
+<dt>Returns:</dt><dd><p>None | tuple[plt.figure, plt.axes, plt.axis, plt.colorbar]: If
 <cite>return_fig_objects</cite> is <cite>False, then `None</cite> is returned`, otherwise the primary
 figure objects are returned for custom editing.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>None | tuple[plt.figure, plt.axes, plt.axis, plt.colorbar]</p>
-</dd>
-</dl>
-<p class="rubric">Example</p>
-<p>from floris.tools.visualization import plot_rotor_values
+<dt>Example:</dt><dd><p>from floris.tools.visualization import plot_rotor_values
 plot_rotor_values(floris.flow_field.u, wd_index=0, ws_index=0, n_rows=1, ncols=4)
 plot_rotor_values(floris.flow_field.v, wd_index=0, ws_index=0, n_rows=1, ncols=4)
 plot_rotor_values(floris.flow_field.w, wd_index=0, ws_index=0, n_rows=1, ncols=4, show=True)</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py function">
@@ -861,23 +885,21 @@ for models where the visualization capability is not yet available.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>fi_in</strong> (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.tools.floris_interface.FlorisInterface</span></code></a>) -- Preinitialized FlorisInterface object.</p></li>
-<li><p><strong>x_resolution</strong> (<em>float</em><em>, </em><em>optional</em>) -- Output array resolution. Defaults to 200 points.</p></li>
-<li><p><strong>y_resolution</strong> (<em>float</em><em>, </em><em>optional</em>) -- Output array resolution. Defaults to 200 points.</p></li>
-<li><p><strong>x_bounds</strong> (<em>tuple</em><em>, </em><em>optional</em>) -- Limits of output array (in m). Defaults to None.</p></li>
-<li><p><strong>y_bounds</strong> (<em>tuple</em><em>, </em><em>optional</em>) -- Limits of output array (in m). Defaults to None.</p></li>
-<li><p><strong>wd</strong> (<em>float</em><em>, </em><em>optional</em>) -- Wind direction setting. Defaults to None.</p></li>
-<li><p><strong>ws</strong> (<em>float</em><em>, </em><em>optional</em>) -- Wind speed setting. Defaults to None.</p></li>
-<li><p><strong>yaw_angles</strong> (<em>np.ndarray</em><em>, </em><em>optional</em>) -- Yaw angles settings. Defaults to None.</p></li>
-</ul>
+</dl>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>fi_in (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.tools.floris_interface.FlorisInterface</span></code></a>):</dt><dd><p>Preinitialized FlorisInterface object.</p>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>containing values of x, y, u, v, w</p>
+</dl>
+<p>x_resolution (float, optional): Output array resolution. Defaults to 200 points.
+y_resolution (float, optional): Output array resolution. Defaults to 200 points.
+x_bounds (tuple, optional): Limits of output array (in m). Defaults to None.
+y_bounds (tuple, optional): Limits of output array (in m). Defaults to None.
+wd (float, optional): Wind direction setting. Defaults to None.
+ws (float, optional): Wind speed setting. Defaults to None.
+yaw_angles (np.ndarray, optional): Yaw angles settings. Defaults to None.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p><a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a></p>
+<dt>Returns:</dt><dd><p><a class="reference internal" href="floris.tools.cut_plane.html#floris.tools.cut_plane.CutPlane" title="floris.tools.cut_plane.CutPlane"><code class="xref py py-class docutils literal notranslate"><span class="pre">CutPlane</span></code></a>: containing values of x, y, u, v, w</p>
 </dd>
 </dl>
 </dd></dl>
@@ -887,19 +909,29 @@ for models where the visualization capability is not yet available.</p>
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">floris.tools.visualization.</span></span><span class="sig-name descname"><span class="pre">VelocityProfilesFigure</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">downstream_dists_D</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layout</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['cross-stream']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_width</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2.07</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ax_height</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">3.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">coordinate_labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">['x_1/D',</span> <span class="pre">'x_2/D',</span> <span class="pre">'x_3/D']</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/tools/visualization.html#VelocityProfilesFigure"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.tools.visualization.VelocityProfilesFigure" title="Link to this definition">#</a></dt>
 <dd><p>Create a figure which displays velocity deficit profiles at several downstream
 locations of a turbine.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>downstream_dists_D: A list/array of streamwise locations at which the velocity deficit</dt><dd><p>profiles have been sampled. The locations should be normalized by the turbine
+diameter D.</p>
+</dd>
+<dt>layout: A one- or two-element list defining the direction of the profiles and in which</dt><dd><p>order the directions are plotted. For example, ['cross-stream', 'vertical'] initializes
+a figure where cross-stream profiles are expected on the top row of Axes in the figure,
+and vertical profiles are expected on the bottom row.</p>
+</dd>
+</dl>
+<p>ax_width: Roughly the width of each Axes.
+ax_height: Roughly the height of each Axes.
+coordinate_labels: A list of labels for the normalized coordinates.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>downstream_dists_D</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- A list/array of streamwise locations at which the velocity deficit
-profiles have been sampled. The locations should be normalized by the turbine
-diameter D.</p></li>
-<li><p><strong>layout</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- A one- or two-element list defining the direction of the profiles and in which
-order the directions are plotted. For example, ['cross-stream', 'vertical'] initializes
-a figure where cross-stream profiles are expected on the top row of Axes in the figure,
-and vertical profiles are expected on the bottom row.</p></li>
-<li><p><strong>ax_width</strong> (<em>float</em>) -- Roughly the width of each Axes.</p></li>
-<li><p><strong>ax_height</strong> (<em>float</em>) -- Roughly the height of each Axes.</p></li>
-<li><p><strong>coordinate_labels</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- A list of labels for the normalized coordinates.</p></li>
+<li><p><strong>downstream_dists_D</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>layout</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
+<li><p><strong>ax_width</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>ax_height</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>coordinate_labels</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) -- </p></li>
 </ul>
 </dd>
 </dl>
@@ -1016,16 +1048,17 @@ as a pandas DataFrame. <cite>kwargs</cite> are passed to <cite>ax.plot</cite>.</
 <dd><p>Add reference lines to the VelocityProfilesFigure which go along the XAxis.
 :rtype: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 <p>Commonly used to show the extent of the turbine.
-:param ref_lines_x2_D: A list of x2-coordinates normalized by the turbine diameter D.</p>
+Args:</p>
 <blockquote>
-<div><p>One coordinate per reference line.</p>
+<div><dl class="simple">
+<dt>ref_lines_x2_D: A list of x2-coordinates normalized by the turbine diameter D.</dt><dd><p>One coordinate per reference line.</p>
+</dd>
+</dl>
+<p><a href="#id9"><span class="problematic" id="id10">**</span></a>kwargs: Additional parameters to pass to <cite>ax.plot</cite>.</p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>**kwargs</strong> -- Additional parameters to pass to <cite>ax.plot</cite>.</p></li>
-<li><p><strong>ref_lines_x2_D</strong> (<em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
-</ul>
+<dd class="field-odd"><p><strong>ref_lines_x2_D</strong> (<em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>
@@ -1039,16 +1072,17 @@ as a pandas DataFrame. <cite>kwargs</cite> are passed to <cite>ax.plot</cite>.</
 <dd><p>Add reference lines to the VelocityProfilesFigure which go along the XAxis.
 :rtype: <span class="sphinx_autodoc_typehints-type"><code class="xref py py-obj docutils literal notranslate"><span class="pre">None</span></code></span></p>
 <p>Commonly used to show the extent of the turbine.
-:param ref_lines_x3_D: A list of x3-coordinates normalized by the turbine diameter D.</p>
+Args:</p>
 <blockquote>
-<div><p>One coordinate per reference line.</p>
+<div><dl class="simple">
+<dt>ref_lines_x3_D: A list of x3-coordinates normalized by the turbine diameter D.</dt><dd><p>One coordinate per reference line.</p>
+</dd>
+</dl>
+<p><a href="#id11"><span class="problematic" id="id12">**</span></a>kwargs: Additional parameters to pass to <cite>ax.plot</cite>.</p>
 </div></blockquote>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>**kwargs</strong> -- Additional parameters to pass to <cite>ax.plot</cite>.</p></li>
-<li><p><strong>ref_lines_x3_D</strong> (<em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
-</ul>
+<dd class="field-odd"><p><strong>ref_lines_x3_D</strong> (<em>list</em><em>[</em><em>float</em><em>] </em><em>| </em><em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
 <dd class="field-even"><p>None</p>

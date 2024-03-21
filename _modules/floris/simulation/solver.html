@@ -1423,7 +1423,7 @@ document.write(`
 
         <span class="c1"># Model calculations</span>
         <span class="c1"># NOTE: exponential</span>
-        <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">farm</span><span class="o">.</span><span class="n">yaw_angles_sorted</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">farm</span><span class="o">.</span><span class="n">yaw_angles_sorted</span><span class="p">):</span>
             <span class="n">model_manager</span><span class="o">.</span><span class="n">deflection_model</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
                 <span class="s2">&quot;WARNING: Deflection with the TurbOPark model has not been fully validated.&quot;</span>
                 <span class="s2">&quot;This is an initial implementation, and we advise you use at your own risk&quot;</span>

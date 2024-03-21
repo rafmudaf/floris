@@ -545,14 +545,21 @@ document.write(`
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">floris.simulation.wake.</span></span><span class="sig-name descname"><span class="pre">WakeModelManager</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">model_strings</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_secondary_steering</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_yaw_added_recovery</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">enable_transverse_velocities</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wake_deflection_parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wake_turbulence_parameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wake_velocity_parameters</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">_Nothing.NOTHING</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/wake.html#WakeModelManager"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.wake.WakeModelManager" title="Link to this definition">#</a></dt>
 <dd><p>WakeModelManager is a container class for the wake velocity, deflection,
 turbulence, and combination models.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>wake (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>): The wake's properties input dictionary</dt><dd><ul class="simple">
+<li><p>velocity_model (str): The name of the velocity model to be instantiated.</p></li>
+<li><p>turbulence_model (str): The name of the turbulence model to be instantiated.</p></li>
+<li><p>deflection_model (str): The name of the deflection model to be instantiated.</p></li>
+<li><p>combination_model (str): The name of the combination model to be instantiated.</p></li>
+</ul>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>wake</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">dict</span></code>) -- The wake's properties input dictionary
-- velocity_model (str): The name of the velocity model to be instantiated.
-- turbulence_model (str): The name of the turbulence model to be instantiated.
-- deflection_model (str): The name of the deflection model to be instantiated.
-- combination_model (str): The name of the combination model to be instantiated.</p></li>
 <li><p><strong>model_strings</strong> (<em>dict</em>) -- </p></li>
 <li><p><strong>enable_secondary_steering</strong> (<em>bool</em>) -- </p></li>
 <li><p><strong>enable_yaw_added_recovery</strong> (<em>bool</em>) -- </p></li>

@@ -573,21 +573,27 @@ Cp/Ct values, adjusted for yaw and tilt. Value given in Watts.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>ref_density_cp_cts</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The reference density for each turbine</p></li>
-<li><p><strong>rotor_effective_velocities</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>, </em><em>grid1</em><em>, </em><em>grid2</em><em>]</em>) -- The rotor
-effective velocities at a turbine.</p></li>
-<li><p><strong>power_interp</strong> (<em>NDArrayObject</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The power interpolation function
-for each turbine.</p></li>
-<li><p><strong>ix_filter</strong> (<em>NDArrayInt</em><em>, </em><em>optional</em>) -- The boolean array, or
-integer indices to filter out before calculation. Defaults to None.</p></li>
 <li><p><strong>ref_density_cp_ct</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>rotor_effective_velocities</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>power_interp</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>object_</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>ix_filter</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>int64</em><em>]</em><em>] </em><em>| </em><em>Iterable</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The power, in Watts, for each turbine after adjusting for yaw and tilt.</p>
+</dl>
+<dl>
+<dt>Args:</dt><dd><p>ref_density_cp_cts (NDArrayFloat[wd, ws, turbines]): The reference density for each turbine
+rotor_effective_velocities (NDArrayFloat[wd, ws, turbines, grid1, grid2]): The rotor</p>
+<blockquote>
+<div><p>effective velocities at a turbine.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>power_interp (NDArrayObject[wd, ws, turbines]): The power interpolation function</dt><dd><p>for each turbine.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>NDArrayFloat</p>
+<dt>ix_filter (NDArrayInt, optional): The boolean array, or</dt><dd><p>integer indices to filter out before calculation. Defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>NDArrayFloat: The power, in Watts, for each turbine after adjusting for yaw and tilt.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -605,31 +611,47 @@ swept area average velocity.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>velocities</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>, </em><em>grid1</em><em>, </em><em>grid2</em><em>]</em>) -- The velocity field at
-a turbine.</p></li>
-<li><p><strong>yaw_angle</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The yaw angle for each turbine.</p></li>
-<li><p><strong>tilt_angle</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The tilt angle for each turbine.</p></li>
-<li><p><strong>ref_tilt_cp_ct</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The reference tilt angle for each turbine
-that the Cp/Ct tables are defined at.</p></li>
-<li><p><strong>fCt</strong> (<em>list</em>) -- The thrust coefficient interpolation functions for each turbine.</p></li>
-<li><p><strong>tilt_interp</strong> (<em>Iterable</em><em>[</em><em>tuple</em><em>]</em>) -- The tilt interpolation functions for each
-turbine.</p></li>
-<li><p><strong>correct_cp_ct_for_tilt</strong> (<em>NDArrayBool</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- Boolean for determining if the
-turbines Cp and Ct should be corrected for tilt.</p></li>
-<li><p><strong>turbine_type_map</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>object_</em><em>]</em><em>]</em>) -- (NDArrayObject[wd, ws, turbines]): The Turbine type definition
-for each turbine.</p></li>
-<li><p><strong>ix_filter</strong> (<em>NDArrayFilter</em><em> | </em><em>Iterable</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) -- The boolean array, or
-integer indices as an iterable of array to filter out before calculation.
-Defaults to None.</p></li>
+<li><p><strong>velocities</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>yaw_angle</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>tilt_angle</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>ref_tilt_cp_ct</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>fCt</strong> (<em>list</em>) -- </p></li>
+<li><p><strong>tilt_interp</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>object_</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>correct_cp_ct_for_tilt</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>bool_</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>turbine_type_map</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>object_</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>ix_filter</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>int64</em><em>]</em><em>] </em><em>| </em><em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>bool_</em><em>]</em><em>] </em><em>| </em><em>Iterable</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em>) -- </p></li>
 <li><p><strong>average_method</strong> (<em>str</em>) -- </p></li>
 <li><p><strong>cubature_weights</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>] </em><em>| </em><em>None</em>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Coefficient of thrust for each requested turbine.</p>
+</dl>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>velocities (NDArrayFloat[wd, ws, turbines, grid1, grid2]): The velocity field at</dt><dd><p>a turbine.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>NDArrayFloat</p>
+</dl>
+<p>yaw_angle (NDArrayFloat[wd, ws, turbines]): The yaw angle for each turbine.
+tilt_angle (NDArrayFloat[wd, ws, turbines]): The tilt angle for each turbine.
+ref_tilt_cp_ct (NDArrayFloat[wd, ws, turbines]): The reference tilt angle for each turbine</p>
+<blockquote>
+<div><p>that the Cp/Ct tables are defined at.</p>
+</div></blockquote>
+<p>fCt (list): The thrust coefficient interpolation functions for each turbine.
+tilt_interp (Iterable[tuple]): The tilt interpolation functions for each</p>
+<blockquote>
+<div><p>turbine.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>correct_cp_ct_for_tilt (NDArrayBool[wd, ws, turbines]): Boolean for determining if the</dt><dd><p>turbines Cp and Ct should be corrected for tilt.</p>
+</dd>
+<dt>turbine_type_map: (NDArrayObject[wd, ws, turbines]): The Turbine type definition</dt><dd><p>for each turbine.</p>
+</dd>
+<dt>ix_filter (NDArrayFilter | Iterable[int] | None, optional): The boolean array, or</dt><dd><p>integer indices as an iterable of array to filter out before calculation.
+Defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>NDArrayFloat: Coefficient of thrust for each requested turbine.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -645,31 +667,47 @@ Cp/Ct values, incorporating the thrust coefficient and yaw angle.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>velocities</strong> (<em>NDArrayFloat</em>) -- The velocity field at each turbine; should be shape:
-(number of turbines, ngrid, ngrid), or (ngrid, ngrid) for a single turbine.</p></li>
-<li><p><strong>yaw_angle</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The yaw angle for each turbine.</p></li>
-<li><p><strong>tilt_angle</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The tilt angle for each turbine.</p></li>
-<li><p><strong>ref_tilt_cp_ct</strong> (<em>NDArrayFloat</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The reference tilt angle for each turbine
-that the Cp/Ct tables are defined at.</p></li>
-<li><p><strong>fCt</strong> (<em>list</em>) -- The thrust coefficient interpolation functions for each turbine.</p></li>
-<li><p><strong>tilt_interp</strong> (<em>Iterable</em><em>[</em><em>tuple</em><em>]</em>) -- The tilt interpolation functions for each
-turbine.</p></li>
-<li><p><strong>correct_cp_ct_for_tilt</strong> (<em>NDArrayBool</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- Boolean for determining if the
-turbines Cp and Ct should be corrected for tilt.</p></li>
-<li><p><strong>turbine_type_map</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>object_</em><em>]</em><em>]</em>) -- (NDArrayObject[wd, ws, turbines]): The Turbine type definition
-for each turbine.</p></li>
-<li><p><strong>ix_filter</strong> (<em>NDArrayFilter</em><em> | </em><em>Iterable</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em><em>, </em><em>optional</em>) -- The boolean array, or
-integer indices (as an array or iterable) to filter out before calculation.
-Defaults to None.</p></li>
+<li><p><strong>velocities</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>yaw_angle</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>tilt_angle</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>ref_tilt_cp_ct</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>fCt</strong> (<em>list</em>) -- </p></li>
+<li><p><strong>tilt_interp</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>object_</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>correct_cp_ct_for_tilt</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>bool_</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>turbine_type_map</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>object_</em><em>]</em><em>]</em>) -- </p></li>
+<li><p><strong>ix_filter</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>int64</em><em>]</em><em>] </em><em>| </em><em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>bool_</em><em>]</em><em>] </em><em>| </em><em>Iterable</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em>) -- </p></li>
 <li><p><strong>average_method</strong> (<em>str</em>) -- </p></li>
 <li><p><strong>cubature_weights</strong> (<em>ndarray</em><em>[</em><em>Any</em><em>, </em><em>dtype</em><em>[</em><em>float64</em><em>]</em><em>] </em><em>| </em><em>None</em>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[description]</p>
+</dl>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>velocities (NDArrayFloat): The velocity field at each turbine; should be shape:</dt><dd><p>(number of turbines, ngrid, ngrid), or (ngrid, ngrid) for a single turbine.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Union[float, NDArrayFloat]</p>
+</dl>
+<p>yaw_angle (NDArrayFloat[wd, ws, turbines]): The yaw angle for each turbine.
+tilt_angle (NDArrayFloat[wd, ws, turbines]): The tilt angle for each turbine.
+ref_tilt_cp_ct (NDArrayFloat[wd, ws, turbines]): The reference tilt angle for each turbine</p>
+<blockquote>
+<div><p>that the Cp/Ct tables are defined at.</p>
+</div></blockquote>
+<p>fCt (list): The thrust coefficient interpolation functions for each turbine.
+tilt_interp (Iterable[tuple]): The tilt interpolation functions for each</p>
+<blockquote>
+<div><p>turbine.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>correct_cp_ct_for_tilt (NDArrayBool[wd, ws, turbines]): Boolean for determining if the</dt><dd><p>turbines Cp and Ct should be corrected for tilt.</p>
+</dd>
+<dt>turbine_type_map: (NDArrayObject[wd, ws, turbines]): The Turbine type definition</dt><dd><p>for each turbine.</p>
+</dd>
+<dt>ix_filter (NDArrayFilter | Iterable[int] | None, optional): The boolean array, or</dt><dd><p>integer indices (as an array or iterable) to filter out before calculation.
+Defaults to None.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Union[float, NDArrayFloat]: [description]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -683,18 +721,15 @@ provided for the turbine based on the specified conditions.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>turbine_fCts</strong> (<em>NDArray</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The Ct interpolants generated from the
-multi-dimensional Ct turbine data for all specified conditions.</p></li>
-<li><p><strong>conditions</strong> (<em>dict</em>) -- The conditions at which to determine which Ct interpolant to use.</p></li>
-</ul>
+</dl>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_fCts (NDArray[wd, ws, turbines]): The Ct interpolants generated from the</dt><dd><p>multi-dimensional Ct turbine data for all specified conditions.</p>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The down selected Ct interpolants for the selected conditions.</p>
+</dl>
+<p>conditions (dict): The conditions at which to determine which Ct interpolant to use.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>NDArray</p>
+<dt>Returns:</dt><dd><p>NDArray: The down selected Ct interpolants for the selected conditions.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -708,18 +743,15 @@ provided for the turbine based on the specified conditions.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">list</span></code></span></p>
 </dd>
-<dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>power_interps</strong> (<em>NDArray</em><em>[</em><em>wd</em><em>, </em><em>ws</em><em>, </em><em>turbines</em><em>]</em>) -- The power interpolants generated from the
-multi-dimensional Cp turbine data for all specified conditions.</p></li>
-<li><p><strong>conditions</strong> (<em>dict</em>) -- The conditions at which to determine which Ct interpolant to use.</p></li>
-</ul>
+</dl>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>power_interps (NDArray[wd, ws, turbines]): The power interpolants generated from the</dt><dd><p>multi-dimensional Cp turbine data for all specified conditions.</p>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The down selected power interpolants for the selected conditions.</p>
+</dl>
+<p>conditions (dict): The conditions at which to determine which Ct interpolant to use.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>NDArray</p>
+<dt>Returns:</dt><dd><p>NDArray: The down selected power interpolants for the selected conditions.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -750,21 +782,21 @@ turbines.</p>
 <p>Turbine is a model class representing a particular wind turbine. It
 is largely a container of data and parameters, but also contains
 methods to probe properties for output.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>(</strong> (<em>rloc</em>) -- py:obj: float): The rotor diameter (m).</p></li>
-<li><p><strong>(</strong> -- py:obj: float): The hub height (m).</p></li>
-<li><p><strong>(</strong> -- py:obj: float): The cosine exponent relating the yaw
-misalignment angle to power.</p></li>
-<li><p><strong>(</strong> -- py:obj: float): The cosine exponent relating the rotor
-tilt angle to power.</p></li>
-<li><p><strong>(</strong> -- py:obj: float): The generator
-efficiency factor used to scale the power production.</p></li>
-<li><p><strong>(</strong> -- py:obj: float): The density at which the provided
-cp and ct is defined</p></li>
-<li><p><strong>power_thrust_table</strong> (<em>PowerThrustTable</em>) -- <p>A dictionary containing the
-following key-value pairs:</p>
+<dl>
+<dt>Parameters:</dt><dd><p>rotor_diameter (:py:obj: float): The rotor diameter (m).
+hub_height (:py:obj: float): The hub height (m).
+pP (:py:obj: float): The cosine exponent relating the yaw</p>
+<blockquote>
+<div><p>misalignment angle to power.</p>
+</div></blockquote>
+<dl>
+<dt>pT (:py:obj: float): The cosine exponent relating the rotor</dt><dd><p>tilt angle to power.</p>
+</dd>
+<dt>generator_efficiency (:py:obj: float): The generator</dt><dd><p>efficiency factor used to scale the power production.</p>
+</dd>
+<dt>ref_density_cp_ct (:py:obj: float): The density at which the provided</dt><dd><p>cp and ct is defined</p>
+</dd>
+<dt>power_thrust_table (PowerThrustTable): A dictionary containing the</dt><dd><p>following key-value pairs:</p>
 <dl class="simple">
 <dt>power (:py:obj: List[float]): The coefficient of power at</dt><dd><p>different wind speeds.</p>
 </dd>
@@ -773,24 +805,30 @@ following key-value pairs:</p>
 <dt>wind_speed (:py:obj: List[float]): The wind speeds for</dt><dd><p>which the power and thrust values are provided (m/s).</p>
 </dd>
 </dl>
-</p></li>
-<li><p><strong>ngrid</strong> (<em>int</em>, optional) -- The square root of the number
-of points to use on the turbine grid. This number will be
+</dd>
+<dt>ngrid (<em>int</em>, optional): The square root of the number</dt><dd><p>of points to use on the turbine grid. This number will be
 squared so that the points can be evenly distributed.
-Defaults to 5.</p></li>
-<li><p><strong>(</strong> -- py:obj: float, optional): A value, from 0 to 1, that determines
-the width/height of the grid of points on the rotor as a ratio of
+Defaults to 5.</p>
+</dd>
+<dt>rloc (:py:obj: float, optional): A value, from 0 to 1, that determines</dt><dd><p>the width/height of the grid of points on the rotor as a ratio of
 the rotor radius.
-Defaults to 0.5.</p></li>
-<li><p><strong>power_thrust_data_file</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>) -- The path and name of the file containing the
-multidimensional power thrust curve. The path may be an absolute location or a relative
-path to where FLORIS is being run.</p></li>
-<li><p><strong>multi_dimensional_cp_ct</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional) -- Indicates if the turbine definition is
-single dimensional (False) or multidimensional (True).</p></li>
-<li><p><strong>turbine_library_path</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pathlib.Path</span></code>, optional) -- The
-<code class="xref py py-attr docutils literal notranslate"><span class="pre">Farm.turbine_library_path</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">Farm.internal_turbine_library_path</span></code>,
+Defaults to 0.5.</p>
+</dd>
+<dt>power_thrust_data_file (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): The path and name of the file containing the</dt><dd><p>multidimensional power thrust curve. The path may be an absolute location or a relative
+path to where FLORIS is being run.</p>
+</dd>
+<dt>multi_dimensional_cp_ct (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>, optional): Indicates if the turbine definition is</dt><dd><p>single dimensional (False) or multidimensional (True).</p>
+</dd>
+<dt>turbine_library_path (<code class="xref py py-obj docutils literal notranslate"><span class="pre">pathlib.Path</span></code>, optional): The</dt><dd><p><code class="xref py py-attr docutils literal notranslate"><span class="pre">Farm.turbine_library_path</span></code> or <code class="xref py py-attr docutils literal notranslate"><span class="pre">Farm.internal_turbine_library_path</span></code>,
 whichever is being used to load turbine definitions.
-Defaults to the internal turbine library.</p></li>
+Defaults to the internal turbine library.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
 <li><p><strong>turbine_type</strong> (<em>str</em>) -- </p></li>
 <li><p><strong>rotor_diameter</strong> (<em>float</em>) -- </p></li>
 <li><p><strong>hub_height</strong> (<em>float</em>) -- </p></li>
@@ -802,7 +840,11 @@ Defaults to the internal turbine library.</p></li>
 <li><p><strong>ref_tilt_cp_ct</strong> (<em>float</em>) -- </p></li>
 <li><p><strong>correct_cp_ct_for_tilt</strong> (<em>bool</em>) -- </p></li>
 <li><p><strong>floating_tilt_table</strong> (<em>dict</em><em>[</em><em>str</em><em>, </em><em>NDArrayFloat</em><em>] </em><em>| </em><em>None</em>) -- </p></li>
+<li><p><strong>multi_dimensional_cp_ct</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>power_thrust_table</strong> (<em>dict</em>) -- </p></li>
+<li><p><strong>power_thrust_data_file</strong> (<em>str</em>) -- </p></li>
 <li><p><strong>power_thrust_data</strong> (<a class="reference internal" href="#floris.simulation.turbine_multi_dim.MultiDimensionalPowerThrustTable" title="floris.simulation.turbine_multi_dim.MultiDimensionalPowerThrustTable"><em>MultiDimensionalPowerThrustTable</em></a>) -- </p></li>
+<li><p><strong>turbine_library_path</strong> (<em>str</em><em> | </em><em>Path</em>) -- </p></li>
 </ul>
 </dd>
 </dl>

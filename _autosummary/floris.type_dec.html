@@ -593,16 +593,14 @@ boilerplate code.</p>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-data docutils literal notranslate"><span class="pre">Callable</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><ul class="simple">
-<li><p><strong>iter_type</strong> (<em>iterable</em>) -- The type of iterable object that should be validated.</p></li>
-<li><p><strong>item_types</strong> (<em>Union</em><em>[</em><em>Any</em><em>, </em><em>Tuple</em><em>[</em><em>Any</em><em>]</em><em>]</em>) -- The type or types of acceptable item types.</p></li>
-</ul>
+<dd class="field-even"><p><strong>item_types</strong> (<em>Any</em><em> | </em><em>Tuple</em><em>[</em><em>Any</em><em>]</em>) -- </p>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The attr.validators.deep_iterable iterable and instance validator.</p>
+</dl>
+<dl class="simple">
+<dt>Args:</dt><dd><p>iter_type (iterable): The type of iterable object that should be validated.
+item_types (Union[Any, Tuple[Any]]): The type or types of acceptable item types.</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>Callable</p>
+<dt>Returns:</dt><dd><p>Callable: The attr.validators.deep_iterable iterable and instance validator.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -620,20 +618,19 @@ any of these locations, a FileExistsError is raised.</p>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">Path</span></code></span></p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
-<dd class="field-even"><p><strong>fn</strong> (<em>str</em><em> | </em><em>Path</em>) -- The user input file path or file name.</p>
+<dd class="field-even"><p><strong>fn</strong> (<em>str</em><em> | </em><em>Path</em>) -- </p>
 </dd>
-<dt class="field-odd">Raises<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>FileExistsError</strong> -- Raised if <code class="xref py py-attr docutils literal notranslate"><span class="pre">fn</span></code> is not able to be found as an absolute path, nor as
-    a relative path.</p></li>
-<li><p><strong>TypeError</strong> -- Raised if <code class="xref py py-attr docutils literal notranslate"><span class="pre">fn</span></code> is neither a <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, nor a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pathlib.Path</span></code>.</p></li>
-</ul>
+</dl>
+<dl>
+<dt>Args:</dt><dd><p>fn (str | Path): The user input file path or file name.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A resolved pathlib.Path object.</p>
+<dt>Raises:</dt><dd><dl class="simple">
+<dt>FileExistsError: Raised if <code class="xref py py-attr docutils literal notranslate"><span class="pre">fn</span></code> is not able to be found as an absolute path, nor as</dt><dd><p>a relative path.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Path</p>
+</dl>
+<p>TypeError: Raised if <code class="xref py py-attr docutils literal notranslate"><span class="pre">fn</span></code> is neither a <code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>, nor a <code class="xref py py-obj docutils literal notranslate"><span class="pre">pathlib.Path</span></code>.</p>
+</dd>
+<dt>Returns:</dt><dd><p>Path: A resolved pathlib.Path object.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -651,17 +648,21 @@ to a data class without throwing an error.</p>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/type_dec.html#FromDictMixin.from_dict"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.type_dec.FromDictMixin.from_dict" title="Link to this definition">#</a></dt>
 <dd><p>Maps a data dictionary to an <cite>attr</cite>-defined class.</p>
 <p>TODO: Add an error to ensure that either none or all the parameters are passed in</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) -- dict
-The data dictionary to be mapped.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>data<span class="classifier">dict</span></dt><dd><p>The data dictionary to be mapped.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
 <dt>cls</dt><dd><p>The <cite>attr</cite>-defined class.</p>
 </dd>
 </dl>
-</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>dict</em>) -- </p>
 </dd>
 </dl>
 </dd></dl>
@@ -677,11 +678,9 @@ removed from the export.</p>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p><span class="sphinx_autodoc_typehints-type"><code class="xref py py-class docutils literal notranslate"><span class="pre">dict</span></code></span></p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>All key, value pairs required for class recreation.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>dict</p>
+</dl>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>dict: All key, value pairs required for class recreation.</p>
 </dd>
 </dl>
 </dd></dl>

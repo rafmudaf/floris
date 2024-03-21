@@ -534,8 +534,8 @@ document.write(`
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">floris.simulation.wake_deflection.jimenez.</span></span><span class="sig-name descname"><span class="pre">JimenezVelocityDeflection</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">kd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ad</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bd</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/wake_deflection/jimenez.html#JimenezVelocityDeflection"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.wake_deflection.jimenez.JimenezVelocityDeflection" title="Link to this definition">#</a></dt>
 <dd><p>Jiménez wake deflection model, derived from
 <span id="id2">[<a class="reference internal" href="#id20" title="Ángel Jiménez, Antonio Crespo, and Emilio Migoya. Application of a les technique to characterize the wake deflection of a wind turbine in yaw. Wind energy, 13(6):559–572, 2010.">1</a>]</span>.</p>
-<p class="rubric">References</p>
-<div class="docutils container" id="id3">
+<dl>
+<dt>References:</dt><dd><div class="docutils container" id="id3">
 <div role="list" class="citation-list">
 <div class="citation" id="id20" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
@@ -544,6 +544,8 @@ document.write(`
 </div>
 </div>
 </div>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -589,18 +591,32 @@ document.write(`
 <span class="sig-name descname"><span class="pre">function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaw_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turbulence_intensity_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ct_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotor_diameter_i</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/wake_deflection/jimenez.html#JimenezVelocityDeflection.function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.wake_deflection.jimenez.JimenezVelocityDeflection.function" title="Link to this definition">#</a></dt>
 <dd><p>Calculates the deflection field of the wake in relation to the yaw of
 the turbine. This is coded as defined in [1].</p>
+<dl>
+<dt>Args:</dt><dd><p>x_locations (np.array): streamwise locations in wake
+y_locations (np.array): spanwise locations in wake
+z_locations (np.array): vertical locations in wake</p>
+<blockquote>
+<div><p>(not used in Jiménez)</p>
+</div></blockquote>
+<dl class="simple">
+<dt>turbine (<a class="reference internal" href="floris.simulation.turbine.html#floris.simulation.turbine.Turbine" title="floris.simulation.turbine.Turbine"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.simulation.turbine.Turbine</span></code></a>):</dt><dd><p>Turbine object</p>
+</dd>
+<dt>coord</dt><dd><p>(<code class="xref py py-meth docutils literal notranslate"><span class="pre">floris.simulation.turbine_map.TurbineMap.coords()</span></code>):
+Spatial coordinates of wind turbine.</p>
+</dd>
+<dt>flow_field</dt><dd><p>(<a class="reference internal" href="floris.simulation.flow_field.html#floris.simulation.flow_field.FlowField" title="floris.simulation.flow_field.FlowField"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.simulation.flow_field.FlowField</span></code></a>):
+Flow field object.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>deflection (np.array): Deflected wake centerline.</p>
+</dd>
+</dl>
+<p>This function calculates the deflection of the entire flow field
+given the yaw angle and Ct of the current turbine</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_locations</strong> (<em>np.array</em>) -- streamwise locations in wake</p></li>
-<li><p><strong>y_locations</strong> (<em>np.array</em>) -- spanwise locations in wake</p></li>
-<li><p><strong>z_locations</strong> (<em>np.array</em>) -- vertical locations in wake
-(not used in Jiménez)</p></li>
-<li><p><strong>turbine</strong> (<a class="reference internal" href="floris.simulation.turbine.html#floris.simulation.turbine.Turbine" title="floris.simulation.turbine.Turbine"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.simulation.turbine.Turbine</span></code></a>) -- Turbine object</p></li>
-<li><p><strong>coord</strong> -- (<code class="xref py py-meth docutils literal notranslate"><span class="pre">floris.simulation.turbine_map.TurbineMap.coords()</span></code>):
-Spatial coordinates of wind turbine.</p></li>
-<li><p><strong>flow_field</strong> -- (<a class="reference internal" href="floris.simulation.flow_field.html#floris.simulation.flow_field.FlowField" title="floris.simulation.flow_field.FlowField"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.simulation.flow_field.FlowField</span></code></a>):
-Flow field object.</p></li>
 <li><p><strong>x_i</strong> (<em>ndarray</em>) -- </p></li>
 <li><p><strong>y_i</strong> (<em>ndarray</em>) -- </p></li>
 <li><p><strong>yaw_i</strong> (<em>ndarray</em>) -- </p></li>
@@ -610,15 +626,7 @@ Flow field object.</p></li>
 <li><p><strong>x</strong> (<em>ndarray</em>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Deflected wake centerline.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>deflection (np.array)</p>
-</dd>
 </dl>
-<p>This function calculates the deflection of the entire flow field
-given the yaw angle and Ct of the current turbine</p>
 </dd></dl>
 
 </dd></dl>

@@ -596,19 +596,28 @@ together all of the component objects after input (i.e., Turbine,
 Wake, FlowField) and packages everything into the appropriate data
 type. Farm should also be used as an entry point to probe objects
 for generating output.</p>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>layout_x (NDArrayFloat): A sequence of x-axis locations for the turbines that can be</dt><dd><p>converted to a 1-D <code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>.</p>
+</dd>
+<dt>layout_y (NDArrayFloat): A sequence of y-axis locations for the turbines that can be</dt><dd><p>converted to a 1-D <code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>.</p>
+</dd>
+<dt>turbine_type (list[dict | str]): A list of turbine definition dictionaries, or string</dt><dd><p>references to the filename of the turbine type in either the FLORIS-provided turbine
+library (.../floris/turbine_library/), or a user-provided
+<a class="reference internal" href="#floris.simulation.farm.Farm.turbine_library_path" title="floris.simulation.farm.Farm.turbine_library_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">turbine_library_path</span></code></a>.</p>
+</dd>
+<dt>turbine_library_path (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>): Either an absolute file path to the turbine library, or a</dt><dd><p>path relative to the file that is running the analysis.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>layout_x</strong> (<em>NDArrayFloat</em>) -- A sequence of x-axis locations for the turbines that can be
-converted to a 1-D <code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>.</p></li>
-<li><p><strong>layout_y</strong> (<em>NDArrayFloat</em>) -- A sequence of y-axis locations for the turbines that can be
-converted to a 1-D <code class="xref py py-obj docutils literal notranslate"><span class="pre">numpy.ndarray</span></code>.</p></li>
-<li><p><strong>turbine_type</strong> (<em>list</em><em>[</em><em>dict</em><em> | </em><em>str</em><em>]</em>) -- A list of turbine definition dictionaries, or string
-references to the filename of the turbine type in either the FLORIS-provided turbine
-library (.../floris/turbine_library/), or a user-provided
-<a class="reference internal" href="#floris.simulation.farm.Farm.turbine_library_path" title="floris.simulation.farm.Farm.turbine_library_path"><code class="xref py py-attr docutils literal notranslate"><span class="pre">turbine_library_path</span></code></a>.</p></li>
-<li><p><strong>turbine_library_path</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">str</span></code>) -- Either an absolute file path to the turbine library, or a
-path relative to the file that is running the analysis.</p></li>
+<li><p><strong>layout_x</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>layout_y</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>turbine_type</strong> (<em>List</em>) -- </p></li>
+<li><p><strong>turbine_library_path</strong> (<em>str</em><em> | </em><em>Path</em>) -- </p></li>
 </ul>
 </dd>
 </dl>

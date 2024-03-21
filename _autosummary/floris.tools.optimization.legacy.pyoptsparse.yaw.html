@@ -549,28 +549,27 @@ document.write(`
 <dd><p>Class that performs yaw optimization for a single set of
 inflow conditions. Intended to be used together with an object of the
 :py:class`floris.tools.optimization.optimization.Optimization` class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>fi</strong> (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.tools.floris_interface.FlorisInterface</span></code></a>) -- Interface from FLORIS to the tools package.</p></li>
-<li><p><strong>minimum_yaw_angle</strong> (<em>float</em><em>, </em><em>optional</em>) -- Minimum constraint on
-yaw. Defaults to None.</p></li>
-<li><p><strong>maximum_yaw_angle</strong> (<em>float</em><em>, </em><em>optional</em>) -- Maximum constraint on
-yaw. Defaults to None.</p></li>
-<li><p><strong>x0</strong> (<em>iterable</em><em>, </em><em>optional</em>) -- The initial yaw conditions.
-Defaults to None. Initializes to the current turbine
-yaw settings.</p></li>
-<li><p><strong>include_unc</strong> (<em>bool</em>) -- If True, uncertainty in wind direction
-and/or yaw position is included when determining wind farm power.
+<dl>
+<dt>Args:</dt><dd><dl>
+<dt>fi (<a class="reference internal" href="floris.tools.floris_interface.html#floris.tools.floris_interface.FlorisInterface" title="floris.tools.floris_interface.FlorisInterface"><code class="xref py py-class docutils literal notranslate"><span class="pre">floris.tools.floris_interface.FlorisInterface</span></code></a>):</dt><dd><p>Interface from FLORIS to the tools package.</p>
+</dd>
+<dt>minimum_yaw_angle (float, optional): Minimum constraint on</dt><dd><p>yaw. Defaults to None.</p>
+</dd>
+<dt>maximum_yaw_angle (float, optional): Maximum constraint on</dt><dd><p>yaw. Defaults to None.</p>
+</dd>
+<dt>x0 (iterable, optional): The initial yaw conditions.</dt><dd><p>Defaults to None. Initializes to the current turbine
+yaw settings.</p>
+</dd>
+<dt>include_unc (bool): If True, uncertainty in wind direction</dt><dd><p>and/or yaw position is included when determining wind farm power.
 Uncertainty is included by computing the mean wind farm power for
 a distribution of wind direction and yaw position deviations from
-the original wind direction and yaw angles. Defaults to False.</p></li>
-<li><p><strong>unc_pmfs</strong> (<em>dictionary</em><em>, </em><em>optional</em>) -- <p>A dictionary containing optional
-probability mass functions describing the distribution of wind
+the original wind direction and yaw angles. Defaults to False.</p>
+</dd>
+<dt>unc_pmfs (dictionary, optional): A dictionary containing optional</dt><dd><p>probability mass functions describing the distribution of wind
 direction and yaw position deviations when wind direction and/or
 yaw position uncertainty is included in the power calculations.
 Contains the following key-value pairs:</p>
-<ul>
+<ul class="simple">
 <li><p><strong>wd_unc</strong>: A numpy array containing wind direction deviations
 from the original wind direction.</p></li>
 <li><p><strong>wd_unc_pmf</strong>: A numpy array containing the probability of
@@ -582,14 +581,13 @@ each yaw angle deviation in <strong>yaw_unc</strong> occuring.</p></li>
 </ul>
 <p>Defaults to None, in which case default PMFs are calculated using
 values provided in <strong>unc_options</strong>.</p>
-</p></li>
-<li><p><strong>unc_options</strong> (<em>disctionary</em><em>, </em><em>optional</em>) -- <p>A dictionary containing values used
-to create normally-distributed, zero-mean probability mass functions
+</dd>
+<dt>unc_options (disctionary, optional): A dictionary containing values used</dt><dd><p>to create normally-distributed, zero-mean probability mass functions
 describing the distribution of wind direction and yaw position
 deviations when wind direction and/or yaw position uncertainty is
 included. This argument is only used when <strong>unc_pmfs</strong> is None and
 contains the following key-value pairs:</p>
-<ul>
+<ul class="simple">
 <li><dl class="simple">
 <dt><strong>std_wd</strong>: A float containing the standard deviation of the wind</dt><dd><p>direction deviations from the original wind direction.</p>
 </dd>
@@ -610,18 +608,14 @@ function value at which the tails of the PMFs are truncated.</p></li>
 </ul>
 <p>Defaults to None. Initializes to {'std_wd': 4.95, 'std_yaw': 1.75,
 'pmf_res': 1.0, 'pdf_cutoff': 0.995}.</p>
-</p></li>
-<li><p><strong>wdir</strong> (<em>float</em><em>, </em><em>optional</em>) -- Wind direction to use for optimization. Defaults
-to None. Initializes to current wind direction in floris.</p></li>
-<li><p><strong>wspd</strong> (<em>float</em><em>, </em><em>optional</em>) -- Wind speed to use for optimization. Defaults
-to None. Initializes to current wind direction in floris.</p></li>
-</ul>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>An instantiated Yaw object.</p>
+<dt>wdir (float, optional): Wind direction to use for optimization. Defaults</dt><dd><p>to None. Initializes to current wind direction in floris.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p><a class="reference internal" href="#floris.tools.optimization.legacy.pyoptsparse.yaw.Yaw" title="floris.tools.optimization.legacy.pyoptsparse.yaw.Yaw">Yaw</a></p>
+<dt>wspd (float, optional): Wind speed to use for optimization. Defaults</dt><dd><p>to None. Initializes to current wind direction in floris.</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>Yaw: An instantiated Yaw object.</p>
 </dd>
 </dl>
 <dl class="py method">
@@ -676,12 +670,8 @@ to None. Initializes to current wind direction in floris.</p></li>
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">nturbs</span></span><a class="headerlink" href="#floris.tools.optimization.legacy.pyoptsparse.yaw.Yaw.nturbs" title="Link to this definition">#</a></dt>
 <dd><p>This property returns the number of turbines in the FLORIS
 object.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The number of turbines in the FLORIS object.</p>
-</dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>nturbs (int)</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>nturbs (int): The number of turbines in the FLORIS object.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -694,10 +684,9 @@ object.</p>
 <dd><p>Calculates normally-distributed probability mass functions describing the
 distribution of wind direction and yaw position deviations when wind direction
 and/or yaw position uncertainty are included in power calculations.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>unc_options</strong> (<em>dictionary</em><em>, </em><em>optional</em>) -- <p>A dictionary containing values used
-to create normally-distributed, zero-mean probability mass functions
+<dl>
+<dt>Args:</dt><dd><dl>
+<dt>unc_options (dictionary, optional): A dictionary containing values used</dt><dd><p>to create normally-distributed, zero-mean probability mass functions
 describing the distribution of wind direction and yaw position
 deviations when wind direction and/or yaw position uncertainty is
 included. This argument is only used when <strong>unc_pmfs</strong> is None and
@@ -723,11 +712,11 @@ function value at which the tails of the PMFs are truncated.</p></li>
 </ul>
 <p>Defaults to None. Initializes to {'std_wd': 4.95, 'std_yaw': 1.75,
 'pmf_res': 1.0, 'pdf_cutoff': 0.995}.</p>
-</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><dl class="simple">
-<dt>A dictionary containing</dt><dd><p>probability mass functions describing the distribution of wind
+</dl>
+</dd>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>[dictionary]: A dictionary containing</dt><dd><p>probability mass functions describing the distribution of wind
 direction and yaw position deviations when wind direction and/or
 yaw position uncertainty is included in the power calculations.
 Contains the following key-value pairs:</p>
@@ -743,10 +732,6 @@ each yaw angle deviation in <strong>yaw_unc</strong> occuring.</p></li>
 </ul>
 </dd>
 </dl>
-</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>[dictionary]</p>
 </dd>
 </dl>
 </dd></dl>

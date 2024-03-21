@@ -551,28 +551,21 @@ Includes integer design variables and the formulation
 results in a discontinous design space.</p>
 <p>TODO: shrink_boundary doesn't work well with concave boundaries,
 or with boundary angles less than 90 deg</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>nrows</strong> (<em>Int</em>) -- number of rows in the grid.</p></li>
-<li><p><strong>ncols</strong> (<em>Int</em>) -- number of columns in the grid.</p></li>
-<li><p><strong>farm_width</strong> (<em>Float</em>) -- total grid width (before shear).</p></li>
-<li><p><strong>farm_height</strong> (<em>Float</em>) -- total grid height.</p></li>
-<li><p><strong>shear</strong> (<em>Float</em>) -- grid shear (rad).</p></li>
-<li><p><strong>rotation</strong> (<em>Float</em>) -- rotation about grid center (rad).</p></li>
-<li><p><strong>center_x</strong> (<em>Float</em>) -- location of grid x center.</p></li>
-<li><p><strong>center_y</strong> (<em>Float</em>) -- location of grid y center.</p></li>
-<li><p><strong>shrink_boundary</strong> (<em>Float</em>) -- how much to shrink the boundary that the grid can occupy.</p></li>
-<li><p><strong>boundary_x</strong> (<em>Array</em><em>(</em><em>Float</em><em>)</em>) -- x boundary points.</p></li>
-<li><p><strong>boundary_y</strong> (<em>Array</em><em>(</em><em>Float</em><em>)</em>) -- y boundary points.</p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>nrows (Int): number of rows in the grid.
+ncols (Int): number of columns in the grid.
+farm_width (Float): total grid width (before shear).
+farm_height (Float): total grid height.
+shear (Float): grid shear (rad).
+rotation (Float): rotation about grid center (rad).
+center_x (Float): location of grid x center.
+center_y (Float): location of grid y center.
+shrink_boundary (Float): how much to shrink the boundary that the grid can occupy.
+boundary_x (Array(Float)): x boundary points.
+boundary_y (Array(Float)): y boundary points.</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>turbine x locations.
+<dt>Returns:</dt><dd><p>grid_x (Array(Float)): turbine x locations.
 grid_y (Array(Float)): turbine y locations.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>grid_x (Array(Float))</p>
 </dd>
 </dl>
 </dd></dl>

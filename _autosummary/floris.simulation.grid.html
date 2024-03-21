@@ -589,31 +589,16 @@ document.write(`
 <table class="autosummary longtable table autosummary">
 <tbody>
 <tr class="row-odd"><td><p><a class="reference internal" href="#floris.simulation.grid.FlowFieldGrid" title="floris.simulation.grid.FlowFieldGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FlowFieldGrid</span></code></a>(turbine_coordinates, ...)</p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">param turbine_coordinates<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The arrays of turbine coordinates as Numpy</p>
-</dd>
-</dl>
-</p></td>
+<td><p>Args:</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#floris.simulation.grid.FlowFieldPlanarGrid" title="floris.simulation.grid.FlowFieldPlanarGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">FlowFieldPlanarGrid</span></code></a>(turbine_coordinates, ...)</p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">param turbine_coordinates<span class="colon">:</span></dt>
-<dd class="field-odd"><p>The arrays of turbine coordinates as Numpy</p>
-</dd>
-</dl>
-</p></td>
+<td><p>Args:</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#floris.simulation.grid.Grid" title="floris.simulation.grid.Grid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">Grid</span></code></a>(turbine_coordinates, turbine_diameters, ...)</p></td>
 <td><p>Grid should establish domain bounds based on given criteria, and develop three arrays to contain components of the grid locations in space.</p></td>
 </tr>
 <tr class="row-even"><td><p><a class="reference internal" href="#floris.simulation.grid.PointsGrid" title="floris.simulation.grid.PointsGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">PointsGrid</span></code></a>(turbine_coordinates, ...[, ...])</p></td>
-<td><p><dl class="field-list simple">
-<dt class="field-odd">param turbine_coordinates<span class="colon">:</span></dt>
-<dd class="field-odd"><p>Not used for PointsGrid, but</p>
-</dd>
-</dl>
-</p></td>
+<td><p>Args:</p></td>
 </tr>
 <tr class="row-odd"><td><p><a class="reference internal" href="#floris.simulation.grid.TurbineCubatureGrid" title="floris.simulation.grid.TurbineCubatureGrid"><code class="xref py py-obj docutils literal notranslate"><span class="pre">TurbineCubatureGrid</span></code></a>(turbine_coordinates, ...)</p></td>
 <td><p>This grid type arranges points throughout the swept area of the rotor based on the cubature of a unit circle.</p></td>
@@ -639,18 +624,33 @@ u are the velocity components at each point in space
 v are the velocity components at each point in space
 w are the velocity components at each point in space
 all of these arrays are the same size</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_coordinates (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The arrays of turbine coordinates as Numpy</dt><dd><p>arrays with shape (N coordinates, 3).</p>
+</dd>
+</dl>
+<p>turbine_diameters (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The rotor diameters of each turbine.
+wind_directions (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind directions supplied by the user.
+wind_speeds (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind speeds supplied by the user.
+time_series (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>): Flag to indicate whether the supplied wind data is a time</p>
+<blockquote>
+<div><p>series.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>grid_resolution (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable(int,)</span></code>): Grid resolution with values</dt><dd><p>specific to each grid type.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>turbine_coordinates</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The arrays of turbine coordinates as Numpy
-arrays with shape (N coordinates, 3).</p></li>
-<li><p><strong>turbine_diameters</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The rotor diameters of each turbine.</p></li>
-<li><p><strong>wind_directions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind directions supplied by the user.</p></li>
-<li><p><strong>wind_speeds</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind speeds supplied by the user.</p></li>
-<li><p><strong>time_series</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>) -- Flag to indicate whether the supplied wind data is a time
-series.</p></li>
-<li><p><strong>grid_resolution</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable(int,)</span></code>) -- Grid resolution with values
-specific to each grid type.</p></li>
+<li><p><strong>turbine_coordinates</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>turbine_diameters</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_directions</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_speeds</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>time_series</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>grid_resolution</strong> (<em>int</em><em> | </em><em>Iterable</em>) -- </p></li>
 </ul>
 </dd>
 </dl>
@@ -819,19 +819,34 @@ attribute up to date.</p>
 <dt class="sig sig-object py" id="floris.simulation.grid.TurbineGrid">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">floris.simulation.grid.</span></span><span class="sig-name descname"><span class="pre">TurbineGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">turbine_coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turbine_diameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_speeds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_resolution</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/grid.html#TurbineGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.grid.TurbineGrid" title="Link to this definition">#</a></dt>
 <dd><p>See <cite>Grid</cite> for more details.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_coordinates (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The arrays of turbine coordinates as Numpy</dt><dd><p>arrays with shape (N coordinates, 3).</p>
+</dd>
+</dl>
+<p>turbine_diameters (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The rotor diameters of each turbine.
+wind_directions (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind directions supplied by the user.
+wind_speeds (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind speeds supplied by the user.
+time_series (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>): Flag to indicate whether the supplied wind data is a time</p>
+<blockquote>
+<div><p>series.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>grid_resolution (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The number of points in each</dt><dd><p>direction of the square grid on the rotor plane. For example, grid_resolution=3
+creates a 3x3 grid within the rotor swept area.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>turbine_coordinates</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The arrays of turbine coordinates as Numpy
-arrays with shape (N coordinates, 3).</p></li>
-<li><p><strong>turbine_diameters</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The rotor diameters of each turbine.</p></li>
-<li><p><strong>wind_directions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind directions supplied by the user.</p></li>
-<li><p><strong>wind_speeds</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind speeds supplied by the user.</p></li>
-<li><p><strong>time_series</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>) -- Flag to indicate whether the supplied wind data is a time
-series.</p></li>
-<li><p><strong>grid_resolution</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) -- The number of points in each
-direction of the square grid on the rotor plane. For example, grid_resolution=3
-creates a 3x3 grid within the rotor swept area.</p></li>
+<li><p><strong>turbine_coordinates</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>turbine_diameters</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_directions</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_speeds</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>time_series</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>grid_resolution</strong> (<em>int</em><em> | </em><em>Iterable</em>) -- </p></li>
 </ul>
 </dd>
 </dl>
@@ -929,19 +944,34 @@ of a unit circle. The number of points is set by the user, and then the location
 points and their weighting in integration is automatically set. This type of grid
 enables a better approximation of the total incoming velocities on the rotor and therefore
 a more accurate average velocity, thrust coefficient, and axial induction.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_coordinates (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The arrays of turbine coordinates as Numpy</dt><dd><p>arrays with shape (N coordinates, 3).</p>
+</dd>
+</dl>
+<p>turbine_diameters (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The rotor diameters of each turbine.
+wind_directions (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind directions supplied by the user.
+wind_speeds (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind speeds supplied by the user.
+time_series (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>): Flag to indicate whether the supplied wind data is a time</p>
+<blockquote>
+<div><p>series.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>grid_resolution (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>): The number of points to</dt><dd><p>include in the cubature method. This value must be in the range [1, 10], and the
+corresponding cubature weights are set automatically.</p>
+</dd>
+</dl>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>turbine_coordinates</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The arrays of turbine coordinates as Numpy
-arrays with shape (N coordinates, 3).</p></li>
-<li><p><strong>turbine_diameters</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The rotor diameters of each turbine.</p></li>
-<li><p><strong>wind_directions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind directions supplied by the user.</p></li>
-<li><p><strong>wind_speeds</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind speeds supplied by the user.</p></li>
-<li><p><strong>time_series</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>) -- Flag to indicate whether the supplied wind data is a time
-series.</p></li>
-<li><p><strong>grid_resolution</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code>) -- The number of points to
-include in the cubature method. This value must be in the range [1, 10], and the
-corresponding cubature weights are set automatically.</p></li>
+<li><p><strong>turbine_coordinates</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>turbine_diameters</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_directions</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_speeds</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>time_series</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>grid_resolution</strong> (<em>int</em><em> | </em><em>Iterable</em>) -- </p></li>
 </ul>
 </dd>
 </dl>
@@ -990,20 +1020,17 @@ corresponding cubature weights are set automatically.</p></li>
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_cubature_coefficients</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">N</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/grid.html#TurbineCubatureGrid.get_cubature_coefficients"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.grid.TurbineCubatureGrid.get_cubature_coefficients" title="Link to this definition">#</a></dt>
 <dd><p>Retrieve cubature integration coefficients. This is a class-method, and therefore
 the coefficients can be accessed without creating an instance of the class.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>N</strong> (<em>int</em>) -- Order of the cubature integration. The total</p></li>
-<li><p><strong>[</strong><strong>1</strong> (<em>number</em><em> of </em><em>rotor points will be N^2. Must be an integer in the range</em>) -- </p></li>
-<li><p><strong>10</strong><strong>]</strong><strong>.</strong> -- </p></li>
-</ul>
+<dl class="simple">
+<dt>Args:</dt><dd><p>N (int): Order of the cubature integration. The total
+number of rotor points will be N^2. Must be an integer in the range [1, 10].</p>
 </dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>A dictionary containing the cubature
+<dt>Returns:</dt><dd><p>cubature_coefficients (dict): A dictionary containing the cubature
 integration coefficients, &quot;r&quot;, &quot;t&quot;, &quot;q&quot;, &quot;A&quot; and &quot;B&quot;.</p>
 </dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>cubature_coefficients (dict)</p>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>N</strong> (<em>int</em>) -- </p>
 </dd>
 </dl>
 </dd></dl>
@@ -1013,18 +1040,33 @@ integration coefficients, &quot;r&quot;, &quot;t&quot;, &quot;q&quot;, &quot;A&q
 <dl class="py class">
 <dt class="sig sig-object py" id="floris.simulation.grid.FlowFieldGrid">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">floris.simulation.grid.</span></span><span class="sig-name descname"><span class="pre">FlowFieldGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">turbine_coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turbine_diameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_speeds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_resolution</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/grid.html#FlowFieldGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.grid.FlowFieldGrid" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_coordinates (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The arrays of turbine coordinates as Numpy</dt><dd><p>arrays with shape (N coordinates, 3).</p>
+</dd>
+</dl>
+<p>turbine_diameters (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The rotor diameters of each turbine.
+wind_directions (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind directions supplied by the user.
+wind_speeds (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind speeds supplied by the user.
+time_series (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>): Flag to indicate whether the supplied wind data is a time</p>
+<blockquote>
+<div><p>series.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>grid_resolution (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable(int,)</span></code>): The number of grid points to create in each</dt><dd><p>planar direction. Must be 3 components for resolution in the x, y, and z directions.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>turbine_coordinates</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The arrays of turbine coordinates as Numpy
-arrays with shape (N coordinates, 3).</p></li>
-<li><p><strong>turbine_diameters</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The rotor diameters of each turbine.</p></li>
-<li><p><strong>wind_directions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind directions supplied by the user.</p></li>
-<li><p><strong>wind_speeds</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind speeds supplied by the user.</p></li>
-<li><p><strong>time_series</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>) -- Flag to indicate whether the supplied wind data is a time
-series.</p></li>
-<li><p><strong>grid_resolution</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable(int,)</span></code>) -- The number of grid points to create in each
-planar direction. Must be 3 components for resolution in the x, y, and z directions.</p></li>
+<li><p><strong>turbine_coordinates</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>turbine_diameters</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_directions</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_speeds</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>time_series</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>grid_resolution</strong> (<em>int</em><em> | </em><em>Iterable</em>) -- </p></li>
 </ul>
 </dd>
 </dl>
@@ -1061,20 +1103,35 @@ Then, create the grid based on this wind-from-left orientation</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="floris.simulation.grid.FlowFieldPlanarGrid">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">floris.simulation.grid.</span></span><span class="sig-name descname"><span class="pre">FlowFieldPlanarGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">turbine_coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turbine_diameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_speeds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">normal_vector</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">planar_coordinate</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x1_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x2_bounds</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/grid.html#FlowFieldPlanarGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.grid.FlowFieldPlanarGrid" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_coordinates (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The arrays of turbine coordinates as Numpy</dt><dd><p>arrays with shape (N coordinates, 3).</p>
+</dd>
+</dl>
+<p>turbine_diameters (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): The rotor diameters of each turbine.
+wind_directions (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind directions supplied by the user.
+wind_speeds (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind speeds supplied by the user.
+time_series (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>): Flag to indicate whether the supplied wind data is a time</p>
+<blockquote>
+<div><p>series.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>grid_resolution (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable(int,)</span></code>): The number of grid points to create in each</dt><dd><p>planar direction. Must be 2 components for resolution in the x and y directions.
+The z direction is set to 3 planes at -10.0, 0.0, and +10.0 relative to the
+<cite>planar_coordinate</cite>.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>turbine_coordinates</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The arrays of turbine coordinates as Numpy
-arrays with shape (N coordinates, 3).</p></li>
-<li><p><strong>turbine_diameters</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- The rotor diameters of each turbine.</p></li>
-<li><p><strong>wind_directions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind directions supplied by the user.</p></li>
-<li><p><strong>wind_speeds</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind speeds supplied by the user.</p></li>
-<li><p><strong>time_series</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>) -- Flag to indicate whether the supplied wind data is a time
-series.</p></li>
-<li><p><strong>grid_resolution</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable(int,)</span></code>) -- The number of grid points to create in each
-planar direction. Must be 2 components for resolution in the x and y directions.
-The z direction is set to 3 planes at -10.0, 0.0, and +10.0 relative to the
-<cite>planar_coordinate</cite>.</p></li>
+<li><p><strong>turbine_coordinates</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>turbine_diameters</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_directions</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_speeds</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>time_series</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>grid_resolution</strong> (<em>int</em><em> | </em><em>Iterable</em>) -- </p></li>
 <li><p><strong>normal_vector</strong> (<em>str</em>) -- </p></li>
 <li><p><strong>planar_coordinate</strong> (<em>float</em>) -- </p></li>
 <li><p><strong>x1_bounds</strong> (<em>tuple</em>) -- </p></li>
@@ -1144,31 +1201,55 @@ Then, create the grid based on this wind-from-left orientation</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="floris.simulation.grid.PointsGrid">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">floris.simulation.grid.</span></span><span class="sig-name descname"><span class="pre">PointsGrid</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">turbine_coordinates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">turbine_diameters</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_directions</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">wind_speeds</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">time_series</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">grid_resolution</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_x</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_y</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">points_z</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_center_of_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_center_of_rotation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/grid.html#PointsGrid"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.grid.PointsGrid" title="Link to this definition">#</a></dt>
-<dd><dl class="field-list simple">
+<dd><dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>turbine_coordinates (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Not used for PointsGrid, but</dt><dd><p>required for the <cite>Grid</cite> super-class.</p>
+</dd>
+<dt>turbine_diameters (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>):  Not used for PointsGrid, but</dt><dd><p>required for the <cite>Grid</cite> super-class.</p>
+</dd>
+</dl>
+<p>wind_directions (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Wind directions supplied by the user.
+wind_speeds (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>):  Not used for PointsGrid, but</p>
+<blockquote>
+<div><p>required for the <cite>Grid</cite> super-class.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>time_series (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>):  Not used for PointsGrid, but</dt><dd><p>required for the <cite>Grid</cite> super-class.</p>
+</dd>
+<dt>grid_resolution (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable(int,)</span></code>): Not used for PointsGrid, but</dt><dd><p>required for the <cite>Grid</cite> super-class.</p>
+</dd>
+</dl>
+<p>points_x (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Array of x-components for the points in the grid.
+points_y (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Array of y-components for the points in the grid.
+points_z (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>): Array of z-components for the points in the grid.
+x_center_of_rotation (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): Component of the centroid of the</p>
+<blockquote>
+<div><p>farm or area of interest. The PointsGrid will be rotated around this center
+of rotation to account for wind direction changes. If not supplied, the center
+of rotation will be the centroid of the points in the PointsGrid.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>y_center_of_rotation (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional): Component of the centroid of the</dt><dd><p>farm or area of interest. The PointsGrid will be rotated around this center
+of rotation to account for wind direction changes. If not supplied, the center
+of rotation will be the centroid of the points in the PointsGrid.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+<dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>turbine_coordinates</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Not used for PointsGrid, but
-required for the <cite>Grid</cite> super-class.</p></li>
-<li><p><strong>turbine_diameters</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Not used for PointsGrid, but
-required for the <cite>Grid</cite> super-class.</p></li>
-<li><p><strong>wind_directions</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Wind directions supplied by the user.</p></li>
-<li><p><strong>wind_speeds</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Not used for PointsGrid, but
-required for the <cite>Grid</cite> super-class.</p></li>
-<li><p><strong>time_series</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">bool</span></code>) -- Not used for PointsGrid, but
-required for the <cite>Grid</cite> super-class.</p></li>
-<li><p><strong>grid_resolution</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">int</span></code> | <code class="xref py py-obj docutils literal notranslate"><span class="pre">Iterable(int,)</span></code>) -- Not used for PointsGrid, but
-required for the <cite>Grid</cite> super-class.</p></li>
-<li><p><strong>points_x</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Array of x-components for the points in the grid.</p></li>
-<li><p><strong>points_y</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Array of y-components for the points in the grid.</p></li>
-<li><p><strong>points_z</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">NDArrayFloat</span></code>) -- Array of z-components for the points in the grid.</p></li>
-<li><p><strong>x_center_of_rotation</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional) -- Component of the centroid of the
-farm or area of interest. The PointsGrid will be rotated around this center
-of rotation to account for wind direction changes. If not supplied, the center
-of rotation will be the centroid of the points in the PointsGrid.</p></li>
-<li><p><strong>y_center_of_rotation</strong> (<code class="xref py py-obj docutils literal notranslate"><span class="pre">float</span></code>, optional) -- Component of the centroid of the
-farm or area of interest. The PointsGrid will be rotated around this center
-of rotation to account for wind direction changes. If not supplied, the center
-of rotation will be the centroid of the points in the PointsGrid.</p></li>
+<li><p><strong>turbine_coordinates</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>turbine_diameters</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_directions</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>wind_speeds</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>time_series</strong> (<em>bool</em>) -- </p></li>
+<li><p><strong>grid_resolution</strong> (<em>int</em><em> | </em><em>Iterable</em>) -- </p></li>
+<li><p><strong>points_x</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>points_y</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>points_z</strong> (<em>Iterable</em>) -- </p></li>
+<li><p><strong>x_center_of_rotation</strong> (<em>float</em><em> | </em><em>None</em>) -- </p></li>
+<li><p><strong>y_center_of_rotation</strong> (<em>float</em><em> | </em><em>None</em>) -- </p></li>
 </ul>
 </dd>
 </dl>

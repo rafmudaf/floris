@@ -570,9 +570,7 @@ in that turbine's wake (similar to yaw-added recovery).</p></li>
 </ul>
 </div></blockquote>
 </dd>
-</dl>
-<p class="rubric">References</p>
-<div class="docutils container" id="id5">
+<dt>References:</dt><dd><div class="docutils container" id="id5">
 <div role="list" class="citation-list">
 <div class="citation" id="id8" role="doc-biblioentry">
 <span class="label"><span class="fn-bracket">[</span>1<span class="fn-bracket">]</span></span>
@@ -586,6 +584,8 @@ in that turbine's wake (similar to yaw-added recovery).</p></li>
 </div>
 </div>
 </div>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -642,29 +642,44 @@ in that turbine's wake (similar to yaw-added recovery).</p></li>
 <dt class="sig sig-object py" id="floris.simulation.wake_deflection.empirical_gauss.EmpiricalGaussVelocityDeflection.function">
 <span class="sig-name descname"><span class="pre">function</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">yaw_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tilt_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mixing_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ct_i</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rotor_diameter_i</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/simulation/wake_deflection/empirical_gauss.html#EmpiricalGaussVelocityDeflection.function"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.simulation.wake_deflection.empirical_gauss.EmpiricalGaussVelocityDeflection.function" title="Link to this definition">#</a></dt>
 <dd><p>Calculates the deflection field of the wake.</p>
+<dl>
+<dt>Args:</dt><dd><dl class="simple">
+<dt>x_i (np.array): Streamwise direction grid coordinates of</dt><dd><p>the ith turbine (m).</p>
+</dd>
+<dt>y_i (np.array): Cross stream direction grid coordinates of</dt><dd><p>the ith turbine (m) [not used].</p>
+</dd>
+</dl>
+<p>yaw_i (np.array): Yaw angle of the ith turbine (deg).
+tilt_i (np.array): Tilt angle of the ith turbine (deg).
+mixing_i (np.array): The wake-induced mixing term for the</p>
+<blockquote>
+<div><p>ith turbine.</p>
+</div></blockquote>
+<p>ct_i (np.array): Thrust coefficient for the ith turbine (-).
+rotor_diameter_i (np.array): Rotor diameter for the ith</p>
+<blockquote>
+<div><p>turbine (m).</p>
+</div></blockquote>
+<dl class="simple">
+<dt>x (np.array): Streamwise direction grid coordinates of the</dt><dd><p>flow field domain (m).</p>
+</dd>
+</dl>
+</dd>
+<dt>Returns:</dt><dd><p>np.array: Deflection field for the wake.</p>
+</dd>
+</dl>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>x_i</strong> (<em>np.array</em>) -- Streamwise direction grid coordinates of
-the ith turbine (m).</p></li>
-<li><p><strong>y_i</strong> (<em>np.array</em>) -- Cross stream direction grid coordinates of
-the ith turbine (m) [not used].</p></li>
-<li><p><strong>yaw_i</strong> (<em>np.array</em>) -- Yaw angle of the ith turbine (deg).</p></li>
-<li><p><strong>tilt_i</strong> (<em>np.array</em>) -- Tilt angle of the ith turbine (deg).</p></li>
-<li><p><strong>mixing_i</strong> (<em>np.array</em>) -- The wake-induced mixing term for the
-ith turbine.</p></li>
-<li><p><strong>ct_i</strong> (<em>np.array</em>) -- Thrust coefficient for the ith turbine (-).</p></li>
-<li><p><strong>rotor_diameter_i</strong> (<em>np.array</em>) -- Rotor diameter for the ith
-turbine (m).</p></li>
-<li><p><strong>x</strong> (<em>np.array</em>) -- Streamwise direction grid coordinates of the
-flow field domain (m).</p></li>
+<li><p><strong>x_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>y_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>yaw_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>tilt_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>mixing_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>ct_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>rotor_diameter_i</strong> (<em>float</em>) -- </p></li>
+<li><p><strong>x</strong> (<em>ndarray</em>) -- </p></li>
 </ul>
-</dd>
-<dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>Deflection field for the wake.</p>
-</dd>
-<dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>np.array</p>
 </dd>
 </dl>
 </dd></dl>

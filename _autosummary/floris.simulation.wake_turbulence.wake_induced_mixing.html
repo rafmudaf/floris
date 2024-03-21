@@ -534,24 +534,26 @@ document.write(`
 in the Empirical Gaussian wake model. It computes the contribution of each
 turbine to a &quot;wake-induced mixing&quot; term that in turn is used in the
 velocity deficit and deflection models.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>parameter_dictionary</strong> (<em>dict</em>) -- <p>Model-specific parameters.
-Default values are used when a parameter is not included
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>parameter_dictionary (dict): Model-specific parameters.</dt><dd><p>Default values are used when a parameter is not included
 in <cite>parameter_dictionary</cite>. Possible key-value pairs include:</p>
-<ul>
+<ul class="simple">
 <li><p><strong>atmospheric_ti_gain</strong> (<em>float</em>): The contribution of ambient
 turbulent intensity to the wake-induced mixing term. Currently
 throws a warning if nonzero.</p></li>
 </ul>
-</p></li>
-<li><p><strong>atmospheric_ti_gain</strong> (<em>float</em>) -- </p></li>
-</ul>
 </dd>
 </dl>
-<p class="rubric">References</p>
-<span class="target" id="id1"></span><dl class="py attribute">
+</dd>
+<dt>References:</dt><dd><span class="target" id="id1"></span></dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>atmospheric_ti_gain</strong> (<em>float</em>) -- </p>
+</dd>
+</dl>
+<dl class="py attribute">
 <dt class="sig sig-object py" id="floris.simulation.wake_turbulence.wake_induced_mixing.WakeInducedMixing.atmospheric_ti_gain">
 <span class="sig-name descname"><span class="pre">atmospheric_ti_gain</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><code class="xref py py-class docutils literal notranslate"><span class="pre">float</span></code></em><a class="headerlink" href="#floris.simulation.wake_turbulence.wake_induced_mixing.WakeInducedMixing.atmospheric_ti_gain" title="Link to this definition">#</a></dt>
 <dd></dd></dl>
@@ -577,22 +579,24 @@ mixing terms.</p>
 </dd>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
-<li><p><strong>axial_induction_i</strong> (<em>np.array</em>) -- Axial induction factor of
-the ith turbine (-).</p></li>
-<li><p><strong>downstream_distance_D_i</strong> (<em>np.array</em>) -- The distance downstream
-from turbine i to all other turbines (specified in terms
-of multiples of turbine i's rotor diameter) (D).</p></li>
+<li><p><strong>axial_induction_i</strong> (<em>ndarray</em>) -- </p></li>
+<li><p><strong>downstream_distance_D_i</strong> (<em>ndarray</em>) -- </p></li>
 </ul>
 </dd>
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p><dl class="simple">
-<dt>Components of the wake-induced mixing term due to</dt><dd><p>the ith turbine.</p>
+</dl>
+<dl class="simple">
+<dt>Args:</dt><dd><dl class="simple">
+<dt>axial_induction_i (np.array): Axial induction factor of</dt><dd><p>the ith turbine (-).</p>
+</dd>
+<dt>downstream_distance_D_i (np.array): The distance downstream</dt><dd><p>from turbine i to all other turbines (specified in terms
+of multiples of turbine i's rotor diameter) (D).</p>
 </dd>
 </dl>
-</p>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>np.array</p>
+<dt>Returns:</dt><dd><dl class="simple">
+<dt>np.array: Components of the wake-induced mixing term due to</dt><dd><p>the ith turbine.</p>
+</dd>
+</dl>
 </dd>
 </dl>
 </dd></dl>
