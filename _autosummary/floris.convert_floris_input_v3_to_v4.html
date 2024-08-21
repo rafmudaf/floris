@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -202,11 +202,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../intro_concepts.html">Introductory Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../advanced_concepts.html">Advanced Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../wind_data_user.html">Wind Data Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../heterogeneous_map.html">HeterogeneousMap</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../heterogeneous_map.html">Heterogeneous Map</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../floating_wind_turbine.html">Floating Wind Turbine Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../turbine_interaction.html">Turbine Library Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../operation_models_user.html">Turbine Operation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../layout_optimization.html">Layout optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../layout_optimization.html">Layout Optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../input_reference_main.html">Main Input File Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../input_reference_turbine.html">Turbine Input File Reference</a></li>
 </ul>
@@ -260,7 +261,51 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="floris.layout_visualization.html">floris.layout_visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="floris.cut_plane.html">floris.cut_plane</a></li>
-<li class="toctree-l2"><a class="reference internal" href="floris.core.html">floris.core</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="floris.core.html">floris.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="floris.core.base.html">floris.core.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="floris.core.core.html">floris.core.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="floris.core.farm.html">floris.core.farm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="floris.core.flow_field.html">floris.core.flow_field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="floris.core.grid.html">floris.core.grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="floris.core.rotor_velocity.html">floris.core.rotor_velocity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="floris.core.solver.html">floris.core.solver</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="floris.core.turbine.html">floris.core.turbine</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.turbine.operation_models.html">floris.core.turbine.operation_models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.turbine.turbine.html">floris.core.turbine.turbine</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="floris.core.wake.html">floris.core.wake</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="floris.core.wake_combination.html">floris.core.wake_combination</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_combination.fls.html">floris.core.wake_combination.fls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_combination.max.html">floris.core.wake_combination.max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_combination.sosfs.html">floris.core.wake_combination.sosfs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="floris.core.wake_deflection.html">floris.core.wake_deflection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_deflection.empirical_gauss.html">floris.core.wake_deflection.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_deflection.gauss.html">floris.core.wake_deflection.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_deflection.jimenez.html">floris.core.wake_deflection.jimenez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_deflection.none.html">floris.core.wake_deflection.none</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="floris.core.wake_turbulence.html">floris.core.wake_turbulence</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_turbulence.crespo_hernandez.html">floris.core.wake_turbulence.crespo_hernandez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_turbulence.none.html">floris.core.wake_turbulence.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_turbulence.wake_induced_mixing.html">floris.core.wake_turbulence.wake_induced_mixing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="floris.core.wake_velocity.html">floris.core.wake_velocity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_velocity.cumulative_gauss_curl.html">floris.core.wake_velocity.cumulative_gauss_curl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_velocity.empirical_gauss.html">floris.core.wake_velocity.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_velocity.gauss.html">floris.core.wake_velocity.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_velocity.jensen.html">floris.core.wake_velocity.jensen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_velocity.none.html">floris.core.wake_velocity.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_velocity.turbopark.html">floris.core.wake_velocity.turbopark</a></li>
+<li class="toctree-l4"><a class="reference internal" href="floris.core.wake_velocity.turboparkgauss.html">floris.core.wake_velocity.turboparkgauss</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="floris.convert_turbine_v3_to_v4.html">floris.convert_turbine_v3_to_v4</a></li>
 <li class="toctree-l2 current active"><a class="current reference internal" href="#">floris.convert_floris_input_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="floris.utilities.html">floris.utilities</a></li>
@@ -340,6 +385,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbopark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples_turbopark/001_compare_turbopark_implementations.html">Example: Compare TurbOPark model implementations</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Uncertain</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_uncertain/001_uncertain_model_params.html">Example: Uncertain Model Parameters</a></li>
@@ -358,6 +407,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_wind_data/001_wind_data_comparisons.html">Example: Wind Data Comparisons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_wind_data/002_generate_ti.html">Example: Generate TI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_wind_data/003_generate_value.html">Example: Generate value</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Wind resource grid</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples_wind_resource_grid/000_generate_example_wrg.html">Example: Generate Example WRG File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples_wind_resource_grid/001_wind_rose_wrg.html">Example: WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples_wind_resource_grid/002_set_floris_with_wrg.html">Example: Setting FLORIS with WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples_wind_resource_grid/003_wrg_compar_layout_optimization.html">Example: Layout optimization with WindRoseWRG comparison</a></li>
 </ul>
 
     </div>

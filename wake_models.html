@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -206,11 +206,12 @@
 <li class="toctree-l1"><a class="reference internal" href="intro_concepts.html">Introductory Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_concepts.html">Advanced Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wind_data_user.html">Wind Data Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="heterogeneous_map.html">HeterogeneousMap</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="heterogeneous_map.html">Heterogeneous Map</a></li>
 <li class="toctree-l1"><a class="reference internal" href="floating_wind_turbine.html">Floating Wind Turbine Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="turbine_interaction.html">Turbine Library Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operation_models_user.html">Turbine Operation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="layout_optimization.html">Layout optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout_optimization.html">Layout Optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_reference_main.html">Main Input File Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_reference_turbine.html">Turbine Input File Reference</a></li>
 </ul>
@@ -264,7 +265,51 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.layout_visualization.html">floris.layout_visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.cut_plane.html">floris.cut_plane</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.core.html">floris.core</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/floris.core.html">floris.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.base.html">floris.core.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.core.html">floris.core.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.farm.html">floris.core.farm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.flow_field.html">floris.core.flow_field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.grid.html">floris.core.grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.rotor_velocity.html">floris.core.rotor_velocity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.solver.html">floris.core.solver</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.turbine.html">floris.core.turbine</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.turbine.operation_models.html">floris.core.turbine.operation_models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.turbine.turbine.html">floris.core.turbine.turbine</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.wake.html">floris.core.wake</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_combination.html">floris.core.wake_combination</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.fls.html">floris.core.wake_combination.fls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.max.html">floris.core.wake_combination.max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.sosfs.html">floris.core.wake_combination.sosfs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.html">floris.core.wake_deflection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.empirical_gauss.html">floris.core.wake_deflection.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.gauss.html">floris.core.wake_deflection.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.jimenez.html">floris.core.wake_deflection.jimenez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.none.html">floris.core.wake_deflection.none</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.html">floris.core.wake_turbulence</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.crespo_hernandez.html">floris.core.wake_turbulence.crespo_hernandez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.none.html">floris.core.wake_turbulence.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.wake_induced_mixing.html">floris.core.wake_turbulence.wake_induced_mixing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.html">floris.core.wake_velocity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.cumulative_gauss_curl.html">floris.core.wake_velocity.cumulative_gauss_curl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.empirical_gauss.html">floris.core.wake_velocity.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.gauss.html">floris.core.wake_velocity.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.jensen.html">floris.core.wake_velocity.jensen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.none.html">floris.core.wake_velocity.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.turbopark.html">floris.core.wake_velocity.turbopark</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.turboparkgauss.html">floris.core.wake_velocity.turboparkgauss</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.convert_turbine_v3_to_v4.html">floris.convert_turbine_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.convert_floris_input_v3_to_v4.html">floris.convert_floris_input_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.utilities.html">floris.utilities</a></li>
@@ -344,6 +389,10 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbopark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_turbopark/001_compare_turbopark_implementations.html">Example: Compare TurbOPark model implementations</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Uncertain</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_uncertain/001_uncertain_model_params.html">Example: Uncertain Model Parameters</a></li>
@@ -362,6 +411,13 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/001_wind_data_comparisons.html">Example: Wind Data Comparisons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/002_generate_ti.html">Example: Generate TI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/003_generate_value.html">Example: Generate value</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Wind resource grid</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/000_generate_example_wrg.html">Example: Generate Example WRG File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/001_wind_rose_wrg.html">Example: WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/002_set_floris_with_wrg.html">Example: Setting FLORIS with WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/003_wrg_compar_layout_optimization.html">Example: Layout optimization with WindRoseWRG comparison</a></li>
 </ul>
 
     </div>
@@ -647,10 +703,11 @@ in the corresponding input files found in the source code dropdowns.</p>
 
 <span class="n">NREL5MW_D</span> <span class="o">=</span> <span class="mf">126.0</span>
 
-<span class="k">def</span> <span class="nf">model_plot</span><span class="p">(</span><span class="n">inputfile</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">model_plot</span><span class="p">(</span><span class="n">inputfile</span><span class="p">,</span> <span class="n">include_wake_deflection</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="n">fig</span><span class="p">,</span> <span class="n">axes</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
     <span class="n">yaw_angles</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">))</span>
-    <span class="n">yaw_angles</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span>
+    <span class="k">if</span> <span class="n">include_wake_deflection</span><span class="p">:</span>
+        <span class="n">yaw_angles</span><span class="p">[:,</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">20.0</span>
     <span class="n">fmodel</span> <span class="o">=</span> <span class="n">FlorisModel</span><span class="p">(</span><span class="n">inputfile</span><span class="p">)</span>
     <span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
         <span class="n">layout_x</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.0</span><span class="p">,</span> <span class="mi">2</span><span class="o">*</span><span class="n">NREL5MW_D</span><span class="p">]),</span>
@@ -667,10 +724,10 @@ in the corresponding input files found in the source code dropdowns.</p>
 <section id="jensen-and-jimenez">
 <h2>Jensen and Jimenez<a class="headerlink" href="#jensen-and-jimenez" title="Link to this heading">#</a></h2>
 <p>The Jensen model computes the wake velocity deficit based on the classic Jensen/Park model
-<span id="id1">Jensen [<a class="reference internal" href="bibliography.html#id19" title="Niels Otto Jensen. A note on wind generator interaction. Risø National Laboratory, 1983.">1</a>]</span>. It is often refered to as a &quot;top-hat&quot; model because the spanwise
+<span id="id1">Jensen [<a class="reference internal" href="bibliography.html#id19" title="Niels Otto Jensen. A note on wind generator interaction. Risø National Laboratory, 1983.">2</a>]</span>. It is often refered to as a &quot;top-hat&quot; model because the spanwise
 velocity profile is constant across the wake and abruptly jumps to freestream outside of the
 wake boundary line. The slope of the wake boundary line, or wake expansion, is a user parameter.</p>
-<p>The Jiménez wake deflection model is derived from <span id="id2">Jiménez <em>et al.</em> [<a class="reference internal" href="bibliography.html#id18" title="Ángel Jiménez, Antonio Crespo, and Emilio Migoya. Application of a les technique to characterize the wake deflection of a wind turbine in yaw. Wind energy, 13(6):559–572, 2010.">2</a>]</span>.</p>
+<p>The Jiménez wake deflection model is derived from <span id="id2">Jiménez <em>et al.</em> [<a class="reference internal" href="bibliography.html#id18" title="Ángel Jiménez, Antonio Crespo, and Emilio Migoya. Application of a les technique to characterize the wake deflection of a wind turbine in yaw. Wind energy, 13(6):559–572, 2010.">3</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_plot</span><span class="p">(</span><span class="s2">&quot;../examples/inputs/jensen.yaml&quot;</span><span class="p">)</span>
@@ -678,19 +735,19 @@ wake boundary line. The slope of the wake boundary line, or wake expansion, is a
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/960a0c45b041db719463c3957aac2ead476cb29d95968d428b5160a1c5fc6359.png" src="_images/960a0c45b041db719463c3957aac2ead476cb29d95968d428b5160a1c5fc6359.png" />
+<img alt="_images/8a890e24b2c9c4fe4c230e3d4448ce60b3278b387c93007339b2927b75bec30f.png" src="_images/8a890e24b2c9c4fe4c230e3d4448ce60b3278b387c93007339b2927b75bec30f.png" />
 </div>
 </div>
 </section>
 <section id="gauss-and-gch">
 <h2>Gauss and GCH<a class="headerlink" href="#gauss-and-gch" title="Link to this heading">#</a></h2>
-<p>The Gaussian velocity model is implemented based on <span id="id3">Bastankhah and Porté-Agel [<a class="reference internal" href="bibliography.html#id4" title="Majid Bastankhah and Fernando Porté-Agel. Experimental and theoretical study of wind turbine wakes in yawed conditions. Journal of Fluid Mechanics, 806:506–541, 2016.">3</a>]</span> and
-<span id="id4">Niayifar and Porté-Agel [<a class="reference internal" href="bibliography.html#id5" title="Amin Niayifar and Fernando Porté-Agel. Analytical modeling of wind farms: a new approach for power prediction. Energies, 9(9):741, 2016.">4</a>]</span>. This model represents the velocity deficity as a gaussian
+<p>The Gaussian velocity model is implemented based on <span id="id3">Bastankhah and Porté-Agel [<a class="reference internal" href="bibliography.html#id4" title="Majid Bastankhah and Fernando Porté-Agel. Experimental and theoretical study of wind turbine wakes in yawed conditions. Journal of Fluid Mechanics, 806:506–541, 2016.">4</a>]</span> and
+<span id="id4">Niayifar and Porté-Agel [<a class="reference internal" href="bibliography.html#id5" title="Amin Niayifar and Fernando Porté-Agel. Analytical modeling of wind farms: a new approach for power prediction. Energies, 9(9):741, 2016.">5</a>]</span>. This model represents the velocity deficity as a gaussian
 distribution in the spanwise direction, and the gaussian profile is controlled by user parameters.
 There is a near wake zone and a far wake zone. Both maintain the gaussian profile in the spanwise
 direction, but they have different models for wake recovery.</p>
 <p>The Gauss deflection model is a blend of the models described in
-<span id="id5">Bastankhah and Porté-Agel [<a class="reference internal" href="bibliography.html#id4" title="Majid Bastankhah and Fernando Porté-Agel. Experimental and theoretical study of wind turbine wakes in yawed conditions. Journal of Fluid Mechanics, 806:506–541, 2016.">3</a>]</span> and <span id="id6">King <em>et al.</em> [<a class="reference internal" href="bibliography.html#id17" title="Jennifer King, Paul Fleming, Ryan King, and Luis A. Martinez-Tossas. Controls-oriented model to capture secondary effects of wake steering. Submitted to Wind Energy Science, 2019.">5</a>]</span> for calculating
+<span id="id5">Bastankhah and Porté-Agel [<a class="reference internal" href="bibliography.html#id4" title="Majid Bastankhah and Fernando Porté-Agel. Experimental and theoretical study of wind turbine wakes in yawed conditions. Journal of Fluid Mechanics, 806:506–541, 2016.">4</a>]</span> and <span id="id6">King <em>et al.</em> [<a class="reference internal" href="bibliography.html#id17" title="Jennifer King, Paul Fleming, Ryan King, and Luis A. Martinez-Tossas. Controls-oriented model to capture secondary effects of wake steering. Submitted to Wind Energy Science, 2019.">6</a>]</span> for calculating
 the deflection field in turbine wakes.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
@@ -699,7 +756,7 @@ the deflection field in turbine wakes.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ad384c53fe76b2b87c831e0385c949b79c3f1059bc5e23d4a95865d1e660745b.png" src="_images/ad384c53fe76b2b87c831e0385c949b79c3f1059bc5e23d4a95865d1e660745b.png" />
+<img alt="_images/30961f3a113041623bfcf8ee8758b49bb3a2f479ac763fb9731c2b926e5fe03e.png" src="_images/30961f3a113041623bfcf8ee8758b49bb3a2f479ac763fb9731c2b926e5fe03e.png" />
 </div>
 </div>
 </section>
@@ -716,14 +773,14 @@ simpler tuning and data fitting.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/ae302361e17975c664f8ec5eb20c2d3b4f2a0bd6eb001259fea27cd347737607.png" src="_images/ae302361e17975c664f8ec5eb20c2d3b4f2a0bd6eb001259fea27cd347737607.png" />
+<img alt="_images/10bb408ac7e3b931570a77b627abf89eba3cf40bf4b82ee1b71c5802078d96ac.png" src="_images/10bb408ac7e3b931570a77b627abf89eba3cf40bf4b82ee1b71c5802078d96ac.png" />
 </div>
 </div>
 </section>
 <section id="cumulative-curl">
 <h2>Cumulative Curl<a class="headerlink" href="#cumulative-curl" title="Link to this heading">#</a></h2>
-<p>The cumulative curl model is an implementation of the model described in <span id="id7">Bay <em>et al.</em> [<a class="reference internal" href="bibliography.html#id27" title="C. J. Bay, P. Fleming, B. Doekemeijer, J. King, M. Churchfield, and R. Mudafort. Addressing deep array effects and impacts to wake steering with the cumulative-curl wake model. Wind Energy Science Discussions, 2022:1–28, 2022. URL: https://wes.copernicus.org/preprints/wes-2022-17/, doi:10.5194/wes-2022-17.">6</a>]</span>,
-which itself is based on the cumulative model of <span id="id8">Bastankhah <em>et al.</em> [<a class="reference internal" href="bibliography.html#id26" title="Majid Bastankhah, Bridget L. Welch, Luis A. Martínez-Tossas, Jennifer King, and Paul Fleming. Analytical solution for the cumulative wake of wind turbines in wind farms. Journal of Fluid Mechanics, 911:A53, 2021. doi:10.1017/jfm.2020.1037.">7</a>]</span></p>
+<p>The cumulative curl model is an implementation of the model described in <span id="id7">Bay <em>et al.</em> [<a class="reference internal" href="bibliography.html#id27" title="C. J. Bay, P. Fleming, B. Doekemeijer, J. King, M. Churchfield, and R. Mudafort. Addressing deep array effects and impacts to wake steering with the cumulative-curl wake model. Wind Energy Science Discussions, 2022:1–28, 2022. URL: https://wes.copernicus.org/preprints/wes-2022-17/, doi:10.5194/wes-2022-17.">7</a>]</span>,
+which itself is based on the cumulative model of <span id="id8">Bastankhah <em>et al.</em> [<a class="reference internal" href="bibliography.html#id26" title="Majid Bastankhah, Bridget L. Welch, Luis A. Martínez-Tossas, Jennifer King, and Paul Fleming. Analytical solution for the cumulative wake of wind turbines in wind farms. Journal of Fluid Mechanics, 911:A53, 2021. doi:10.1017/jfm.2020.1037.">8</a>]</span></p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_plot</span><span class="p">(</span><span class="s2">&quot;../examples/inputs/cc.yaml&quot;</span><span class="p">)</span>
@@ -731,18 +788,27 @@ which itself is based on the cumulative model of <span id="id8">Bastankhah <em>e
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f4649ece1e9916f08c91e70cff6f20ccace6efdddc04c28099174436b7fde7df.png" src="_images/f4649ece1e9916f08c91e70cff6f20ccace6efdddc04c28099174436b7fde7df.png" />
+<img alt="_images/fb56405c8e82c5494fee9f4fccba8eed57941db99ec856146d1a17bc9f5c27b8.png" src="_images/fb56405c8e82c5494fee9f4fccba8eed57941db99ec856146d1a17bc9f5c27b8.png" />
 </div>
 </div>
 </section>
 <section id="turbopark">
 <h2>TurbOPark<a class="headerlink" href="#turbopark" title="Link to this heading">#</a></h2>
-<p>TurbOPark is a velocity deficit model. For model details see the following references:</p>
-<ul class="simple">
-<li><p><a class="github reference external" href="https://github.com/OrstedRD/TurbOPark">OrstedRD/TurbOPark</a></p></li>
-<li><p><a class="reference external" href="https://github.com/OrstedRD/TurbOPark/blob/main/TurbOPark%20description.pdf">https://github.com/OrstedRD/TurbOPark/blob/main/TurbOPark description.pdf</a></p></li>
-<li><p>Nygaard, Nicolai Gayle, et al. &quot;Modelling cluster wakes and wind farm blockage.&quot; 2020</p></li>
-</ul>
+<p>The TurbOPark model is designed to model long wakes from large wind farm clusters. It was originally presented as a “top-hat” model in <span id="id9">Nygaard <em>et al.</em> [<a class="reference internal" href="bibliography.html#id25" title="Nicolai Gayle Nygaard, Søren Trads Steen, Lina Poulsen, and Jesper Grønnegaard Pedersen. Modelling cluster wakes and wind farm blockage. In Journal of Physics: Conference Series, volume 1618, 062072. IOP Publishing, 2020.">9</a>]</span> and was updated in <span id="id10">Pedersen <em>et al.</em> [<a class="reference internal" href="bibliography.html#id28" title="J G Pedersen, E Svensson, L Poulsen, and N G Nygaard. Turbulence optimized park model with gaussian wake profile. Journal of Physics: Conference Series, 2265(2):022063, may 2022. URL: https://dx.doi.org/10.1088/1742-6596/2265/2/022063.">10</a>]</span> to have a Gaussian profile. For the latter, Ørsted released the <a class="reference external" href="https://github.com/OrstedRD/TurbOPark">Matlab code with documentation</a>, which allows the verification of the implementation in FLORIS.</p>
+<p>The first implementation, the <a class="reference external" href="https://github.com/NREL/floris/blob/main/floris/core/wake_velocity/turbopark.py"><code class="docutils literal notranslate"><span class="pre">TurboparkVelocityDeficitModel</span></code></a>, was released in <a class="reference external" href="https://github.com/NREL/floris/releases/tag/v3.1">FLORIS v3.1</a>. The second implementation, the <a class="reference external" href="https://github.com/NREL/floris/blob/main/floris/core/wake_velocity/turboparkgauss.py"><code class="docutils literal notranslate"><span class="pre">TurboparkgaussVelocityDeficitModel</span></code></a>, was released in FLORIS v4.2 and shows a near-perfect match to the predictions of Ørsted’s Matlab implementation. As such, we will emphasize the use of the <code class="docutils literal notranslate"><span class="pre">TurboparkgaussVelocityDeficitModel</span></code> going forward, and suggest that new users use this model (by setting the <code class="docutils literal notranslate"><span class="pre">velocity_model</span></code> field of the FLORIS input file to <code class="docutils literal notranslate"><span class="pre">turboparkgauss</span></code> instead of the <code class="docutils literal notranslate"><span class="pre">TurboparkVelocityDeficitModel</span></code> (<code class="docutils literal notranslate"><span class="pre">velocity_model:</span> <span class="pre">turbopark</span></code>)) if they are interested in testing the TurbOPark model.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">TurboparkgaussVelocityDeficitModel</span></code> implementation was contributed by <a class="reference external" href="https://github.com/JasperShell">Jasper Kreeft</a>.</p>
+<p>Note that the original top-hat TurbOPark model (<span id="id11">Nygaard <em>et al.</em> [<a class="reference internal" href="bibliography.html#id25" title="Nicolai Gayle Nygaard, Søren Trads Steen, Lina Poulsen, and Jesper Grønnegaard Pedersen. Modelling cluster wakes and wind farm blockage. In Journal of Physics: Conference Series, volume 1618, 062072. IOP Publishing, 2020.">9</a>]</span>) is <em>not</em> available in FLORIS.</p>
+<p>The wakes as predicted by the <code class="docutils literal notranslate"><span class="pre">TurboparkgaussVelocityDeficit</span></code> model are demonstrated below.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">model_plot</span><span class="p">(</span><span class="s2">&quot;../examples/inputs/turboparkgauss_cubature.yaml&quot;</span><span class="p">,</span> <span class="n">include_wake_deflection</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/76a66c6d35245474561c6fcc3d68de8e8b7a146678fcb3a6e06b40999699a82a.png" src="_images/76a66c6d35245474561c6fcc3d68de8e8b7a146678fcb3a6e06b40999699a82a.png" />
+</div>
+</div>
 </section>
 <section id="turbulence-models">
 <h2>Turbulence Models<a class="headerlink" href="#turbulence-models" title="Link to this heading">#</a></h2>
@@ -750,7 +816,7 @@ which itself is based on the cumulative model of <span id="id8">Bastankhah <em>e
 <h3>Crespo-Hernandez<a class="headerlink" href="#crespo-hernandez" title="Link to this heading">#</a></h3>
 <p>CrespoHernandez is a wake-turbulence model that is used to compute additional variability introduced
 to the flow field by operation of a wind turbine. Implementation of the model follows the original
-formulation and limitations outlined in <span id="id9">Crespo and Hernandez [<a class="reference internal" href="bibliography.html#id15" title="A Crespo and J Hernandez. Turbulence characteristics in wind-turbine wakes. Journal of wind engineering and industrial aerodynamics, 61(1):71–85, 1996.">8</a>]</span>.</p>
+formulation and limitations outlined in <span id="id12">Crespo and Hernandez [<a class="reference internal" href="bibliography.html#id15" title="A Crespo and J Hernandez. Turbulence characteristics in wind-turbine wakes. Journal of wind engineering and industrial aerodynamics, 61(1):71–85, 1996.">11</a>]</span>.</p>
 </section>
 </section>
 <section id="wake-combination-models">
@@ -834,15 +900,15 @@ flow field.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f813c8be6ef4e2689e91ea856a413a18116cb765c316c1d6e383a462253ac5a2.png" src="_images/f813c8be6ef4e2689e91ea856a413a18116cb765c316c1d6e383a462253ac5a2.png" />
-<img alt="_images/b19c170e0072cc76ad87826dc492bf11ed0ab1bc4191db496aa9a4177e0b04b2.png" src="_images/b19c170e0072cc76ad87826dc492bf11ed0ab1bc4191db496aa9a4177e0b04b2.png" />
+<img alt="_images/72d47b8a3ecbb3dea60ddf09f4a654b4770d33d44590c2b099c2942ddf6c6293.png" src="_images/72d47b8a3ecbb3dea60ddf09f4a654b4770d33d44590c2b099c2942ddf6c6293.png" />
+<img alt="_images/9823e6376841368a37675cd6f741feebf55f6304b8a3d8f0d3ad1450400d9c36.png" src="_images/9823e6376841368a37675cd6f741feebf55f6304b8a3d8f0d3ad1450400d9c36.png" />
 </div>
 </div>
 </section>
 <section id="max">
 <h3>Max<a class="headerlink" href="#max" title="Link to this heading">#</a></h3>
 <p>The MAX model incorporates the velocity deficits into the base flow field by selecting the
-maximum of the two for each point. For more information, refer to <span id="id10">Gunn <em>et al.</em> [<a class="reference internal" href="bibliography.html#id16" title="Kester Gunn, Clym Stock-Williams, M Burke, Richard Willden, C Vogel, W Hunter, T Stallard, N Robinson, and SR Schmidt. Limitations to the validity of single wake superposition in wind farm yield assessment. In Journal of Physics: Conference Series, number 1. IOP Publishing: Conference Series, 2016.">9</a>]</span>.</p>
+maximum of the two for each point. For more information, refer to <span id="id13">Gunn <em>et al.</em> [<a class="reference internal" href="bibliography.html#id16" title="Kester Gunn, Clym Stock-Williams, M Burke, Richard Willden, C Vogel, W Hunter, T Stallard, N Robinson, and SR Schmidt. Limitations to the validity of single wake superposition in wind farm yield assessment. In Journal of Physics: Conference Series, number 1. IOP Publishing: Conference Series, 2016.">12</a>]</span>.</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">combination_plot</span><span class="p">(</span><span class="s2">&quot;max&quot;</span><span class="p">)</span>
@@ -850,8 +916,8 @@ maximum of the two for each point. For more information, refer to <span id="id10
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f813c8be6ef4e2689e91ea856a413a18116cb765c316c1d6e383a462253ac5a2.png" src="_images/f813c8be6ef4e2689e91ea856a413a18116cb765c316c1d6e383a462253ac5a2.png" />
-<img alt="_images/474f720bc956af40a551717c5a143768f59a2ce260f1d1b27952e2c2e08b04da.png" src="_images/474f720bc956af40a551717c5a143768f59a2ce260f1d1b27952e2c2e08b04da.png" />
+<img alt="_images/72d47b8a3ecbb3dea60ddf09f4a654b4770d33d44590c2b099c2942ddf6c6293.png" src="_images/72d47b8a3ecbb3dea60ddf09f4a654b4770d33d44590c2b099c2942ddf6c6293.png" />
+<img alt="_images/601b80f9d8822cc3523696cec8859715d678ace298001f2fb887b716cb77a25d.png" src="_images/601b80f9d8822cc3523696cec8859715d678ace298001f2fb887b716cb77a25d.png" />
 </div>
 </div>
 </section>
@@ -866,8 +932,8 @@ flow field.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f813c8be6ef4e2689e91ea856a413a18116cb765c316c1d6e383a462253ac5a2.png" src="_images/f813c8be6ef4e2689e91ea856a413a18116cb765c316c1d6e383a462253ac5a2.png" />
-<img alt="_images/43ccb31eef6d5ffb6926f6cdb5d1f48063e4bd55408734faaa7bc89812a7a898.png" src="_images/43ccb31eef6d5ffb6926f6cdb5d1f48063e4bd55408734faaa7bc89812a7a898.png" />
+<img alt="_images/72d47b8a3ecbb3dea60ddf09f4a654b4770d33d44590c2b099c2942ddf6c6293.png" src="_images/72d47b8a3ecbb3dea60ddf09f4a654b4770d33d44590c2b099c2942ddf6c6293.png" />
+<img alt="_images/eb2285189fe4cca480807e5ae86c69f1cc53c513df62cb0db7c828570e688e86.png" src="_images/eb2285189fe4cca480807e5ae86c69f1cc53c513df62cb0db7c828570e688e86.png" />
 </div>
 </div>
 </section>

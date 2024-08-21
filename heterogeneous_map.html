@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>HeterogeneousMap &#8212; FLORIS</title>
+    <title>Heterogeneous Map &#8212; FLORIS</title>
   
   
   
@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -202,11 +202,12 @@
 <li class="toctree-l1"><a class="reference internal" href="intro_concepts.html">Introductory Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_concepts.html">Advanced Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="wind_data_user.html">Wind Data Objects</a></li>
-<li class="toctree-l1 current active"><a class="current reference internal" href="#">HeterogeneousMap</a></li>
+
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Heterogeneous Map</a></li>
 <li class="toctree-l1"><a class="reference internal" href="floating_wind_turbine.html">Floating Wind Turbine Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="turbine_interaction.html">Turbine Library Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operation_models_user.html">Turbine Operation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="layout_optimization.html">Layout optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout_optimization.html">Layout Optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_reference_main.html">Main Input File Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_reference_turbine.html">Turbine Input File Reference</a></li>
 </ul>
@@ -260,7 +261,51 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.layout_visualization.html">floris.layout_visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.cut_plane.html">floris.cut_plane</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.core.html">floris.core</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/floris.core.html">floris.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.base.html">floris.core.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.core.html">floris.core.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.farm.html">floris.core.farm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.flow_field.html">floris.core.flow_field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.grid.html">floris.core.grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.rotor_velocity.html">floris.core.rotor_velocity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.solver.html">floris.core.solver</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.turbine.html">floris.core.turbine</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.turbine.operation_models.html">floris.core.turbine.operation_models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.turbine.turbine.html">floris.core.turbine.turbine</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.wake.html">floris.core.wake</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_combination.html">floris.core.wake_combination</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.fls.html">floris.core.wake_combination.fls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.max.html">floris.core.wake_combination.max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.sosfs.html">floris.core.wake_combination.sosfs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.html">floris.core.wake_deflection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.empirical_gauss.html">floris.core.wake_deflection.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.gauss.html">floris.core.wake_deflection.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.jimenez.html">floris.core.wake_deflection.jimenez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.none.html">floris.core.wake_deflection.none</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.html">floris.core.wake_turbulence</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.crespo_hernandez.html">floris.core.wake_turbulence.crespo_hernandez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.none.html">floris.core.wake_turbulence.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.wake_induced_mixing.html">floris.core.wake_turbulence.wake_induced_mixing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.html">floris.core.wake_velocity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.cumulative_gauss_curl.html">floris.core.wake_velocity.cumulative_gauss_curl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.empirical_gauss.html">floris.core.wake_velocity.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.gauss.html">floris.core.wake_velocity.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.jensen.html">floris.core.wake_velocity.jensen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.none.html">floris.core.wake_velocity.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.turbopark.html">floris.core.wake_velocity.turbopark</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.turboparkgauss.html">floris.core.wake_velocity.turboparkgauss</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.convert_turbine_v3_to_v4.html">floris.convert_turbine_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.convert_floris_input_v3_to_v4.html">floris.convert_floris_input_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.utilities.html">floris.utilities</a></li>
@@ -340,6 +385,10 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbopark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_turbopark/001_compare_turbopark_implementations.html">Example: Compare TurbOPark model implementations</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Uncertain</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_uncertain/001_uncertain_model_params.html">Example: Uncertain Model Parameters</a></li>
@@ -358,6 +407,13 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/001_wind_data_comparisons.html">Example: Wind Data Comparisons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/002_generate_ti.html">Example: Generate TI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/003_generate_value.html">Example: Generate value</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Wind resource grid</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/000_generate_example_wrg.html">Example: Generate Example WRG File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/001_wind_rose_wrg.html">Example: WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/002_set_floris_with_wrg.html">Example: Setting FLORIS with WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/003_wrg_compar_layout_optimization.html">Example: Layout optimization with WindRoseWRG comparison</a></li>
 </ul>
 
     </div>
@@ -560,7 +616,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>HeterogeneousMap</h1>
+    <h1>Heterogeneous Map</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -585,8 +641,8 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="heterogeneousmap">
-<h1>HeterogeneousMap<a class="headerlink" href="#heterogeneousmap" title="Link to this heading">#</a></h1>
+  <section class="tex2jax_ignore mathjax_ignore" id="heterogeneous-map">
+<span id="id1"></span><h1>Heterogeneous Map<a class="headerlink" href="#heterogeneous-map" title="Link to this heading">#</a></h1>
 <p>FLORIS provides a HeterogeneousMap object to enable a heterogeneity in the background wind speed. This notebook demonstrates how to use the HeterogeneousMap object in FLORIS.</p>
 <p>Note that more detailed examples are provided within the examples_heterogeneous folder</p>
 <div class="cell docutils container">
@@ -640,6 +696,12 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HeterogeneousMap with 2 dimensions
 Speeds-up defined for 5 points and
 4 wind conditions
+
+         0    1     2    3    4
+270.0  1.0  1.0  1.00  1.0  1.0
+270.0  1.0  1.0  1.00  1.0  1.0
+90.0   1.5  1.0  1.25  1.5  1.0
+90.0   1.0  1.5  1.25  1.0  1.5
 </pre></div>
 </div>
 </div>
@@ -680,7 +742,7 @@ Speeds-up defined for 5 points and
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0.5, 0.98, &#39;Heterogeneous speedup map for several directions and wind speeds&#39;)
 </pre></div>
 </div>
-<img alt="_images/c9e988519b09907b5f443504c2010be7c414a8fd98f2903ef6370517179bfb3e.png" src="_images/c9e988519b09907b5f443504c2010be7c414a8fd98f2903ef6370517179bfb3e.png" />
+<img alt="_images/69e70601541c7ec0654af87971a883214079ca856aab8f5f725558b624fdeb4d.png" src="_images/69e70601541c7ec0654af87971a883214079ca856aab8f5f725558b624fdeb4d.png" />
 </div>
 </div>
 </section>
@@ -751,7 +813,7 @@ Speeds-up defined for 5 points and
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">floris.logging_manager.LoggingManager</span> <span class=" -Color -Color-Bold -Color-Bold-Black">WARNING</span> <span class=" -Color -Color-Yellow">The calculated flow field contains points outside of the the user-defined heterogeneous inflow bounds. For these points, the interpolated value has been filled with the freestream wind speed. If this is not the desired behavior, the user will need to expand the heterogeneous inflow bounds to fully cover the calculated flow field area.</span>
 </pre></div>
 </div>
-<img alt="_images/218805a18fb1dc43c0f5d65363b2c751f6831bd6b7aab661c321f21ac8874f57.png" src="_images/218805a18fb1dc43c0f5d65363b2c751f6831bd6b7aab661c321f21ac8874f57.png" />
+<img alt="_images/186156465f4b1655202d73446fe539c4615aa01e932bd9de1527ec16ecd00b5f.png" src="_images/186156465f4b1655202d73446fe539c4615aa01e932bd9de1527ec16ecd00b5f.png" />
 </div>
 </div>
 </section>
@@ -805,6 +867,12 @@ Speeds-up defined for 5 points and
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>HeterogeneousMap with 3 dimensions
 Speeds-up defined for 12 points and
 4 wind conditions
+
+        0    1    2    3    4    5    6    7    8    9    10   11
+270.0  1.0  1.0  1.0  1.0  1.1  1.1  1.1  1.1  1.5  1.5  1.5  1.5
+270.0  1.0  1.0  1.0  1.0  1.1  1.1  1.1  1.1  1.5  1.5  1.5  1.5
+90.0   1.0  1.2  1.2  1.0  1.3  1.1  1.1  1.3  1.5  1.5  1.5  1.5
+90.0   1.0  1.0  1.0  1.0  1.1  1.1  1.1  1.1  1.5  1.5  1.5  1.5
 </pre></div>
 </div>
 </div>
@@ -820,7 +888,7 @@ Speeds-up defined for 12 points and
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;X (m)&#39;, ylabel=&#39;Y (m)&#39;&gt;
 </pre></div>
 </div>
-<img alt="_images/37218ea0159c67765a4925b093f48eaa61addfc60a0fb1d5aaf3065a71ba60cb.png" src="_images/37218ea0159c67765a4925b093f48eaa61addfc60a0fb1d5aaf3065a71ba60cb.png" />
+<img alt="_images/56508f49731b4201a1aef7add256efc7d3483fee9ab08347713be7b85b0718cf.png" src="_images/56508f49731b4201a1aef7add256efc7d3483fee9ab08347713be7b85b0718cf.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -833,7 +901,7 @@ Speeds-up defined for 12 points and
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: xlabel=&#39;X (m)&#39;, ylabel=&#39;Y (m)&#39;&gt;
 </pre></div>
 </div>
-<img alt="_images/64a392c99df675ad5efbddd5e02d8c1461c237ba3835fbd27a908ccd96ce8cd8.png" src="_images/64a392c99df675ad5efbddd5e02d8c1461c237ba3835fbd27a908ccd96ce8cd8.png" />
+<img alt="_images/3487de1506cbb53f7c0328ccde1fa8a325a85365cdb454a129f4959e89a438bc.png" src="_images/3487de1506cbb53f7c0328ccde1fa8a325a85365cdb454a129f4959e89a438bc.png" />
 </div>
 </div>
 <div class="cell docutils container">
@@ -913,7 +981,7 @@ Speeds-up defined for 12 points and
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;Axes: title={&#39;center&#39;: &#39;Wind Direction = 275.0\nWind Speed = 7.0&#39;}&gt;
 </pre></div>
 </div>
-<img alt="_images/e3411f0f6056decc644d466a4ca1ddb792d2dce8fe77dfe0fa944ea6b58dde20.png" src="_images/e3411f0f6056decc644d466a4ca1ddb792d2dce8fe77dfe0fa944ea6b58dde20.png" />
+<img alt="_images/dccb8a761c6c9e4eaa6f0df76d8a42300eeb9df11b97e6357dd73c428a86208d.png" src="_images/dccb8a761c6c9e4eaa6f0df76d8a42300eeb9df11b97e6357dd73c428a86208d.png" />
 </div>
 </div>
 </section>

@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="../../_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -202,11 +202,12 @@
 <li class="toctree-l1"><a class="reference internal" href="../../intro_concepts.html">Introductory Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../advanced_concepts.html">Advanced Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../wind_data_user.html">Wind Data Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../heterogeneous_map.html">HeterogeneousMap</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="../../heterogeneous_map.html">Heterogeneous Map</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../floating_wind_turbine.html">Floating Wind Turbine Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../turbine_interaction.html">Turbine Library Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../operation_models_user.html">Turbine Operation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../layout_optimization.html">Layout optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../layout_optimization.html">Layout Optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../input_reference_main.html">Main Input File Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../input_reference_turbine.html">Turbine Input File Reference</a></li>
 </ul>
@@ -260,7 +261,51 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/floris.layout_visualization.html">floris.layout_visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/floris.cut_plane.html">floris.cut_plane</a></li>
-<li class="toctree-l2"><a class="reference internal" href="../../_autosummary/floris.core.html">floris.core</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../../_autosummary/floris.core.html">floris.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/floris.core.base.html">floris.core.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/floris.core.core.html">floris.core.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/floris.core.farm.html">floris.core.farm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/floris.core.flow_field.html">floris.core.flow_field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/floris.core.grid.html">floris.core.grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/floris.core.rotor_velocity.html">floris.core.rotor_velocity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/floris.core.solver.html">floris.core.solver</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/floris.core.turbine.html">floris.core.turbine</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.turbine.operation_models.html">floris.core.turbine.operation_models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.turbine.turbine.html">floris.core.turbine.turbine</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="../../_autosummary/floris.core.wake.html">floris.core.wake</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/floris.core.wake_combination.html">floris.core.wake_combination</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_combination.fls.html">floris.core.wake_combination.fls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_combination.max.html">floris.core.wake_combination.max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_combination.sosfs.html">floris.core.wake_combination.sosfs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/floris.core.wake_deflection.html">floris.core.wake_deflection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_deflection.empirical_gauss.html">floris.core.wake_deflection.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_deflection.gauss.html">floris.core.wake_deflection.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_deflection.jimenez.html">floris.core.wake_deflection.jimenez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_deflection.none.html">floris.core.wake_deflection.none</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/floris.core.wake_turbulence.html">floris.core.wake_turbulence</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_turbulence.crespo_hernandez.html">floris.core.wake_turbulence.crespo_hernandez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_turbulence.none.html">floris.core.wake_turbulence.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_turbulence.wake_induced_mixing.html">floris.core.wake_turbulence.wake_induced_mixing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/floris.core.wake_velocity.html">floris.core.wake_velocity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_velocity.cumulative_gauss_curl.html">floris.core.wake_velocity.cumulative_gauss_curl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_velocity.empirical_gauss.html">floris.core.wake_velocity.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_velocity.gauss.html">floris.core.wake_velocity.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_velocity.jensen.html">floris.core.wake_velocity.jensen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_velocity.none.html">floris.core.wake_velocity.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_velocity.turbopark.html">floris.core.wake_velocity.turbopark</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.core.wake_velocity.turboparkgauss.html">floris.core.wake_velocity.turboparkgauss</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/floris.convert_turbine_v3_to_v4.html">floris.convert_turbine_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/floris.convert_floris_input_v3_to_v4.html">floris.convert_floris_input_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="../../_autosummary/floris.utilities.html">floris.utilities</a></li>
@@ -340,6 +385,10 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbopark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples_turbopark/001_compare_turbopark_implementations.html">Example: Compare TurbOPark model implementations</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Uncertain</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../examples_uncertain/001_uncertain_model_params.html">Example: Uncertain Model Parameters</a></li>
@@ -358,6 +407,13 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples_wind_data/001_wind_data_comparisons.html">Example: Wind Data Comparisons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_wind_data/002_generate_ti.html">Example: Generate TI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_wind_data/003_generate_value.html">Example: Generate value</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Wind resource grid</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="../examples_wind_resource_grid/000_generate_example_wrg.html">Example: Generate Example WRG File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_wind_resource_grid/001_wind_rose_wrg.html">Example: WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_wind_resource_grid/002_set_floris_with_wrg.html">Example: Setting FLORIS with WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_wind_resource_grid/003_wrg_compar_layout_optimization.html">Example: Layout optimization with WindRoseWRG comparison</a></li>
 </ul>
 
     </div>
@@ -673,7 +729,49 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 1 of 4.
 </pre></div>
 </div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 1 of 4.
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 2 of 4.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 2 of 4.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 2 of 4.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 3 of 4.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 3 of 4.
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
+</pre></div>
+</div>
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 3 of 4.
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
@@ -688,36 +786,6 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 2 of 4.
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 2 of 4.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 2 of 4.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 1 of 4.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 3 of 4.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 3 of 4.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
@@ -727,26 +795,14 @@ document.write(`
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 2 of 4.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Placing turbine 3 of 4.
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Time to generate initial layouts: 0.657 s
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>  Time to generate initial layouts: 0.675 s
 =======================================
 Optimization step +0.0
 Optimization time = +0.7 [s]
-Mean AEP = 57.5 [GWh] (+2.24%)
-Median AEP = 57.5 [GWh] (+2.14%)
-Max AEP = 57.9 [GWh] (+2.88%)
-Min AEP = 57.3 [GWh] (+1.79%)
+Mean AEP = 57.2 [GWh] (+1.68%)
+Median AEP = 57.2 [GWh] (+1.70%)
+Max AEP = 57.7 [GWh] (+2.47%)
+Min AEP = 56.7 [GWh] (+0.86%)
 =======================================
 Random Layout Optimization
 Number of turbines to optimize = 4
@@ -760,73 +816,73 @@ Optimization time: 0.0 s / 60.0 s
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +1.0
-Optimization time = +10.9 [s]
-Mean AEP = 58.2 [GWh] (+3.51%)
-Median AEP = 58.4 [GWh] (+3.87%)
-Max AEP = 58.6 [GWh] (+4.21%)
-Min AEP = 57.5 [GWh] (+2.11%)
+Optimization time = +11.0 [s]
+Mean AEP = 58.5 [GWh] (+3.98%)
+Median AEP = 58.6 [GWh] (+4.06%)
+Max AEP = 58.6 [GWh] (+4.20%)
+Min AEP = 58.3 [GWh] (+3.59%)
 =======================================
 Optimization time: 10.2 s / 60.0 s
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +2.0
-Optimization time = +21.2 [s]
-Mean AEP = 58.6 [GWh] (+4.20%)
-Median AEP = 58.7 [GWh] (+4.26%)
-Max AEP = 58.7 [GWh] (+4.32%)
-Min AEP = 58.5 [GWh] (+3.95%)
+Optimization time = +21.1 [s]
+Mean AEP = 58.7 [GWh] (+4.30%)
+Median AEP = 58.7 [GWh] (+4.28%)
+Max AEP = 58.7 [GWh] (+4.41%)
+Min AEP = 58.6 [GWh] (+4.23%)
 =======================================
-Optimization time: 20.5 s / 60.0 s
+Optimization time: 20.4 s / 60.0 s
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +3.0
-Optimization time = +31.4 [s]
-Mean AEP = 58.7 [GWh] (+4.35%)
-Median AEP = 58.7 [GWh] (+4.35%)
-Max AEP = 58.8 [GWh] (+4.41%)
-Min AEP = 58.7 [GWh] (+4.30%)
+Optimization time = +31.3 [s]
+Mean AEP = 58.7 [GWh] (+4.40%)
+Median AEP = 58.7 [GWh] (+4.40%)
+Max AEP = 58.8 [GWh] (+4.46%)
+Min AEP = 58.7 [GWh] (+4.34%)
 =======================================
-Optimization time: 30.8 s / 60.0 s
+Optimization time: 30.5 s / 60.0 s
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +4.0
-Optimization time = +41.6 [s]
-Mean AEP = 58.7 [GWh] (+4.39%)
-Median AEP = 58.7 [GWh] (+4.40%)
-Max AEP = 58.8 [GWh] (+4.42%)
-Min AEP = 58.7 [GWh] (+4.35%)
+Optimization time = +41.5 [s]
+Mean AEP = 58.8 [GWh] (+4.46%)
+Median AEP = 58.8 [GWh] (+4.46%)
+Max AEP = 58.8 [GWh] (+4.52%)
+Min AEP = 58.7 [GWh] (+4.40%)
 =======================================
-Optimization time: 41.0 s / 60.0 s
+Optimization time: 40.7 s / 60.0 s
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +5.0
-Optimization time = +51.8 [s]
-Mean AEP = 58.8 [GWh] (+4.43%)
-Median AEP = 58.8 [GWh] (+4.43%)
-Max AEP = 58.8 [GWh] (+4.43%)
-Min AEP = 58.8 [GWh] (+4.42%)
+Optimization time = +51.7 [s]
+Mean AEP = 58.8 [GWh] (+4.49%)
+Median AEP = 58.8 [GWh] (+4.49%)
+Max AEP = 58.8 [GWh] (+4.53%)
+Min AEP = 58.8 [GWh] (+4.46%)
 =======================================
-Optimization time: 51.2 s / 60.0 s
+Optimization time: 51.0 s / 60.0 s
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +6.0
-Optimization time = +62.1 [s]
-Mean AEP = 58.8 [GWh] (+4.43%)
-Median AEP = 58.8 [GWh] (+4.43%)
-Max AEP = 58.8 [GWh] (+4.45%)
-Min AEP = 58.8 [GWh] (+4.42%)
+Optimization time = +61.9 [s]
+Mean AEP = 58.8 [GWh] (+4.51%)
+Median AEP = 58.8 [GWh] (+4.53%)
+Max AEP = 58.8 [GWh] (+4.53%)
+Min AEP = 58.8 [GWh] (+4.47%)
 =======================================
-Final AEP = 58.8 [GWh] (+4.45%)
+Final AEP = 58.8 [GWh] (+4.53%)
 </pre></div>
 </div>
-<img alt="../../_images/795a8df120b11abdafeb7c4c7471e1ef5190c8bc92732361abaabdc3b57fac18.png" src="../../_images/795a8df120b11abdafeb7c4c7471e1ef5190c8bc92732361abaabdc3b57fac18.png" />
-<img alt="../../_images/0567527ffe990c54c2e73b493f2edd453f53b508cda3f21bd515d2dc3e945d6c.png" src="../../_images/0567527ffe990c54c2e73b493f2edd453f53b508cda3f21bd515d2dc3e945d6c.png" />
-<img alt="../../_images/338d785b5d45575c67f4a3a67cb37cc689627d2fecbb634e50913e0218e1580a.png" src="../../_images/338d785b5d45575c67f4a3a67cb37cc689627d2fecbb634e50913e0218e1580a.png" />
+<img alt="../../_images/5ff447f7b856aa14d3431487a9edb52661f4c3d445ddaefa526614f03ecd9e7b.png" src="../../_images/5ff447f7b856aa14d3431487a9edb52661f4c3d445ddaefa526614f03ecd9e7b.png" />
+<img alt="../../_images/c09ab9de3de9c58c79fec3b8770f5c3bf9774ca7511a0cb459e340feba09fdba.png" src="../../_images/c09ab9de3de9c58c79fec3b8770f5c3bf9774ca7511a0cb459e340feba09fdba.png" />
+<img alt="../../_images/8d61d0954054717cb48f9f1a72ec71d327229e095d12786d9318a8c1f8271ab2.png" src="../../_images/8d61d0954054717cb48f9f1a72ec71d327229e095d12786d9318a8c1f8271ab2.png" />
 </div>
 </div>
 </section>

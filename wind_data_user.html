@@ -34,7 +34,7 @@
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
     <link rel="stylesheet" type="text/css" href="_static/mystnb.4510f1fc1dee50b3e5859aac5469c37c29e427902b24a333a5f9fcb2f0b3ac41.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
-    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=87e54e7c" />
+    <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
   <!-- Pre-loaded scripts that we'll load fully later -->
   <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
@@ -73,7 +73,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'wind_data_user';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="HeterogeneousMap" href="heterogeneous_map.html" />
+    <link rel="next" title="Heterogeneous Map" href="heterogeneous_map.html" />
     <link rel="prev" title="Advanced Concepts" href="advanced_concepts.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="python"/>
@@ -202,11 +202,12 @@
 <li class="toctree-l1"><a class="reference internal" href="intro_concepts.html">Introductory Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="advanced_concepts.html">Advanced Concepts</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Wind Data Objects</a></li>
-<li class="toctree-l1"><a class="reference internal" href="heterogeneous_map.html">HeterogeneousMap</a></li>
+
+<li class="toctree-l1"><a class="reference internal" href="heterogeneous_map.html">Heterogeneous Map</a></li>
 <li class="toctree-l1"><a class="reference internal" href="floating_wind_turbine.html">Floating Wind Turbine Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="turbine_interaction.html">Turbine Library Interface</a></li>
 <li class="toctree-l1"><a class="reference internal" href="operation_models_user.html">Turbine Operation Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="layout_optimization.html">Layout optimization</a></li>
+<li class="toctree-l1"><a class="reference internal" href="layout_optimization.html">Layout Optimization</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_reference_main.html">Main Input File Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="input_reference_turbine.html">Turbine Input File Reference</a></li>
 </ul>
@@ -260,7 +261,51 @@
 </details></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.layout_visualization.html">floris.layout_visualization</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.cut_plane.html">floris.cut_plane</a></li>
-<li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.core.html">floris.core</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="_autosummary/floris.core.html">floris.core</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.base.html">floris.core.base</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.core.html">floris.core.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.farm.html">floris.core.farm</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.flow_field.html">floris.core.flow_field</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.grid.html">floris.core.grid</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.rotor_velocity.html">floris.core.rotor_velocity</a></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.solver.html">floris.core.solver</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.turbine.html">floris.core.turbine</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.turbine.operation_models.html">floris.core.turbine.operation_models</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.turbine.turbine.html">floris.core.turbine.turbine</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3"><a class="reference internal" href="_autosummary/floris.core.wake.html">floris.core.wake</a></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_combination.html">floris.core.wake_combination</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.fls.html">floris.core.wake_combination.fls</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.max.html">floris.core.wake_combination.max</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_combination.sosfs.html">floris.core.wake_combination.sosfs</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.html">floris.core.wake_deflection</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.empirical_gauss.html">floris.core.wake_deflection.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.gauss.html">floris.core.wake_deflection.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.jimenez.html">floris.core.wake_deflection.jimenez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_deflection.none.html">floris.core.wake_deflection.none</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.html">floris.core.wake_turbulence</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.crespo_hernandez.html">floris.core.wake_turbulence.crespo_hernandez</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.none.html">floris.core.wake_turbulence.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_turbulence.wake_induced_mixing.html">floris.core.wake_turbulence.wake_induced_mixing</a></li>
+</ul>
+</details></li>
+<li class="toctree-l3 has-children"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.html">floris.core.wake_velocity</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.cumulative_gauss_curl.html">floris.core.wake_velocity.cumulative_gauss_curl</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.empirical_gauss.html">floris.core.wake_velocity.empirical_gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.gauss.html">floris.core.wake_velocity.gauss</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.jensen.html">floris.core.wake_velocity.jensen</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.none.html">floris.core.wake_velocity.none</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.turbopark.html">floris.core.wake_velocity.turbopark</a></li>
+<li class="toctree-l4"><a class="reference internal" href="_autosummary/floris.core.wake_velocity.turboparkgauss.html">floris.core.wake_velocity.turboparkgauss</a></li>
+</ul>
+</details></li>
+</ul>
+</details></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.convert_turbine_v3_to_v4.html">floris.convert_turbine_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.convert_floris_input_v3_to_v4.html">floris.convert_floris_input_v3_to_v4</a></li>
 <li class="toctree-l2"><a class="reference internal" href="_autosummary/floris.utilities.html">floris.utilities</a></li>
@@ -340,6 +385,10 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbopark</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_turbopark/001_compare_turbopark_implementations.html">Example: Compare TurbOPark model implementations</a></li>
+</ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Uncertain</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_uncertain/001_uncertain_model_params.html">Example: Uncertain Model Parameters</a></li>
@@ -358,6 +407,13 @@
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/001_wind_data_comparisons.html">Example: Wind Data Comparisons</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/002_generate_ti.html">Example: Generate TI</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_data/003_generate_value.html">Example: Generate value</a></li>
+</ul>
+<p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Wind resource grid</span></p>
+<ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/000_generate_example_wrg.html">Example: Generate Example WRG File</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/001_wind_rose_wrg.html">Example: WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/002_set_floris_with_wrg.html">Example: Setting FLORIS with WindRoseWRG</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_wind_resource_grid/003_wrg_compar_layout_optimization.html">Example: Layout optimization with WindRoseWRG comparison</a></li>
 </ul>
 
     </div>
@@ -570,6 +626,7 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Wind Data Objects</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#winddatabase">WindDataBase</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeseries">TimeSeries</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#timeseries-instantiation">TimeSeries Instantiation</a></li>
@@ -592,6 +649,10 @@ document.write(`
 </ul>
 </li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#windrosewrg">WindRoseWRG</a></li>
+</ul>
+
             </nav>
         </div>
     </div>
@@ -612,6 +673,10 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">floris.wind_data</span> <span class="kn">import</span> <span class="n">WindDataBase</span>
 <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">warnings</span>
+
+<span class="n">warnings</span><span class="o">.</span><span class="n">simplefilter</span><span class="p">(</span><span class="s2">&quot;ignore&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -625,7 +690,6 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">floris</span> <span class="kn">import</span> <span class="n">TimeSeries</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 <span class="c1"># Like FlorisModel, TimeSeries require wind directions, wind speeds, and turbulence intensities to be of the same length.</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">50</span>
@@ -634,7 +698,11 @@ document.write(`
 <span class="n">turbulence_intensities</span> <span class="o">=</span> <span class="mf">0.06</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 
 <span class="c1"># Create a TimeSeries object</span>
-<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">turbulence_intensities</span><span class="o">=</span><span class="n">turbulence_intensities</span><span class="p">)</span>
+<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span>
+    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
+    <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
+    <span class="n">turbulence_intensities</span><span class="o">=</span><span class="n">turbulence_intensities</span><span class="p">,</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -646,7 +714,9 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Equivalent to the above</span>
-<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">wind_directions</span><span class="o">=</span><span class="mf">270.0</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">turbulence_intensities</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
+<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span>
+    <span class="n">wind_directions</span><span class="o">=</span><span class="mf">270.0</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">turbulence_intensities</span><span class="o">=</span><span class="mf">0.06</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -659,7 +729,12 @@ document.write(`
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Including value for each indices</span>
-<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">turbulence_intensities</span><span class="o">=</span><span class="n">turbulence_intensities</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">))</span>
+<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span>
+    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
+    <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
+    <span class="n">turbulence_intensities</span><span class="o">=</span><span class="n">turbulence_intensities</span><span class="p">,</span>
+    <span class="n">values</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">),</span>
+<span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -675,8 +750,8 @@ document.write(`
 
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">time_series</span><span class="o">.</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">time_series</span><span class="o">.</span><span class="n">turbulence_intensities</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Wind Speed (m/s)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Turbulence Intensity&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Wind Speed (m/s)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Turbulence Intensity&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -684,7 +759,7 @@ document.write(`
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Turbulence Intensity&#39;)
 </pre></div>
 </div>
-<img alt="_images/da4e8cb30c0752214f064d37c606926a7be2a936af033cdaa3145b40e0233f80.png" src="_images/da4e8cb30c0752214f064d37c606926a7be2a936af033cdaa3145b40e0233f80.png" />
+<img alt="_images/287b36be55835ca549eef372f304dc08c9257f750d57cb2645a0e501ec111b79.png" src="_images/287b36be55835ca549eef372f304dc08c9257f750d57cb2645a0e501ec111b79.png" />
 </div>
 </div>
 </section>
@@ -699,8 +774,8 @@ document.write(`
 <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">time_series</span><span class="o">.</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">time_series</span><span class="o">.</span><span class="n">values</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">&#39;Wind Speed (m/s)&#39;</span><span class="p">)</span>
-<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">&#39;Value (normalized price/MWh)&#39;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;Wind Speed (m/s)&quot;</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Value (normalized price/MWh)&quot;</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -708,7 +783,7 @@ document.write(`
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Text(0, 0.5, &#39;Value (normalized price/MWh)&#39;)
 </pre></div>
 </div>
-<img alt="_images/ae21094837b9b4d113837b394f6a4fe9742a8a2c5781277a699db821ce2f7512.png" src="_images/ae21094837b9b4d113837b394f6a4fe9742a8a2c5781277a699db821ce2f7512.png" />
+<img alt="_images/5820acbd968bb985e7c1e32c6732f7b7036c2170660186f9fceb953713245c8b.png" src="_images/5820acbd968bb985e7c1e32c6732f7b7036c2170660186f9fceb953713245c8b.png" />
 </div>
 </div>
 </section>
@@ -727,14 +802,14 @@ document.write(`
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">floris</span> <span class="kn">import</span> <span class="n">WindRose</span>
 
-<span class="n">wind_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">270</span><span class="p">,</span> <span class="mi">280</span><span class="p">])</span> <span class="c1"># 2 Wind Directions</span>
-<span class="n">wind_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">])</span> <span class="c1"># 3 Wind Speeds</span>
+<span class="n">wind_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">270</span><span class="p">,</span> <span class="mi">280</span><span class="p">])</span>  <span class="c1"># 2 Wind Directions</span>
+<span class="n">wind_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">])</span>  <span class="c1"># 3 Wind Speeds</span>
 
 <span class="c1"># Create a WindRose object, not indicating a frequency table indicates uniform frequency</span>
 <span class="n">wind_rose</span> <span class="o">=</span> <span class="n">WindRose</span><span class="p">(</span>
     <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
     <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
-    <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span> <span class="c1">#As in Time Series, a float indicates a constant table</span>
+    <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>  <span class="c1"># As in Time Series, a float indicates a constant table</span>
 <span class="p">)</span>
 
 <span class="n">wind_rose</span><span class="o">.</span><span class="n">freq_table</span>
@@ -784,15 +859,17 @@ wind_rose.value_table
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">floris</span> <span class="kn">import</span> <span class="n">WindTIRose</span>
 
-<span class="n">wind_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">270</span><span class="p">,</span> <span class="mi">280</span><span class="p">])</span> <span class="c1"># 2 Wind Directions</span>
-<span class="n">wind_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">])</span> <span class="c1"># 3 Wind Speeds</span>
-<span class="n">turbulence_intensities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">])</span> <span class="c1"># 3 Turbulence Intensities</span>
+<span class="n">wind_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">270</span><span class="p">,</span> <span class="mi">280</span><span class="p">])</span>  <span class="c1"># 2 Wind Directions</span>
+<span class="n">wind_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">])</span>  <span class="c1"># 3 Wind Speeds</span>
+<span class="n">turbulence_intensities</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">0.06</span><span class="p">,</span> <span class="mf">0.07</span><span class="p">,</span> <span class="mf">0.08</span><span class="p">])</span>  <span class="c1"># 3 Turbulence Intensities</span>
 
 <span class="c1"># The frequency table therefore is 2 x 3 x 3 and the sum over all entries = 1</span>
-<span class="n">freq_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[[</span><span class="mi">2</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">]],</span>
-    <span class="p">[[</span><span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">18</span><span class="p">]]</span>
-<span class="p">])</span>
+<span class="n">freq_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+    <span class="p">[</span>
+        <span class="p">[[</span><span class="mi">2</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">]],</span>
+        <span class="p">[[</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">18</span><span class="p">]],</span>
+    <span class="p">]</span>
+<span class="p">)</span>
 
 <span class="c1"># The value table has the same dimensions as frequency</span>
 <span class="n">value_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones_like</span><span class="p">(</span><span class="n">freq_table</span><span class="p">)</span>
@@ -802,7 +879,7 @@ wind_rose.value_table
     <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
     <span class="n">turbulence_intensities</span><span class="o">=</span><span class="n">turbulence_intensities</span><span class="p">,</span>
     <span class="n">freq_table</span><span class="o">=</span><span class="n">freq_table</span><span class="p">,</span>
-    <span class="n">value_table</span><span class="o">=</span><span class="n">value_table</span>
+    <span class="n">value_table</span><span class="o">=</span><span class="n">value_table</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Demonstrate setting value again</span>
@@ -829,16 +906,13 @@ wind_rose.value_table
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Generate a wind rose with a few wind directions and speeds</span>
-<span class="n">wind_directions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">260</span><span class="p">,</span><span class="mi">265</span><span class="p">,</span><span class="mi">270</span><span class="p">,</span> <span class="mi">275</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">285</span><span class="p">,</span> <span class="mi">290</span><span class="p">])</span>
-<span class="n">wind_speeds</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">])</span>
+<span class="n">wind_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">260</span><span class="p">,</span> <span class="mi">265</span><span class="p">,</span> <span class="mi">270</span><span class="p">,</span> <span class="mi">275</span><span class="p">,</span> <span class="mi">280</span><span class="p">,</span> <span class="mi">285</span><span class="p">,</span> <span class="mi">290</span><span class="p">])</span>
+<span class="n">wind_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">,</span> <span class="mf">9.0</span><span class="p">])</span>
 <span class="n">freq_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">7</span><span class="p">,</span> <span class="mi">4</span><span class="p">)</span>
 <span class="n">freq_table</span> <span class="o">/=</span> <span class="n">freq_table</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
 <span class="n">wind_rose</span> <span class="o">=</span> <span class="n">WindRose</span><span class="p">(</span>
-    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
-    <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
-    <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
-    <span class="n">freq_table</span><span class="o">=</span><span class="n">freq_table</span>
+    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">freq_table</span><span class="o">=</span><span class="n">freq_table</span>
 <span class="p">)</span>
 
 <span class="n">wind_rose</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
@@ -849,14 +923,14 @@ wind_rose.value_table
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;PolarAxes: &gt;
 </pre></div>
 </div>
-<img alt="_images/f377888dbe1d852418d84718c1d5bf8bc33a8aab5019932485ed238d8fcaafaa.png" src="_images/f377888dbe1d852418d84718c1d5bf8bc33a8aab5019932485ed238d8fcaafaa.png" />
+<img alt="_images/c0190baa3db89b8b1a8c4f26b280485d7852dd50904a3fe4fdf2efc59d292db4.png" src="_images/c0190baa3db89b8b1a8c4f26b280485d7852dd50904a3fe4fdf2efc59d292db4.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The aggregate functions of  WindRose/WindTiRose allows for </span>
-<span class="c1"># aggregating the data into larger bin sizes </span>
-<span class="n">wind_rose_aggregated</span> <span class="o">=</span> <span class="n">wind_rose</span><span class="o">.</span><span class="n">aggregate</span><span class="p">(</span><span class="n">wd_step</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ws_step</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># The downsample functions of  WindRose/WindTiRose allows for</span>
+<span class="c1"># aggregating the data into larger bin sizes</span>
+<span class="n">wind_rose_aggregated</span> <span class="o">=</span> <span class="n">wind_rose</span><span class="o">.</span><span class="n">downsample</span><span class="p">(</span><span class="n">wd_step</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">ws_step</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 <span class="n">wind_rose_aggregated</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -865,14 +939,14 @@ wind_rose.value_table
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;PolarAxes: &gt;
 </pre></div>
 </div>
-<img alt="_images/3f03db03cdcbe1e39636bb3b9f830c4fb7f128a16f7827f431a5ecee1f75aa8b.png" src="_images/3f03db03cdcbe1e39636bb3b9f830c4fb7f128a16f7827f431a5ecee1f75aa8b.png" />
+<img alt="_images/d8401cd72e72d96998dcb15613d60458df74401da9bcb52628963b3c3c221ca3.png" src="_images/d8401cd72e72d96998dcb15613d60458df74401da9bcb52628963b3c3c221ca3.png" />
 </div>
 </div>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For upsampling, the resample_by_interpolation method is available which can</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># For upsampling, the upsample method is available which can</span>
 <span class="c1"># interpolate the data via linear or nearest-neighbor interpolation</span>
-<span class="n">wind_rose_resampled</span> <span class="o">=</span> <span class="n">wind_rose</span><span class="o">.</span><span class="n">resample_by_interpolation</span><span class="p">(</span><span class="n">wd_step</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">ws_step</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+<span class="n">wind_rose_resampled</span> <span class="o">=</span> <span class="n">wind_rose</span><span class="o">.</span><span class="n">upsample</span><span class="p">(</span><span class="n">wd_step</span><span class="o">=</span><span class="mf">2.5</span><span class="p">,</span> <span class="n">ws_step</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 <span class="n">wind_rose_resampled</span><span class="o">.</span><span class="n">plot</span><span class="p">()</span>
 </pre></div>
 </div>
@@ -881,7 +955,7 @@ wind_rose.value_table
 <div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;PolarAxes: &gt;
 </pre></div>
 </div>
-<img alt="_images/65973c077dbda8eb743131d38f49dc2cbd35c2d13d4f5e923f2ded6b058a5a3b.png" src="_images/65973c077dbda8eb743131d38f49dc2cbd35c2d13d4f5e923f2ded6b058a5a3b.png" />
+<img alt="_images/0544eff1788da23ba68fa51fe37cf502de669700b67670d4dc7a5bd06158a373.png" src="_images/0544eff1788da23ba68fa51fe37cf502de669700b67670d4dc7a5bd06158a373.png" />
 </div>
 </div>
 </section>
@@ -891,16 +965,13 @@ wind_rose.value_table
 <p>There are several plotting methods available to help visualize wind data objects</p>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wind_directions</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
-<span class="n">wind_speeds</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
-<span class="n">freq_table</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wind_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">360</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
+<span class="n">wind_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">30.0</span><span class="p">,</span> <span class="mf">5.0</span><span class="p">)</span>
+<span class="n">freq_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">36</span><span class="p">,</span> <span class="mi">6</span><span class="p">)</span>
 <span class="n">freq_table</span> <span class="o">=</span> <span class="n">freq_table</span> <span class="o">/</span> <span class="n">freq_table</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span>
 
 <span class="n">wind_rose</span> <span class="o">=</span> <span class="n">WindRose</span><span class="p">(</span>
-    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
-    <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
-    <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
-    <span class="n">freq_table</span><span class="o">=</span><span class="n">freq_table</span>
+    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">freq_table</span><span class="o">=</span><span class="n">freq_table</span>
 <span class="p">)</span>
 
 <span class="c1"># Set value</span>
@@ -918,10 +989,10 @@ wind_rose.value_table
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/b7beb6adbe7c06186dca344cdede1ea9939787e1a98578ac7e6cfecaa22845de.png" src="_images/b7beb6adbe7c06186dca344cdede1ea9939787e1a98578ac7e6cfecaa22845de.png" />
-<img alt="_images/3fa5719849b65450b2d18775bd7f1b3d8999e6988f1902ed905d231b036c24e4.png" src="_images/3fa5719849b65450b2d18775bd7f1b3d8999e6988f1902ed905d231b036c24e4.png" />
-<img alt="_images/30db0b52572535f42f8722fae89b299ea96983032ed9c772eedadff438837c02.png" src="_images/30db0b52572535f42f8722fae89b299ea96983032ed9c772eedadff438837c02.png" />
-<img alt="_images/cf02ff6e20dddd49d846b22eb3418167103f4d4fe9322520692e90f4ea04e6f8.png" src="_images/cf02ff6e20dddd49d846b22eb3418167103f4d4fe9322520692e90f4ea04e6f8.png" />
+<img alt="_images/0422b5eb67e9def4789de79db2299887c9ef63541aefb69562ae9329a850be9f.png" src="_images/0422b5eb67e9def4789de79db2299887c9ef63541aefb69562ae9329a850be9f.png" />
+<img alt="_images/f3ff05a45dfd58102d44472cf203608cea5b5d616119785388ea3af464845759.png" src="_images/f3ff05a45dfd58102d44472cf203608cea5b5d616119785388ea3af464845759.png" />
+<img alt="_images/007675c1df9c13b7b9914e6b539dd9f515b2ea064b76c3f5d2551b9f2b36bc9d.png" src="_images/007675c1df9c13b7b9914e6b539dd9f515b2ea064b76c3f5d2551b9f2b36bc9d.png" />
+<img alt="_images/851a0f93d69661a9762267d0201d0e0bdbdc04dee6584c43f3317aa774d50c67.png" src="_images/851a0f93d69661a9762267d0201d0e0bdbdc04dee6584c43f3317aa774d50c67.png" />
 </div>
 </div>
 </section>
@@ -950,16 +1021,18 @@ wind_rose.value_table
 <span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
     <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
     <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
-    <span class="n">turbulence_intensities</span><span class="o">=</span><span class="n">turbulence_intensities</span>
+    <span class="n">turbulence_intensities</span><span class="o">=</span><span class="n">turbulence_intensities</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Is equivalent to the following (but now we&#39;ll include value as well):</span>
-<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">turbulence_intensities</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
+<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span>
+    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">turbulence_intensities</span><span class="o">=</span><span class="mf">0.06</span>
+<span class="p">)</span>
 
 <span class="c1"># Scale some of the default parameters to get reasonable values representing USD/MWh</span>
-<span class="n">time_series</span><span class="o">.</span><span class="n">assign_value_piecewise_linear</span><span class="p">(</span><span class="n">value_zero_ws</span><span class="o">=</span><span class="mi">25</span><span class="o">*</span><span class="mf">1.425</span><span class="p">,</span> <span class="n">slope_2</span><span class="o">=-</span><span class="mi">25</span><span class="o">*</span><span class="mf">0.135</span><span class="p">)</span>
+<span class="n">time_series</span><span class="o">.</span><span class="n">assign_value_piecewise_linear</span><span class="p">(</span><span class="n">value_zero_ws</span><span class="o">=</span><span class="mi">25</span> <span class="o">*</span> <span class="mf">1.425</span><span class="p">,</span> <span class="n">slope_2</span><span class="o">=-</span><span class="mi">25</span> <span class="o">*</span> <span class="mf">0.135</span><span class="p">)</span>
 
-<span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">wind_data</span> <span class="o">=</span> <span class="n">time_series</span><span class="p">)</span>
+<span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">wind_data</span><span class="o">=</span><span class="n">time_series</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
@@ -1021,25 +1094,19 @@ Farm annual value production (AVP) is 655061.5344544204 USD
 </ul>
 <div class="cell docutils container">
 <div class="cell_input docutils container">
-<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wind_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">270</span><span class="p">,</span> <span class="mi">280</span><span class="p">])</span> <span class="c1"># 2 Wind Directions</span>
-<span class="n">wind_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">])</span> <span class="c1"># 3 Wind Speeds</span>
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">wind_directions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">270</span><span class="p">,</span> <span class="mi">280</span><span class="p">])</span>  <span class="c1"># 2 Wind Directions</span>
+<span class="n">wind_speeds</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mf">6.0</span><span class="p">,</span> <span class="mf">7.0</span><span class="p">,</span> <span class="mf">8.0</span><span class="p">])</span>  <span class="c1"># 3 Wind Speeds</span>
 
 <span class="c1"># Frequency matrix is 2 x 3, include some 0 frequency results</span>
-<span class="n">freq_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span>
-    <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">],</span>
-    <span class="p">[</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">,</span> <span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">]</span>
-<span class="p">])</span>
+<span class="n">freq_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">1</span> <span class="o">/</span> <span class="mi">6</span><span class="p">]])</span>
 
 <span class="c1"># Create a WindRose object, not indicating a frequency table indicates uniform frequency</span>
 <span class="n">wind_rose</span> <span class="o">=</span> <span class="n">WindRose</span><span class="p">(</span>
-    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
-    <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
-    <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
-    <span class="n">freq_table</span><span class="o">=</span><span class="n">freq_table</span>
+    <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span> <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span> <span class="n">freq_table</span><span class="o">=</span><span class="n">freq_table</span>
 <span class="p">)</span>
 
 <span class="c1"># Set value and scale some of the default parameters to get reasonable values representing USD/MWh</span>
-<span class="n">wind_rose</span><span class="o">.</span><span class="n">assign_value_piecewise_linear</span><span class="p">(</span><span class="n">value_zero_ws</span><span class="o">=</span><span class="mi">25</span><span class="o">*</span><span class="mf">1.425</span><span class="p">,</span> <span class="n">slope_2</span><span class="o">=-</span><span class="mi">25</span><span class="o">*</span><span class="mf">0.135</span><span class="p">)</span>
+<span class="n">wind_rose</span><span class="o">.</span><span class="n">assign_value_piecewise_linear</span><span class="p">(</span><span class="n">value_zero_ws</span><span class="o">=</span><span class="mi">25</span> <span class="o">*</span> <span class="mf">1.425</span><span class="p">,</span> <span class="n">slope_2</span><span class="o">=-</span><span class="mi">25</span> <span class="o">*</span> <span class="mf">0.135</span><span class="p">)</span>
 
 <span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">wind_data</span><span class="o">=</span><span class="n">wind_rose</span><span class="p">)</span>
 
@@ -1106,11 +1173,11 @@ Farm annual value production (AVP) is 464356.91342938814 USD
     <span class="n">wind_speeds</span><span class="o">=</span><span class="n">wind_speeds</span><span class="p">,</span>
     <span class="n">ti_table</span><span class="o">=</span><span class="mf">0.06</span><span class="p">,</span>
     <span class="n">freq_table</span><span class="o">=</span><span class="n">freq_table</span><span class="p">,</span>
-    <span class="n">compute_zero_freq_occurrence</span><span class="o">=</span><span class="kc">True</span>
+    <span class="n">compute_zero_freq_occurrence</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
 <span class="p">)</span>
 
 <span class="c1"># Set value and scale some of the default parameters to get reasonable values representing USD/MWh</span>
-<span class="n">wind_rose</span><span class="o">.</span><span class="n">assign_value_piecewise_linear</span><span class="p">(</span><span class="n">value_zero_ws</span><span class="o">=</span><span class="mi">25</span><span class="o">*</span><span class="mf">1.425</span><span class="p">,</span> <span class="n">slope_2</span><span class="o">=-</span><span class="mi">25</span><span class="o">*</span><span class="mf">0.135</span><span class="p">)</span>
+<span class="n">wind_rose</span><span class="o">.</span><span class="n">assign_value_piecewise_linear</span><span class="p">(</span><span class="n">value_zero_ws</span><span class="o">=</span><span class="mi">25</span> <span class="o">*</span> <span class="mf">1.425</span><span class="p">,</span> <span class="n">slope_2</span><span class="o">=-</span><span class="mi">25</span> <span class="o">*</span> <span class="mf">0.135</span><span class="p">)</span>
 
 <span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">wind_data</span><span class="o">=</span><span class="n">wind_rose</span><span class="p">)</span>
 
@@ -1134,7 +1201,9 @@ Farm annual value production (AVP) is 464356.91342938814 USD
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Turbine power have shape </span><span class="si">{</span><span class="n">turbine_powers</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and are </span><span class="si">{</span><span class="n">turbine_powers</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Farm power has shape </span><span class="si">{</span><span class="n">farm_power</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and is </span><span class="si">{</span><span class="n">farm_power</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 
-<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Expected farm power and value, AEP, and AVP are the same as before since the new cases are weighted by 0&quot;</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span>
+    <span class="s2">&quot;Expected farm power and value, AEP, and AVP are the same as before since the new cases are weighted by 0&quot;</span>
+<span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected farm power has shape </span><span class="si">{</span><span class="n">expected_farm_power</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and is </span><span class="si">{</span><span class="n">expected_farm_power</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Farm AEP is </span><span class="si">{</span><span class="n">aep</span><span class="o">/</span><span class="mf">1e9</span><span class="si">}</span><span class="s2"> GWh&quot;</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Expected farm value has shape </span><span class="si">{</span><span class="n">expected_farm_power</span><span class="o">.</span><span class="n">shape</span><span class="si">}</span><span class="s2"> and is </span><span class="si">{</span><span class="n">expected_farm_value</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -1165,6 +1234,155 @@ Farm annual value production (AVP) is 464356.91342938814 USD
 </div>
 </section>
 </section>
+</section>
+<section class="tex2jax_ignore mathjax_ignore" id="windrosewrg">
+<h1>WindRoseWRG<a class="headerlink" href="#windrosewrg" title="Link to this heading">#</a></h1>
+<p>The <code class="docutils literal notranslate"><span class="pre">WindRoseWRG</span></code> is a data object which is used to represent within FLORIS the information in a Wind Resource Grid (WRG) file.  <code class="docutils literal notranslate"><span class="pre">WindRoseWRG</span></code> is a type of WindData object, like <code class="docutils literal notranslate"><span class="pre">WindRose</span></code> and <code class="docutils literal notranslate"><span class="pre">TimeSeries</span></code>, that
+is used to store wind data in a format that can be used by the FLORIS model.  <code class="docutils literal notranslate"><span class="pre">WindRoseWRG</span></code> is different that <code class="docutils literal notranslate"><span class="pre">WindRose</span></code> however because the internal data holds the information of the WRG file and then a <code class="docutils literal notranslate"><span class="pre">WindRose</span></code> object is created
+for each turbine in a provided layout.</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">floris</span> <span class="kn">import</span> <span class="n">WindRoseWRG</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Read a WRG file (from examples)</span>
+<span class="n">wind_rose_wrg</span> <span class="o">=</span> <span class="n">WindRoseWRG</span><span class="p">(</span><span class="s2">&quot;../examples/examples_wind_resource_grid/wrg_example.wrg&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Print some basic information</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">wind_rose_wrg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>WindResourceGrid with 2 x 3 grid points, min x: 0.0, min y: 0.0, grid size: 1000.0, z: 0.0, h: 90.0, 12 sectors
+Wind directions in file: [  0.  30.  60.  90. 120. 150. 180. 210. 240. 270. 300. 330.]
+Wind directions: [  0.  30.  60.  90. 120. 150. 180. 210. 240. 270. 300. 330.]
+Wind speeds: [ 0.  1.  2.  3.  4.  5.  6.  7.  8.  9. 10. 11. 12. 13. 14. 15. 16. 17.
+ 18. 19. 20. 21. 22. 23. 24. 25.]
+ti_table: 0.06
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Aggregate the wind speeds and directions</span>
+<span class="n">wind_rose_wrg</span><span class="o">.</span><span class="n">set_wd_step</span><span class="p">(</span><span class="mf">5.0</span><span class="p">)</span>
+<span class="n">wind_rose_wrg</span><span class="o">.</span><span class="n">set_wind_speeds</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set a turbine layout within the grid points of the WRG file</span>
+<span class="n">layout_x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">500</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
+<span class="n">layout_y</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1000</span><span class="p">,</span> <span class="mi">2000</span><span class="p">])</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Set up a FLORIS model with the above layout and wind_rose_wrg</span>
+<span class="n">fmodel</span> <span class="o">=</span> <span class="n">FlorisModel</span><span class="p">(</span><span class="s2">&quot;../examples/inputs/gch.yaml&quot;</span><span class="p">)</span>
+
+<span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">layout_x</span><span class="o">=</span><span class="n">layout_x</span><span class="p">,</span> <span class="n">layout_y</span><span class="o">=</span><span class="n">layout_y</span><span class="p">,</span> <span class="n">wind_data</span><span class="o">=</span><span class="n">wind_rose_wrg</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Within FlorisModel, the is set to a separate wind rose per turbine</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">15</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span> <span class="n">subplot_kw</span><span class="o">=</span><span class="nb">dict</span><span class="p">(</span><span class="n">polar</span><span class="o">=</span><span class="kc">True</span><span class="p">))</span>
+<span class="n">fmodel</span><span class="o">.</span><span class="n">wind_data</span><span class="o">.</span><span class="n">plot_wind_roses</span><span class="p">(</span><span class="n">axarr</span><span class="o">=</span><span class="n">axarr</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<img alt="_images/a4eec4eed33a6deb05445cdc2b8345096e4be9030179250b57306ff332d539c5.png" src="_images/a4eec4eed33a6deb05445cdc2b8345096e4be9030179250b57306ff332d539c5.png" />
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Can get the expected power for each turbine</span>
+<span class="n">fmodel</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fmodel</span><span class="o">.</span><span class="n">get_expected_turbine_powers</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[2296892.47124259 2297743.68483228 2342752.51651458]
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Getting expected farm power and AEP weights each turbine by its own wind rose</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fmodel</span><span class="o">.</span><span class="n">get_expected_farm_power</span><span class="p">())</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">fmodel</span><span class="o">.</span><span class="n">get_farm_AEP</span><span class="p">())</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>6937388.672589453
+60771524771.883606
+</pre></div>
+</div>
+</div>
+</div>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Use the get_heterogeneous_map method to generate a WindRose that represents</span>
+<span class="c1"># the information in the WindRoseWRG, rather than a set of WindRose objects</span>
+<span class="c1"># but as a  single WindRose object (for one location) and a HeterogeneousMap</span>
+<span class="c1"># the describes the speed up information per direction across the domain</span>
+<span class="c1"># This will allow running the optimization for a single wind speed while still</span>
+<span class="c1"># accounting for the difference in wind speeds in location by direction</span>
+<span class="n">wind_rose_het</span> <span class="o">=</span> <span class="n">wind_rose_wrg</span><span class="o">.</span><span class="n">get_heterogeneous_wind_rose</span><span class="p">(</span>
+    <span class="n">fmodel</span><span class="o">=</span><span class="n">fmodel</span><span class="p">,</span>
+    <span class="n">x_loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">y_loc</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
+    <span class="n">representative_wind_speed</span><span class="o">=</span><span class="mf">10.0</span><span class="p">,</span>
+<span class="p">)</span>
+
+<span class="c1"># Pull out the heterogeneous plot to show the underlying speedups</span>
+<span class="n">het_map</span> <span class="o">=</span> <span class="n">wind_rose_het</span><span class="o">.</span><span class="n">heterogeneous_map</span>
+<span class="n">wind_direction_to_plot</span> <span class="o">=</span> <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">10.0</span><span class="p">,</span> <span class="mf">45.0</span><span class="p">,</span> <span class="mf">75.0</span><span class="p">,</span> <span class="mf">90.0</span><span class="p">,</span> <span class="mf">180.0</span><span class="p">]</span>
+
+<span class="c1"># Show the het_map for a few wind directions</span>
+<span class="n">fig</span><span class="p">,</span> <span class="n">axarr</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_direction_to_plot</span><span class="p">),</span> <span class="n">figsize</span><span class="o">=</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">5</span><span class="p">))</span>
+<span class="n">axarr</span> <span class="o">=</span> <span class="n">axarr</span><span class="o">.</span><span class="n">flatten</span><span class="p">()</span>
+<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">wd</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">wind_direction_to_plot</span><span class="p">):</span>
+    <span class="n">het_map</span><span class="o">.</span><span class="n">plot_single_speed_multiplier</span><span class="p">(</span>
+        <span class="n">wind_direction</span><span class="o">=</span><span class="n">wd</span><span class="p">,</span>
+        <span class="n">wind_speed</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span>
+        <span class="n">ax</span><span class="o">=</span><span class="n">axarr</span><span class="p">[</span><span class="n">i</span><span class="p">],</span>
+        <span class="n">show_colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+    <span class="p">)</span>
+
+    <span class="n">axarr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Wind Direction: </span><span class="si">{</span><span class="n">wd</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Using point 0 at (0.0, 0.0) as reference location
+</pre></div>
+</div>
+<img alt="_images/a0a6fa0e36c9039114ba118acd362737c6723fc33a77fbbf99cf13765f4b8198.png" src="_images/a0a6fa0e36c9039114ba118acd362737c6723fc33a77fbbf99cf13765f4b8198.png" />
+</div>
+</div>
 </section>
 
     <script type="text/x-thebe-config">
@@ -1211,7 +1429,7 @@ Farm annual value production (AVP) is 464356.91342938814 USD
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
-        <p class="prev-next-title">HeterogeneousMap</p>
+        <p class="prev-next-title">Heterogeneous Map</p>
       </div>
       <i class="fa-solid fa-angle-right"></i>
     </a>
@@ -1231,6 +1449,7 @@ Farm annual value production (AVP) is 464356.91342938814 USD
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#">Wind Data Objects</a><ul class="visible nav section-nav flex-column">
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#winddatabase">WindDataBase</a></li>
 <li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#timeseries">TimeSeries</a><ul class="nav section-nav flex-column">
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#timeseries-instantiation">TimeSeries Instantiation</a></li>
@@ -1253,6 +1472,10 @@ Farm annual value production (AVP) is 464356.91342938814 USD
 </ul>
 </li>
 </ul>
+</li>
+<li class="toc-h1 nav-item toc-entry"><a class="reference internal nav-link" href="#windrosewrg">WindRoseWRG</a></li>
+</ul>
+
   </nav></div>
 
 </div></div>
