@@ -55,7 +55,7 @@ class CumulativeGaussCurlVelocityDeficit(BaseModel):
             "u_initial": flow_field.u_initial_sorted,
         }
         return kwargs
-
+    # @profile
     def function(
         self,
         ii: int,
@@ -119,6 +119,8 @@ class CumulativeGaussCurlVelocityDeficit(BaseModel):
 
         sum_lbda = np.zeros_like(u_initial)
 
+        sigma_n_sq = sigma_n ** 2
+        dy = y_i_loc - deflection_field
         for m in range(0, ii - 1):
             x_coord_m = x_coord[:, m:m+1]
             y_coord_m = y_coord[:, m:m+1]
@@ -142,12 +144,13 @@ class CumulativeGaussCurlVelocityDeficit(BaseModel):
                 self.c_s2,
             )
 
-            S_i = sigma_n ** 2 + sigma_i ** 2
+            S_i = sigma_n_sq + sigma_i ** 2
 
-            Y_i = (y_i_loc - y_coord_m - deflection_field) ** 2 / (2 * S_i)
-            Z_i = (z_i_loc - z_coord_m) ** 2 / (2 * S_i)
+            S_i_2 = S_i * 2
+            Y_i = (dy - y_coord_m) ** 2 / S_i_2
+            Z_i = (z_i_loc - z_coord_m) ** 2 / S_i_2
 
-            lbda = 1.0 * sigma_i ** 2 / S_i * np.exp(-Y_i) * np.exp(-Z_i)
+            lbda = sigma_i ** 2 / S_i * np.exp(- 1 * (Y_i + Z_i))
 
             sum_lbda = sum_lbda + lbda * (Ctmp[m] / u_initial)
 
@@ -212,7 +215,7 @@ class CumulativeGaussCurlVelocityDeficit(BaseModel):
         turb_u_wake = turb_u_wake + turb_avg_vels * velDef
         return (turb_u_wake, Ctmp)
 
-
+# @profile
 def wake_expansion(
     delta_x,
     ct_i,
@@ -224,7 +227,8 @@ def wake_expansion(
     c_s2,
 ):
     # Calculate Beta (Eq 10, pp 5 of ref. [1] and table 4 of ref. [2] in docstring)
-    beta = 0.5 * (1.0 + np.sqrt(1.0 - ct_i)) / np.sqrt(1.0 - ct_i)
+    sqrt_1_ct = np.sqrt(1.0 - ct_i)
+    beta = 0.5 * (1.0 + sqrt_1_ct) / sqrt_1_ct
     k = a_s * turbulence_intensity_i + b_s
     eps = (c_s1 * ct_i + c_s2) * np.sqrt(beta)
 

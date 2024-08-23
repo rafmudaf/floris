@@ -450,7 +450,7 @@ def full_flow_sequential_solver(
         flow_field.v_sorted += v_wake
         flow_field.w_sorted += w_wake
 
-
+# @profile
 def cc_solver(
     farm: Farm,
     flow_field: FlowField,
