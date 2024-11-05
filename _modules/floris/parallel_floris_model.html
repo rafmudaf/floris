@@ -15,17 +15,19 @@
     document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
     document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
   </script>
+  <!-- 
+    this give us a css class that will be invisible only if js is disabled 
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
   
   <!-- Loaded before other Sphinx assets -->
-  <link href="../../_static/styles/theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/bootstrap.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-<link href="../../_static/styles/pydata-sphinx-theme.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-
-  
-  <link href="../../_static/vendor/fontawesome/6.5.2/css/all.min.css?digest=dfe6caa3a7d634c4db9b" rel="stylesheet" />
-  <link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-solid-900.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-brands-400.woff2" />
-<link rel="preload" as="font" type="font/woff2" crossorigin href="../../_static/vendor/fontawesome/6.5.2/webfonts/fa-regular-400.woff2" />
+  <link href="../../_static/styles/theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=26a4bc78f4c0ddb94549" rel="stylesheet" />
 
     <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=fa44fd50" />
     <link rel="stylesheet" type="text/css" href="../../_static/styles/sphinx-book-theme.css?v=a3416100" />
@@ -35,10 +37,11 @@
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="../../_static/sphinx-design.min.css?v=95c83b7e" />
   
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=26a4bc78f4c0ddb94549"></script>
   <!-- Pre-loaded scripts that we'll load fully later -->
-  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b" />
-<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b" />
-  <script src="../../_static/vendor/fontawesome/6.5.2/js/all.min.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549" />
 
     <script src="../../_static/documentation_options.js?v=30a733bc"></script>
     <script src="../../_static/doctools.js?v=9a2dae69"></script>
@@ -69,13 +72,20 @@
                 gtag('config', 'G-JV2SK7CNPR');
             </script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script src="https://unpkg.com/mermaid@10.8/dist/mermaid.min.js"></script>
-    <script>mermaid.initialize({startOnLoad:true});</script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/mermaid@10.8/dist/mermaid.esm.min.mjs"></script>
+    <script type="module" src="https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs"></script>
+    <script type="module">import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.8/dist/mermaid.esm.min.mjs";import elkLayouts from "https://cdn.jsdelivr.net/npm/@mermaid-js/layout-elk@0.1.4/dist/mermaid-layout-elk.esm.min.mjs";mermaid.registerLayoutLoaders(elkLayouts);mermaid.initialize({startOnLoad:false});</script>
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+    <script type="module">
+import mermaid from "https://cdn.jsdelivr.net/npm/mermaid@10.8/dist/mermaid.esm.min.mjs";
+window.addEventListener("load", () => mermaid.run());
+</script>
     <script>DOCUMENTATION_OPTIONS.pagename = '_modules/floris/parallel_floris_model';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="python"/>
+  <meta name="docsearch:version" content="" />
   </head>
   
   
@@ -91,19 +101,8 @@
     <i class="fa-solid fa-arrow-up"></i>Back to top</button>
 
   
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-primary-sidebar-checkbox"/>
-  <label class="overlay overlay-primary" for="pst-primary-sidebar-checkbox"></label>
-  
-  <input type="checkbox"
-          class="sidebar-toggle"
-          id="pst-secondary-sidebar-checkbox"/>
-  <label class="overlay overlay-secondary" for="pst-secondary-sidebar-checkbox"></label>
-  
-  <div class="search-button__wrapper">
-    <div class="search-button__overlay"></div>
-    <div class="search-button__search-container">
+  <dialog id="pst-search-dialog">
+    
 <form class="bd-search d-flex align-items-center"
       action="../../search.html"
       method="get">
@@ -111,7 +110,6 @@
   <input type="search"
          class="form-control"
          name="q"
-         id="search-input"
          placeholder="Search this book..."
          aria-label="Search this book..."
          autocomplete="off"
@@ -119,8 +117,8 @@
          autocapitalize="off"
          spellcheck="false"/>
   <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
-</form></div>
-  </div>
+</form>
+  </dialog>
 
   <div class="pst-async-banner-revealer d-none">
   <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
@@ -138,7 +136,8 @@
       
         
       
-      <div class="bd-sidebar-primary bd-sidebar">
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
         
 
   
@@ -168,21 +167,17 @@
     
     
     <img src="../../_static/docs_image.png" class="logo__image only-light" alt="FLORIS - Home"/>
-    <script>document.write(`<img src="../../_static/docs_image.png" class="logo__image only-dark" alt="FLORIS - Home"/>`);</script>
+    <img src="../../_static/docs_image.png" class="logo__image only-dark pst-js-only" alt="FLORIS - Home"/>
   
   
 </a></div>
         <div class="sidebar-primary-item">
 
- <script>
- document.write(`
-   <button class="btn search-button-field search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="fa-solid fa-magnifying-glass"></i>
-    <span class="search-button__default-text">Search</span>
-    <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
-   </button>
- `);
- </script></div>
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button></div>
         <div class="sidebar-primary-item"><nav class="bd-links bd-docs-nav" aria-label="Main">
     <div class="bd-toc-item navbar-nav active">
         
@@ -201,9 +196,10 @@
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">User Reference</span></p>
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../intro_concepts.html">Introductory Concepts</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../advanced_concepts.html">Advanced Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../wind_data_user.html">Wind Data Objects</a></li>
 
+<li class="toctree-l1"><a class="reference internal" href="../../floris_models.html">FLORIS Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../advanced_concepts.html">Advanced Concepts</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../heterogeneous_map.html">Heterogeneous Map</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../floating_wind_turbine.html">Floating Wind Turbine Modeling</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../turbine_interaction.html">Turbine Library Interface</a></li>
@@ -240,6 +236,7 @@
 <li class="toctree-l3 has-children"><a class="reference internal" href="../../_autosummary/floris.optimization.layout_optimization.html">floris.optimization.layout_optimization</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.optimization.layout_optimization.layout_optimization_base.html">floris.optimization.layout_optimization.layout_optimization_base</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.optimization.layout_optimization.layout_optimization_boundary_grid.html">floris.optimization.layout_optimization.layout_optimization_boundary_grid</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.optimization.layout_optimization.layout_optimization_gridded.html">floris.optimization.layout_optimization.layout_optimization_gridded</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.optimization.layout_optimization.layout_optimization_pyoptsparse.html">floris.optimization.layout_optimization.layout_optimization_pyoptsparse</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.optimization.layout_optimization.layout_optimization_pyoptsparse_spread.html">floris.optimization.layout_optimization.layout_optimization_pyoptsparse_spread</a></li>
 <li class="toctree-l4"><a class="reference internal" href="../../_autosummary/floris.optimization.layout_optimization.layout_optimization_random_search.html">floris.optimization.layout_optimization.layout_optimization_random_search</a></li>
@@ -325,7 +322,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples/006_get_farm_aep.html">Example 6: Getting Expected Power and AEP</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/007_sweeping_variables.html">Example 7: Sweeping Variables</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/008_uncertain_models.html">Example 8: Uncertain Models</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../examples/009_compare_farm_power_with_neighbor.html">Example 9: Compare farm power with neighboring farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/009_parallel_models.html">Example 9: Parallel Models</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/010_compare_farm_power_with_neighbor.html">Example 10: Compare farm power with neighboring farm</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control optimization</span></p>
 <ul class="nav bd-sidenav">
@@ -374,6 +372,8 @@
 <li class="toctree-l1"><a class="reference internal" href="../../examples/examples_layout_optimization/001_optimize_layout.html">Example: Optimize Layout</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/examples_layout_optimization/002_optimize_layout_with_heterogeneity.html">Example: Layout optimization with heterogeneous inflow</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/examples_layout_optimization/003_genetic_random_search.html">Example: Layout optimization with genetic random search</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/examples_layout_optimization/004_generate_gridded_layout.html">Example: Gridded layout design</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/examples_layout_optimization/005_layout_optimization_complex_boundary.html">Example: Separated boundaries layout optimization</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Multidim</span></p>
 <ul class="nav bd-sidenav">
@@ -394,6 +394,7 @@
 <ul class="nav bd-sidenav">
 <li class="toctree-l1"><a class="reference internal" href="../../examples/examples_uncertain/001_uncertain_model_params.html">Example: Uncertain Model Parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../examples/examples_uncertain/002_approx_floris_model.html">Example: Approximate Model Parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../examples/examples_uncertain/003_uncertain_model_with_parallelization.html">Example: Uncertain Model With Parallelization</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Visualizations</span></p>
 <ul class="nav bd-sidenav">
@@ -521,24 +522,16 @@
 
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button" title="light/dark" aria-label="light/dark" data-bs-placement="bottom" data-bs-toggle="tooltip">
-    <i class="theme-switch fa-solid fa-sun fa-lg" data-mode="light"></i>
-    <i class="theme-switch fa-solid fa-moon fa-lg" data-mode="dark"></i>
-    <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"></i>
-  </button>
-`);
-</script>
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button>
 
 
-<script>
-document.write(`
-  <button class="btn btn-sm pst-navbar-icon search-button search-button__button" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+<button class="btn btn-sm pst-navbar-icon search-button search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
     <i class="fa-solid fa-magnifying-glass fa-lg"></i>
-  </button>
-`);
-</script>
+</button>
 
 </div></div>
       
@@ -583,6 +576,12 @@ document.write(`
     <span class="n">fmodel</span> <span class="o">=</span> <span class="n">FlorisModel</span><span class="p">(</span><span class="n">fmodel_information</span><span class="p">)</span>
     <span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">)</span>
     <span class="n">fmodel</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">fmodel</span><span class="o">.</span><span class="n">get_turbine_powers</span><span class="p">(),</span> <span class="n">fmodel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">flow_field</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">_get_turbine_powers_serial_no_wake</span><span class="p">(</span><span class="n">fmodel_information</span><span class="p">,</span> <span class="n">yaw_angles</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="n">fmodel</span> <span class="o">=</span> <span class="n">FlorisModel</span><span class="p">(</span><span class="n">fmodel_information</span><span class="p">)</span>
+    <span class="n">fmodel</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">)</span>
+    <span class="n">fmodel</span><span class="o">.</span><span class="n">run_no_wake</span><span class="p">()</span>
     <span class="k">return</span> <span class="p">(</span><span class="n">fmodel</span><span class="o">.</span><span class="n">get_turbine_powers</span><span class="p">(),</span> <span class="n">fmodel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">flow_field</span><span class="p">)</span>
 
 
@@ -633,9 +632,8 @@ document.write(`
 <span class="sd">        parallel computing to common FlorisModel properties.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">        fmodel (FlorisModel or UncertainFlorisModel object): Interactive FLORIS object used to</span>
-<span class="sd">            perform the wake and turbine calculations. Can either be a regular FlorisModel</span>
-<span class="sd">            object or can be an UncertainFlorisModel object.</span>
+<span class="sd">        fmodel (FlorisModel object): Interactive FLORIS object used to</span>
+<span class="sd">            perform the wake and turbine calculations.</span>
 <span class="sd">        max_workers (int): Number of parallel workers, typically equal to the number of cores</span>
 <span class="sd">            you have on your system or HPC.</span>
 <span class="sd">        n_wind_condition_splits (int): Number of sectors to split the wind findex array over.</span>
@@ -651,6 +649,11 @@ document.write(`
 <span class="sd">            to False.</span>
 <span class="sd">        print_timings (bool): Print the computation time to the console. Defaults to False.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">((</span>
+            <span class="s2">&quot;ParallelFlorisModel is deprecated and will be removed in a future version. &quot;</span>
+            <span class="s2">&quot;Please switch to ParFlorisModel instead.&quot;</span>
+        <span class="p">))</span>
 
         <span class="c1"># Set defaults for backward compatibility</span>
         <span class="k">if</span> <span class="n">use_mpi4py</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -675,9 +678,17 @@ document.write(`
             <span class="kn">from</span> <span class="nn">concurrent.futures</span> <span class="kn">import</span> <span class="n">ProcessPoolExecutor</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_PoolExecutor</span> <span class="o">=</span> <span class="n">ProcessPoolExecutor</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">UserWarning</span><span class="p">(</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
                 <span class="sa">f</span><span class="s2">&quot;Interface &#39;</span><span class="si">{</span><span class="n">interface</span><span class="si">}</span><span class="s2">&#39; not recognized. &quot;</span>
                 <span class="s2">&quot;Please use &#39;concurrent&#39;, &#39;multiprocessing&#39; or &#39;mpi4py&#39;.&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Raise error if uncertain model is passed in and refer to new parallel_floris_model_2</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">fmodel</span><span class="p">,</span> <span class="n">UncertainFlorisModel</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;UncertainFlorisModel is not supported in this version of ParallelFlorisModel. &quot;</span>
+                <span class="s2">&quot;Please use the new version ParFlorisModel (par_floris_model) &quot;</span>
+                <span class="s2">&quot;for UncertainFlorisModel compatibility.&quot;</span>
             <span class="p">)</span>
 
         <span class="c1"># Initialize floris object and copy common properties</span>
@@ -731,11 +742,52 @@ document.write(`
         <span class="n">layout_x</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">layout_y</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">turbine_type</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">turbine_library_path</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">solver_settings</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">heterogeneous_inflow_config</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">wind_data</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">yaw_angles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">power_setpoints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">awc_modes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">awc_amplitudes</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">awc_frequencies</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">disable_turbines</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Pass to the FlorisModel set function. To allow users</span>
 <span class="sd">        to directly replace a FlorisModel object with this</span>
-<span class="sd">        UncertainFlorisModel object, this function is required.&quot;&quot;&quot;</span>
+<span class="sd">        UncertainFlorisModel object, this function is required</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            wind_speeds (NDArrayFloat | list[float] | None, optional): Wind speeds at each findex.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            wind_directions (NDArrayFloat | list[float] | None, optional): Wind directions at each</span>
+<span class="sd">                findex. Defaults to None.</span>
+<span class="sd">            wind_shear (float | None, optional): Wind shear exponent. Defaults to None.</span>
+<span class="sd">            wind_veer (float | None, optional): Wind veer. Defaults to None.</span>
+<span class="sd">            reference_wind_height (float | None, optional): Reference wind height. Defaults to None.</span>
+<span class="sd">            turbulence_intensities (NDArrayFloat | list[float] | None, optional): Turbulence</span>
+<span class="sd">                intensities at each findex. Defaults to None.</span>
+<span class="sd">            air_density (float | None, optional): Air density. Defaults to None.</span>
+<span class="sd">            layout_x (NDArrayFloat | list[float] | None, optional): X-coordinates of the turbines.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            layout_y (NDArrayFloat | list[float] | None, optional): Y-coordinates of the turbines.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            turbine_type (list | None, optional): Turbine type. Defaults to None.</span>
+<span class="sd">            turbine_library_path (str | Path | None, optional): Path to the turbine library.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            solver_settings (dict | None, optional): Solver settings. Defaults to None.</span>
+<span class="sd">            heterogeneous_inflow_config (None, optional): heterogeneous inflow configuration.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            wind_data (type[WindDataBase] | None, optional): Wind data. Defaults to None.</span>
+<span class="sd">            yaw_angles (NDArrayFloat | list[float] | None, optional): Turbine yaw angles.</span>
+<span class="sd">                Defaults to None.</span>
+<span class="sd">            power_setpoints (NDArrayFloat | list[float] | list[float, None] | None, optional):</span>
+<span class="sd">                Turbine power setpoints.</span>
+<span class="sd">            disable_turbines (NDArrayBool | list[bool] | None, optional): NDArray with dimensions</span>
+<span class="sd">                n_findex x n_turbines. True values indicate the turbine is disabled at that findex</span>
+<span class="sd">                and the power setpoint at that position is set to 0. Defaults to None.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="k">if</span> <span class="n">layout</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">msg</span> <span class="o">=</span> <span class="s2">&quot;Use the `layout_x` and `layout_y` parameters in place of `layout` &quot;</span>
@@ -757,7 +809,16 @@ document.write(`
             <span class="n">layout_x</span><span class="o">=</span><span class="n">layout_x</span><span class="p">,</span>
             <span class="n">layout_y</span><span class="o">=</span><span class="n">layout_y</span><span class="p">,</span>
             <span class="n">turbine_type</span><span class="o">=</span><span class="n">turbine_type</span><span class="p">,</span>
+            <span class="n">turbine_library_path</span><span class="o">=</span><span class="n">turbine_library_path</span><span class="p">,</span>
             <span class="n">solver_settings</span><span class="o">=</span><span class="n">solver_settings</span><span class="p">,</span>
+            <span class="n">heterogeneous_inflow_config</span><span class="o">=</span><span class="n">heterogeneous_inflow_config</span><span class="p">,</span>
+            <span class="n">wind_data</span><span class="o">=</span><span class="n">wind_data</span><span class="p">,</span>
+            <span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">,</span>
+            <span class="n">power_setpoints</span><span class="o">=</span><span class="n">power_setpoints</span><span class="p">,</span>
+            <span class="n">awc_modes</span><span class="o">=</span><span class="n">awc_modes</span><span class="p">,</span>
+            <span class="n">awc_amplitudes</span><span class="o">=</span><span class="n">awc_amplitudes</span><span class="p">,</span>
+            <span class="n">awc_frequencies</span><span class="o">=</span><span class="n">awc_frequencies</span><span class="p">,</span>
+            <span class="n">disable_turbines</span><span class="o">=</span><span class="n">disable_turbines</span><span class="p">,</span>
         <span class="p">)</span>
 
         <span class="c1"># Reinitialize settings</span>
@@ -849,20 +910,26 @@ document.write(`
 
 <div class="viewcode-block" id="ParallelFlorisModel.get_turbine_powers">
 <a class="viewcode-back" href="../../_autosummary/floris.parallel_floris_model.html#floris.parallel_floris_model.ParallelFlorisModel.get_turbine_powers">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_turbine_powers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaw_angles</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_turbine_powers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaw_angles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_wake</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="c1"># Retrieve multiargs: preprocessing</span>
         <span class="n">t0</span> <span class="o">=</span> <span class="n">timerpc</span><span class="p">()</span>
         <span class="n">multiargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_preprocessing</span><span class="p">(</span><span class="n">yaw_angles</span><span class="p">)</span>
         <span class="n">t_preparation</span> <span class="o">=</span> <span class="n">timerpc</span><span class="p">()</span> <span class="o">-</span> <span class="n">t0</span>
 
+        <span class="c1"># Set the function based on whether wake is disabled</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">no_wake</span><span class="p">:</span>
+            <span class="n">turbine_power_function</span> <span class="o">=</span> <span class="n">_get_turbine_powers_serial</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">turbine_power_function</span> <span class="o">=</span> <span class="n">_get_turbine_powers_serial_no_wake</span>
+
         <span class="c1"># Perform parallel calculation</span>
         <span class="n">t1</span> <span class="o">=</span> <span class="n">timerpc</span><span class="p">()</span>
         <span class="k">with</span> <span class="bp">self</span><span class="o">.</span><span class="n">_PoolExecutor</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_workers</span><span class="p">)</span> <span class="k">as</span> <span class="n">p</span><span class="p">:</span>
             <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interface</span> <span class="o">==</span> <span class="s2">&quot;mpi4py&quot;</span><span class="p">)</span> <span class="ow">or</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">interface</span> <span class="o">==</span> <span class="s2">&quot;multiprocessing&quot;</span><span class="p">):</span>
-                <span class="n">out</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">_get_turbine_powers_serial</span><span class="p">,</span> <span class="n">multiargs</span><span class="p">)</span>
+                <span class="n">out</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">starmap</span><span class="p">(</span><span class="n">turbine_power_function</span><span class="p">,</span> <span class="n">multiargs</span><span class="p">)</span>
             <span class="k">else</span><span class="p">:</span>
                 <span class="n">out</span> <span class="o">=</span> <span class="n">p</span><span class="o">.</span><span class="n">map</span><span class="p">(</span>
-                    <span class="n">_get_turbine_powers_serial</span><span class="p">,</span>
+                    <span class="n">turbine_power_function</span><span class="p">,</span>
                     <span class="p">[</span><span class="n">j</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">multiargs</span><span class="p">],</span>
                     <span class="p">[</span><span class="n">j</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="n">multiargs</span><span class="p">]</span>
                 <span class="p">)</span>
@@ -899,7 +966,7 @@ document.write(`
 
 <div class="viewcode-block" id="ParallelFlorisModel.get_farm_power">
 <a class="viewcode-back" href="../../_autosummary/floris.parallel_floris_model.html#floris.parallel_floris_model.ParallelFlorisModel.get_farm_power">[docs]</a>
-    <span class="k">def</span> <span class="nf">get_farm_power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaw_angles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">turbine_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">get_farm_power</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">yaw_angles</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">turbine_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">no_wake</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">turbine_weights</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Default to equal weighing of all turbines when turbine_weights is None</span>
             <span class="n">turbine_weights</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span>
@@ -921,7 +988,7 @@ document.write(`
             <span class="p">)</span>
 
         <span class="c1"># Calculate all turbine powers and apply weights</span>
-        <span class="n">turbine_powers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_turbine_powers</span><span class="p">(</span><span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">)</span>
+        <span class="n">turbine_powers</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_turbine_powers</span><span class="p">(</span><span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">,</span> <span class="n">no_wake</span><span class="o">=</span><span class="n">no_wake</span><span class="p">)</span>
         <span class="n">turbine_powers</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">multiply</span><span class="p">(</span><span class="n">turbine_weights</span><span class="p">,</span> <span class="n">turbine_powers</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">turbine_powers</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
@@ -978,16 +1045,17 @@ document.write(`
 <span class="sd">                watt-hours.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
-        <span class="c1"># If no_wake==True, ignore parallelization because it&#39;s fast enough</span>
-        <span class="k">if</span> <span class="n">no_wake</span><span class="p">:</span>
-            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">get_farm_AEP</span><span class="p">(</span>
-                <span class="n">freq</span><span class="o">=</span><span class="n">freq</span><span class="p">,</span>
-                <span class="n">cut_in_wind_speed</span><span class="o">=</span><span class="n">cut_in_wind_speed</span><span class="p">,</span>
-                <span class="n">cut_out_wind_speed</span><span class="o">=</span><span class="n">cut_out_wind_speed</span><span class="p">,</span>
-                <span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">,</span>
-                <span class="n">turbine_weights</span><span class="o">=</span><span class="n">turbine_weights</span><span class="p">,</span>
-                <span class="n">no_wake</span><span class="o">=</span><span class="n">no_wake</span>
-            <span class="p">)</span>
+        <span class="c1"># This code is out of date, let&#39;s just thread it through</span>
+        <span class="c1"># # If no_wake==True, ignore parallelization because it&#39;s fast enough</span>
+        <span class="c1"># if no_wake:</span>
+        <span class="c1">#     return self.fmodel.get_farm_AEP(</span>
+        <span class="c1">#         freq=freq,</span>
+        <span class="c1">#         cut_in_wind_speed=cut_in_wind_speed,</span>
+        <span class="c1">#         cut_out_wind_speed=cut_out_wind_speed,</span>
+        <span class="c1">#         yaw_angles=yaw_angles,</span>
+        <span class="c1">#         turbine_weights=turbine_weights,</span>
+        <span class="c1">#         no_wake=no_wake</span>
+        <span class="c1">#     )</span>
 
         <span class="c1"># Verify dimensions of the variable &quot;freq&quot;</span>
         <span class="k">if</span> <span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">_is_uncertain</span> <span class="ow">and</span> <span class="n">np</span><span class="o">.</span><span class="n">shape</span><span class="p">(</span><span class="n">freq</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_n_unexpanded</span><span class="p">)</span> <span class="ow">or</span>
@@ -1024,7 +1092,9 @@ document.write(`
             <span class="p">)</span>
 
         <span class="n">farm_power</span> <span class="o">=</span> <span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">get_farm_power</span><span class="p">(</span><span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">,</span> <span class="n">turbine_weights</span><span class="o">=</span><span class="n">turbine_weights</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">get_farm_power</span><span class="p">(</span><span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">,</span>
+                                <span class="n">turbine_weights</span><span class="o">=</span><span class="n">turbine_weights</span><span class="p">,</span>
+                                  <span class="n">no_wake</span><span class="o">=</span><span class="n">no_wake</span><span class="p">)</span>
         <span class="p">)</span>
 
         <span class="c1"># Finally, calculate AEP in GWh</span>
@@ -1113,6 +1183,79 @@ document.write(`
         <span class="k">return</span> <span class="n">df_opt</span></div>
 
 
+<div class="viewcode-block" id="ParallelFlorisModel.get_operation_model">
+<a class="viewcode-back" href="../../_autosummary/floris.parallel_floris_model.html#floris.parallel_floris_model.ParallelFlorisModel.get_operation_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_operation_model</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the operation model of underlying fmodel.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: The operation_model.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">get_operation_model</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="ParallelFlorisModel.set_operation_model">
+<a class="viewcode-back" href="../../_autosummary/floris.parallel_floris_model.html#floris.parallel_floris_model.ParallelFlorisModel.set_operation_model">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_operation_model</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">operation_model</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the operation model of underlying fmodel.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            operation_model (str): The operation model to set.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">set_operation_model</span><span class="p">(</span><span class="n">operation_model</span><span class="p">)</span>
+
+        <span class="c1"># Reinitialize settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">fmodel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="p">,</span>
+            <span class="n">max_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_workers</span><span class="p">,</span>
+            <span class="n">n_wind_condition_splits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_wind_condition_splits</span><span class="p">,</span>
+            <span class="n">interface</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">,</span>
+            <span class="n">propagate_flowfield_from_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">propagate_flowfield_from_workers</span><span class="p">,</span>
+            <span class="n">print_timings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">print_timings</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ParallelFlorisModel.get_param">
+<a class="viewcode-back" href="../../_autosummary/floris.parallel_floris_model.html#floris.parallel_floris_model.ParallelFlorisModel.get_param">[docs]</a>
+    <span class="k">def</span> <span class="nf">get_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">param_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the parameter of underlying fmodel.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            param (List[str]): A list of keys to traverse the FlorisModel dictionary.</span>
+<span class="sd">            param_idx (Optional[int], optional): The index to get the value at. Defaults to None.</span>
+<span class="sd">                If None, the entire parameter is returned.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            Any: The value of the parameter.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">get_param</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">param_idx</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="ParallelFlorisModel.set_param">
+<a class="viewcode-back" href="../../_autosummary/floris.parallel_floris_model.html#floris.parallel_floris_model.ParallelFlorisModel.set_param">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_param</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">param</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">param_idx</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set the parameter of underlying fmodel.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            param (List[str]): A list of keys to traverse the FlorisModel dictionary.</span>
+<span class="sd">            value (Any): The value to set.</span>
+<span class="sd">            param_idx (Optional[int], optional): The index to set the value at. Defaults to None.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">set_param</span><span class="p">(</span><span class="n">param</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">param_idx</span><span class="p">)</span>
+
+        <span class="c1"># Reinitialize settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span>
+            <span class="n">fmodel</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="p">,</span>
+            <span class="n">max_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_max_workers</span><span class="p">,</span>
+            <span class="n">n_wind_condition_splits</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_wind_condition_splits</span><span class="p">,</span>
+            <span class="n">interface</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">interface</span><span class="p">,</span>
+            <span class="n">propagate_flowfield_from_workers</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">propagate_flowfield_from_workers</span><span class="p">,</span>
+            <span class="n">print_timings</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">print_timings</span><span class="p">,</span>
+        <span class="p">)</span></div>
+
+
+
+
     <span class="nd">@property</span>
     <span class="k">def</span> <span class="nf">layout_x</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">layout_x</span>
@@ -1141,11 +1284,6 @@ document.write(`
     <span class="k">def</span> <span class="nf">n_turbines</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">n_turbines</span></div>
 
-
-
-    <span class="c1"># @property</span>
-    <span class="c1"># def floris(self):</span>
-    <span class="c1">#     return self.fmodel.core</span>
 </pre></div>
 
                 </article>
@@ -1208,8 +1346,8 @@ By National Renewable Energy Laboratory
   </div>
   
   <!-- Scripts loaded after <body> so the DOM is not blocked -->
-  <script src="../../_static/scripts/bootstrap.js?digest=dfe6caa3a7d634c4db9b"></script>
-<script src="../../_static/scripts/pydata-sphinx-theme.js?digest=dfe6caa3a7d634c4db9b"></script>
+  <script defer src="../../_static/scripts/bootstrap.js?digest=26a4bc78f4c0ddb94549"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=26a4bc78f4c0ddb94549"></script>
 
   <footer class="bd-footer">
   </footer>
