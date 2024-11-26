@@ -327,6 +327,7 @@
 <li class="toctree-l1"><a class="reference internal" href="005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1 current active"><a class="current reference internal" href="#">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -1351,21 +1352,20 @@ Optimization terminated successfully    (Exit mode 0)
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Performing optimizations with Serial Refine...
 [Serial Refine] Processing pass=0, turbine_depth=0 (0.0%)
+[Serial Refine] Processing pass=0, turbine_depth=1 (16.7%)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Serial Refine] Processing pass=0, turbine_depth=1 (16.7%)
-[Serial Refine] Processing pass=0, turbine_depth=2 (33.3%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Serial Refine] Processing pass=0, turbine_depth=2 (33.3%)
 [Serial Refine] Processing pass=1, turbine_depth=0 (50.0%)
+[Serial Refine] Processing pass=1, turbine_depth=1 (66.7%)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Serial Refine] Processing pass=1, turbine_depth=1 (66.7%)
-[Serial Refine] Processing pass=1, turbine_depth=2 (83.3%)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Serial Refine] Processing pass=1, turbine_depth=2 (83.3%)
 Performing optimizations with Geometric Yaw...
-</pre></div>
-</div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> Time spent, Geometric Yaw: 0.12 s.
- Time spent, Serial Refine: 0.75 s.
- Time spent, SciPy (SLSQP): 31.68 s.
+
+ Time spent, Geometric Yaw: 0.02 s.
+ Time spent, Serial Refine: 0.67 s.
+ Time spent, SciPy (SLSQP): 32.16 s.
 </pre></div>
 </div>
 <img alt="../../_images/29d329e63e00d8d8126037e22de3ec655a5f66067daa003a5610bac8cb0efa89.png" src="../../_images/29d329e63e00d8d8126037e22de3ec655a5f66067daa003a5610bac8cb0efa89.png" />
@@ -1373,7 +1373,7 @@ Performing optimizations with Geometric Yaw...
 <img alt="../../_images/342f0e2205c34bc57ffe28103d20c5e7022bb56562d14db490e44e4cf1c84577.png" src="../../_images/342f0e2205c34bc57ffe28103d20c5e7022bb56562d14db490e44e4cf1c84577.png" />
 <img alt="../../_images/be867fe20e8fd6349cfd10272d674f4ca87c13a47b0eeaa3d7112805bc5a9ea5.png" src="../../_images/be867fe20e8fd6349cfd10272d674f4ca87c13a47b0eeaa3d7112805bc5a9ea5.png" />
 <img alt="../../_images/2613340f6ddfe11abe98d8cca7d914d6bc9d9f548e2512fd677c25346676f582.png" src="../../_images/2613340f6ddfe11abe98d8cca7d914d6bc9d9f548e2512fd677c25346676f582.png" />
-<img alt="../../_images/c88b1d3e71782d29adeb576775ca6e868d1fc688c2ed8e5306f998e6637c59b0.png" src="../../_images/c88b1d3e71782d29adeb576775ca6e868d1fc688c2ed8e5306f998e6637c59b0.png" />
+<img alt="../../_images/56f14866a05b410fd47d157882e9e146362e446c25c7eaaac7ee2bf7cb4cd6de.png" src="../../_images/56f14866a05b410fd47d157882e9e146362e446c25c7eaaac7ee2bf7cb4cd6de.png" />
 </div>
 </div>
 </section>

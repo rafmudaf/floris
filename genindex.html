@@ -334,6 +334,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -724,7 +725,7 @@ window.addEventListener("load", () => mermaid.run());
 </li>
         <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.CosineLossTurbine.axial_induction">(floris.core.turbine.operation_models.CosineLossTurbine method)</a>
 </li>
-        <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.MixedOperationTurbine.axial_induction">(floris.core.turbine.operation_models.MixedOperationTurbine method)</a>
+        <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.MixedOperationTurbine.axial_induction">(floris.core.turbine.operation_models.MixedOperationTurbine static method)</a>
 </li>
         <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.PeakShavingTurbine.axial_induction">(floris.core.turbine.operation_models.PeakShavingTurbine method)</a>
 </li>
@@ -2212,7 +2213,7 @@ window.addEventListener("load", () => mermaid.run());
 </li>
         <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.CosineLossTurbine.power">(floris.core.turbine.operation_models.CosineLossTurbine method)</a>
 </li>
-        <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.MixedOperationTurbine.power">(floris.core.turbine.operation_models.MixedOperationTurbine method)</a>
+        <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.MixedOperationTurbine.power">(floris.core.turbine.operation_models.MixedOperationTurbine static method)</a>
 </li>
         <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.PeakShavingTurbine.power">(floris.core.turbine.operation_models.PeakShavingTurbine method)</a>
 </li>
@@ -2308,7 +2309,13 @@ window.addEventListener("load", () => mermaid.run());
       <li><a href="_autosummary/floris.core.farm.html#floris.core.farm.Farm.ref_tilts_sorted">ref_tilts_sorted (floris.core.farm.Farm attribute)</a>
 </li>
       <li><a href="_autosummary/floris.core.flow_field.html#floris.core.flow_field.FlowField.reference_wind_height">reference_wind_height (floris.core.flow_field.FlowField attribute)</a>
+
+      <ul>
+        <li><a href="_autosummary/floris.floris_model.html#floris.floris_model.FlorisModel.reference_wind_height">(floris.floris_model.FlorisModel property)</a>
 </li>
+        <li><a href="_autosummary/floris.uncertain_floris_model.html#floris.uncertain_floris_model.UncertainFlorisModel.reference_wind_height">(floris.uncertain_floris_model.UncertainFlorisModel property)</a>
+</li>
+      </ul></li>
       <li><a href="_autosummary/floris.floris_model.html#floris.floris_model.FlorisModel.reinitialize">reinitialize() (floris.floris_model.FlorisModel method)</a>
 </li>
       <li><a href="_autosummary/floris.optimization.layout_optimization.layout_optimization_boundary_grid.html#floris.optimization.layout_optimization.layout_optimization_boundary_grid.LayoutOptimizationBoundaryGrid.reinitialize_bg">reinitialize_bg() (floris.optimization.layout_optimization.layout_optimization_boundary_grid.LayoutOptimizationBoundaryGrid method)</a>
@@ -2339,10 +2346,10 @@ window.addEventListener("load", () => mermaid.run());
       </ul></li>
       <li><a href="_autosummary/floris.core.turbine.turbine.html#floris.core.turbine.turbine.Turbine.reset_rotor_area">reset_rotor_area() (floris.core.turbine.turbine.Turbine method)</a>
 </li>
-      <li><a href="_autosummary/floris.core.turbine.turbine.html#floris.core.turbine.turbine.Turbine.reset_rotor_diameter_dependencies">reset_rotor_diameter_dependencies() (floris.core.turbine.turbine.Turbine method)</a>
-</li>
   </ul></td>
   <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="_autosummary/floris.core.turbine.turbine.html#floris.core.turbine.turbine.Turbine.reset_rotor_diameter_dependencies">reset_rotor_diameter_dependencies() (floris.core.turbine.turbine.Turbine method)</a>
+</li>
       <li><a href="_autosummary/floris.core.turbine.turbine.html#floris.core.turbine.turbine.Turbine.reset_rotor_radius">reset_rotor_radius() (floris.core.turbine.turbine.Turbine method)</a>
 </li>
       <li><a href="_autosummary/floris.flow_visualization.html#floris.flow_visualization.reverse_cut_plane_x_axis_in_plot">reverse_cut_plane_x_axis_in_plot() (in module floris.flow_visualization)</a>
@@ -2566,7 +2573,7 @@ window.addEventListener("load", () => mermaid.run());
 </li>
         <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.CosineLossTurbine.thrust_coefficient">(floris.core.turbine.operation_models.CosineLossTurbine method)</a>
 </li>
-        <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.MixedOperationTurbine.thrust_coefficient">(floris.core.turbine.operation_models.MixedOperationTurbine method)</a>
+        <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.MixedOperationTurbine.thrust_coefficient">(floris.core.turbine.operation_models.MixedOperationTurbine static method)</a>
 </li>
         <li><a href="_autosummary/floris.core.turbine.operation_models.html#floris.core.turbine.operation_models.PeakShavingTurbine.thrust_coefficient">(floris.core.turbine.operation_models.PeakShavingTurbine method)</a>
 </li>

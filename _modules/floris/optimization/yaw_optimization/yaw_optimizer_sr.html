@@ -334,6 +334,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -655,6 +656,7 @@ window.addEventListener("load", () => mermaid.run());
         <span class="n">wd_array_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel_subset</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">flow_field</span><span class="o">.</span><span class="n">wind_directions</span>
         <span class="n">ws_array_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel_subset</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">flow_field</span><span class="o">.</span><span class="n">wind_speeds</span>
         <span class="n">ti_array_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel_subset</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">flow_field</span><span class="o">.</span><span class="n">turbulence_intensities</span>
+        <span class="n">power_setpoints_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel_subset</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">farm</span><span class="o">.</span><span class="n">power_setpoints</span>
         <span class="n">turbine_weights_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_turbine_weights_subset</span>
 
         <span class="c1"># Reformat yaw_angles_subset, if necessary</span>
@@ -670,6 +672,7 @@ window.addEventListener("load", () => mermaid.run());
             <span class="n">wd_array_subset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">wd_array_subset</span><span class="p">,</span> <span class="n">Ny</span><span class="p">)</span>
             <span class="n">ws_array_subset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">ws_array_subset</span><span class="p">,</span> <span class="n">Ny</span><span class="p">)</span>
             <span class="n">ti_array_subset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">ti_array_subset</span><span class="p">,</span> <span class="n">Ny</span><span class="p">)</span>
+            <span class="n">power_setpoints_subset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">power_setpoints_subset</span><span class="p">,</span> <span class="p">(</span><span class="n">Ny</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
             <span class="n">turbine_weights_subset</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(</span><span class="n">turbine_weights_subset</span><span class="p">,</span> <span class="p">(</span><span class="n">Ny</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
 
         <span class="c1"># Initialize empty matrix for floris farm power outputs</span>
@@ -705,7 +708,8 @@ window.addEventListener("load", () => mermaid.run());
                 <span class="n">ti_array</span><span class="o">=</span><span class="n">ti_array_subset</span><span class="p">[</span><span class="o">~</span><span class="n">idx</span><span class="p">],</span>
                 <span class="n">turbine_weights</span><span class="o">=</span><span class="n">turbine_weights_subset</span><span class="p">[</span><span class="o">~</span><span class="n">idx</span><span class="p">,</span> <span class="p">:],</span>
                 <span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles_subset</span><span class="p">[</span><span class="o">~</span><span class="n">idx</span><span class="p">,</span> <span class="p">:],</span>
-                <span class="n">heterogeneous_speed_multipliers</span><span class="o">=</span><span class="n">het_sm</span>
+                <span class="n">heterogeneous_speed_multipliers</span><span class="o">=</span><span class="n">het_sm</span><span class="p">,</span>
+                <span class="n">power_setpoints</span><span class="o">=</span><span class="n">power_setpoints_subset</span><span class="p">[</span><span class="o">~</span><span class="n">idx</span><span class="p">,</span> <span class="p">:],</span>
             <span class="p">)</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">time_spent_in_floris</span> <span class="o">+=</span> <span class="p">(</span><span class="n">timerpc</span><span class="p">()</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">)</span>
 

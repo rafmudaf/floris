@@ -334,6 +334,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -565,6 +566,7 @@ window.addEventListener("load", () => mermaid.run());
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
+<span class="kn">from</span> <span class="nn">floris.core.turbine.operation_models</span> <span class="kn">import</span> <span class="n">POWER_SETPOINT_DISABLED</span>
 <span class="kn">from</span> <span class="nn">floris.logging_manager</span> <span class="kn">import</span> <span class="n">LoggingManager</span>
 
 <span class="kn">from</span> <span class="nn">.yaw_optimization_tools</span> <span class="kn">import</span> <span class="n">derive_downstream_turbines</span>
@@ -661,7 +663,7 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="c1"># Save turbine object to self</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span> <span class="o">=</span> <span class="n">fmodel</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">fmodel</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">nturbs</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">layout_x</span><span class="p">)</span>
 
         <span class="c1"># # Check floris options</span>
@@ -692,6 +694,11 @@ window.addEventListener("load", () => mermaid.run());
         <span class="c1"># Set optimization bounds</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minimum_yaw_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_variable</span><span class="p">(</span><span class="n">minimum_yaw_angle</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">maximum_yaw_angle</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_unpack_variable</span><span class="p">(</span><span class="n">maximum_yaw_angle</span><span class="p">)</span>
+
+        <span class="c1"># Limit yaw angles to zero for disabled turbines</span>
+        <span class="n">active_turbines</span> <span class="o">=</span> <span class="n">fmodel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">farm</span><span class="o">.</span><span class="n">power_setpoints</span> <span class="o">&gt;</span> <span class="n">POWER_SETPOINT_DISABLED</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minimum_yaw_angle</span><span class="p">[</span><span class="o">~</span><span class="n">active_turbines</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">maximum_yaw_angle</span><span class="p">[</span><span class="o">~</span><span class="n">active_turbines</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.0</span>
 
         <span class="c1"># Set initial condition for optimization</span>
         <span class="k">if</span> <span class="n">x0</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -786,7 +793,7 @@ window.addEventListener("load", () => mermaid.run());
         <span class="bp">self</span><span class="o">.</span><span class="n">turbs_to_opt</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum_yaw_angle</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">minimum_yaw_angle</span> <span class="o">&gt;=</span> <span class="mf">0.001</span><span class="p">)</span>
 
         <span class="c1"># Initialize subset variables as full set</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">fmodel_subset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">fmodel_subset</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="p">)</span>
         <span class="n">n_findex_subset</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">fmodel</span><span class="o">.</span><span class="n">core</span><span class="o">.</span><span class="n">flow_field</span><span class="o">.</span><span class="n">n_findex</span><span class="p">)</span>
         <span class="n">minimum_yaw_angle_subset</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">minimum_yaw_angle</span><span class="p">)</span>
         <span class="n">maximum_yaw_angle_subset</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">maximum_yaw_angle</span><span class="p">)</span>
@@ -863,6 +870,7 @@ window.addEventListener("load", () => mermaid.run());
             <span class="n">ti_array</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">turbine_weights</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">heterogeneous_speed_multipliers</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+            <span class="n">power_setpoints</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">        Calculate the wind farm power production assuming the predefined</span>
@@ -915,6 +923,7 @@ window.addEventListener("load", () => mermaid.run());
             <span class="n">wind_speeds</span><span class="o">=</span><span class="n">ws_array</span><span class="p">,</span>
             <span class="n">turbulence_intensities</span><span class="o">=</span><span class="n">ti_array</span><span class="p">,</span>
             <span class="n">yaw_angles</span><span class="o">=</span><span class="n">yaw_angles</span><span class="p">,</span>
+            <span class="n">power_setpoints</span><span class="o">=</span><span class="n">power_setpoints</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">fmodel_subset</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
         <span class="n">turbine_power</span> <span class="o">=</span> <span class="n">fmodel_subset</span><span class="o">.</span><span class="n">get_turbine_powers</span><span class="p">()</span>

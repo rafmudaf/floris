@@ -327,6 +327,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -675,8 +676,8 @@
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>fmodel</strong> (<a class="reference internal" href="floris.floris_model.html#floris.floris_model.FlorisModel" title="floris.floris_model.FlorisModel"><em>FlorisModel</em></a>)</p></li>
-<li><p><strong>ax</strong> (<em>Axes</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>turbine_indices</strong> (<em>List</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>)</p></li>
+<li><p><strong>turbine_indices</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>)</p></li>
 <li><p><strong>plotting_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
 </ul>
 </dd>
@@ -720,10 +721,10 @@ ax (plt.Axes, optional): An existing axes object to plot on. If None,</p>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>fmodel</strong> (<a class="reference internal" href="floris.floris_model.html#floris.floris_model.FlorisModel" title="floris.floris_model.FlorisModel"><em>FlorisModel</em></a>)</p></li>
-<li><p><strong>ax</strong> (<em>Axes</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>turbine_names</strong> (<em>List</em><em>[</em><em>str</em><em>] </em><em>| </em><em>None</em>)</p></li>
-<li><p><strong>turbine_indices</strong> (<em>List</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em>)</p></li>
-<li><p><strong>label_offset</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>)</p></li>
+<li><p><strong>turbine_names</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>)</p></li>
+<li><p><strong>turbine_indices</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>)</p></li>
+<li><p><strong>label_offset</strong> (<em>float</em>)</p></li>
 <li><p><strong>show_bbox</strong> (<em>bool</em>)</p></li>
 <li><p><strong>bbox_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
 <li><p><strong>plotting_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
@@ -784,10 +785,10 @@ ValueError: If the length of <cite>turbine_names</cite> does not match the numbe
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>fmodel</strong> (<a class="reference internal" href="floris.floris_model.html#floris.floris_model.FlorisModel" title="floris.floris_model.FlorisModel"><em>FlorisModel</em></a>)</p></li>
-<li><p><strong>ax</strong> (<em>Axes</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>)</p></li>
 <li><p><strong>color</strong> (<em>str</em>)</p></li>
-<li><p><strong>wd</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>yaw_angles</strong> (<em>ndarray</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>wd</strong> (<em>float</em>)</p></li>
+<li><p><strong>yaw_angles</strong> (<em>ndarray</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -857,9 +858,9 @@ y_j (float): Y-coordinate of turbine j.</p>
 <li><p><strong>line</strong> (<em>Line2D</em>)</p></li>
 <li><p><strong>label_text</strong> (<em>str</em>)</p></li>
 <li><p><strong>ax</strong> (<em>Axes</em>)</p></li>
-<li><p><strong>near_i</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>near_x</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>near_y</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>near_i</strong> (<em>int</em>)</p></li>
+<li><p><strong>near_x</strong> (<em>float</em>)</p></li>
+<li><p><strong>near_y</strong> (<em>float</em>)</p></li>
 <li><p><strong>rotation_offset</strong> (<em>float</em>)</p></li>
 <li><p><strong>offset</strong> (<em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em>)</p></li>
 <li><p><strong>size</strong> (<em>int</em>)</p></li>
@@ -902,13 +903,13 @@ rotation_offset (float, optional): Additional rotation for the label (in degrees
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>fmodel</strong> (<a class="reference internal" href="floris.floris_model.html#floris.floris_model.FlorisModel" title="floris.floris_model.FlorisModel"><em>FlorisModel</em></a>)</p></li>
-<li><p><strong>ax</strong> (<em>Axes</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>turbine_indices</strong> (<em>List</em><em>[</em><em>int</em><em>] </em><em>| </em><em>None</em>)</p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>)</p></li>
+<li><p><strong>turbine_indices</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>)</p></li>
 <li><p><strong>wake_plotting_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
-<li><p><strong>D</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>limit_dist_D</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>limit_dist_m</strong> (<em>float</em><em> | </em><em>None</em>)</p></li>
-<li><p><strong>limit_num</strong> (<em>int</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>D</strong> (<em>float</em>)</p></li>
+<li><p><strong>limit_dist_D</strong> (<em>float</em>)</p></li>
+<li><p><strong>limit_dist_m</strong> (<em>float</em>)</p></li>
+<li><p><strong>limit_num</strong> (<em>int</em>)</p></li>
 <li><p><strong>wake_label_size</strong> (<em>int</em>)</p></li>
 </ul>
 </dd>
@@ -961,7 +962,7 @@ ax (plt.Axes, optional): An existing axes object to plot on. If None, a new</p>
 <dt class="field-even">Parameters<span class="colon">:</span></dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>fmodel</strong> (<a class="reference internal" href="floris.floris_model.html#floris.floris_model.FlorisModel" title="floris.floris_model.FlorisModel"><em>FlorisModel</em></a>)</p></li>
-<li><p><strong>ax</strong> (<em>Axes</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>)</p></li>
 </ul>
 </dd>
 </dl>
@@ -989,7 +990,7 @@ ax (plt.Axes, optional): An existing axes object to plot on. If None, a new</p>
 <li><p><strong>show_points</strong> (<em>bool</em>)</p></li>
 <li><p><strong>plotting_dict_region</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
 <li><p><strong>plotting_dict_points</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>Any</em><em>]</em>)</p></li>
-<li><p><strong>ax</strong> (<em>Axes</em><em> | </em><em>None</em>)</p></li>
+<li><p><strong>ax</strong> (<em>Axes</em>)</p></li>
 </ul>
 </dd>
 </dl>

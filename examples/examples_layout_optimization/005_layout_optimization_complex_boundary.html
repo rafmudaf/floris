@@ -327,6 +327,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -727,10 +728,10 @@ Optimization time: 0.0 s / 60.0 s
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +1.0
 Optimization time = +10.1 [s]
-Mean AEP = 86.7 [GWh] (+1.78%)
-Median AEP = 86.9 [GWh] (+2.01%)
-Max AEP = 87.0 [GWh] (+2.09%)
-Min AEP = 86.0 [GWh] (+1.01%)
+Mean AEP = 86.8 [GWh] (+1.91%)
+Median AEP = 87.0 [GWh] (+2.08%)
+Max AEP = 87.2 [GWh] (+2.34%)
+Min AEP = 86.2 [GWh] (+1.15%)
 =======================================
 Optimization time: 10.1 s / 60.0 s
 </pre></div>
@@ -738,10 +739,10 @@ Optimization time: 10.1 s / 60.0 s
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +2.0
 Optimization time = +20.2 [s]
-Mean AEP = 87.3 [GWh] (+2.47%)
-Median AEP = 87.3 [GWh] (+2.51%)
-Max AEP = 87.5 [GWh] (+2.66%)
-Min AEP = 87.1 [GWh] (+2.21%)
+Mean AEP = 87.4 [GWh] (+2.59%)
+Median AEP = 87.4 [GWh] (+2.61%)
+Max AEP = 87.5 [GWh] (+2.71%)
+Min AEP = 87.2 [GWh] (+2.41%)
 =======================================
 Optimization time: 20.2 s / 60.0 s
 </pre></div>
@@ -749,10 +750,10 @@ Optimization time: 20.2 s / 60.0 s
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +3.0
 Optimization time = +30.4 [s]
-Mean AEP = 87.5 [GWh] (+2.71%)
-Median AEP = 87.5 [GWh] (+2.71%)
-Max AEP = 87.5 [GWh] (+2.75%)
-Min AEP = 87.5 [GWh] (+2.66%)
+Mean AEP = 87.5 [GWh] (+2.74%)
+Median AEP = 87.5 [GWh] (+2.73%)
+Max AEP = 87.6 [GWh] (+2.80%)
+Min AEP = 87.5 [GWh] (+2.68%)
 =======================================
 Optimization time: 30.4 s / 60.0 s
 </pre></div>
@@ -760,10 +761,10 @@ Optimization time: 30.4 s / 60.0 s
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +4.0
 Optimization time = +40.5 [s]
-Mean AEP = 87.5 [GWh] (+2.74%)
-Median AEP = 87.5 [GWh] (+2.76%)
-Max AEP = 87.6 [GWh] (+2.78%)
-Min AEP = 87.5 [GWh] (+2.68%)
+Mean AEP = 87.6 [GWh] (+2.80%)
+Median AEP = 87.6 [GWh] (+2.81%)
+Max AEP = 87.6 [GWh] (+2.82%)
+Min AEP = 87.6 [GWh] (+2.78%)
 =======================================
 Optimization time: 40.5 s / 60.0 s
 </pre></div>
@@ -771,10 +772,10 @@ Optimization time: 40.5 s / 60.0 s
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +5.0
 Optimization time = +50.7 [s]
-Mean AEP = 87.6 [GWh] (+2.79%)
-Median AEP = 87.6 [GWh] (+2.79%)
-Max AEP = 87.6 [GWh] (+2.79%)
-Min AEP = 87.6 [GWh] (+2.78%)
+Mean AEP = 87.6 [GWh] (+2.84%)
+Median AEP = 87.6 [GWh] (+2.83%)
+Max AEP = 87.6 [GWh] (+2.85%)
+Min AEP = 87.6 [GWh] (+2.83%)
 =======================================
 Optimization time: 50.7 s / 60.0 s
 </pre></div>
@@ -782,15 +783,15 @@ Optimization time: 50.7 s / 60.0 s
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>=======================================
 Optimization step +6.0
 Optimization time = +60.8 [s]
-Mean AEP = 87.6 [GWh] (+2.82%)
-Median AEP = 87.6 [GWh] (+2.81%)
+Mean AEP = 87.6 [GWh] (+2.84%)
+Median AEP = 87.6 [GWh] (+2.84%)
 Max AEP = 87.6 [GWh] (+2.85%)
-Min AEP = 87.6 [GWh] (+2.81%)
+Min AEP = 87.6 [GWh] (+2.83%)
 =======================================
 Final AEP = 87.6 [GWh] (+2.85%)
 </pre></div>
 </div>
-<img alt="../../_images/5e1f14845dd62d0ec34fd14f4a61e71d220db51913a89bb0bd2438b2481d110e.png" src="../../_images/5e1f14845dd62d0ec34fd14f4a61e71d220db51913a89bb0bd2438b2481d110e.png" />
+<img alt="../../_images/1a58414b9f0596f0b6dcedca8bec59eeaafe6c43b5511ff1c96367072d7265b6.png" src="../../_images/1a58414b9f0596f0b6dcedca8bec59eeaafe6c43b5511ff1c96367072d7265b6.png" />
 </div>
 </div>
 </section>

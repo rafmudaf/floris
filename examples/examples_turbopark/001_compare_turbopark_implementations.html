@@ -327,6 +327,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -656,7 +657,10 @@
 <span class="c1">### Start by visualizing a single turbine in and its wake with the new model</span>
 <span class="c1"># Load the new TurboPark implementation and switch to constant CT turbine</span>
 <span class="n">fmodel_new</span> <span class="o">=</span> <span class="n">FlorisModel</span><span class="p">(</span><span class="s2">&quot;../inputs/turboparkgauss_cubature.yaml&quot;</span><span class="p">)</span>
-<span class="n">fmodel_new</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">turbine_type</span><span class="o">=</span><span class="p">[</span><span class="n">const_CT_turb</span><span class="p">])</span>
+<span class="n">fmodel_new</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">turbine_type</span><span class="o">=</span><span class="p">[</span><span class="n">const_CT_turb</span><span class="p">],</span>
+    <span class="n">reference_wind_height</span><span class="o">=</span><span class="n">fmodel_new</span><span class="o">.</span><span class="n">reference_wind_height</span>
+<span class="p">)</span>
 <span class="n">fmodel_new</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
 <span class="n">u0</span> <span class="o">=</span> <span class="n">fmodel_new</span><span class="o">.</span><span class="n">wind_speeds</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
 
@@ -715,7 +719,10 @@
 <span class="c1">### Look at the wake profile at a single downstream distance for a range of wind directions</span>
 <span class="c1"># Load the original TurboPark implementation and switch to constant CT turbine</span>
 <span class="n">fmodel_orig</span> <span class="o">=</span> <span class="n">FlorisModel</span><span class="p">(</span><span class="s2">&quot;../inputs/turbopark_cubature.yaml&quot;</span><span class="p">)</span>
-<span class="n">fmodel_orig</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">turbine_type</span><span class="o">=</span><span class="p">[</span><span class="n">const_CT_turb</span><span class="p">])</span>
+<span class="n">fmodel_orig</span><span class="o">.</span><span class="n">set</span><span class="p">(</span>
+    <span class="n">turbine_type</span><span class="o">=</span><span class="p">[</span><span class="n">const_CT_turb</span><span class="p">],</span>
+    <span class="n">reference_wind_height</span><span class="o">=</span><span class="n">fmodel_orig</span><span class="o">.</span><span class="n">reference_wind_height</span>
+<span class="p">)</span>
 
 <span class="c1"># Set up and solve flows</span>
 <span class="n">wd_array</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="mi">225</span><span class="p">,</span><span class="mi">315</span><span class="p">,</span><span class="mf">0.1</span><span class="p">)</span>
@@ -815,12 +822,6 @@
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">floris.floris_model.FlorisModel</span> <span class=" -Color -Color-Bold -Color-Bold-Black">WARNING</span> <span class=" -Color -Color-Yellow">turbine_type has been changed without specifying a new reference_wind_height. reference_wind_height remains 90.00 m. Consider calling `FlorisModel.assign_hub_height_to_ref_height` to update the reference wind height to the turbine hub height.</span>
-</pre></div>
-</div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">floris.floris_model.FlorisModel</span> <span class=" -Color -Color-Bold -Color-Bold-Black">WARNING</span> <span class=" -Color -Color-Yellow">turbine_type has been changed without specifying a new reference_wind_height. reference_wind_height remains 90.00 m. Consider calling `FlorisModel.assign_hub_height_to_ref_height` to update the reference wind height to the turbine hub height.</span>
-</pre></div>
-</div>
 <div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span><span class=" -Color -Color-Blue">floris.logging_manager.LoggingManager</span> <span class=" -Color -Color-Bold -Color-Bold-Black">WARNING</span> <span class=" -Color -Color-Yellow">The turbopark model has been superseded by the turboparkgauss model. We recommend using `velocity_model: turboparkgauss` instead.</span>
 </pre></div>
 </div>

@@ -335,6 +335,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -846,7 +847,7 @@ is located at <code class="docutils literal notranslate"><span class="pre">flori
 <p>The online documentation is built with Jupyter Book which uses Sphinx
 as a framework. It is automatically built and hosted by GitHub, but it
 can also be compiled locally. Additional dependencies are required
-for the documentation, and they are listed in the <code class="docutils literal notranslate"><span class="pre">EXTRAS</span></code> of <code class="docutils literal notranslate"><span class="pre">setup.py</span></code>.
+for the documentation, and they are listed in the <code class="docutils literal notranslate"><span class="pre">project.optional-dependencies</span></code> of <code class="docutils literal notranslate"><span class="pre">pyproject.toml</span></code>.
 The commands to build the docs are given below. After successfully
 compiling, a file should be located at <code class="docutils literal notranslate"><span class="pre">docs/_build/html/index.html</span></code>.
 This file can be opened in any browser.</p>
@@ -881,7 +882,7 @@ with a commit message such as &quot;Update version to vN.M&quot;.
 The version number must be updated in the following two files:</p>
 <ul class="simple">
 <li><p><a class="reference external" href="https://github.com/NREL/floris/blob/main/README.md">floris/README.md</a></p></li>
-<li><p><a class="reference external" href="https://github.com/NREL/floris/blob/main/floris/version.py">floris/floris/version.py</a>
+<li><p><a class="reference external" href="https://github.com/NREL/floris/blob/main/pyproject.toml">pyproject.toml</a>
 Note that a <code class="docutils literal notranslate"><span class="pre">.0</span></code> version number is left off meaning that valid versions
 are <code class="docutils literal notranslate"><span class="pre">v3</span></code>, <code class="docutils literal notranslate"><span class="pre">v3.1</span></code>, <code class="docutils literal notranslate"><span class="pre">v3.1.1</span></code>, etc.</p></li>
 </ul>

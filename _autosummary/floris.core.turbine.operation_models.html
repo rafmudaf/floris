@@ -327,6 +327,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -943,7 +944,7 @@ the other operation models.</p>
 </dl>
 <dl class="py method">
 <dt class="sig sig-object py" id="floris.core.turbine.operation_models.MixedOperationTurbine.power">
-<span class="sig-name descname"><span class="pre">power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">power_setpoints</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/core/turbine/operation_models.html#MixedOperationTurbine.power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.core.turbine.operation_models.MixedOperationTurbine.power" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">power</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaw_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_setpoints</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/core/turbine/operation_models.html#MixedOperationTurbine.power"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.core.turbine.operation_models.MixedOperationTurbine.power" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -956,7 +957,7 @@ the other operation models.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="floris.core.turbine.operation_models.MixedOperationTurbine.thrust_coefficient">
-<span class="sig-name descname"><span class="pre">thrust_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">power_setpoints</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/core/turbine/operation_models.html#MixedOperationTurbine.thrust_coefficient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.core.turbine.operation_models.MixedOperationTurbine.thrust_coefficient" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">thrust_coefficient</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaw_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_setpoints</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/core/turbine/operation_models.html#MixedOperationTurbine.thrust_coefficient"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.core.turbine.operation_models.MixedOperationTurbine.thrust_coefficient" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -969,7 +970,7 @@ the other operation models.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="floris.core.turbine.operation_models.MixedOperationTurbine.axial_induction">
-<span class="sig-name descname"><span class="pre">axial_induction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">power_setpoints</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/core/turbine/operation_models.html#MixedOperationTurbine.axial_induction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.core.turbine.operation_models.MixedOperationTurbine.axial_induction" title="Link to this definition">#</a></dt>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">axial_induction</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">yaw_angles</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">power_setpoints</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../_modules/floris/core/turbine/operation_models.html#MixedOperationTurbine.axial_induction"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#floris.core.turbine.operation_models.MixedOperationTurbine.axial_induction" title="Link to this definition">#</a></dt>
 <dd><dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

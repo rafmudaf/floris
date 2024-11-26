@@ -334,6 +334,7 @@ window.addEventListener("load", () => mermaid.run());
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../../examples/examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -592,6 +593,12 @@ window.addEventListener("load", () => mermaid.run());
 <span class="sd">        Instantiate YawOptimizationScipy object with a FlorisModel object</span>
 <span class="sd">        and assign parameter values.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">valid_op_models</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;cosine-loss&quot;</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">fmodel</span><span class="o">.</span><span class="n">get_operation_model</span><span class="p">()</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">valid_op_models</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s2">&quot;YawOptimizationScipy is currently limited to the following operation models: &quot;</span>
+                <span class="o">+</span> <span class="s2">&quot;, &quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">valid_op_models</span><span class="p">)</span>
+            <span class="p">)</span>
         <span class="k">if</span> <span class="n">opt_options</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="c1"># Default SciPy parameters</span>
             <span class="n">opt_options</span> <span class="o">=</span> <span class="p">{</span>

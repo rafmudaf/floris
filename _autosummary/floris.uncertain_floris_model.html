@@ -327,6 +327,7 @@
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/005_optimize_yaw_aep_parallel.html">Example: Optimize yaw and compare AEP in parallel</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/006_compare_yaw_optimizers.html">Example: Compare yaw optimizers</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/007_optimize_yaw_with_neighbor_farms.html">Example: Optimize yaw with neighbor farm</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples/examples_control_optimization/008_optimize_yaw_with_disabled_turbines.html">Example: Optimizing yaw angles with disabled turbines</a></li>
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Control types</span></p>
 <ul class="nav bd-sidenav">
@@ -637,6 +638,7 @@
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.turbulence_intensities"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.turbulence_intensities</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.n_findex"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.n_findex</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.n_turbines"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.n_turbines</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.reference_wind_height"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.reference_wind_height</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.core"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.core</span></code></a></li>
 </ul>
 </li>
@@ -1172,6 +1174,16 @@ param_idx (Optional[int], optional): The index to set the value at. Defaults to 
 </dd></dl>
 
 <dl class="py property">
+<dt class="sig sig-object py" id="floris.uncertain_floris_model.UncertainFlorisModel.reference_wind_height">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reference_wind_height</span></span><a class="headerlink" href="#floris.uncertain_floris_model.UncertainFlorisModel.reference_wind_height" title="Link to this definition">#</a></dt>
+<dd><p>Reference wind height.</p>
+<dl class="simple">
+<dt>Returns:</dt><dd><p>float: Reference wind height.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
 <dt class="sig sig-object py" id="floris.uncertain_floris_model.UncertainFlorisModel.core">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">core</span></span><a class="headerlink" href="#floris.uncertain_floris_model.UncertainFlorisModel.core" title="Link to this definition">#</a></dt>
 <dd><p>Returns the core of the unexpanded model.</p>
@@ -1312,6 +1324,7 @@ result computed</p>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.turbulence_intensities"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.turbulence_intensities</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.n_findex"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.n_findex</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.n_turbines"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.n_turbines</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.reference_wind_height"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.reference_wind_height</span></code></a></li>
 <li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#floris.uncertain_floris_model.UncertainFlorisModel.core"><code class="docutils literal notranslate"><span class="pre">UncertainFlorisModel.core</span></code></a></li>
 </ul>
 </li>
