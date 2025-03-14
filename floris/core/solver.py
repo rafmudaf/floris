@@ -27,6 +27,7 @@ from floris.core.wake_velocity.empirical_gauss import awc_added_wake_mixing
 from floris.type_dec import NDArrayFloat
 from floris.utilities import cosd
 
+import nvtx
 
 def calculate_area_overlap(wake_velocities, freestream_velocities, y_ngrid, z_ngrid):
     """
@@ -45,6 +46,7 @@ def calculate_area_overlap(wake_velocities, freestream_velocities, y_ngrid, z_ng
 
 
 # @profile
+@nvtx.annotate("sequential_solver")
 def sequential_solver(
     farm: Farm,
     flow_field: FlowField,
@@ -58,9 +60,11 @@ def sequential_solver(
     # Move on to the next turbine.
 
     # <<interface>>
+    rng = nvtx.start_range("prepare_functions")
     deflection_model_args = model_manager.deflection_model.prepare_function(grid, flow_field)
     deficit_model_args = model_manager.velocity_model.prepare_function(grid, flow_field)
 
+    rng = nvtx.start_range("data init")
     # This is u_wake
     wake_field = np.zeros_like(flow_field.u_initial_sorted)
     v_wake = np.zeros_like(flow_field.v_initial_sorted)
@@ -74,10 +78,13 @@ def sequential_solver(
     # with dimensions expanded for (n_turbines, grid, grid)
     ambient_turbulence_intensities = flow_field.turbulence_intensities.copy()
     ambient_turbulence_intensities = ambient_turbulence_intensities[:, None, None, None]
+    nvtx.end_range(rng)
 
     # Calculate the velocity deficit sequentially from upstream to downstream turbines
     for i in range(grid.n_turbines):
+        rng_loop = nvtx.start_range(f"turbine-loop {i}")
 
+        rng = nvtx.start_range(f"extract i quantities")
         # Get the current turbine quantities
         x_i = np.mean(grid.x_sorted[:, i:i+1], axis=(2, 3))
         x_i = x_i[:, :, None, None]
@@ -88,6 +95,7 @@ def sequential_solver(
 
         u_i = flow_field.u_sorted[:, i:i+1]
         v_i = flow_field.v_sorted[:, i:i+1]
+        nvtx.end_range(rng)
 
         ct_i = thrust_coefficient(
             velocities=flow_field.u_sorted,
@@ -227,6 +235,7 @@ def sequential_solver(
             axial_induction_i,
         )
 
+        rng = nvtx.start_range(f"WAT")
         # Calculate wake overlap for wake-added turbulence (WAT)
         area_overlap = (
             np.sum(velocity_deficit * flow_field.u_initial_sorted > 0.05, axis=(2, 3))
@@ -248,10 +257,15 @@ def sequential_solver(
         turbine_turbulence_intensity = np.maximum(
             np.sqrt(ti_added**2 + ambient_turbulence_intensities**2), turbine_turbulence_intensity
         )
+        nvtx.end_range(rng)
 
+        rng = nvtx.start_range(f"combine wake")
         flow_field.u_sorted = flow_field.u_initial_sorted - wake_field
         flow_field.v_sorted += v_wake
         flow_field.w_sorted += w_wake
+        nvtx.end_range(rng)
+
+        nvtx.end_range(rng_loop)
 
     flow_field.turbulence_intensity_field_sorted = turbine_turbulence_intensity
     flow_field.turbulence_intensity_field_sorted_avg = np.mean(
@@ -450,7 +464,9 @@ def full_flow_sequential_solver(
         flow_field.v_sorted += v_wake
         flow_field.w_sorted += w_wake
 
+
 # @profile
+@nvtx.annotate("cc_solver")
 def cc_solver(
     farm: Farm,
     flow_field: FlowField,
@@ -458,9 +474,13 @@ def cc_solver(
     model_manager: WakeModelManager
 ) -> None:
     # <<interface>>
+
+    rng = nvtx.start_range("prepare_functions")
     deflection_model_args = model_manager.deflection_model.prepare_function(grid, flow_field)
     deficit_model_args = model_manager.velocity_model.prepare_function(grid, flow_field)
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("data init")
     # This is u_wake
     v_wake = np.zeros_like(flow_field.v_initial_sorted)
     w_wake = np.zeros_like(flow_field.w_initial_sorted)
@@ -478,6 +498,8 @@ def cc_solver(
 
     shape = (farm.n_turbines,) + np.shape(flow_field.u_initial_sorted)
     Ctmp = np.zeros((shape))
+    nvtx.end_range(rng)
+
     # Ctmp = np.zeros((len(x_coord), len(wd), len(ws), len(x_coord), y_ngrid, z_ngrid))
 
     # sigma_i = np.zeros((shape))
@@ -485,7 +507,9 @@ def cc_solver(
 
     # Calculate the velocity deficit sequentially from upstream to downstream turbines
     for i in range(grid.n_turbines):
+        rng_loop = nvtx.start_range(f"turbine-loop {i}")
 
+        rng = nvtx.start_range(f"extract i quantities")
         # Get the current turbine quantities
         x_i = np.mean(grid.x_sorted[:, i:i+1], axis=(2, 3))
         x_i = x_i[:, :, None, None]
@@ -495,7 +519,9 @@ def cc_solver(
         z_i = z_i[:, :, None, None]
 
         rotor_diameter_i = farm.rotor_diameters_sorted[:, i:i+1, None, None]
+        nvtx.end_range(rng)
 
+        rng = nvtx.start_range(f"mask")
         mask2 = (
             (grid.x_sorted < x_i + 0.01)
             * (grid.x_sorted > x_i - 0.01)
@@ -506,6 +532,7 @@ def cc_solver(
             turb_inflow_field * ~mask2
             + (flow_field.u_initial_sorted - turb_u_wake) * mask2
         )
+        nvtx.end_range(rng)
 
         turb_avg_vels = average_velocity(turb_inflow_field)
         turb_Cts = thrust_coefficient(
@@ -664,6 +691,7 @@ def cc_solver(
             turb_aIs
         )
 
+        rng = nvtx.start_range(f"WAT")
         # Calculate wake overlap for wake-added turbulence (WAT)
         area_overlap = 1 - (
             np.sum(turb_u_wake <= 0.05, axis=(2, 3))
@@ -685,9 +713,16 @@ def cc_solver(
         turbine_turbulence_intensity = np.maximum(
             np.sqrt(ti_added**2 + ambient_turbulence_intensities**2), turbine_turbulence_intensity
         )
+        nvtx.end_range(rng)
 
+        rng = nvtx.start_range(f"combine wake")
         flow_field.v_sorted += v_wake
         flow_field.w_sorted += w_wake
+        nvtx.end_range(rng)
+
+        nvtx.end_range(rng_loop)
+
+
     flow_field.u_sorted = turb_inflow_field
 
     flow_field.turbulence_intensity_field_sorted = turbine_turbulence_intensity

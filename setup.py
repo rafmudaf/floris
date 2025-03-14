@@ -49,6 +49,10 @@ EXTRAS = {
         "ruff",
         "isort",
     },
+    "profile": {
+        "line-profiler",
+        "nvtx",
+    }
 }
 
 ROOT = Path(__file__).parent

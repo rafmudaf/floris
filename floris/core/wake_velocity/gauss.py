@@ -17,6 +17,7 @@ from floris.utilities import (
     sind,
     tand,
 )
+import nvtx
 
 
 @define
@@ -43,6 +44,7 @@ class GaussVelocityDeficit(BaseModel):
         return kwargs
 
     # @profile
+    @nvtx.annotate("gauss function")
     def function(
         self,
         x_i: np.ndarray,
@@ -183,6 +185,7 @@ class GaussVelocityDeficit(BaseModel):
 
 
 # @profile
+@nvtx.annotate("gauss rC")
 def rC(wind_veer, sigma_y, sigma_z, y, y_i, delta, z, HH, Ct, yaw, D):
 
     ## original
@@ -226,12 +229,14 @@ def rC(wind_veer, sigma_y, sigma_z, y, y_i, delta, z, HH, Ct, yaw, D):
     return r, C
 
 
+@nvtx.annotate("gauss mask_upstream_wake")
 def mask_upstream_wake(mesh_y_rotated, x_coord_rotated, y_coord_rotated, turbine_yaw):
     yR = mesh_y_rotated - y_coord_rotated
     xR = yR * tand(turbine_yaw) + x_coord_rotated
     return xR, yR
 
 
+@nvtx.annotate("gauss gaussian_function")
 def gaussian_function(C, r, n, sigma):
     result = ne.evaluate("C * exp(-1 * r ** n / (2 * sigma ** 2))")
     return result

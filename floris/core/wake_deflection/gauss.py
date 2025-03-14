@@ -20,7 +20,7 @@ from floris.core import (
     Turbine,
 )
 from floris.utilities import cosd, sind
-
+import nvtx
 
 NUM_EPS = fields(BaseModel).NUM_EPS.default
 
@@ -98,6 +98,7 @@ class GaussVelocityDeflection(BaseModel):
         return kwargs
 
     # @profile
+    @nvtx.annotate("gauss deflection function")
     def function(
         self,
         x_i: np.ndarray,
@@ -209,6 +210,7 @@ class GaussVelocityDeflection(BaseModel):
 
 ## GCH components
 
+@nvtx.annotate("gauss gamma")
 def gamma(
     D,
     velocity,
@@ -232,6 +234,7 @@ def gamma(
     return scale * (pi / 8) * D * velocity * Uinf * Ct # * cosd(yaw)
 
 
+@nvtx.annotate("gauss wake_added_yaw")
 def wake_added_yaw(
     u_i,
     v_i,
@@ -332,6 +335,7 @@ def wake_added_yaw(
 
     return y[:, :, None, None]
 
+@nvtx.annotate("gauss calculate_transverse_velocity")
 def calculate_transverse_velocity(
     u_i,
     u_initial,
@@ -367,6 +371,7 @@ def calculate_transverse_velocity(
     eps_gain = 0.2
     eps = eps_gain * D  # Use set value
 
+    rng = nvtx.start_range("1")
     vel_top = ((HH + D / 2) / HH) ** wind_shear * np.ones((1, 1, 1, 1))
     Gamma_top = sind(yaw) * cosd(yaw) * gamma(
         D,
@@ -375,7 +380,9 @@ def calculate_transverse_velocity(
         Ct,
         scale,
     )
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("2")
     vel_bottom = ((HH - D / 2) / HH) ** wind_shear * np.ones((1, 1, 1, 1))
     Gamma_bottom = -1 * sind(yaw) * cosd(yaw) * gamma(
         D,
@@ -386,19 +393,25 @@ def calculate_transverse_velocity(
     )
     turbine_average_velocity = np.cbrt(np.mean(u_i ** 3, axis=(2,3)))[:, :, None, None]
     Gamma_wake_rotation = 0.25 * 2 * pi * D * (aI - aI ** 2) * turbine_average_velocity / TSR
+    nvtx.end_range(rng)
 
     ### compute the spanwise and vertical velocities induced by yaw
 
+    rng = nvtx.start_range("3")
     # decay the vortices as they move downstream - using mixing length
     lmda = D / 8
     kappa = 0.41
     lm = kappa * z / (1 + kappa * z / lmda)
     nu = lm ** 2 * np.abs(dudz_initial)
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("4")
     # This is the decay downstream
     decay = ne.evaluate("eps ** 2 / (4 * nu * delta_x / Uinf + eps ** 2)")
     yLocs = delta_y + NUM_EPS
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("5")
     # top vortex
     zT = z - (HH + D / 2) + NUM_EPS
     rT = ne.evaluate("yLocs ** 2 + zT ** 2")  # TODO: This is - in the paper
@@ -407,23 +420,29 @@ def calculate_transverse_velocity(
     core_shape = ne.evaluate("1 - exp(-rT / (eps ** 2))")
     V1 = ne.evaluate("(Gamma_top * zT) / (2 * pi * rT) * core_shape * decay")
     W1 = ne.evaluate("(-1 * Gamma_top * yLocs) / (2 * pi * rT) * core_shape * decay")
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("6")
     # bottom vortex
     zB = z - (HH - D / 2) + NUM_EPS
     rB = ne.evaluate("yLocs ** 2 + zB ** 2")
     core_shape = ne.evaluate("1 - exp(-rB / (eps ** 2))")
     V2 = ne.evaluate("(Gamma_bottom * zB) / (2 * pi * rB) * core_shape * decay")
     W2 = ne.evaluate("(-1 * Gamma_bottom * yLocs) / (2 * pi * rB) * core_shape * decay")
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("7")
     # wake rotation vortex
     zC = z - HH + NUM_EPS
     rC = ne.evaluate("yLocs ** 2 + zC ** 2")
     core_shape = ne.evaluate("1 - exp(-rC / (eps ** 2))")
     V5 = ne.evaluate("(Gamma_wake_rotation * zC) / (2 * pi * rC) * core_shape * decay")
     W5 = ne.evaluate("(-1 * Gamma_wake_rotation * yLocs) / (2 * pi * rC) * core_shape * decay")
+    nvtx.end_range(rng)
 
     ### Boundary condition - ground mirror vortex
 
+    rng = nvtx.start_range("8")
     # top vortex - ground
     zTb = z + (HH + D / 2) + NUM_EPS
     rTb = ne.evaluate("yLocs ** 2 + zTb ** 2")
@@ -432,24 +451,31 @@ def calculate_transverse_velocity(
     core_shape = ne.evaluate("1 - exp(-rTb / (eps ** 2))")
     V3 = ne.evaluate("(-1 * Gamma_top * zTb) / (2 * pi * rTb) * core_shape * decay")
     W3 = ne.evaluate("(Gamma_top * yLocs) / (2 * pi * rTb) * core_shape * decay")
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("9")
     # bottom vortex - ground
     zBb = z + (HH - D / 2) + NUM_EPS
     rBb = ne.evaluate("yLocs ** 2 + zBb ** 2")
     core_shape = ne.evaluate("1 - exp(-rBb / (eps ** 2))")
     V4 = ne.evaluate("(-1 * Gamma_bottom * zBb) / (2 * pi * rBb) * core_shape * decay")
     W4 = ne.evaluate("(Gamma_bottom * yLocs) / (2 * pi * rBb) * core_shape * decay")
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("10")
     # wake rotation vortex - ground effect
     zCb = z + HH + NUM_EPS
     rCb = ne.evaluate("yLocs ** 2 + zCb ** 2")
     core_shape = ne.evaluate("1 - exp(-rCb / (eps ** 2))")
     V6 = ne.evaluate("(-1 * Gamma_wake_rotation * zCb) / (2 * pi * rCb) * core_shape * decay")
     W6 = ne.evaluate("(Gamma_wake_rotation * yLocs) / (2 * pi * rCb) * core_shape * decay")
+    nvtx.end_range(rng)
 
+    rng = nvtx.start_range("11")
     # total spanwise velocity
     V = V1 + V2 + V3 + V4 + V5 + V6
     W = W1 + W2 + W3 + W4 + W5 + W6
+    nvtx.end_range(rng)
 
     # No spanwise and vertical velocity upstream of the turbine
     ### Original v3 implementation
@@ -460,14 +486,19 @@ def calculate_transverse_velocity(
     # V[delta_x < 0.0] = 0.0  # Subtract by 1 to avoid numerical issues on rotation
     # W[delta_x < 0.0] = 0.0  # Subtract by 1 to avoid numerical issues on rotation
     ### Currently, here
+    rng = nvtx.start_range("12")
     V = np.where(delta_x >= 0.0, V, 0.0)
     W = np.where(delta_x >= 0.0, W, 0.0)
+    nvtx.end_range(rng)
 
     # TODO: Why would the say W cannot be negative?
+    rng = nvtx.start_range("13")
     W = np.where(W >= 0, W, 0.0)
+    nvtx.end_range(rng)
 
     return V, W
 
+@nvtx.annotate("gauss yaw_added_turbulence_mixing")
 def yaw_added_turbulence_mixing(
     u_i,
     I_i,

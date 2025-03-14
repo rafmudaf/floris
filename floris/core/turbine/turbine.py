@@ -31,7 +31,7 @@ from floris.type_dec import (
     NDArrayStr,
 )
 from floris.utilities import cosd
-
+import nvtx
 
 TURBINE_MODEL_MAP = {
     "operation_model": {
@@ -45,6 +45,7 @@ TURBINE_MODEL_MAP = {
 }
 
 
+@nvtx.annotate("select_multidim_condition")
 def select_multidim_condition(
     condition: dict | tuple,
     specified_conditions: Iterable[tuple]
@@ -73,6 +74,7 @@ def select_multidim_condition(
     return tuple(nearest_condition)
 
 
+@nvtx.annotate("power")
 def power(
     velocities: NDArrayFloat,
     turbulence_intensities: NDArrayFloat,
@@ -187,6 +189,7 @@ def power(
     return p
 
 
+@nvtx.annotate("thrust_coefficient")
 def thrust_coefficient(
     velocities: NDArrayFloat,
     turbulence_intensities: NDArrayFloat,
@@ -306,6 +309,7 @@ def thrust_coefficient(
     return thrust_coefficient
 
 
+@nvtx.annotate("axial_induction")
 def axial_induction(
     velocities: NDArrayFloat,
     turbulence_intensities: NDArrayFloat,

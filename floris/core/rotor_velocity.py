@@ -15,8 +15,10 @@ from floris.type_dec import (
     NDArrayObject,
 )
 from floris.utilities import cosd
+import nvtx
 
 
+@nvtx.annotate("rotor_velocity_yaw_cosine_correction")
 def rotor_velocity_yaw_cosine_correction(
     cosine_loss_exponent_yaw: float,
     yaw_angles: NDArrayFloat,
@@ -28,6 +30,7 @@ def rotor_velocity_yaw_cosine_correction(
 
     return rotor_effective_velocities
 
+@nvtx.annotate("rotor_velocity_tilt_cosine_correction")
 def rotor_velocity_tilt_cosine_correction(
     tilt_angles: NDArrayFloat,
     ref_tilt: NDArrayFloat,
@@ -54,23 +57,28 @@ def rotor_velocity_tilt_cosine_correction(
     )
     return rotor_effective_velocities
 
+@nvtx.annotate("simple_mean")
 def simple_mean(array, axis=0):
     return np.mean(array, axis=axis)
 
+@nvtx.annotate("cubic_mean")
 def cubic_mean(array, axis=0):
     return np.cbrt(np.mean(array ** 3.0, axis=axis))
 
+@nvtx.annotate("simple_cubature")
 def simple_cubature(array, cubature_weights, axis=0):
     weights = cubature_weights.flatten()
     weights = weights * len(weights) / np.sum(weights)
     product = (array * weights[None, None, :, None])
     return simple_mean(product, axis)
 
+@nvtx.annotate("cubic_cubature")
 def cubic_cubature(array, cubature_weights, axis=0):
     weights = cubature_weights.flatten()
     weights = weights * len(weights) / np.sum(weights)
     return np.cbrt(np.mean((array**3.0 * weights[None, None, :, None]), axis=axis))
 
+@nvtx.annotate("average_velocity")
 def average_velocity(
     velocities: NDArrayFloat,
     ix_filter: NDArrayFilter | Iterable[int] | None = None,
@@ -130,6 +138,7 @@ def average_velocity(
     else:
         raise ValueError("Incorrect method given.")
 
+@nvtx.annotate("compute_tilt_angles_for_floating_turbines_map")
 def compute_tilt_angles_for_floating_turbines_map(
     turbine_type_map: NDArrayObject,
     tilt_angles: NDArrayFloat,
@@ -153,6 +162,7 @@ def compute_tilt_angles_for_floating_turbines_map(
 
     return tilt_angles
 
+@nvtx.annotate("compute_tilt_angles_for_floating_turbines")
 def compute_tilt_angles_for_floating_turbines(
     tilt_angles: NDArrayFloat,
     tilt_interp: dict[str, interp1d],
@@ -171,6 +181,7 @@ def compute_tilt_angles_for_floating_turbines(
 
     return tilt_angles
 
+@nvtx.annotate("rotor_effective_velocity")
 def rotor_effective_velocity(
     air_density: float,
     ref_air_density: float,
@@ -231,6 +242,7 @@ def rotor_effective_velocity(
 
     return rotor_effective_velocities
 
+@nvtx.annotate("rotor_velocity_air_density_correction")
 def rotor_velocity_air_density_correction(
     velocities: NDArrayFloat,
     air_density: float,

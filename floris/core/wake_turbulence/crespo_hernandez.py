@@ -13,7 +13,7 @@ from floris.core import (
     Turbine,
 )
 from floris.utilities import cosd, sind
-
+import nvtx
 
 @define
 class CrespoHernandez(BaseModel):
@@ -54,6 +54,7 @@ class CrespoHernandez(BaseModel):
     def prepare_function(self) -> dict:
         pass
 
+    @nvtx.annotate("crespo-hernandez function")
     def function(
         self,
         ambient_TI: float,

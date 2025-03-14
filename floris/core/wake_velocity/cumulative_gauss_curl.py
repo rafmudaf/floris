@@ -17,6 +17,7 @@ from floris.utilities import (
     sind,
     tand,
 )
+import nvtx
 
 
 @define
@@ -56,6 +57,7 @@ class CumulativeGaussCurlVelocityDeficit(BaseModel):
         }
         return kwargs
     # @profile
+    @nvtx.annotate("cc velocity function")
     def function(
         self,
         ii: int,
@@ -119,6 +121,7 @@ class CumulativeGaussCurlVelocityDeficit(BaseModel):
 
         sum_lbda = np.zeros_like(u_initial)
 
+        rng = nvtx.start_range("cc velocity function - inner loop")
         sigma_n_sq = sigma_n ** 2
         dy = y_i_loc - deflection_field
         for m in range(0, ii - 1):
@@ -153,6 +156,7 @@ class CumulativeGaussCurlVelocityDeficit(BaseModel):
             lbda = sigma_i ** 2 / S_i * np.exp(- 1 * (Y_i + Z_i))
 
             sum_lbda = sum_lbda + lbda * (Ctmp[m] / u_initial)
+        nvtx.end_range(rng)
 
         # Vectorized version of sum_lbda calc; has issues with y_coord (needs to be
         # down-selected appropriately. Prelim. timings show vectorized form takes
@@ -215,7 +219,9 @@ class CumulativeGaussCurlVelocityDeficit(BaseModel):
         turb_u_wake = turb_u_wake + turb_avg_vels * velDef
         return (turb_u_wake, Ctmp)
 
+
 # @profile
+@nvtx.annotate("wake expansion")
 def wake_expansion(
     delta_x,
     ct_i,
