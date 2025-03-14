@@ -172,11 +172,11 @@ wake:
 
   ###
   # Can be "true" or "false".
-  enable_secondary_steering: true
+  enable_secondary_steering: false
 
   ###
   # Can be "true" or "false".
-  enable_yaw_added_recovery: true
+  enable_yaw_added_recovery: false
 
   ###
   # Can be "true" or "false".
@@ -184,7 +184,7 @@ wake:
 
   ###
   # Can be "true" or "false".
-  enable_transverse_velocities: true
+  enable_transverse_velocities: false
 
   ###
   # Configure the parameters for the wake deflection model
