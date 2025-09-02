@@ -1016,3 +1016,6 @@ def test_set_multidim():
         fmodel.run()
         powers_single = fmodel.get_turbine_powers()
         assert np.array_equal(powers_single, powers_multi[i:i+1,:])
+
+def test_windIO_interface():
+    return True
