@@ -408,7 +408,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbine</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_check_turbine.html">Example: Check turbine power curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_reference_turbines.html">Example: Check turbine power curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
@@ -790,16 +790,18 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/wake_deflection/gauss.py:328: RuntimeWarning: invalid value encountered in divide
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/flow_field.py:169: UserWarning: &#39;where&#39; used without &#39;out&#39;, expect unitialized memory in output. If this is intentional, use out=None.
+  * np.power(
+/home/runner/work/floris/floris/floris/core/wake_deflection/gauss.py:325: RuntimeWarning: invalid value encountered in divide
   val = 2 * (avg_v - v_core) / (v_top + v_bottom)
-/home/runner/work/floris/floris/floris/core/wake_deflection/gauss.py:163: RuntimeWarning: invalid value encountered in divide
+/home/runner/work/floris/floris/floris/core/wake_deflection/gauss.py:160: RuntimeWarning: invalid value encountered in divide
   C0 = 1 - u0 / freestream_velocity
 /home/runner/work/floris/floris/floris/core/wake_velocity/gauss.py:80: RuntimeWarning: invalid value encountered in divide
   sigma_z0 = rotor_diameter_i * 0.5 * np.sqrt(uR / (u_initial + u0))
 </pre></div>
 </div>
-<img alt="../../_images/c8885cceac6edf5b33a75140516aa2c3953ef079fdd07f6e6e936d7db9b5a092.png" src="../../_images/c8885cceac6edf5b33a75140516aa2c3953ef079fdd07f6e6e936d7db9b5a092.png" />
-<img alt="../../_images/153bb22aa5aad1af11ebd96bba6504cbc87e0cc8811a699f8a366532c6a0181c.png" src="../../_images/153bb22aa5aad1af11ebd96bba6504cbc87e0cc8811a699f8a366532c6a0181c.png" />
+<img alt="../../_images/657c96babe2a9a94eb38512be1f2c976730de962866e8e3f4f9a6e2e4c03b426.png" src="../../_images/657c96babe2a9a94eb38512be1f2c976730de962866e8e3f4f9a6e2e4c03b426.png" />
+<img alt="../../_images/0bcf1f65717d9dfa45e2eee42aa98e9cf801234680e11a9efafa2297ef18859b.png" src="../../_images/0bcf1f65717d9dfa45e2eee42aa98e9cf801234680e11a9efafa2297ef18859b.png" />
 </div>
 </div>
 </section>
@@ -868,7 +870,7 @@ document.write(`
   <div class="footer-item">
     
 <p class="component-author">
-By National Renewable Energy Laboratory
+By National Laboratory of the Rockies
 </p>
 
   </div>
@@ -878,7 +880,7 @@ By National Renewable Energy Laboratory
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

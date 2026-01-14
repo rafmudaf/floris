@@ -73,7 +73,7 @@
     <script>DOCUMENTATION_OPTIONS.pagename = 'examples/examples_operation_models/001_compare_yaw_loss';</script>
     <link rel="index" title="Index" href="../../genindex.html" />
     <link rel="search" title="Search" href="../../search.html" />
-    <link rel="next" title="Example: Check turbine power curves" href="../examples_turbine/001_check_turbine.html" />
+    <link rel="next" title="Example: Check turbine power curves" href="../examples_turbine/001_reference_turbines.html" />
     <link rel="prev" title="Example: Multi-dimensional power/thrust coefficients with turbulence intensity" href="../examples_multidim/003_multi_dimensional_cp_ct_TI.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="python"/>
@@ -408,7 +408,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbine</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_check_turbine.html">Example: Check turbine power curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_reference_turbines.html">Example: Check turbine power curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
@@ -748,6 +748,10 @@ Evaluating model: simple   wind speed: 11.5 m/s
 Evaluating model: simple   wind speed: 15.0 m/s
 </pre></div>
 </div>
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/flow_field.py:169: UserWarning: &#39;where&#39; used without &#39;out&#39;, expect unitialized memory in output. If this is intentional, use out=None.
+  * np.power(
+</pre></div>
+</div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Evaluating model: cosine-loss   wind speed: 8.0 m/s
 Evaluating model: cosine-loss   wind speed: 11.5 m/s
 Evaluating model: cosine-loss   wind speed: 15.0 m/s
@@ -778,7 +782,7 @@ Evaluating model: cosine-loss   wind speed: 15.0 m/s
 Evaluating model: controller-dependent   wind speed: 15.0 m/s
 </pre></div>
 </div>
-<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/turbine/controller_dependent_operation_model.py:958: RuntimeWarning: invalid value encountered in sqrt
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/turbine/controller_dependent_operation_model.py:956: RuntimeWarning: invalid value encountered in sqrt
   (1 + np.sqrt(1 - x - 1 / 16 * x**2 * sinMu**2))
 </pre></div>
 </div>
@@ -791,7 +795,7 @@ Evaluating model: unified-momentum   wind speed: 11.5 m/s
 Evaluating model: unified-momentum   wind speed: 15.0 m/s
 </pre></div>
 </div>
-<img alt="../../_images/ac3d7b42124e0b603383d7fce9850235546bddf300f72c8dcdd53b3a225e246f.png" src="../../_images/ac3d7b42124e0b603383d7fce9850235546bddf300f72c8dcdd53b3a225e246f.png" />
+<img alt="../../_images/be9af7fffcd56dba705e25d8f4a20c041a61aa92a49c9abaf71d8bbd2af1c708.png" src="../../_images/be9af7fffcd56dba705e25d8f4a20c041a61aa92a49c9abaf71d8bbd2af1c708.png" />
 </div>
 </div>
 </section>
@@ -836,7 +840,7 @@ Evaluating model: unified-momentum   wind speed: 15.0 m/s
       </div>
     </a>
     <a class="right-next"
-       href="../examples_turbine/001_check_turbine.html"
+       href="../examples_turbine/001_reference_turbines.html"
        title="next page">
       <div class="prev-next-info">
         <p class="prev-next-subtitle">next</p>
@@ -860,7 +864,7 @@ Evaluating model: unified-momentum   wind speed: 15.0 m/s
   <div class="footer-item">
     
 <p class="component-author">
-By National Renewable Energy Laboratory
+By National Laboratory of the Rockies
 </p>
 
   </div>
@@ -870,7 +874,7 @@ By National Renewable Energy Laboratory
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

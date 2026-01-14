@@ -408,7 +408,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbine</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_check_turbine.html">Example: Check turbine power curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_reference_turbines.html">Example: Check turbine power curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
@@ -728,15 +728,17 @@ document.write(`
 <span class="c1"># Define the UncertainFlorisModel</span>
 <span class="c1">################################################</span>
 <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;*** Instantiating UncertainFlorisModel ***&#39;</span><span class="p">)</span>
-<span class="n">ufmodel</span> <span class="o">=</span> <span class="n">UncertainFlorisModel</span><span class="p">(</span><span class="s2">&quot;../inputs/gch.yaml&quot;</span><span class="p">,</span>
-                               <span class="n">wd_resolution</span><span class="o">=</span><span class="n">wd_resolution</span><span class="p">,</span>
-                                 <span class="n">ws_resolution</span><span class="o">=</span><span class="n">ws_resolution</span><span class="p">,</span>
-                                    <span class="n">ti_resolution</span><span class="o">=</span><span class="n">ti_resolution</span><span class="p">,</span>
-                                    <span class="n">yaw_resolution</span><span class="o">=</span><span class="n">yaw_resolution</span><span class="p">,</span>
-                                    <span class="n">power_setpoint_resolution</span><span class="o">=</span><span class="n">power_setpoint_resolution</span><span class="p">,</span>
-                                    <span class="n">wd_std</span><span class="o">=</span><span class="n">wd_std</span><span class="p">,</span>
-                                    <span class="n">wd_sample_points</span><span class="o">=</span><span class="n">wd_sample_points</span><span class="p">,</span>
-                                    <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+<span class="n">ufmodel</span> <span class="o">=</span> <span class="n">UncertainFlorisModel</span><span class="p">(</span>
+    <span class="s2">&quot;../inputs/gch.yaml&quot;</span><span class="p">,</span>
+    <span class="n">wd_resolution</span><span class="o">=</span><span class="n">wd_resolution</span><span class="p">,</span>
+    <span class="n">ws_resolution</span><span class="o">=</span><span class="n">ws_resolution</span><span class="p">,</span>
+    <span class="n">ti_resolution</span><span class="o">=</span><span class="n">ti_resolution</span><span class="p">,</span>
+    <span class="n">yaw_resolution</span><span class="o">=</span><span class="n">yaw_resolution</span><span class="p">,</span>
+    <span class="n">power_setpoint_resolution</span><span class="o">=</span><span class="n">power_setpoint_resolution</span><span class="p">,</span>
+    <span class="n">wd_std</span><span class="o">=</span><span class="n">wd_std</span><span class="p">,</span>
+    <span class="n">wd_sample_points</span><span class="o">=</span><span class="n">wd_sample_points</span><span class="p">,</span>
+    <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">,</span>
+<span class="p">)</span>
 
 
 <span class="c1">################################################</span>
@@ -792,6 +794,7 @@ document.write(`
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Power with uncertainty&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">legend</span><span class="p">()</span>
@@ -807,6 +810,7 @@ document.write(`
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Power with uncertainty&quot;</span><span class="p">,</span>
 <span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Downstream Turbine&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -822,7 +826,7 @@ document.write(`
     <span class="n">color</span><span class="o">=</span><span class="s2">&quot;r&quot;</span><span class="p">,</span>
     <span class="n">label</span><span class="o">=</span><span class="s2">&quot;Farm power with uncertainty&quot;</span><span class="p">,</span>
 <span class="p">)</span>
-
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylim</span><span class="p">(</span><span class="n">bottom</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
 <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s2">&quot;Farm Power&quot;</span><span class="p">)</span>
 <span class="n">ax</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="kc">True</span><span class="p">)</span>
@@ -850,7 +854,11 @@ Expanded num rows: 300
 Unique num rows: 72
 </pre></div>
 </div>
-<img alt="../../_images/2a320ba317c0ac6b8dd866e989e97d2108bb643d68735c799d198332dc25ad8a.png" src="../../_images/2a320ba317c0ac6b8dd866e989e97d2108bb643d68735c799d198332dc25ad8a.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/flow_field.py:169: UserWarning: &#39;where&#39; used without &#39;out&#39;, expect unitialized memory in output. If this is intentional, use out=None.
+  * np.power(
+</pre></div>
+</div>
+<img alt="../../_images/ecb21b7725e61f735cc55cf1fae67129c7e6a3e5f030ab0b6f5314e7987e1ad4.png" src="../../_images/ecb21b7725e61f735cc55cf1fae67129c7e6a3e5f030ab0b6f5314e7987e1ad4.png" />
 </div>
 </div>
 </section>
@@ -919,7 +927,7 @@ Unique num rows: 72
   <div class="footer-item">
     
 <p class="component-author">
-By National Renewable Energy Laboratory
+By National Laboratory of the Rockies
 </p>
 
   </div>
@@ -929,7 +937,7 @@ By National Renewable Energy Laboratory
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

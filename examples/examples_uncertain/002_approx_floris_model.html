@@ -408,7 +408,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbine</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_check_turbine.html">Example: Check turbine power curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_reference_turbines.html">Example: Check turbine power curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
@@ -684,17 +684,17 @@ document.write(`
 
 <span class="c1"># Random walk on wind speed with values between 5 and 20 m/s</span>
 <span class="n">ws</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">N</span><span class="p">)</span> <span class="o">*</span> <span class="mi">10</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">ws_ll</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="n">ws_ul</span> <span class="o">=</span> <span class="mi">20</span>
 <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="p">):</span>
-    <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
-    <span class="k">if</span> <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">5</span><span class="p">:</span>
-        <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
-    <span class="k">if</span> <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">20</span><span class="p">:</span>
-        <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws</span><span class="p">[</span><span class="n">i</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">rng</span><span class="o">.</span><span class="n">normal</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">ws_ll</span><span class="p">:</span>
+        <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws_ll</span>
+    <span class="k">if</span> <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">ws_ul</span><span class="p">:</span>
+        <span class="n">ws</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">ws_ul</span>
 
-<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span>
-    <span class="n">wind_directions</span><span class="o">=</span><span class="mf">270.</span><span class="p">,</span>
-    <span class="n">wind_speeds</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span>
-    <span class="n">turbulence_intensities</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
+<span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span><span class="n">wind_directions</span><span class="o">=</span><span class="mf">270.0</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="n">ws</span><span class="p">,</span> <span class="n">turbulence_intensities</span><span class="o">=</span><span class="mf">0.06</span><span class="p">)</span>
 
 <span class="c1"># Instantiate a FlorisModel and an ApproxFlorisModel</span>
 <span class="n">fmodel</span> <span class="o">=</span> <span class="n">FlorisModel</span><span class="p">(</span><span class="s2">&quot;../inputs/gch.yaml&quot;</span><span class="p">)</span>
@@ -739,15 +739,19 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FlorisModel run time: 9.34663719699995 s
-ApproxFlorisModel run time: 0.18621079700005794 s
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/flow_field.py:169: UserWarning: &#39;where&#39; used without &#39;out&#39;, expect unitialized memory in output. If this is intentional, use out=None.
+  * np.power(
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected power from FlorisModel: 54.16 MW
-Expected power from ApproxFlorisModel: 54.19 MW
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>FlorisModel run time: 8.935434731999976 s
+ApproxFlorisModel run time: 0.17990654899995207 s
 </pre></div>
 </div>
-<img alt="../../_images/f87dcc01210489efb7067675f6b6da4ebf0450f637b8f61aa85c1458319447c5.png" src="../../_images/f87dcc01210489efb7067675f6b6da4ebf0450f637b8f61aa85c1458319447c5.png" />
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Expected power from FlorisModel: 47.68 MW
+Expected power from ApproxFlorisModel: 47.72 MW
+</pre></div>
+</div>
+<img alt="../../_images/63f79f2b5d53398019c1c760815fdf045fccc3c13759f0b5aa20fd4b2f988e36.png" src="../../_images/63f79f2b5d53398019c1c760815fdf045fccc3c13759f0b5aa20fd4b2f988e36.png" />
 </div>
 </div>
 </section>
@@ -816,7 +820,7 @@ Expected power from ApproxFlorisModel: 54.19 MW
   <div class="footer-item">
     
 <p class="component-author">
-By National Renewable Energy Laboratory
+By National Laboratory of the Rockies
 </p>
 
   </div>
@@ -826,7 +830,7 @@ By National Renewable Energy Laboratory
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

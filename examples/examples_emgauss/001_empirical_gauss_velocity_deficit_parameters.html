@@ -408,7 +408,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbine</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_check_turbine.html">Example: Check turbine power curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../examples_turbine/001_reference_turbines.html">Example: Check turbine power curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
@@ -705,11 +705,10 @@ document.write(`
         <span class="n">x_bounds</span><span class="o">=</span><span class="n">x_bounds</span><span class="p">,</span>
         <span class="n">z_bounds</span><span class="o">=</span><span class="n">z_bounds</span><span class="p">,</span>
     <span class="p">)</span>
-    <span class="n">cross_planes</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="k">for</span> <span class="n">cpl</span> <span class="ow">in</span> <span class="n">cross_plane_locations</span><span class="p">:</span>
-        <span class="n">cross_planes</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
-            <span class="n">fmodel</span><span class="o">.</span><span class="n">calculate_cross_plane</span><span class="p">(</span><span class="n">y_resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">z_resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">downstream_dist</span><span class="o">=</span><span class="n">cpl</span><span class="p">)</span>
-        <span class="p">)</span>
+    <span class="n">cross_planes</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">fmodel</span><span class="o">.</span><span class="n">calculate_cross_plane</span><span class="p">(</span><span class="n">y_resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">z_resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">downstream_dist</span><span class="o">=</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cross_plane_locations</span>
+    <span class="p">]</span>
 
     <span class="c1"># Create the plots</span>
     <span class="c1"># Cutplane settings</span>
@@ -865,11 +864,15 @@ document.write(`
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="../../_images/f70cea37bf3e163711afa709e84b669dac7788290fecad2deec68c7ead04b96c.png" src="../../_images/f70cea37bf3e163711afa709e84b669dac7788290fecad2deec68c7ead04b96c.png" />
-<img alt="../../_images/4b64a21a1d71aa0892353cce44df4639a086bf496fa7d0c54d51c539fa188ee2.png" src="../../_images/4b64a21a1d71aa0892353cce44df4639a086bf496fa7d0c54d51c539fa188ee2.png" />
-<img alt="../../_images/ae4acbccd79df53af37366f5d4686d62e016a3fb8617258ab890ceef0dcf5c3e.png" src="../../_images/ae4acbccd79df53af37366f5d4686d62e016a3fb8617258ab890ceef0dcf5c3e.png" />
-<img alt="../../_images/397f0c9ee6f31c54c971e8b0d08ec0d361850c14b2ab3c5757bab52bca0de7b1.png" src="../../_images/397f0c9ee6f31c54c971e8b0d08ec0d361850c14b2ab3c5757bab52bca0de7b1.png" />
-<img alt="../../_images/36cc3cb64744194ccf30b228cb6298d230c650026079ddd19e4852ec7dc0ebb7.png" src="../../_images/36cc3cb64744194ccf30b228cb6298d230c650026079ddd19e4852ec7dc0ebb7.png" />
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/flow_field.py:169: UserWarning: &#39;where&#39; used without &#39;out&#39;, expect unitialized memory in output. If this is intentional, use out=None.
+  * np.power(
+</pre></div>
+</div>
+<img alt="../../_images/d779f1e42198fbac3e57a27aa81271e409d6fe38a344be897006853188a8af43.png" src="../../_images/d779f1e42198fbac3e57a27aa81271e409d6fe38a344be897006853188a8af43.png" />
+<img alt="../../_images/879d35db8e253d93fce16a477b78604f83352c57157713edd3fc60d428dfb958.png" src="../../_images/879d35db8e253d93fce16a477b78604f83352c57157713edd3fc60d428dfb958.png" />
+<img alt="../../_images/4681b83898f0bfa8a7fc2ec6dd9eccbaf509d904f9a23e5e41d23d27711a48fd.png" src="../../_images/4681b83898f0bfa8a7fc2ec6dd9eccbaf509d904f9a23e5e41d23d27711a48fd.png" />
+<img alt="../../_images/20b2fd6f4e17afe0fac4510f8a10ca867827103b80fb52960dfb7b4a87455231.png" src="../../_images/20b2fd6f4e17afe0fac4510f8a10ca867827103b80fb52960dfb7b4a87455231.png" />
+<img alt="../../_images/f4d842c8247cde012c64f92bc7b2ff805689db6196520b1dd8f58ab0c1ada4c1.png" src="../../_images/f4d842c8247cde012c64f92bc7b2ff805689db6196520b1dd8f58ab0c1ada4c1.png" />
 </div>
 </div>
 </section>
@@ -938,7 +941,7 @@ document.write(`
   <div class="footer-item">
     
 <p class="component-author">
-By National Renewable Energy Laboratory
+By National Laboratory of the Rockies
 </p>
 
   </div>
@@ -948,7 +951,7 @@ By National Renewable Energy Laboratory
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

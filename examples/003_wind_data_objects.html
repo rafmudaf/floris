@@ -408,7 +408,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbine</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="examples_turbine/001_check_turbine.html">Example: Check turbine power curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples_turbine/001_reference_turbines.html">Example: Check turbine power curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
@@ -676,7 +676,6 @@ document.write(`
 
 <span class="sd">&quot;&quot;&quot;</span>
 
-
 <span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
 <span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
 
@@ -705,10 +704,11 @@ document.write(`
 
 <span class="c1"># Generate wind speeds, directions, turbulence intensities, and values via random signals</span>
 <span class="n">N</span> <span class="o">=</span> <span class="mi">100</span>
-<span class="n">wind_speeds</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-<span class="n">wind_directions</span> <span class="o">=</span> <span class="mi">270</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-<span class="n">turbulence_intensities</span> <span class="o">=</span> <span class="mf">0.06</span> <span class="o">+</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
-<span class="n">values</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">rng</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">default_rng</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span>
+<span class="n">wind_speeds</span> <span class="o">=</span> <span class="mi">8</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">wind_directions</span> <span class="o">=</span> <span class="mi">270</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">turbulence_intensities</span> <span class="o">=</span> <span class="mf">0.06</span> <span class="o">+</span> <span class="mf">0.02</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">values</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">+</span> <span class="mi">10</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 
 <span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span>
     <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
@@ -727,7 +727,7 @@ document.write(`
 <span class="n">ti_table</span> <span class="o">=</span> <span class="mf">0.06</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wind_directions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_speeds</span><span class="p">)))</span>
 
 <span class="c1"># Make value table 25 for all wind directions and speeds</span>
-<span class="n">value_table</span> <span class="o">=</span><span class="mi">25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wind_directions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_speeds</span><span class="p">)))</span>
+<span class="n">value_table</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wind_directions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_speeds</span><span class="p">)))</span>
 
 <span class="c1"># Uniform frequency</span>
 <span class="n">freq_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wind_directions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_speeds</span><span class="p">)))</span>
@@ -749,7 +749,7 @@ document.write(`
 <span class="n">freq_table</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wind_directions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_speeds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">turbulence_intensities</span><span class="p">)))</span>
 
 <span class="c1"># Uniform value</span>
-<span class="n">value_table</span> <span class="o">=</span> <span class="mi">25</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wind_directions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_speeds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">turbulence_intensities</span><span class="p">)))</span>
+<span class="n">value_table</span> <span class="o">=</span> <span class="mi">25</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">((</span><span class="nb">len</span><span class="p">(</span><span class="n">wind_directions</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">wind_speeds</span><span class="p">),</span> <span class="nb">len</span><span class="p">(</span><span class="n">turbulence_intensities</span><span class="p">)))</span>
 
 <span class="n">wind_ti_rose</span> <span class="o">=</span> <span class="n">WindTIRose</span><span class="p">(</span>
     <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span>
@@ -771,7 +771,7 @@ document.write(`
 <span class="c1"># For TimeSeries, as long as one condition is given as an array, the other 2</span>
 <span class="c1"># conditions can be given as scalars.  The TimeSeries object will broadcast the</span>
 <span class="c1"># scalars to the full array (uniform)</span>
-<span class="n">wind_directions</span> <span class="o">=</span> <span class="mi">270</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randn</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
+<span class="n">wind_directions</span> <span class="o">=</span> <span class="mi">270</span> <span class="o">+</span> <span class="mi">30</span> <span class="o">*</span> <span class="n">rng</span><span class="o">.</span><span class="n">standard_normal</span><span class="p">(</span><span class="n">N</span><span class="p">)</span>
 <span class="n">time_series</span> <span class="o">=</span> <span class="n">TimeSeries</span><span class="p">(</span>
     <span class="n">wind_directions</span><span class="o">=</span><span class="n">wind_directions</span><span class="p">,</span> <span class="n">wind_speeds</span><span class="o">=</span><span class="mf">8.0</span><span class="p">,</span> <span class="n">turbulence_intensities</span><span class="o">=</span><span class="mf">0.06</span>
 <span class="p">)</span>
@@ -926,10 +926,10 @@ document.write(`
 Number of conditions to simulate with compute_zero_freq_occurrence = True: 4
 </pre></div>
 </div>
-<img alt="../_images/abfc81aa9179f3a7b8403c910d4dfa88eb957feeb6e94eff0c9b5ec5e605d186.png" src="../_images/abfc81aa9179f3a7b8403c910d4dfa88eb957feeb6e94eff0c9b5ec5e605d186.png" />
-<img alt="../_images/c950acd2590aaef0cb3ecb8beb5b4e2957fd66258aa1d8c68a9110c853f522ca.png" src="../_images/c950acd2590aaef0cb3ecb8beb5b4e2957fd66258aa1d8c68a9110c853f522ca.png" />
-<img alt="../_images/ab425e7d30ce4359a78f31e8bbd013ae59af90eed2c2063b9e2ffe5773568ca0.png" src="../_images/ab425e7d30ce4359a78f31e8bbd013ae59af90eed2c2063b9e2ffe5773568ca0.png" />
-<img alt="../_images/dd5e5ab0c6927927bf7f671f83013c0636356c7321c734060e995cb4d9909fe7.png" src="../_images/dd5e5ab0c6927927bf7f671f83013c0636356c7321c734060e995cb4d9909fe7.png" />
+<img alt="../_images/38aabb4282f3b1329aaad9edf477fcdb0859b1c15e9fc66a01973f89aba43f8b.png" src="../_images/38aabb4282f3b1329aaad9edf477fcdb0859b1c15e9fc66a01973f89aba43f8b.png" />
+<img alt="../_images/a793d8b68de63d2e47ef09d4010ef93f6aacd40636a51bdd89debda597fa0dc9.png" src="../_images/a793d8b68de63d2e47ef09d4010ef93f6aacd40636a51bdd89debda597fa0dc9.png" />
+<img alt="../_images/e40769459a8946708ce5c868c4046c586b8bccc736f6340a77d12da3a9207fde.png" src="../_images/e40769459a8946708ce5c868c4046c586b8bccc736f6340a77d12da3a9207fde.png" />
+<img alt="../_images/421e9479f2fbb223bc892336f94368e52b733e347f2e8f06ce26088d92fe506c.png" src="../_images/421e9479f2fbb223bc892336f94368e52b733e347f2e8f06ce26088d92fe506c.png" />
 </div>
 </div>
 </section>
@@ -998,7 +998,7 @@ Number of conditions to simulate with compute_zero_freq_occurrence = True: 4
   <div class="footer-item">
     
 <p class="component-author">
-By National Renewable Energy Laboratory
+By National Laboratory of the Rockies
 </p>
 
   </div>
@@ -1008,7 +1008,7 @@ By National Renewable Energy Laboratory
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>

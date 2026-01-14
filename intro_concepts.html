@@ -408,7 +408,7 @@
 </ul>
 <p aria-level="2" class="caption" role="heading"><span class="caption-text">Examples - Turbine</span></p>
 <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/001_check_turbine.html">Example: Check turbine power curves</a></li>
+<li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/001_reference_turbines.html">Example: Check turbine power curves</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/002_multiple_turbine_types.html">Example: Multiple turbine types</a></li>
 <li class="toctree-l1"><a class="reference internal" href="examples/examples_turbine/003_specify_turbine_power_curve.html">Example: Specify turbine power curve</a></li>
 </ul>
@@ -844,7 +844,7 @@ space to get an idea of the overall form of our grid.</p>
  [800. 800. 800.]]
 </pre></div>
 </div>
-<img alt="_images/6d9aeff41b6b91cb9ccf277c9ed19e5e174ddd521689c77846098f52e128bef2.png" src="_images/6d9aeff41b6b91cb9ccf277c9ed19e5e174ddd521689c77846098f52e128bef2.png" />
+<img alt="_images/70253aa37b9da535400a7f6437d160c1fe13f3a5a1ca2787bc2cdf72239c9bb8.png" src="_images/70253aa37b9da535400a7f6437d160c1fe13f3a5a1ca2787bc2cdf72239c9bb8.png" />
 </div>
 </div>
 </section>
@@ -857,6 +857,12 @@ when creating the <code class="docutils literal notranslate"><span class="pre">F
 <div class="cell docutils container">
 <div class="cell_input docutils container">
 <div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="n">fmodel</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<div class="cell_output docutils container">
+<div class="output stderr highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>/home/runner/work/floris/floris/floris/core/flow_field.py:169: UserWarning: &#39;where&#39; used without &#39;out&#39;, expect unitialized memory in output. If this is intentional, use out=None.
+  * np.power(
 </pre></div>
 </div>
 </div>
@@ -1089,7 +1095,7 @@ yaw settings included.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/e03f474ce30ce02750d8a01c54afbd9ec2da75bbada7664aa45434a8024e61ba.png" src="_images/e03f474ce30ce02750d8a01c54afbd9ec2da75bbada7664aa45434a8024e61ba.png" />
+<img alt="_images/d87a869a6b88c09d4f4d283fb15e22cff361d0f22f24e170d1a1128a0bf6f130.png" src="_images/d87a869a6b88c09d4f4d283fb15e22cff361d0f22f24e170d1a1128a0bf6f130.png" />
 </div>
 </div>
 <p>We can also plot the streamwise inflow velocities on the turbine rotor
@@ -1127,8 +1133,8 @@ simply plots any data given as the first argument, so in this case
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/f2d4aca9f8a62b83ee540a586f3445223a71add97bed1fa0e90e68972d52e93b.png" src="_images/f2d4aca9f8a62b83ee540a586f3445223a71add97bed1fa0e90e68972d52e93b.png" />
-<img alt="_images/87abd58318db01896d7db237f8f6b4bf05400302285c1d49cdb270df8568a470.png" src="_images/87abd58318db01896d7db237f8f6b4bf05400302285c1d49cdb270df8568a470.png" />
+<img alt="_images/349f049bc64476f4eac7634e9a24bc3aacc12b59c6fc93105f799f6a50aaedf0.png" src="_images/349f049bc64476f4eac7634e9a24bc3aacc12b59c6fc93105f799f6a50aaedf0.png" />
+<img alt="_images/78ea936eeb7fe4829c85cd4525550523b6086e1404d9c0ba4de2de212f2c44b9.png" src="_images/78ea936eeb7fe4829c85cd4525550523b6086e1404d9c0ba4de2de212f2c44b9.png" />
 </div>
 </div>
 </section>
@@ -1172,7 +1178,7 @@ but retuning of some parameters might be required.</p>
   2 wd x 2 ws x 4 turbines x 3 x 3 grid points
 </pre></div>
 </div>
-<img alt="_images/04a8e2b8c494ef8a0c1d7bdc40fd64424cf56a21d321777ebd2b922f0597e020.png" src="_images/04a8e2b8c494ef8a0c1d7bdc40fd64424cf56a21d321777ebd2b922f0597e020.png" />
+<img alt="_images/c9a963a92379ce6645ca67e333e5b23830d4759f4098690edef5bfb850e7050d.png" src="_images/c9a963a92379ce6645ca67e333e5b23830d4759f4098690edef5bfb850e7050d.png" />
 </div>
 </div>
 </section>
@@ -1286,9 +1292,9 @@ Number of turbines = 25
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Model    AEP (GWh)  Compute Time (s)
-Jensen   661.838    0.671 
-GCH      683.869    2.916 
-CC       661.315    5.846 
+Jensen   661.838    0.657 
+GCH      683.869    2.802 
+CC       661.315    5.689 
 </pre></div>
 </div>
 </div>
@@ -1382,7 +1388,7 @@ CC       661.315    5.846
 </pre></div>
 </div>
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>[Serial Refine] Processing pass=1, turbine_depth=6 (92.9%)
-Optimization wall time: 3.079 s
+Optimization wall time: 2.937 s
 </pre></div>
 </div>
 </div>
@@ -1405,7 +1411,7 @@ Optimization wall time: 3.079 s
 </div>
 </div>
 <div class="cell_output docutils container">
-<img alt="_images/4d7e5eb2735f1ea92763c57c3921303b4eff0aa1fca19a105c3188aa43d3cddb.png" src="_images/4d7e5eb2735f1ea92763c57c3921303b4eff0aa1fca19a105c3188aa43d3cddb.png" />
+<img alt="_images/43b2fff7bb03a83caf6fcdc9e6801a3af7d9ece61b44ccb17cedecba3c0b8723.png" src="_images/43b2fff7bb03a83caf6fcdc9e6801a3af7d9ece61b44ccb17cedecba3c0b8723.png" />
 </div>
 </div>
 </section>
@@ -1499,7 +1505,7 @@ Optimization wall time: 3.079 s
   <div class="footer-item">
     
 <p class="component-author">
-By National Renewable Energy Laboratory
+By National Laboratory of the Rockies
 </p>
 
   </div>
@@ -1509,7 +1515,7 @@ By National Renewable Energy Laboratory
 
   <p class="copyright">
     
-      © Copyright 2023.
+      © Copyright 2025.
       <br/>
     
   </p>
