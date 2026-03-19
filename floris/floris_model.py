@@ -79,22 +79,52 @@ class FlorisModel(LoggingManager):
 
         if isinstance(self.configuration, (str, Path)):
             try:
-                self.core = Core.from_file(self.configuration)
+                self.core = self._make_core_from_file(self.configuration)
             except FileNotFoundError:
                 # If the file cannot be found, then attempt the configuration path relative to the
                 # file location from which FlorisModel was attempted to be run. If successful,
                 # update self.configuration to an absolute, working file path and name.
                 base_fn = Path(inspect.stack()[-1].filename).resolve().parent
                 config = (base_fn / self.configuration).resolve()
-                self.core = Core.from_file(config)
+                self.core = self._make_core_from_file(config)
                 self.configuration = config
 
         elif isinstance(self.configuration, dict):
-            self.core = Core.from_dict(self.configuration)
+            self.core = self._make_core_from_dict(self.configuration)
 
         else:
             raise TypeError("The Floris `configuration` must be of type 'dict', 'str', or 'Path'.")
 
+        self._post_init_checks()
+
+    def _make_core_from_file(self, path):
+        """Load YAML from *path* and delegate to _make_core_from_dict."""
+        d = load_yaml(Path(path).resolve())
+        return self._make_core_from_dict(d)
+
+    def _make_core_from_dict(self, d: dict):
+        """Create the appropriate Core (Python or C++) from a config dict.
+
+        The backend is determined by ``d["solver"].get("backend", "python")``.
+        Set ``backend: cpp`` in the solver block of the YAML configuration to
+        use the C++ libtorch extension.  Additional solver-block keys:
+
+        * ``device`` — torch device string (default ``"cpu"``)
+        * ``cpp_solver`` — registered C++ solver key (default ``"sequential"``)
+        """
+        solver_d = d.get("solver", {})
+        backend = solver_d.get("backend", "python")
+        if backend == "cpp":
+            from floris.core.cpp_core import CppCore
+            return CppCore.from_dict(
+                d,
+                device=solver_d.get("device"),
+                cpp_solver_paradigm=solver_d.get("cpp_solver"),
+            )
+        return Core.from_dict(d)
+
+    def _post_init_checks(self) -> None:
+        """Validation checks performed after self.core is set during __init__."""
         # If ref height is -1, assign the hub height
         if np.abs(self.core.flow_field.reference_wind_height + 1.0) < 1.0e-6:
             self.assign_hub_height_to_ref_height()
@@ -291,7 +321,7 @@ class FlorisModel(LoggingManager):
         floris_dict["farm"] = farm_dict
 
         # Create a new instance of floris and attach to self
-        self.core = Core.from_dict(floris_dict)
+        self.core = self._make_core_from_dict(floris_dict)
 
     def set_operation(
         self,
