@@ -154,7 +154,7 @@ def _build_turbine_tables(floris_cpp, cpp_farm, py_farm, device="cpu"):
         tbl.thrust_coefficient  = _to_f32(tbl_dict["thrust_coefficient"], device)
         tbl.power               = _to_f32(tbl_dict["power"], device)
         # ref_tilt: used for CosineLossTurbine CT correction CT *= cos(yaw)*cos(tilt)/cos(ref_tilt)
-        tbl.ref_tilt = float(tbl_dict.get("ref_tilt", 5.0))
+        tbl.ref_tilt = float(tbl_dict["ref_tilt"])
         floris_cpp.farm_add_turbine_table(cpp_farm, tbl)
 
 
@@ -172,53 +172,53 @@ def _build_model_config(floris_cpp, d: dict, cpp_solver_paradigm: str, device: s
     cfg.device = device
 
     # Grid
-    solver_d = d.get("solver", {})
-    cfg.turbine_grid_points = int(solver_d.get("turbine_grid_points", 3))
+    solver_d = d["solver"]
+    cfg.turbine_grid_points = int(solver_d["turbine_grid_points"])
 
     # Wake model strings
-    wake_d = d.get("wake", {})
-    model_strings = wake_d.get("model_strings", {})
-    cfg.velocity_model   = model_strings.get("velocity_model",   "gauss")
-    cfg.deflection_model = model_strings.get("deflection_model", "gauss")
-    cfg.turbulence_model = model_strings.get("turbulence_model", "crespo_hernandez")
-    cfg.combination_model = model_strings.get("combination_model", "sosfs")
+    wake_d = d["wake"]
+    model_strings = wake_d["model_strings"]
+    cfg.velocity_model = model_strings["velocity_model"]
+    cfg.deflection_model = model_strings["deflection_model"]
+    cfg.turbulence_model = model_strings["turbulence_model"]
+    cfg.combination_model = model_strings["combination_model"]
 
     # Optional physics flags
-    cfg.enable_secondary_steering    = bool(wake_d.get("enable_secondary_steering", False))
-    cfg.enable_yaw_added_recovery    = bool(wake_d.get("enable_yaw_added_recovery", False))
+    cfg.enable_secondary_steering = bool(wake_d["enable_secondary_steering"])
+    cfg.enable_yaw_added_recovery = bool(wake_d["enable_yaw_added_recovery"])
 
     # Gaussian velocity parameters
-    vp = wake_d.get("wake_velocity_parameters", {}).get("gauss", {})
-    cfg.alpha = float(vp.get("alpha", 0.58))
-    cfg.beta  = float(vp.get("beta",  0.077))
-    cfg.ka    = float(vp.get("ka",    0.38))
-    cfg.kb    = float(vp.get("kb",    0.004))
+    vp = wake_d["wake_velocity_parameters"]["gauss"]
+    cfg.alpha = float(vp["alpha"])
+    cfg.beta = float(vp["beta"])
+    cfg.ka = float(vp["ka"])
+    cfg.kb = float(vp["kb"])
 
     # Gaussian deflection parameters
-    dp = wake_d.get("wake_deflection_parameters", {}).get("gauss", {})
-    cfg.alpha = float(dp.get("alpha", cfg.alpha))   # deflection also carries α/β/ka/kb
-    cfg.beta  = float(dp.get("beta",  cfg.beta))
-    cfg.ka    = float(dp.get("ka",    cfg.ka))
-    cfg.kb    = float(dp.get("kb",    cfg.kb))
-    cfg.ad = float(dp.get("ad", 0.0))
-    cfg.bd = float(dp.get("bd", 0.0))
-    cfg.dm = float(dp.get("dm", 1.0))
+    dp = wake_d["wake_deflection_parameters"]["gauss"]
+    cfg.alpha = float(dp["alpha"])   # deflection also carries α/β/ka/kb
+    cfg.beta = float(dp["beta"])
+    cfg.ka = float(dp["ka"])
+    cfg.kb = float(dp["kb"])
+    cfg.ad = float(dp["ad"])
+    cfg.bd = float(dp["bd"])
+    cfg.dm = float(dp["dm"])
 
     # Crespo-Hernandez turbulence parameters
-    tp = wake_d.get("wake_turbulence_parameters", {}).get("crespo_hernandez", {})
-    cfg.ch_initial    = float(tp.get("initial",    0.1))
-    cfg.ch_constant   = float(tp.get("constant",   0.5))
-    cfg.ch_ai_exp     = float(tp.get("ai",         0.8))
-    cfg.ch_downstream = float(tp.get("downstream", -0.32))
+    tp = wake_d["wake_turbulence_parameters"]["crespo_hernandez"]
+    cfg.ch_initial = float(tp["initial"])
+    cfg.ch_constant = float(tp["constant"])
+    cfg.ch_ai_exp = float(tp["ai"])
+    cfg.ch_downstream = float(tp["downstream"])
 
     # sigmoid_k uses the compiled default (10.0 from model_config.hpp);
     # no standard YAML key — override here if needed in the future.
 
     # Jacobi parallel solver parameters
-    cfg.jacobi_max_iters   = int(solver_d.get("jacobi_max_iters",   30))
-    cfg.jacobi_chunk_size  = int(solver_d.get("jacobi_chunk_size",  8))
-    cfg.jacobi_tol         = float(solver_d.get("jacobi_tol",       1e-6))
-    cfg.jacobi_fixed_iters = bool(solver_d.get("jacobi_fixed_iters", False))
+    # cfg.jacobi_max_iters = int(solver_d["jacobi_max_iters"])
+    # cfg.jacobi_chunk_size = int(solver_d["jacobi_chunk_size"])
+    # cfg.jacobi_tol = float(solver_d["jacobi_tol"])
+    # cfg.jacobi_fixed_iters = bool(solver_d["jacobi_fixed_iters"])
 
     return cfg
 
@@ -276,11 +276,7 @@ class CppCore:
             Key into the C++ solver registry, e.g. ``"wavefront"``.
         """
         # Resolve the velocity_model for the license feature check.
-        wake_model = (
-            d.get("wake", {})
-             .get("model_strings", {})
-             .get("velocity_model", "gauss")
-        )
+        wake_model = d["wake"]["model_strings"]["velocity_model"]
         floris_cpp = _get_floris_cpp(solver=cpp_solver_paradigm, wake_model=wake_model)
 
         # Validate solver key early so errors surface at init time, not run().
