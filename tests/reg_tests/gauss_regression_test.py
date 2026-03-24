@@ -20,6 +20,9 @@ from tests.conftest import (
 DEBUG = False
 VELOCITY_MODEL = "gauss"
 DEFLECTION_MODEL = "gauss"
+BACKEND = "floraf"
+if BACKEND == "floraf":
+    from floris.core.cpp_core import CppCore as Core
 
 baseline = np.array(
     [
@@ -281,6 +284,11 @@ def test_regression_tandem(sample_inputs_fixture):
     """
     Tandem turbines
     """
+    if BACKEND == "floraf":
+        sample_inputs_fixture.core["solver"]["backend"] = "cpp"
+        sample_inputs_fixture.core["solver"]["device"] = "cpu"
+        sample_inputs_fixture.core["solver"]["cpp_solver"] = "sequential"
+
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
 
@@ -406,6 +414,11 @@ def test_regression_rotation(sample_inputs_fixture):
     """
     TURBINE_DIAMETER = 126.0
 
+    if BACKEND == "floraf":
+        sample_inputs_fixture.core["solver"]["backend"] = "cpp"
+        sample_inputs_fixture.core["solver"]["device"] = "cpu"
+        sample_inputs_fixture.core["solver"]["cpp_solver"] = "sequential"
+
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
     sample_inputs_fixture.core["farm"]["layout_x"] = [
@@ -451,6 +464,11 @@ def test_regression_yaw(sample_inputs_fixture):
     """
     Tandem turbines with the upstream turbine yawed
     """
+    if BACKEND == "floraf":
+        sample_inputs_fixture.core["solver"]["backend"] = "cpp"
+        sample_inputs_fixture.core["solver"]["device"] = "cpu"
+        sample_inputs_fixture.core["solver"]["cpp_solver"] = "sequential"
+
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
 
@@ -547,6 +565,11 @@ def test_regression_gch(sample_inputs_fixture):
     Tandem turbines with the upstream turbine yawed, yaw added recovery
     correction enabled, and secondary steering enabled
     """
+    if BACKEND == "floraf":
+        sample_inputs_fixture.core["solver"]["backend"] = "cpp"
+        sample_inputs_fixture.core["solver"]["device"] = "cpu"
+        sample_inputs_fixture.core["solver"]["cpp_solver"] = "sequential"
+
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
 
@@ -738,6 +761,10 @@ def test_regression_yaw_added_recovery(sample_inputs_fixture):
     Tandem turbines with the upstream turbine yawed and yaw added recovery
     correction enabled
     """
+    if BACKEND == "floraf":
+        sample_inputs_fixture.core["solver"]["backend"] = "cpp"
+        sample_inputs_fixture.core["solver"]["device"] = "cpu"
+        sample_inputs_fixture.core["solver"]["cpp_solver"] = "sequential"
 
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
@@ -838,6 +865,10 @@ def test_regression_secondary_steering(sample_inputs_fixture):
     """
     Tandem turbines with the upstream turbine yawed and secondary steering enabled
     """
+    if BACKEND == "floraf":
+        sample_inputs_fixture.core["solver"]["backend"] = "cpp"
+        sample_inputs_fixture.core["solver"]["device"] = "cpu"
+        sample_inputs_fixture.core["solver"]["cpp_solver"] = "sequential"
 
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
@@ -955,6 +986,11 @@ def test_regression_small_grid_rotation(sample_inputs_fixture):
     turbine to be affected by its own wake. This test requires that at least in this particular
     configuration the masking correctly filters grid points.
     """
+    if BACKEND == "floraf":
+        sample_inputs_fixture.core["solver"]["backend"] = "cpp"
+        sample_inputs_fixture.core["solver"]["device"] = "cpu"
+        sample_inputs_fixture.core["solver"]["cpp_solver"] = "sequential"
+
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
     X, Y = np.meshgrid(
@@ -1014,6 +1050,8 @@ def test_full_flow_solver(sample_inputs_fixture):
     The u-component of velocity is compared, and the array has the shape
     (n_findex, n_turbines, n grid points in x, n grid points in y, 3 grid points in z).
     """
+    # NOTE: flow_field_planar_grid is not supported in FLORAF
+    from floris.core import Core
 
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL

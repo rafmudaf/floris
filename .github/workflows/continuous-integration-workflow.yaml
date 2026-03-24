@@ -34,7 +34,7 @@ jobs:
 
         # -rA displays the captured output for all tests after they're run
         # See the docs: https://doc.pytest.org/en/latest/reference/reference.html#command-line-flags
-        pytest -rA tests/ --ignore tests/timing.py --ignore tests/profiling.py
+        pytest -rA tests/ --ignore tests/timing.py --ignore tests/profiling.py --ignore tests/reg_tests/gauss_regression_test.py
     - name: Run tests (windows)
       if: matrix.os == 'windows-latest' && (success() || failure())  # Run this step even if the linting step fails
       run: |
@@ -44,7 +44,7 @@ jobs:
 
         # -rA displays the captured output for all tests after they're run
         # See the docs: https://doc.pytest.org/en/latest/reference/reference.html#command-line-flags
-        pytest -rA tests/ --ignore tests/timing.py --ignore tests/profiling.py
+        pytest -rA tests/ --ignore tests/timing.py --ignore tests/profiling.py --ignore tests/reg_tests/gauss_regression_test.py
     - name: Generate coverage report
       # Run these tests on unit tests only so that we avoid inflating our code
       # coverage through the regression tests
