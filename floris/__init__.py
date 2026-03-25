@@ -3,7 +3,7 @@ from importlib.metadata import version
 from pathlib import Path
 
 
-__version__ = version("floris")
+__version__ = version("rafmudaf-floris")
 
 
 from .floris_model import FlorisModel
