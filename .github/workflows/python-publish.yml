@@ -6,18 +6,21 @@
 name: Upload Python Package
 
 on:
-  release:
-    types: [published]
+  push:
+    branches: [cpp-v4.6.4]
 
 jobs:
   deploy:
     environment: release-pypi
-    if: github.repository_owner == 'NatLabRockies'
+    if: github.repository_owner == 'rafmudaf'
     runs-on: ubuntu-latest
     permissions:
       id-token: write
     steps:
       - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+          fetch-tags: true
       - name: Set up Python
         uses: actions/setup-python@v6
         with:

@@ -1,10 +1,10 @@
 [build-system]
-requires = ["setuptools >= 40.6.0", "wheel"]
+requires = ["setuptools>=61", "setuptools-scm>=8", "wheel"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "floris"
-version = "4.6.4"
+name = "rafmudaf-floris"
+dynamic = ["version"]
 description = "A controls-oriented engineering wake model."
 readme = "README.md"
 requires-python = ">=3.10, <3.15"
@@ -73,8 +73,13 @@ floris = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/NatLabRockies/floris"
-Documentation = "https://natlabrockies.github.io/floris/"
+Homepage = "https://github.com/rafmudaf/floris"
+Documentation = "https://rafmudaf.github.io/floris/"
+
+[tool.setuptools_scm]
+fallback_version = "4.6.5.dev0"
+version_scheme = "no-guess-dev"
+local_scheme = "no-local-version"
 
 [coverage.run]
 # Coverage.py configuration file
