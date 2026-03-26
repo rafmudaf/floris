@@ -9,11 +9,7 @@ description = "A controls-oriented engineering wake model."
 readme = "README.md"
 requires-python = ">=3.10, <3.15"
 authors = [
-    { name = "Rafael Mudafort", email = "Rafael.Mudafort@nlr.gov" },
-    { name = "Paul Fleming", email = "Paul.Fleming@nlr.gov" },
-    { name = "Michael (Misha) Sinner", email = "Michael.Sinner@nlr.gov" },
-    { name = "Eric Simley", email = "Eric.Simley@nlr.gov" },
-    { name = "Christopher Bay", email = "Christopher.Bay@nlr.gov" },
+    { name = "Rafael Mudafort", email = "rafael@clementinescientific.com" },
 ]
 license = { file = "LICENSE.txt" }
 keywords = ["floris"]
@@ -21,7 +17,6 @@ classifiers = [
     "License :: OSI Approved :: BSD License",
     "Programming Language :: Python",
     "Programming Language :: Python :: 3",
-    "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
     "Programming Language :: Python :: 3.12",
@@ -81,15 +76,15 @@ fallback_version = "4.6.5.dev0"
 version_scheme = "no-guess-dev"
 local_scheme = "no-local-version"
 
-[coverage.run]
-# Coverage.py configuration file
-# https://coverage.readthedocs.io/en/latest/config.html
-branch = true
-source = "floris/*"
-omit = [
-    "tests/*",
-    "benchmarks/*"
-]
+# [coverage.run]
+# # Coverage.py configuration file
+# # https://coverage.readthedocs.io/en/latest/config.html
+# branch = true
+# source = "floris/*"
+# omit = [
+#     "tests/*",
+#     "benchmarks/*"
+# ]
 
 
 [tool.pytest.ini_options]
