@@ -1,3 +1,266 @@
+# FLORAF
+
+FLORAF is a compiled backend alternative that plugs into FLORIS to enable automatic gradients
+and GPU acceleration with Torch.
+
+**Installation**
+
+Using Python 3.10 - 3.13, install "floraf": `pip install floraf`.
+
+This will install the appropriate binary wheel which includes:
+- Compiled C++ backend
+- FLORAF Python code that interfaces the C++ backend to FLORIS
+- Fork of FLORIS that includes an interface to the FLORAF backend
+
+The FLORIS fork is still installed as "floris" and it is forked from v4.6.4.
+You can import FLORIS and use it the same as NREL/FLORIS v4.6.4.
+
+**License**
+
+Add your license string to one of the following options.
+
+Environment variable:
+`export FLORAF_LICENSE_KEY=license_key`
+
+File:
+Either set the `FLORAF_LICENSE_FILE` environment variable to the path to the license file,
+or create set the license key in `~/.floraf/license.key`.
+The license file should contain only the license key.
+
+**Usage**
+
+A comparison with the default SLSQP-based layout optimization is available at
+`examples/gradient_layout_optimization.py`.
+Below is a reduced form of that example.
+
+```python
+
+import time
+
+import numpy as np
+import torch
+
+from floris import FlorisModel, WindRose
+
+
+### Helpers for setting up the model and gradient optimization
+
+def _get_fmodel(cpp=False, device="cpu") -> FlorisModel:
+    """Build a FLORIS model from defaults."""
+    fdefaults = FlorisModel.get_defaults()
+    fdefaults["logging"]["console"]["enable"] = False
+    fdefaults["logging"]["file"]["enable"] = False
+    if cpp:
+        fdefaults["solver"]["backend"] = "cpp"
+        fdefaults["solver"]["device"] = device
+        fdefaults["solver"]["cpp_solver"] = "sequential"
+    fdefaults["wake"]["enable_secondary_steering"] = False
+    fdefaults["wake"]["enable_yaw_added_recovery"] = False
+    fdefaults["wake"]["enable_transverse_velocities"] = False
+    fdefaults["wake"]["enable_active_wake_mixing"] = False
+    fmodel = FlorisModel(fdefaults)
+    return fmodel
+
+
+def _aep_tensor(fmodel, freq_tensor):
+    """Return a scalar AEP tensor with grad_fn attached to the layout inputs.
+
+    Requires `fmodel.core._cpp_farm.layout_x` / `fmodel.core._cpp_farm.layout_y` to already be
+    set to the `requires_grad=True` tensors before calling this function.
+    """
+    fmodel.run()
+    power = fmodel.core.get_farm_power_tensor()      # [F, T]
+    farm_power_per_findex = power.sum(dim=1)          # [F]
+    return (freq_tensor * farm_power_per_findex).sum() * 8760.0
+
+
+def _wind_rose(n_wdirs, n_wspeeds, ti):
+    """Synthetic North Sea wind rose.
+
+    Directional distribution has a dominant SW peak (~240°) and a secondary
+    NNW peak (~340°).
+    Wind speeds follow a Weibull distribution (k=2, c=11 m/s, mean ≈ 9.8 m/s).
+    TI is applied uniformly for all bins.
+    """
+    wd = np.linspace(0.0, 360.0, n_wdirs, endpoint=False)
+    ws = np.linspace(4.0, 18.0, n_wspeeds)
+
+    # Directional PDF: dominant SW (~240°), secondary NNW (~340°), broad S shoulder
+    dir_freq = (
+        0.45 * np.exp(-0.5 * ((wd - 240) % 360 / 38) ** 2)
+        # + 0.25 * np.exp(-0.5 * ((wd - 340) % 360 / 30) ** 2)
+        # + 0.10 * np.exp(-0.5 * ((wd - 200) % 360 / 25) ** 2)
+        + 0.04                                    # uniform background
+    )
+    dir_freq /= dir_freq.sum()
+
+    # Speed PDF: Weibull (k=2, c=11 m/s) evaluated at bin centres
+    k, c = 2.0, 11.0
+    spd_freq = (k / c) * (ws / c) ** (k - 1) * np.exp(-(ws / c) ** k)
+    spd_freq /= spd_freq.sum()
+
+    # Joint frequency table [n_wdirs, n_wspeeds] (directions independent of speed)
+    freq_table = np.outer(dir_freq, spd_freq)
+    freq_table /= freq_table.sum()
+
+    return WindRose(
+        wind_directions=wd,
+        wind_speeds=ws,
+        freq_table=freq_table,
+        ti_table=ti,
+    )
+
+
+def _grid_layout(n_turbs, xmin, xmax, ymin, ymax, rng):
+    """Place turbines on a rough grid and add a jitter."""
+    cols = int(np.ceil(np.sqrt(n_turbs)))
+    rows = int(np.ceil(n_turbs / cols))
+    xs = np.linspace(xmin + 0.1 * (xmax - xmin), xmax - 0.1 * (xmax - xmin), cols)
+    ys = np.linspace(ymin + 0.1 * (ymax - ymin), ymax - 0.1 * (ymax - ymin), rows)
+    grid_x, grid_y = np.meshgrid(xs, ys)
+    grid_x = grid_x.ravel()[:n_turbs]
+    grid_y = grid_y.ravel()[:n_turbs]
+    jitter = 0.05 * min(xmax - xmin, ymax - ymin)
+    grid_x += rng.uniform(-jitter, jitter, n_turbs)
+    grid_y += rng.uniform(-jitter, jitter, n_turbs)
+    grid_x = np.clip(grid_x, xmin, xmax)
+    grid_y = np.clip(grid_y, ymin, ymax)
+    return grid_x, grid_y
+
+
+def _spacing_penalty(lx, ly, min_dist):
+    """Return a non-negative penalty that is zero when all turbines satisfy the
+    minimum separation *min_dist* (m).  Uses a smooth quadratic ramp so that
+    gradients always exist.
+    """
+    pos = torch.stack([lx, ly], dim=1)          # [T, 2]
+    diff = pos.unsqueeze(0) - pos.unsqueeze(1)   # [T, T, 2]
+    dist = diff.pow(2).sum(dim=2).clamp(min=1.0).sqrt()  # [T, T]
+    T = lx.shape[0]
+    idx_i, idx_j = torch.triu_indices(T, T, offset=1)
+    pair_dist = dist[idx_i, idx_j]
+    return torch.relu(min_dist - pair_dist).pow(2).sum()
+
+
+### Gradient descent
+
+def run_gradient_optimization(
+    n_turbs: int,
+    wind_rose: WindRose,
+    n_iters: int,
+    lr: float,
+    seed: int = 42,
+):
+    """Run gradient-based layout optimization."""
+    rng = np.random.default_rng(seed)
+    D = 126.0           # NREL 5 MW rotor diameter (m)
+    min_dist = 2 * D    # minimum turbine spacing
+
+    # Farm boundary
+    xmin, xmax = 0.0, 2000.0
+    ymin, ymax = 0.0, 1500.0
+
+    # Wind resource
+    freq_np = wind_rose.unpack_freq()                 # [F], sums to ≈1
+    freq_t = torch.tensor(freq_np, dtype=torch.float32)
+
+    # Initial layout: grid + jitter (stays within boundaries)
+    lx_init_np, ly_init_np = _grid_layout(n_turbs, xmin, xmax, ymin, ymax, rng)
+
+    # FLORIS model with FLORAF backend
+    fmodel = _get_fmodel(cpp=True, device="cpu")
+    fmodel.set(
+        layout_x=lx_init_np.tolist(),
+        layout_y=ly_init_np.tolist(),
+        wind_data=wind_rose,
+    )
+
+    # Optimization variables - leaf tensors for layout positions
+    lx = torch.tensor(lx_init_np, dtype=torch.float32, requires_grad=True)
+    ly = torch.tensor(ly_init_np, dtype=torch.float32, requires_grad=True)
+
+    # Plant the grad-tracked tensors into the FLORAF farm once
+    fmodel.core._cpp_farm.layout_x = lx
+    fmodel.core._cpp_farm.layout_y = ly
+
+    # Baseline AEP
+    with torch.no_grad():
+        base_aep_t = _aep_tensor(fmodel, freq_t)
+    base_aep = base_aep_t.item()
+    print(f"\nInitial AEP : {base_aep/1e9:8.4f} GWh/yr")
+
+    # Penalty scale, this weights the spacing penalty based on the severity of the incursion
+    # into the min_dist constraint.
+    # The penalty is zero when all pairs are above the minimum distance.
+    # It grows quadratically as pairs get closer than min_dist.
+    # The coefficient is chosen so that a ~1 D spacing violation produces a penalty comparable
+    # to a ~0.1% AEP step.
+    spacing_coeff = 1e4
+
+    # Adam optimizer
+    optimizer = torch.optim.Adam([lx, ly], lr=lr)
+
+    aep_history  = [base_aep]
+    t0 = time.perf_counter()
+
+    for step in range(1, n_iters + 1):
+        optimizer.zero_grad()
+
+        # Forward: AEP through the C++ solver (grad_fn preserved)
+        aep = _aep_tensor(fmodel, freq_t)
+        
+        # Penalty: minimum-spacing constraint
+        penalty = spacing_coeff * _spacing_penalty(lx, ly, min_dist)
+
+        # Maximise AEP via minimise negative AEP + penalty
+        loss = -aep + penalty
+        loss.backward()
+        optimizer.step()
+
+        # Hard boundary projection: clamp positions back into the domain
+        with torch.no_grad():
+            lx.clamp_(xmin, xmax)
+            ly.clamp_(ymin, ymax)
+            # Zero out gradients for clamped dims to avoid bias buildup
+            lx.grad.zero_()
+            ly.grad.zero_()
+
+        current_aep = aep.item()
+        aep_history.append(current_aep)
+
+        improvement = 100.0 * (current_aep / base_aep - 1.0)
+        print(f"  Step {step:4d}/{n_iters} | AEP = {current_aep/1e9:.4f} GWh/yr | Δ = {improvement:+.2f}%")
+
+    elapsed = time.perf_counter() - t0
+    final_aep = aep_history[-1]
+    print(f"\nGradient opt finished in {elapsed:.1f} s  ({n_iters} iterations)")
+    print(f"Final AEP   : {final_aep/1e9:8.4f} GWh/yr ({100*(final_aep/base_aep - 1):+.2f}% vs initial)\n")
+
+    return aep_history
+
+if __name__ == "__main__":
+
+    N_TURBS = 6
+    N_WDIRS = 36
+    N_WSPEEDS = 5
+    N_ITERATIONS = 100
+    LEARNING_RATE = 25.0    # meters; this is the step size for each iteration
+    SEED = 42
+
+    wind_rose = _wind_rose(N_WDIRS, N_WSPEEDS, ti=0.06)
+
+    aep_history = run_gradient_optimization(
+        n_turbs=N_TURBS,
+        wind_rose=wind_rose,
+        n_iters=N_ITERATIONS,
+        lr=LEARNING_RATE,
+        seed=SEED,
+    )
+
+    pct = 100 * (aep_history[-1] / aep_history[0] - 1)
+    print(f"AEP improvement: {pct:+.2f}%")
+```
+
 # FLORIS Wake Modeling and Wind Farm Controls Software
 
 FLORIS is a controls-focused wind farm simulation software incorporating
