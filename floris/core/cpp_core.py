@@ -123,12 +123,13 @@ def _get_floris_cpp(solver=None, wake_model=None):
         from floraf import get_licensed_floris_cpp
         return get_licensed_floris_cpp(solver=solver, wake_model=wake_model)
     except ImportError as exc:
-        raise ImportError(
-            "The floris_cpp C++ extension is not available.  "
-            "Install the floraf package:\n"
-            "    pip install floraf\n"
-            "or set backend: python in the solver block to use the pure-Python solver."
-        ) from exc
+        raise exc
+        # raise ImportError(
+        #     "The floris_cpp C++ extension is not available.  "
+        #     "Install the floraf package:\n"
+        #     "    pip install floraf\n"
+        #     "or set backend: python in the solver block to use the pure-Python solver."
+        # ) from exc
 
 
 # ---------------------------------------------------------------------------
