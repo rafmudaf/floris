@@ -3,7 +3,7 @@ name: C++ backend tests (floraf)
 on:
   push:
     # branches: [floraf]
-    branches: ["cpp-v4.6.4"]
+    branches: ["cpp*"]
   # pull_request:
   #   branches: [floraf]
 
@@ -30,26 +30,9 @@ jobs:
         # does not attempt to build the (now-removed) floris/cpp extension.
         run: pip install ".[develop]"
 
-      - name: Install libtorch (CPU)
-        # Install the CPU-only torch wheel explicitly so that the floraf wheel
-        # does not pull in the heavier CUDA variant from PyPI.
-        run: pip install torch --index-url https://download.pytorch.org/whl/cpu
-
-      - name: Download floraf wheel from private releases
-        env:
-          GH_TOKEN: ${{ secrets.FLORAF_WHEEL_TOKEN }}
-        run: |
-          mkdir -p floraf-wheels
-          # Download all cp312 wheels; pip will select the platform-compatible one.
-          gh release download \
-            --repo rafmudaf/floraf \
-            --pattern "*cp312*.whl" \
-            --dir floraf-wheels/
-          ls floraf-wheels/
-
       - name: Install floraf wheel
         # --find-links lets pip select the wheel that matches the current platform.
-        run: pip install --find-links floraf-wheels/ floraf
+        run: pip install floraf
 
       - name: Run C++ backend integration tests
         env:
