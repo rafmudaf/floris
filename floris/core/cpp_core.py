@@ -522,9 +522,11 @@ class CppCore:
 
         u = self._u_sorted_tensor  # [F, T_sorted, nG, nG], may carry grad_fn
 
-        # Average velocity over rotor grid points → [F, T_sorted].
-        # Arithmetic mean (rather than cubic-mean) preserves grad_fn correctly.
-        u_avg = u.mean(dim=(2, 3))
+        # Cubic mean over rotor grid points → [F, T_sorted].
+        # pow(3) → mean → pow(1/3) are all differentiable ops; grad_fn is preserved.
+        # pow(1/3) gradient is undefined at exactly zero velocity, which cannot
+        # occur for physically valid wind conditions.
+        u_avg = u.pow(3).mean(dim=(2, 3)).pow(1 / 3)
 
         # Look up power from the first turbine type's power table using the
         # registered differentiable interp1d op.
