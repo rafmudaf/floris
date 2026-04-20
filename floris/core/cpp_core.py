@@ -402,24 +402,34 @@ class CppCore:
                 return  # User-injected differentiable tensor; preserve it.
             setattr(self._cpp_farm, attr, default_val)
 
+        # Determine the effective device: if the caller has injected a grad tensor
+        # on a different device (e.g. cuda:0 into a cpu-configured model), use
+        # that device for all tensors so everything is consistent.
+        _existing_lx = getattr(self._cpp_farm, 'layout_x', None)
+        if isinstance(_existing_lx, torch.Tensor) and _existing_lx.requires_grad:
+            device = _existing_lx.device
+            self._device = str(device)  # update self._device to match the grad tensor's device
+        else:
+            device = self._device
+
         # ---- sync farm ----
         # layout_x / layout_y / yaw_angles are preserved if the caller has
         # already injected a requires_grad tensor (common in autograd tests).
-        _preserve_if_grad('layout_x',  _to_f32(py_farm.layout_x, self._device))
-        _preserve_if_grad('layout_y',  _to_f32(py_farm.layout_y, self._device))
-        _preserve_if_grad('yaw_angles', _to_f32(py_farm.yaw_angles, self._device))
-        self._cpp_farm.hub_heights     = _to_f32(py_farm.hub_heights, self._device)
-        self._cpp_farm.rotor_diameters = _to_f32(py_farm.rotor_diameters, self._device)
+        _preserve_if_grad('layout_x',  _to_f32(py_farm.layout_x, device))
+        _preserve_if_grad('layout_y',  _to_f32(py_farm.layout_y, device))
+        _preserve_if_grad('yaw_angles', _to_f32(py_farm.yaw_angles, device))
+        self._cpp_farm.hub_heights     = _to_f32(py_farm.hub_heights, device)
+        self._cpp_farm.rotor_diameters = _to_f32(py_farm.rotor_diameters, device)
         tilt = _get_tilt_angles(py_farm)
         if tilt is not None:
-            self._cpp_farm.tilt_angles = _to_f32(tilt, self._device)
+            self._cpp_farm.tilt_angles = _to_f32(tilt, device)
         self._cpp_farm.n_turbines      = py_farm.n_turbines
 
         # ---- sync flow field ----
-        self._cpp_flow_field.wind_speeds            = _to_f32(py_ff.wind_speeds, self._device)
-        self._cpp_flow_field.wind_directions        = _to_f32(py_ff.wind_directions, self._device)
+        self._cpp_flow_field.wind_speeds            = _to_f32(py_ff.wind_speeds, device)
+        self._cpp_flow_field.wind_directions        = _to_f32(py_ff.wind_directions, device)
         self._cpp_flow_field.turbulence_intensities = _to_f32(
-            py_ff.turbulence_intensities, self._device
+            py_ff.turbulence_intensities, device
         )
         self._cpp_flow_field.wind_shear             = float(py_ff.wind_shear)
         self._cpp_flow_field.wind_veer              = float(py_ff.wind_veer)
@@ -438,15 +448,15 @@ class CppCore:
             isinstance(ly, torch.Tensor) and ly.requires_grad
         )
         if has_layout_grad:
-            hub_h = _to_f32(py_farm.hub_heights, self._device)  # [T], no grad
+            hub_h = _to_f32(py_farm.hub_heights, device)  # [T], no grad
             # torch.stack([T], [T], [T], dim=1) → [T, 3]
             self._cpp_grid.turbine_coordinates = torch.stack(
                 [lx.float(), ly.float(), hub_h], dim=1
             )
         else:
-            self._cpp_grid.turbine_coordinates = _to_f32(py_farm.coordinates, self._device)
-        self._cpp_grid.turbine_diameters   = _to_f32(py_farm.rotor_diameters, self._device)
-        self._cpp_grid.wind_directions     = _to_f32(py_ff.wind_directions, self._device)
+            self._cpp_grid.turbine_coordinates = _to_f32(py_farm.coordinates, device)
+        self._cpp_grid.turbine_diameters   = _to_f32(py_farm.rotor_diameters, device)
+        self._cpp_grid.wind_directions     = _to_f32(py_ff.wind_directions, device)
         self._cpp_grid.n_turbines          = py_farm.n_turbines
         self._cpp_grid.n_findex            = int(py_ff.n_findex)
 
