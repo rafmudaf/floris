@@ -1,5 +1,5 @@
 """
-cpp_core.py — Phase 8: CppCore Python wrapper
+cpp_core.py — CppCore Python wrapper
 ==============================================
 
 Drop-in replacement for ``floris.core.core.Core`` backed by the C++ libtorch
@@ -28,16 +28,16 @@ unchanged.
 Supported
 ---------
 ``run()``, ``run_no_wake()``, ``get_turbine_powers()`` and all gradient-based
-optimisation inputs (layout_x, yaw_angles fully differentiable through the C++
+optimization inputs (layout_x, yaw_angles fully differentiable through the C++
 wavefront solver).
 
 Not supported
 -------------
 ``solve_for_viz``, ``solve_for_points``,
 ``solve_for_velocity_deficit_profiles`` — these raise ``NotImplementedError``.
-Use ``FlorisModel(backend='python')`` for flow-field visualisation.
+Use ``FlorisModel(backend='python')`` for flow-field visualization.
 
-Phase 8 limitations
+limitations
 -------------------
 * Heterogeneous turbine farms: the C++ solver uses the first power/thrust table
   for **all** turbines.  Full per-turbine table dispatch is a Phase 11 task.
@@ -74,7 +74,7 @@ def _to_f32(x, device="cpu"):
     Accepts both ``numpy.ndarray`` (v4.6.4 Python core) and
     ``torch.Tensor``.  The autograd graph is preserved so that inputs
     carrying ``requires_grad=True`` remain connected to the solver output,
-    enabling gradient-based layout and yaw optimisation.
+    enabling gradient-based layout and yaw optimization.
     """
     if isinstance(x, torch.Tensor):
         return x.float().to(device)
@@ -141,7 +141,7 @@ def _build_turbine_tables(floris_cpp, cpp_farm, py_farm, device="cpu"):
     Populate ``cpp_farm.turbine_tables`` from the Python farm's
     ``turbine_power_thrust_tables`` dict.
 
-    Phase 8 note: one table per *unique* turbine type is added.  For
+    Note: one table per *unique* turbine type is added.  For
     heterogeneous farms the C++ solver uses index 0 for all turbines; full
     per-turbine dispatch is deferred to Phase 11.
     """
@@ -294,7 +294,7 @@ class CppCore:
         obj._cpp_solver_paradigm = cpp_solver_paradigm
 
         # Python Core — owns all Python-specific state (power/thrust functions,
-        # turbine type maps, AWC/setpoint arrays, as_dict() serialisation, etc.)
+        # turbine type maps, AWC/setpoint arrays, as_dict() serialization, etc.)
         obj._py_core = Core.from_dict(d)
 
         # C++ ModelConfig — wake hyperparameters + solver selection
@@ -527,10 +527,10 @@ class CppCore:
         u_avg = u.mean(dim=(2, 3))
 
         # Look up power from the first turbine type's power table using the
-        # registered differentiable interp1d op (Phase 6).
-        ptt = self._py_core.farm.turbine_power_thrust_tables
-        first_type = next(iter(ptt))
-        tbl = ptt[first_type]
+        # registered differentiable interp1d op.
+        power_thrust_table = self._py_core.farm.turbine_power_thrust_tables
+        first_type = next(iter(power_thrust_table))
+        tbl = power_thrust_table[first_type]
         dtype = u_avg.dtype
         device = u_avg.device
         ws_t = torch.tensor(
@@ -583,7 +583,7 @@ class CppCore:
         )
 
         # ── velocity field ──────────────────────────────────────────────────
-        # The Phase-2 C++ FlowField::finalize() is a stub: u = u_sorted
+        # The C++ FlowField::finalize() is a stub: u = u_sorted
         # (no spatial un-sorting is applied).  We apply the inverse permutation
         # here so that _get_turbine_powers() receives u in original turbine order.
         u_sorted_np = self._cpp_flow_field.u.detach().cpu().numpy()    # [fi, tu, ng, ng]
@@ -611,13 +611,13 @@ class CppCore:
         self._py_core.state = State.USED
 
     # ------------------------------------------------------------------
-    # Unsupported visualisation methods
+    # Unsupported visualization methods
     # ------------------------------------------------------------------
 
     def solve_for_viz(self, *args, **kwargs):
         raise NotImplementedError(
             "solve_for_viz is not supported by the C++ backend. "
-            "Use FlorisModel(backend='python') for flow-field visualisations."
+            "Use FlorisModel(backend='python') for flow-field visualization."
         )
 
     def solve_for_points(self, *args, **kwargs):
@@ -633,12 +633,12 @@ class CppCore:
         )
 
     # ------------------------------------------------------------------
-    # Serialisation
+    # Serialization
     # ------------------------------------------------------------------
 
     def as_dict(self) -> dict:
         """
-        Reverse-serialise state to the YAML dict schema.
+        Reverse-serialize state to the YAML dict schema.
 
         Delegates to ``_py_core.as_dict()`` so that ``FlorisModel._reinitialize()``
         can call ``Core.from_dict(self.core.as_dict())`` without changes.
@@ -675,7 +675,7 @@ class CppCore:
 
     @property
     def grid(self):
-        """Python Grid — used for visualisation helpers; C++ has its own grid."""
+        """Python Grid — used for visualization helpers; C++ has its own grid."""
         return self._py_core.grid
 
     @property
