@@ -67,18 +67,25 @@ from floris.utilities import load_yaml
 # the cpp backend is actually requested).
 # ---------------------------------------------------------------------------
 
-def _to_f32(x, device="cpu"):
+# dtype used for all tensors passed to the C++ extension.  Defaults to
+# float32; overridden to float64 once the extension is imported and
+# floris_cpp.using_double() is known.  Set in CppCore.from_dict().
+_KFLOAT_DTYPE: torch.dtype = torch.float32
+
+
+def _to_kfloat(x, device="cpu"):
     """
-    Convert *x* to a float32 ``torch.Tensor`` on *device*.
+    Convert *x* to a ``torch.Tensor`` on *device* using the precision
+    required by the compiled C++ extension (_KFLOAT_DTYPE).
 
     Accepts both ``numpy.ndarray`` (v4.6.4 Python core) and
     ``torch.Tensor``.  The autograd graph is preserved so that inputs
     carrying ``requires_grad=True`` remain connected to the solver output,
-    enabling gradient-based layout and yaw optimization.
+    enabling gradient-based layout and yaw optimisation.
     """
     if isinstance(x, torch.Tensor):
-        return x.float().to(device)
-    return torch.tensor(np.asarray(x, dtype=np.float32)).to(device)
+        return x.to(dtype=_KFLOAT_DTYPE, device=device)
+    return torch.tensor(np.asarray(x), dtype=_KFLOAT_DTYPE).to(device)
 
 
 def _get_tilt_angles(py_farm):
@@ -151,9 +158,9 @@ def _build_turbine_tables(floris_cpp, cpp_farm, py_farm, device="cpu"):
             continue
         added_types.add(turb_type)
         tbl = floris_cpp.PowerThrustTable()
-        tbl.wind_speed          = _to_f32(tbl_dict["wind_speed"], device)
-        tbl.thrust_coefficient  = _to_f32(tbl_dict["thrust_coefficient"], device)
-        tbl.power               = _to_f32(tbl_dict["power"], device)
+        tbl.wind_speed          = _to_kfloat(tbl_dict["wind_speed"], device)
+        tbl.thrust_coefficient  = _to_kfloat(tbl_dict["thrust_coefficient"], device)
+        tbl.power               = _to_kfloat(tbl_dict["power"], device)
         # ref_tilt: used for CosineLossTurbine CT correction CT *= cos(yaw)*cos(tilt)/cos(ref_tilt)
         tbl.ref_tilt = float(tbl_dict["ref_tilt"])
         floris_cpp.farm_add_turbine_table(cpp_farm, tbl)
@@ -280,6 +287,10 @@ class CppCore:
         wake_model = d["wake"]["model_strings"]["velocity_model"]
         floris_cpp = _get_floris_cpp(solver=cpp_solver_paradigm, wake_model=wake_model)
 
+        # Sync tensor precision with the compiled extension.
+        global _KFLOAT_DTYPE
+        _KFLOAT_DTYPE = torch.float64 if floris_cpp.using_double() else torch.float32
+
         # Validate solver key early so errors surface at init time, not run().
         available = floris_cpp.available_solvers()
         if cpp_solver_paradigm not in available:
@@ -321,16 +332,16 @@ class CppCore:
     @staticmethod
     def _make_cpp_farm(floris_cpp, py_farm, device="cpu") -> object:
         f = floris_cpp.Farm()
-        f.layout_x        = _to_f32(py_farm.layout_x, device)
-        f.layout_y        = _to_f32(py_farm.layout_y, device)
-        f.hub_heights     = _to_f32(py_farm.hub_heights, device)
-        f.rotor_diameters = _to_f32(py_farm.rotor_diameters, device)
-        f.yaw_angles      = _to_f32(py_farm.yaw_angles, device)
+        f.layout_x        = _to_kfloat(py_farm.layout_x, device)
+        f.layout_y        = _to_kfloat(py_farm.layout_y, device)
+        f.hub_heights     = _to_kfloat(py_farm.hub_heights, device)
+        f.rotor_diameters = _to_kfloat(py_farm.rotor_diameters, device)
+        f.yaw_angles      = _to_kfloat(py_farm.yaw_angles, device)
         # tilt_angles: populated by set_tilt_to_ref_tilt() in the Python solver.
         # Fall back to ref_tilts (gives cos(tilt)/cos(ref_tilt) = 1) if unavailable.
         tilt = _get_tilt_angles(py_farm)
         if tilt is not None:
-            f.tilt_angles = _to_f32(tilt, device)
+            f.tilt_angles = _to_kfloat(tilt, device)
         f.n_turbines      = py_farm.n_turbines
         _build_turbine_tables(floris_cpp, f, py_farm, device)
         return f
@@ -339,9 +350,9 @@ class CppCore:
     def _make_cpp_flow_field(py_ff, device="cpu") -> object:
         floris_cpp = _get_floris_cpp()
         ff = floris_cpp.FlowField()
-        ff.wind_speeds            = _to_f32(py_ff.wind_speeds, device)
-        ff.wind_directions        = _to_f32(py_ff.wind_directions, device)
-        ff.turbulence_intensities = _to_f32(py_ff.turbulence_intensities, device)
+        ff.wind_speeds            = _to_kfloat(py_ff.wind_speeds, device)
+        ff.wind_directions        = _to_kfloat(py_ff.wind_directions, device)
+        ff.turbulence_intensities = _to_kfloat(py_ff.turbulence_intensities, device)
         ff.wind_shear             = float(py_ff.wind_shear)
         ff.wind_veer              = float(py_ff.wind_veer)
         ff.air_density            = float(py_ff.air_density)
@@ -353,9 +364,9 @@ class CppCore:
     def _make_cpp_grid(py_farm, py_ff, solver_dict: dict, device="cpu") -> object:
         floris_cpp = _get_floris_cpp()
         g = floris_cpp.TurbineGrid()
-        g.turbine_coordinates = _to_f32(py_farm.coordinates, device)
-        g.turbine_diameters   = _to_f32(py_farm.rotor_diameters, device)
-        g.wind_directions     = _to_f32(py_ff.wind_directions, device)
+        g.turbine_coordinates = _to_kfloat(py_farm.coordinates, device)
+        g.turbine_diameters   = _to_kfloat(py_farm.rotor_diameters, device)
+        g.wind_directions     = _to_kfloat(py_ff.wind_directions, device)
         g.grid_resolution     = int(solver_dict.get("turbine_grid_points", 3))
         g.n_turbines          = py_farm.n_turbines
         g.n_findex            = int(py_ff.n_findex)
@@ -415,20 +426,20 @@ class CppCore:
         # ---- sync farm ----
         # layout_x / layout_y / yaw_angles are preserved if the caller has
         # already injected a requires_grad tensor (common in autograd tests).
-        _preserve_if_grad('layout_x',  _to_f32(py_farm.layout_x, device))
-        _preserve_if_grad('layout_y',  _to_f32(py_farm.layout_y, device))
-        _preserve_if_grad('yaw_angles', _to_f32(py_farm.yaw_angles, device))
-        self._cpp_farm.hub_heights     = _to_f32(py_farm.hub_heights, device)
-        self._cpp_farm.rotor_diameters = _to_f32(py_farm.rotor_diameters, device)
+        _preserve_if_grad('layout_x',  _to_kfloat(py_farm.layout_x, device))
+        _preserve_if_grad('layout_y',  _to_kfloat(py_farm.layout_y, device))
+        _preserve_if_grad('yaw_angles', _to_kfloat(py_farm.yaw_angles, device))
+        self._cpp_farm.hub_heights     = _to_kfloat(py_farm.hub_heights, device)
+        self._cpp_farm.rotor_diameters = _to_kfloat(py_farm.rotor_diameters, device)
         tilt = _get_tilt_angles(py_farm)
         if tilt is not None:
-            self._cpp_farm.tilt_angles = _to_f32(tilt, device)
+            self._cpp_farm.tilt_angles = _to_kfloat(tilt, device)
         self._cpp_farm.n_turbines      = py_farm.n_turbines
 
         # ---- sync flow field ----
-        self._cpp_flow_field.wind_speeds            = _to_f32(py_ff.wind_speeds, device)
-        self._cpp_flow_field.wind_directions        = _to_f32(py_ff.wind_directions, device)
-        self._cpp_flow_field.turbulence_intensities = _to_f32(
+        self._cpp_flow_field.wind_speeds            = _to_kfloat(py_ff.wind_speeds, device)
+        self._cpp_flow_field.wind_directions        = _to_kfloat(py_ff.wind_directions, device)
+        self._cpp_flow_field.turbulence_intensities = _to_kfloat(
             py_ff.turbulence_intensities, device
         )
         self._cpp_flow_field.wind_shear             = float(py_ff.wind_shear)
@@ -448,15 +459,15 @@ class CppCore:
             isinstance(ly, torch.Tensor) and ly.requires_grad
         )
         if has_layout_grad:
-            hub_h = _to_f32(py_farm.hub_heights, device)  # [T], no grad
+            hub_h = _to_kfloat(py_farm.hub_heights, device)  # [T], no grad
             # torch.stack([T], [T], [T], dim=1) → [T, 3]
             self._cpp_grid.turbine_coordinates = torch.stack(
                 [lx.float(), ly.float(), hub_h], dim=1
             )
         else:
-            self._cpp_grid.turbine_coordinates = _to_f32(py_farm.coordinates, device)
-        self._cpp_grid.turbine_diameters   = _to_f32(py_farm.rotor_diameters, device)
-        self._cpp_grid.wind_directions     = _to_f32(py_ff.wind_directions, device)
+            self._cpp_grid.turbine_coordinates = _to_kfloat(py_farm.coordinates, device)
+        self._cpp_grid.turbine_diameters   = _to_kfloat(py_farm.rotor_diameters, device)
+        self._cpp_grid.wind_directions     = _to_kfloat(py_ff.wind_directions, device)
         self._cpp_grid.n_turbines          = py_farm.n_turbines
         self._cpp_grid.n_findex            = int(py_ff.n_findex)
 
