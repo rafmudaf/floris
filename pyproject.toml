@@ -92,6 +92,7 @@ testpaths = "tests"
 filterwarnings = [
     "ignore::DeprecationWarning:pandas.*:"
 ]
+addopts = "-s"
 
 
 
