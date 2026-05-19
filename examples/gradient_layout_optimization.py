@@ -34,7 +34,6 @@ def _get_fmodel(cpp=False, device="cpu") -> FlorisModel:
     fdefaults["wake"]["enable_transverse_velocities"] = False
     fdefaults["wake"]["enable_active_wake_mixing"] = False
     fmodel = FlorisModel(fdefaults)
-    print(fmodel.core.logging)
     return fmodel
 
 
@@ -257,8 +256,10 @@ def run_gradient_optimization(
     lr: float,
     live_plot: bool = True,
     seed: int = 42,
+    device: str = "cpu",
 ):
     """Run gradient-based layout optimization and return results dict."""
+
     rng = np.random.default_rng(seed)
     D = 126.0           # NREL 5 MW rotor diameter (m)
     min_dist = 2 * D    # minimum turbine spacing
@@ -269,13 +270,13 @@ def run_gradient_optimization(
 
     # Wind resource
     freq_np = wind_rose.unpack_freq()                 # [F], sums to ≈1
-    freq_t = torch.tensor(freq_np, dtype=torch.float32)
+    freq_t = torch.tensor(freq_np, dtype=torch.float32, device=device)  # [F]
 
     # Initial layout: grid + jitter (stays within boundaries)
     lx_init_np, ly_init_np = _grid_layout(n_turbs, xmin, xmax, ymin, ymax, rng)
 
     # FLORIS model with FLORAF backend
-    fmodel = _get_fmodel(cpp=True, device="cpu")
+    fmodel = _get_fmodel(cpp=True, device=device)
     fmodel.set(
         layout_x=lx_init_np.tolist(),
         layout_y=ly_init_np.tolist(),
@@ -283,8 +284,8 @@ def run_gradient_optimization(
     )
 
     # Optimization variables - leaf tensors for layout positions
-    lx = torch.tensor(lx_init_np, dtype=torch.float32, requires_grad=True)
-    ly = torch.tensor(ly_init_np, dtype=torch.float32, requires_grad=True)
+    lx = torch.tensor(lx_init_np, dtype=torch.float32, device=device, requires_grad=True)
+    ly = torch.tensor(ly_init_np, dtype=torch.float32, device=device, requires_grad=True)
 
     # Plant the grad-tracked tensors into the FLORAF farm once.
     fmodel.core._cpp_farm.layout_x = lx
@@ -351,8 +352,8 @@ def run_gradient_optimization(
     elapsed = time.perf_counter() - t0
 
     # Final positions and AEP
-    final_lx = lx.detach().numpy().copy()
-    final_ly = ly.detach().numpy().copy()
+    final_lx = lx.detach().cpu().numpy().copy()
+    final_ly = ly.detach().cpu().numpy().copy()
     final_aep = aep_history[-1]
 
     print(f"\nGradient opt finished in {elapsed:.1f} s  ({n_iters} iterations)")
@@ -549,6 +550,7 @@ if __name__ == "__main__":
     parser.add_argument("--n-wdirs", type=int, default=36, help="Number of wind directions in wind rose (default: 36).")
     parser.add_argument("--n-wspeeds", type=int, default=5, help="Number of wind speed bins in wind rose (default: 5).")
     parser.add_argument("--seed", type=int, default=42, help="Random seed for initial layout jitter (default: 42).")
+    parser.add_argument("--device", type=str, default="cpu", choices=["cpu", "cuda", "mps"], help="Device for C++ solver (default: cpu). Use 'cuda' if torch.cuda.is_available().")
     args = parser.parse_args()
 
     print("=" * 62)
@@ -573,6 +575,7 @@ if __name__ == "__main__":
         lr=args.lr,
         live_plot=args.plot,
         seed=args.seed,
+        device=args.device,
     )
 
     pct = 100 * (grad_res["final_aep"] / grad_res["base_aep"] - 1)
