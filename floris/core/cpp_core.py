@@ -409,15 +409,23 @@ class CppCore:
                 return  # User-injected differentiable tensor; preserve it.
             setattr(self._cpp_farm, attr, default_val)
 
-        # Determine the effective device: if the caller has injected a grad tensor
-        # on a different device (e.g. cuda:0 into a cpu-configured model), use
-        # that device for all tensors so everything is consistent.
-        _existing_lx = getattr(self._cpp_farm, 'layout_x', None)
-        if isinstance(_existing_lx, torch.Tensor) and _existing_lx.requires_grad:
-            device = _existing_lx.device
-            self._device = str(device)  # update self._device to match the grad tensor's device
-        else:
-            device = self._device
+        # Determine the effective device from any injected grad tensors.
+        # All differentiable inputs must agree on device; a mismatch here
+        # would produce a confusing error deep inside the C++ solver.
+        _grad_devices = {
+            str(t.device)
+            for attr in ('layout_x', 'layout_y', 'yaw_angles')
+            for t in [getattr(self._cpp_farm, attr, None)]
+            if isinstance(t, torch.Tensor) and t.requires_grad
+        }
+        if len(_grad_devices) > 1:
+            raise ValueError(
+                f"Injected grad tensors are on different devices: {_grad_devices}. "
+                "All differentiable inputs (layout_x, layout_y, yaw_angles) must be "
+                "on the same device."
+            )
+        device = _grad_devices.pop() if _grad_devices else self._device
+        self._device = device  # keep in sync for __deepcopy__ and _model_config
 
         # ---- sync farm ----
         # layout_x / layout_y / yaw_angles are preserved if the caller has
@@ -553,12 +561,16 @@ class CppCore:
         dtype = u_avg.dtype
         device = u_avg.device
         ws_t = torch.tensor(
-            np.asarray(tbl['wind_speed'], dtype=np.float32),
-            dtype=dtype, device=device,
+            np.asarray(tbl['wind_speed'],
+            dtype=np.float32),
+            dtype=dtype,
+            device=device,
         )
         pw_t = torch.tensor(
-            np.asarray(tbl['power'], dtype=np.float32),
-            dtype=dtype, device=device,
+            np.asarray(tbl['power'],
+            dtype=np.float32),
+            dtype=dtype,
+            device=device,
         )
 
         # interp1d accepts any-shape xnew and returns the same shape.
@@ -581,6 +593,17 @@ class CppCore:
         post-solve velocity and turbulence fields that
         ``FlorisModel._get_turbine_powers()`` reads.
         """
+        # Save the yaw leaf reference BEFORE C++ Farm::finalize() replaces
+        # _cpp_farm.yaw_angles with a gather-derived tensor (unsorted result).
+        # Without this, the next call to initialize_domain() would find a
+        # non-leaf in _preserve_if_grad and silently grow the graph across
+        # iterations, eventually causing a graph error or memory explosion.
+        _yaw_before_finalize = self._cpp_farm.yaw_angles
+        _yaw_is_leaf = (
+            isinstance(_yaw_before_finalize, torch.Tensor)
+            and _yaw_before_finalize.is_leaf
+        )
+
         self._cpp_flow_field.finalize(self._cpp_grid.unsorted_indices)
         self._cpp_farm.finalize(self._cpp_grid.unsorted_indices)
 
@@ -623,9 +646,15 @@ class CppCore:
         )
 
         # ── yaw angles ───────────────────────────────────────────────────────
-        # C++ Farm::finalize() already applied unsort via torch::gather so
-        # cpp_farm.yaw_angles is in the original layout order.
+        # C++ Farm::finalize() applied the unsort via torch::gather so
+        # cpp_farm.yaw_angles is now in original layout order — use it for
+        # the numpy sync to _py_core.
         self._py_core.farm.yaw_angles = self._cpp_farm.yaw_angles.detach().cpu().numpy()
+
+        # Restore the leaf tensor so the next forward pass finds the original
+        # user-injected variable rather than the gather-derived result.
+        if _yaw_is_leaf:
+            self._cpp_farm.yaw_angles = _yaw_before_finalize
 
         self._py_core.state = State.USED
 
