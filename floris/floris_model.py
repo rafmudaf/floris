@@ -112,16 +112,17 @@ class FlorisModel(LoggingManager):
         * ``device`` — torch device string (default ``"cpu"``)
         * ``cpp_solver`` — registered C++ solver key (default ``"sequential"``)
         """
-        solver_d = d.get("solver", {})
-        backend = solver_d.get("backend", "python")
+        backend = d["solver"].get("backend", "python")
         if backend == "cpp":
             from floris.core.cpp_core import CppCore
-            return CppCore.from_dict(
-                d,
-                device=solver_d.get("device"),
-                cpp_solver_paradigm=solver_d.get("cpp_solver"),
+            return CppCore.from_dict(d)
+        elif backend == "python":
+            return Core.from_dict(d)
+        else:
+            raise ValueError(
+                f"Invalid solver backend {backend!r}. "
+                "Valid options are 'python' and 'cpp'."
             )
-        return Core.from_dict(d)
 
     def _post_init_checks(self) -> None:
         """Validation checks performed after self.core is set during __init__."""

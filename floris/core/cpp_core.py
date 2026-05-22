@@ -252,21 +252,15 @@ class CppCore:
     def from_file(
         cls,
         path: str,
-        *,
-        device: str = "cpu",
-        cpp_solver_paradigm: str = "wavefront"
     ) -> "CppCore":
         """Load from a YAML file path, identical signature to Core.from_file."""
         d = load_yaml(Path(path).resolve())
-        return cls.from_dict(d, device=device, cpp_solver_paradigm=cpp_solver_paradigm)
+        return cls.from_dict(d)
 
     @classmethod
     def from_dict(
         cls,
         d: dict,
-        *,
-        device: str = "cpu",
-        cpp_solver_paradigm: str = "wavefront"
     ) -> "CppCore":
         """
         Create a ``CppCore`` from the standard FLORIS YAML dict.
@@ -284,6 +278,8 @@ class CppCore:
             Key into the C++ solver registry, e.g. ``"wavefront"``.
         """
         # Resolve the velocity_model for the license feature check.
+        cpp_solver_paradigm = d["solver"]["cpp_solver"]
+        device = d["solver"]["device"]
         wake_model = d["wake"]["model_strings"]["velocity_model"]
         floris_cpp = _get_floris_cpp(solver=cpp_solver_paradigm, wake_model=wake_model)
 
