@@ -697,17 +697,29 @@ class CppCore:
         """
         return self._py_core.as_dict()
 
+    def __getstate__(self) -> dict:
+        """Serialize as the YAML configuration dict.
+
+        The C++ struct state (``_cpp_farm``, ``_cpp_flow_field``, ``_cpp_grid``,
+        ``_model_config``, ``_floris_cpp``) is ephemeral — it is fully rebuilt by
+        ``initialize_domain()`` on every ``run()`` call.  Only the configuration
+        dict needs to be preserved across pickle/unpickle or process boundaries.
+        """
+        return self._py_core.as_dict()
+
+    def __setstate__(self, state: dict) -> None:
+        """Reconstruct a fresh CppCore from the pickled configuration dict."""
+        new = CppCore.from_dict(state)
+        self.__dict__.update(new.__dict__)
+
     def __deepcopy__(self, memo):
+        """Deep-copy by reconstructing from config.
+
+        Avoids copying the floris_cpp module object and C++ structs, which
+        are not copyable.  Used by ``FlorisModel.calculate_horizontal_plane``
+        and other helpers that call ``copy.deepcopy(fmodel)``.
         """
-        Custom deep-copy that avoids copying the floris_cpp module object
-        (which is not pickle-able).  Used by ``FlorisModel.calculate_horizontal_plane``
-        and other viz helpers that do ``copy.deepcopy(fmodel)``.
-        """
-        new = CppCore.from_dict(
-            self._py_core.as_dict(),
-            device=self._device,
-            cpp_solver_paradigm=self._cpp_solver_paradigm,
-        )
+        new = CppCore.from_dict(self._py_core.as_dict())
         memo[id(self)] = new
         return new
 
