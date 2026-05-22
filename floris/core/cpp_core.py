@@ -222,11 +222,14 @@ def _build_model_config(floris_cpp, d: dict, cpp_solver_paradigm: str, device: s
     # sigmoid_k uses the compiled default (10.0 from model_config.hpp);
     # no standard YAML key — override here if needed in the future.
 
-    # Jacobi parallel solver parameters
-    # cfg.jacobi_max_iters = int(solver_d["jacobi_max_iters"])
-    # cfg.jacobi_chunk_size = int(solver_d["jacobi_chunk_size"])
-    # cfg.jacobi_tol = float(solver_d["jacobi_tol"])
-    # cfg.jacobi_fixed_iters = bool(solver_d["jacobi_fixed_iters"])
+    # Jacobi parallel solver parameters — all optional; compiled defaults apply
+    # when the solver block omits these keys (30 iters, chunk 8, tol 1e-6,
+    # adaptive convergence).  Set jacobi_fixed_iters=true for clean autograd
+    # graphs (avoids the mid-solve CPU↔GPU sync from the convergence check).
+    cfg.jacobi_max_iters   = int(solver_d.get("jacobi_max_iters", 30))
+    cfg.jacobi_chunk_size  = int(solver_d.get("jacobi_chunk_size", 8))
+    cfg.jacobi_tol         = float(solver_d.get("jacobi_tol", 1e-6))
+    cfg.jacobi_fixed_iters = bool(solver_d.get("jacobi_fixed_iters", False))
 
     return cfg
 
