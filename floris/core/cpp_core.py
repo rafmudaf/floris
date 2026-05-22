@@ -201,6 +201,7 @@ def _build_model_config(floris_cpp, d: dict, cpp_solver_paradigm: str, device: s
     cfg.beta = float(vp["beta"])
     cfg.ka = float(vp["ka"])
     cfg.kb = float(vp["kb"])
+    cfg.sigmoid_k = float(wake_d["wake_velocity_parameters"]["gauss"].get("sigmoid_k", 10.0))
 
     # Gaussian deflection parameters
     dp = wake_d["wake_deflection_parameters"]["gauss"]
