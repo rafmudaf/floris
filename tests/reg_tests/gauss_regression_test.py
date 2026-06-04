@@ -4,7 +4,7 @@ import numpy as np
 from floris.core import (
     average_velocity,
     axial_induction,
-    Core,
+    # Core,
     power,
     rotor_effective_velocity,
     thrust_coefficient,
@@ -125,68 +125,6 @@ full_flow_baseline = np.array(
 )
 
 
-"""
-# These are the results from v2.4 develop branch
-gch_baseline = np.array(
-    [
-        # 8 m/s
-        [
-            [7.9803783, 0.7605249, 1683956.3885389, 0.2548147],
-            [5.8920347, 0.8409478, 669953.8921404, 0.3005933],
-            [5.9690770, 0.8370054, 696678.9863587, 0.2981370],
-        ],
-        # 9 m/s
-        [
-            [8.9779256, 0.7596713, 2397237.3791443, 0.2543815],
-            [6.6299831, 0.8071465, 970496.1338006, 0.2804246],
-            [6.7527627, 0.8022061, 1027643.3724351, 0.2776299],
-        ],
-        # 10 m/s
-        [
-            [9.9754729, 0.7499157, 3283592.6005045, 0.2494847],
-            [7.3852773, 0.7796129, 1346745.9407360, 0.2652730],
-            [7.5343901, 0.7749587, 1428106.9252795, 0.2628074],
-        ],
-        # 11 m/s
-        [
-            [10.9730201, 0.7276532, 4344217.6993801, 0.2386508],
-            [8.1727131, 0.7624523, 1824643.2726943, 0.2563057],
-            [8.2996789, 0.7621064, 1911032.3885037, 0.2561283],
-        ]
-    ]
-)
-
-secondary_steering_baseline = np.array(
-    [
-        # 8 m/s
-        [
-            [7.9803783, 0.7605249, 1683956.3885389, 0.2548147],
-            [5.8728752, 0.8419282, 663307.6815433, 0.3012088],
-            [5.9488299, 0.8380415, 689655.4839532, 0.2987797],
-        ],
-        # 9 m/s
-        [
-            [8.9779256, 0.7596713, 2397237.3791443, 0.2543815],
-            [6.6084854, 0.8080115, 960490.1060497, 0.2809176],
-            [6.7305708, 0.8030991, 1017314.2281904, 0.2781324],
-        ],
-        # 10 m/s
-        [
-            [9.9754729, 0.7499157, 3283592.6005045, 0.2494847],
-            [7.3621072, 0.7803734, 1334476.0326665, 0.2656783],
-            [7.5106613, 0.7755721, 1413887.2753700, 0.2631309],
-        ],
-        # 11 m/s
-        [
-            [10.9730201, 0.7276532, 4344217.6993801, 0.2386508],
-            [8.1489930, 0.7625169, 1808503.8150366, 0.2563388],
-            [8.2759469, 0.7621711, 1894884.8361479, 0.2561615],
-        ]
-    ]
-)
-"""
-
-
 gch_baseline = np.array(
     [
         # 8 m/s
@@ -194,24 +132,52 @@ gch_baseline = np.array(
             [7.9736858, 0.7841561, 1741508.6722008, 0.2671213],
             [5.9689340, 0.8626155, 727222.6050018, 0.3146730],
             [6.0360908, 0.8592082, 753814.9629960, 0.3123888],
+            [6.1227167, 0.8552686, 792760.9909383, 0.3097821],
+            [6.1410254, 0.8544359, 800992.3435818, 0.3092357],
+            [6.1432541, 0.8543345, 801994.3564971, 0.3091693],
+            [6.1442434, 0.8542896, 802439.1158526, 0.3091398],
+            [6.1453974, 0.8542371, 802957.9497345, 0.3091054],
+            [6.1465880, 0.8541829, 803493.2315348, 0.3090700],
+            [6.1477750, 0.8541289, 804026.8701502, 0.3090347],
         ],
         # 9 m/s
         [
             [8.9703965, 0.7828869, 2480428.8963141, 0.2664440],
             [6.7170645, 0.8282386, 1059972.8615898, 0.2927795],
             [6.8249569, 0.8233319, 1108480.0451319, 0.2898405],
+            [6.8927471, 0.8202489, 1138957.7499319, 0.2880147],
+            [6.9051673, 0.8196840, 1144541.7037329, 0.2876819],
+            [6.9063350, 0.8196309, 1145066.7068511, 0.2876506],
+            [6.9070038, 0.8196005, 1145367.3983244, 0.2876327],
+            [6.9079906, 0.8195556, 1145811.0578504, 0.2876063],
+            [6.9091146, 0.8195045, 1146316.3678541, 0.2875762],
+            [6.9103011, 0.8194506, 1146849.7967274, 0.2875444],
         ],
         # 10 m/s
         [
             [9.9671073, 0.7808960, 3395681.0032992, 0.2653854],
             [7.4669332, 0.7987766, 1441706.3550352, 0.2757103],
             [7.6196359, 0.7939336, 1531527.9847411, 0.2730273],
+            [7.6698649, 0.7924100, 1561932.8306047, 0.2721897],
+            [7.6769681, 0.7921945, 1566232.5614354, 0.2720716],
+            [7.6778165, 0.7921687, 1566746.1707862, 0.2720574],
+            [7.6784885, 0.7921484, 1567152.9075321, 0.2720463],
+            [7.6793957, 0.7921208, 1567702.0865236, 0.2720312],
+            [7.6804703, 0.7920882, 1568352.5711301, 0.2720133],
+            [7.6816556, 0.7920523, 1569070.0707310, 0.2719936],
         ],
         # 11 m/s
         [
             [10.9638180, 0.7536370, 4488242.9153943, 0.2513413],
             [8.2691610, 0.7867811, 1972333.4291742, 0.2691218],
             [8.3808845, 0.7866371, 2055834.1618762, 0.2690439],
+            [8.4335501, 0.7865693, 2095195.7177161, 0.2690072],
+            [8.4435708, 0.7865563, 2102685.0693053, 0.2690002],
+            [8.4462157, 0.7865529, 2104661.8573525, 0.2689983],
+            [8.4475018, 0.7865513, 2105623.0376544, 0.2689974],
+            [8.4486300, 0.7865498, 2106466.2862048, 0.2689967],
+            [8.4498347, 0.7865483, 2107366.6617506, 0.2689958],
+            [8.4511338, 0.7865466, 2108337.5277192, 0.2689949],
         ],
     ]
 )
@@ -562,9 +528,16 @@ def test_regression_yaw(sample_inputs_fixture):
 
 def test_regression_gch(sample_inputs_fixture):
     """
-    Tandem turbines with the upstream turbine yawed, yaw added recovery
-    correction enabled, and secondary steering enabled
+    Turbines in a 10-turbine row with the upstream turbine yawed, yaw added
+    recovery correction enabled, and secondary steering enabled.
+    This test uses 10 turbines because the GCH components have an effect after the second turbine
+    and deeper.
     """
+    TURBINE_DIAMETER = 126.0
+    N_TURBINES_GCH = 10
+    layout_x = [i * 5 * TURBINE_DIAMETER for i in range(N_TURBINES_GCH)]
+    layout_y = [0.0] * N_TURBINES_GCH
+
     if BACKEND == "floraf":
         sample_inputs_fixture.core["solver"]["backend"] = "cpp"
         sample_inputs_fixture.core["solver"]["device"] = "cpu"
@@ -572,105 +545,17 @@ def test_regression_gch(sample_inputs_fixture):
 
     sample_inputs_fixture.core["wake"]["model_strings"]["velocity_model"] = VELOCITY_MODEL
     sample_inputs_fixture.core["wake"]["model_strings"]["deflection_model"] = DEFLECTION_MODEL
+    sample_inputs_fixture.core["farm"]["layout_x"] = layout_x
+    sample_inputs_fixture.core["farm"]["layout_y"] = layout_y
 
-    ### With GCH off (via conftest), GCH should be same as Gauss
-
-    floris = Core.from_dict(sample_inputs_fixture.core)
-
-    yaw_angles = np.zeros((N_FINDEX, N_TURBINES))
-    yaw_angles[:,0] = 5.0
-    floris.farm.yaw_angles = yaw_angles
-
-    floris.initialize_domain()
-    floris.steady_state_atmospheric_condition()
-
-    n_turbines = floris.farm.n_turbines
-    n_findex = floris.flow_field.n_findex
-
-    velocities = floris.flow_field.u
-    turbulence_intensities = floris.flow_field.turbulence_intensity_field
-    air_density = floris.flow_field.air_density
-    yaw_angles = floris.farm.yaw_angles
-    tilt_angles = floris.farm.tilt_angles
-    power_setpoints = floris.farm.power_setpoints
-    awc_modes = floris.farm.awc_modes
-    awc_amplitudes = floris.farm.awc_amplitudes
-    test_results = np.zeros((n_findex, n_turbines, 4))
-
-    farm_avg_velocities = average_velocity(
-        velocities,
-    )
-    farm_cts = thrust_coefficient(
-        velocities,
-        turbulence_intensities,
-        air_density,
-        yaw_angles,
-        tilt_angles,
-        power_setpoints,
-        awc_modes,
-        awc_amplitudes,
-        floris.farm.turbine_thrust_coefficient_functions,
-        floris.farm.turbine_tilt_interps,
-        floris.farm.correct_cp_ct_for_tilt,
-        floris.farm.turbine_type_map,
-        floris.farm.turbine_power_thrust_tables,
-    )
-    farm_powers = power(
-        velocities,
-        turbulence_intensities,
-        air_density,
-        floris.farm.turbine_power_functions,
-        yaw_angles,
-        tilt_angles,
-        power_setpoints,
-        awc_modes,
-        awc_amplitudes,
-        floris.farm.turbine_tilt_interps,
-        floris.farm.turbine_type_map,
-        floris.farm.turbine_power_thrust_tables,
-    )
-    farm_axial_inductions = axial_induction(
-        velocities,
-        turbulence_intensities,
-        air_density,
-        yaw_angles,
-        tilt_angles,
-        power_setpoints,
-        awc_modes,
-        awc_amplitudes,
-        floris.farm.turbine_axial_induction_functions,
-        floris.farm.turbine_tilt_interps,
-        floris.farm.correct_cp_ct_for_tilt,
-        floris.farm.turbine_type_map,
-        floris.farm.turbine_power_thrust_tables,
-    )
-    for i in range(n_findex):
-        for j in range(n_turbines):
-            test_results[i, j, 0] = farm_avg_velocities[i, j]
-            test_results[i, j, 1] = farm_cts[i, j]
-            test_results[i, j, 2] = farm_powers[i, j]
-            test_results[i, j, 3] = farm_axial_inductions[i, j]
-
-    # Don't use the test values here, gch is off! See the docstring.
-    # if DEBUG:
-    #     print_test_values(
-    #         farm_avg_velocities,
-    #         farm_cts,
-    #         farm_powers,
-    #         farm_axial_inductions,
-    #     )
-
-    assert_results_arrays(test_results[0:4], yawed_baseline)
-
-
-    ### With GCH on, the results should change
+    ### With GCH on, the results should be different from the regular Gauss baselines
     sample_inputs_fixture.core["wake"]["enable_transverse_velocities"] = True
     sample_inputs_fixture.core["wake"]["enable_secondary_steering"] = True
     sample_inputs_fixture.core["wake"]["enable_yaw_added_recovery"] = True
 
     floris = Core.from_dict(sample_inputs_fixture.core)
 
-    yaw_angles = np.zeros((N_FINDEX, N_TURBINES))
+    yaw_angles = np.zeros((N_FINDEX, N_TURBINES_GCH))
     yaw_angles[:,0] = 5.0
     floris.farm.yaw_angles = yaw_angles
 
