@@ -163,6 +163,15 @@ def _build_turbine_tables(floris_cpp, cpp_farm, py_farm, device="cpu"):
         tbl.power               = _to_kfloat(tbl_dict["power"], device)
         # ref_tilt: used for CosineLossTurbine CT correction CT *= cos(yaw)*cos(tilt)/cos(ref_tilt)
         tbl.ref_tilt = float(tbl_dict["ref_tilt"])
+        # tip_speed_ratio: required for GCH vortex kernels (secondary steering, YAR).
+        # TSR lives in turbine_definitions (not turbine_power_thrust_tables), so we
+        # look it up by matching turbine_type.
+        tsr_lookup = {
+            td["turbine_type"]: td["TSR"]
+            for td in py_farm.turbine_definitions
+            if "TSR" in td
+        }
+        tbl.tip_speed_ratio = float(tsr_lookup[turb_type])
         floris_cpp.farm_add_turbine_table(cpp_farm, tbl)
 
 
@@ -192,8 +201,10 @@ def _build_model_config(floris_cpp, d: dict, cpp_solver_paradigm: str, device: s
     cfg.combination_model = model_strings["combination_model"]
 
     # Optional physics flags
-    cfg.enable_secondary_steering = bool(wake_d["enable_secondary_steering"])
-    cfg.enable_yaw_added_recovery = bool(wake_d["enable_yaw_added_recovery"])
+    cfg.enable_secondary_steering    = bool(wake_d["enable_secondary_steering"])
+    cfg.enable_yaw_added_recovery    = bool(wake_d["enable_yaw_added_recovery"])
+    cfg.enable_transverse_velocities = bool(wake_d.get("enable_transverse_velocities"))
+    cfg.enable_active_wake_mixing    = bool(wake_d.get("enable_active_wake_mixing"))
 
     # Gaussian velocity parameters
     vp = wake_d["wake_velocity_parameters"]["gauss"]
@@ -469,8 +480,10 @@ class CppCore:
         if has_layout_grad:
             hub_h = _to_kfloat(py_farm.hub_heights, device)  # [T], no grad
             # torch.stack([T], [T], [T], dim=1) → [T, 3]
+            # Use _to_kfloat (not .float()) so dtype matches the C++ build
+            # precision and the autograd graph stays intact through set_grid().
             self._cpp_grid.turbine_coordinates = torch.stack(
-                [lx.float(), ly.float(), hub_h], dim=1
+                [lx.to(dtype=_KFLOAT_DTYPE), ly.to(dtype=_KFLOAT_DTYPE), hub_h], dim=1
             )
         else:
             self._cpp_grid.turbine_coordinates = _to_kfloat(py_farm.coordinates, device)
