@@ -3,31 +3,30 @@
 FLORAF is a compiled backend alternative that plugs into FLORIS to enable automatic gradients
 and GPU acceleration with Torch.
 
-**Installation**
+## Installation
 
 Using Python 3.10 - 3.13, install "floraf": `pip install floraf`.
 
 This will install the appropriate binary wheel which includes:
 - Compiled C++ backend
 - FLORAF Python code that interfaces the C++ backend to FLORIS
-- Fork of FLORIS that includes an interface to the FLORAF backend
+- Fork of FLORIS (PyPI: `rafmudaf-floris`) that includes an interface to the FLORAF backend
 
 The FLORIS fork is still installed as "floris" and it is forked from v4.6.4.
 You can import FLORIS and use it the same as NREL/FLORIS v4.6.4.
 
-**License**
+### License
 
-Add your license string to one of the following options.
+To obtain a license, email rafael@clementinescientific.com with the following info:
+- Email address
+- Wake models needed: Jensen, Gauss, GCH, Empirical Gauss, Cumulative-Curl, TurbOPark, all
 
-Environment variable:
-`export FLORAF_LICENSE_KEY=license_key`
+Once you have a license key, it should be available in either of the following:
+- `FLORAF_LICENSE_KEY` environment variable: `export FLORAF_LICENSE_KEY=<license_key>`
+- A text file containing only the license key string at a path set by the `FLORAF_LICENSE_FILE` environment variable
+- A text file at `~/.floraf/license.key` containing only the the license key string
 
-File:
-Either set the `FLORAF_LICENSE_FILE` environment variable to the path to the license file,
-or create set the license key in `~/.floraf/license.key`.
-The license file should contain only the license key.
-
-**Usage**
+## Usage
 
 A comparison with the default SLSQP-based layout optimization is available at
 `examples/gradient_layout_optimization.py`.
@@ -260,6 +259,8 @@ if __name__ == "__main__":
     pct = 100 * (aep_history[-1] / aep_history[0] - 1)
     print(f"AEP improvement: {pct:+.2f}%")
 ```
+
+---
 
 # FLORIS Wake Modeling and Wind Farm Controls Software
 
